@@ -178,6 +178,12 @@ def normal_e_momento(p: Projetil, k: CoefAjuste, j: int) -> dict:
     CNAB = (B[0] + B[1] * CVNN + B[2] * CXLL + B[3] * CCRT
             + B[4] * CVNN ** 2 + B[5] * CXLL ** 2)
     CNBT = B[6] * VBNP + B[7] * VBX * CVNN + B[8] * VBX * CXLL
+    # Cartão C205, ausente do texto: IF(CNBT.GT.0.0) CNBT=0.0 -- a força normal do
+    # boattail não pode somar. Impresso "IF(CART.GT.0.0) CNPT=0.0" (B sai como A/P nesta
+    # impressão). Só age com ogiva curta (CVNN < 0) no supersônico; é o que tirava o 5"/38
+    # 0,014 fora no CNα de Mach 1,75 a 5 (NOTAS, T15).
+    if CNBT > 0.0:
+        CNBT = 0.0
     CNAT = CNAB + CNBT
 
     AMOMSQ = CNAB * (C[0] + C[1] * CVNN + C[2] * CVNN ** 2 + C[3] * CVNN ** 3
@@ -426,13 +432,13 @@ def avisos(p: Projetil) -> list[str]:
     """Limitações da reconstrução que afetam ESTE projétil (docs/NOTAS_TRANSCRICAO.md)."""
     a = [
         "CPN e CMα de Mach 1,2 a 5: o cartão XC15 não foi impresso no relatório e foi "
-        "recuperado pelas tabelas; o XM380E5 confere em todos esses Mach, mas o 5\"/38 fica "
-        "0,004 a 0,009 cal fora em 1,75 e de 2,5 a 5 (T11, T13).",
+        "recuperado pelas tabelas (M437, 5\"/38 e XM380E5 conferem, com até 0,0025 cal de "
+        "resíduo; T11, T13, T15). O 155 mm M101 ainda fica 0,007 cal fora em Mach 1,2 (T14).",
         "CPN e CMα em Mach 0,6: resíduo de 0,002 a 0,004 cal em aberto (T13).",
     ]
     if p.VN > 3.0:
-        a.append("Ogiva > 3 cal: o CX usa XA13..XA15 e o CPN usa XC17, lidos mas sem "
-                 "nenhuma tabela que os valide.")
+        a.append("Ogiva > 3 cal: o CX usa XA13..XA15 e o CPN usa XC17, conferidos numa só "
+                 "tabela (175 mm SRC, ogiva de 5,5 cal; T14).")
     if p.VL > 6.0:
         a.append("Corpo > 6 cal: termos de corpo longo XE5 (Magnus; os 12 primeiros valores "
                  "vêm das tabelas) e XF9 (Cmq; validado só no 20 mm 9 cal).")

@@ -30,12 +30,9 @@ PENDENTES = {
     38: {},
     41: {("CMA", 3.0): "0,0044: no limite (CMα impresso fecha a identidade com CPN e CNα impressos)"},
     53: {
-        **{("CNA", M): "CNα do 5\"/38 0,006 a 0,014 abaixo de Mach 1,75 a 5 (reconstrucao_B, PENDENTES)"
-           for M in (1.75, 2.5, 3.0, 4.0, 5.0)},
-        **{("CX2", M): "herda o CNα (a equação subtrai o CNα reconstruído)" for M in (1.75, 3.0, 5.0)},
-        **{("CMA", M): "herda o CNα e o CPN" for M in (1.75, 2.5, 3.0, 4.0, 5.0)},
-        **{("CPN", M): "5\"/38 fica 0,004 a 0,009 fora (reconstrucao_C, PENDENTES)"
-           for M in (1.75, 2.5, 4.0, 5.0)},
+        # Mach 1,75 a 5 fecharam com o cartão C205 (NOTAS, T15).
+        ("CPN", 4.0): "+0,0023 com o XC15 constante de 2,5 a 5",
+        ("CMA", 4.0): "segue o CPN",
     },
     # M1 (pp. 44/47, a mesma impressão nas duas páginas do scan): Magnus, Cmq e Clp fecham com
     # a geometria do cabeçalho, mas CX, CX2, CNα, CPN e CMα não (CX +0,005 e CX2 até +0,23,

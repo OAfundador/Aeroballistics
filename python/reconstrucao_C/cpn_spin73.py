@@ -55,10 +55,12 @@ def cpn_cma(VL, VN, VB, OR, DM, VCG, j, XB=XB, XC=XC, cna_impresso=None):
     g = termos_geometria(VL, VN, VB, OR, DM, MACH[j])
     x = np.array(regressores(VL, VN, VB, OR, MACH[j]))
     B, C = XB[:, j], XC[:, j]
-    CNAB, CNAT = x[:6] @ B[:6], x @ B          # sem boattail / total
+    CNBT = min(x[6:] @ B[6:], 0.0)             # cartão C205: CNBT positivo é zerado
+    CNAB = x[:6] @ B[:6]                       # sem boattail
+    CNAT = CNAB + CNBT                         # total
     if cna_impresso is not None:
         CNAT = cna_impresso
-        CNAB = CNAT - x[6:] @ B[6:]            # CNAB = total impresso - boattail
+        CNAB = CNAT - CNBT                     # CNAB = total impresso - boattail
     AMOMSQ = CNAB * (C[0] + C[1] * g["CVNN"] + C[2] * g["CVNN"] ** 2 + C[3] * g["CVNN"] ** 3
                      + C[4] * g["CXLL"] + C[5] * g["CXLL"] ** 2 + C[6] * g["CXLL"] ** 3
                      + C[7] * g["CCRT"] + C[8] * g["CCRT"] ** 2 + C[9] * g["CDMM"]
@@ -83,6 +85,6 @@ def implicado(coef, VL, VN, VB, OR, DM, VCG, j, CPN_impresso):
     XC0 = XC.copy()
     XC0[coef - 1, j] = 0.0
     x = np.array(regressores(VL, VN, VB, OR, MACH[j]))
-    CNAT = x @ XB[:, j]
+    CNAT = x[:6] @ XB[:6, j] + min(x[6:] @ XB[6:, j], 0.0)
     CPN0, _ = cpn_cma(VL, VN, VB, OR, DM, VCG, j, XC=XC0)
     return (CPN_impresso - CPN0) * CNAT / peso

@@ -20,9 +20,9 @@ O código-fonte original só existe como listing Fortran impresso num relatório
 
 O centro de pressão do M437 fecha em 14 de 17 Mach, mas em 13 deles o resultado é **circular**: o listing impresso perdeu um cartão de `DATA` (a continuação do XC15), e a própria tabela do M437 foi usada para recuperá-lo. Nesses Mach, ela não pode mais servir de teste. A conferência independente vem de mais duas tabelas com boattail: o 5"/38 (p. 53) e o **105 mm XM380E5 (p. 50), transcrito por inteiro, que não decidiu nenhum `DATA` do centro de pressão**. O programa reproduz 16 dos 17 Mach do CPN dele, e 98 % de todas as suas células (ver `python/tabelas/`).
 
-Tolerância: ±0,0015 nas colunas de 3 casas (o arredondamento da impressão); ±1 no último dígito nas demais. `python -m pytest -q python` roda 218 testes.
+Tolerância: ±0,0015 nas colunas de 3 casas (o arredondamento da impressão); ±1 no último dígito nas demais. `python -m pytest -q python` roda 227 testes.
 
-**Todos os casos do relatório.** As 13 tabelas de saída do relatório (pp. 29 a 68) estão transcritas em `python/tabelas/`. O programa roda com a entrada impressa de cada uma, e as 1612 células legíveis independentes ficam **88 % indistinguíveis do original e 95 % no critério**, com erro mediano de 0,26 unidade na última casa impressa. Doze dos treze casos fecham. O que não fecha, o M1 das pp. 44/47, tem as duas páginas do scan com a mesma impressão. Detalhe por caso e por coluna em [validation/LEIAME.md](validation/LEIAME.md); para rodar:
+**Todos os casos do relatório.** As 13 tabelas de saída do relatório (pp. 29 a 68) estão transcritas em `python/tabelas/`. O programa roda com a entrada impressa de cada uma, e as 1612 células legíveis independentes ficam **89 % indistinguíveis do original e 95 % no critério** (97 % sem o M1), com erro mediano de 0,26 unidade na última casa impressa. Doze dos treze casos fecham. O que não fecha, o M1 das pp. 44/47, tem as duas páginas do scan com a mesma impressão. Detalhe por caso e por coluna em [validation/LEIAME.md](validation/LEIAME.md); para rodar:
 
 ```
 python validation/comparacao_erros.py
@@ -67,7 +67,7 @@ Onde o texto do relatório e o código divergem, vale o código — foi ele que 
 - **Constante do fator giroscópico**: o código usa 1352,4 onde a física com g = 32,174 dá 1349,8 (+0,19 %).
 - **Termos de corpo longo** não documentados, ativos quando o projétil passa de 6 calibres: XE5 no Magnus e XF9 no amortecimento.
 - **A13, A14 e A15** no arrasto: o termo de ogiva longa tem três trechos (quebras em 3,48 e 3,97 calibres); o texto só descreve o primeiro.
-- **Descarte do boattail** no centro de pressão quando o momento do boattail sai positivo.
+- **Descarte do boattail** no centro de pressão quando o momento do boattail sai positivo, e da força normal do boattail quando ela sai positiva (cartão C205, que só age com ogiva curta no supersônico).
 - **CNPA3 e CNPA5**: os "coeficientes do polinômio de Magnus" não usam o valor calculado a 2°; o programa soma uma constante fixa e as duas colunas obedecem a CNPA3 + 0,1·CNPA5 = 3,75 para qualquer projétil. Defeito do original, reproduzido.
 - **Três cartões `DATA` faltando no listing impresso** (continuação do XC15, primeiro cartão do XE5 e segundo cartão do XF7), cada um substituído por uma cópia de um cartão vizinho. Foram recuperados pelas tabelas de saída. O do XF7 explicava o Cmq de Mach 1,1 que não fechava.
 
@@ -77,8 +77,12 @@ Detalhes, com a evidência de cada leitura, em [docs/NOTAS_TRANSCRICAO.md](docs/
 
 O programa imprime avisos específicos para cada geometria (`s.avisos(p)`). Os principais:
 
-- **Centro de pressão de Mach 1,2 a 5**: o cartão do XC15 não foi impresso e foi recuperado pelas tabelas. O XM380E5 confere em todos esses Mach, mas o 5"/38 fica 0,004 a 0,009 calibre fora em Mach 1,75 e de 2,5 a 5. Em Mach 0,6 resta um resíduo de 0,002 a 0,004 calibre. As colunas de estabilidade herdam essas incertezas, porque dependem do CMα.
+- **Centro de pressão de Mach 1,2 a 5**: o cartão do XC15 não foi impresso e foi recuperado pelas tabelas. Três tabelas com boattail conferem (M437, 5"/38 e XM380E5, com até 0,0025 calibre de resíduo); o M101 ainda fica 0,007 calibre fora em Mach 1,2. Em Mach 0,6 resta um resíduo de 0,002 a 0,004 calibre. As colunas de estabilidade herdam essas incertezas, porque dependem do CMα.
 - **Boattail maior que 1 calibre**: ramo do código lido, mas sem nenhuma tabela de 1973 que o valide. O ramo de ogiva maior que 3 calibres tem uma só tabela (175 mm SRC).
+
+## Convenções
+
+Os coeficientes seguem a nomenclatura do relatório (pp. 7-8), no estilo NACA/BRL clássico: taxas adimensionais em **pd/2V e qd/2V**, derivadas por sen ᾱ, posições em calibres a partir do nariz, momentos em torno do CG. Fontes modernas (McCoy, ARL, PRODAS, CFD) usam pd/V e qd/V, e o valor delas é a **metade** do SPIN-73 para Cmq, Clp e Magnus. O CX2 não é o arrasto de guinada: este é CX2 + CNα. `python/convencoes.py` faz as conversões e documenta cada uma.
 
 ## Como cada número foi validado
 

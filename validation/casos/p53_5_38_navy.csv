@@ -23,11 +23,11 @@ pagina,caso,coluna,mach,impresso,modelo,erro_em_unidades,situacao,motivo
 53,"5""/38 NAVY",CX2,1.1,5.716,5.7161585,0.16,independente,
 53,"5""/38 NAVY",CX2,1.2,6.277,6.2771331,0.13,independente,
 53,"5""/38 NAVY",CX2,1.35,5.691,5.6911217,0.12,circular,XD decidido com esta tabela
-53,"5""/38 NAVY",CX2,1.75,4.518,4.5118794,6.12,independente,
-53,"5""/38 NAVY",CX2,2.0,3.94,3.9398,0.2,circular,XD decidido com esta tabela
-53,"5""/38 NAVY",CX2,2.5,3.225,3.2055698,19.43,circular,XD decidido com esta tabela
-53,"5""/38 NAVY",CX2,3.0,2.667,2.6529548,14.05,independente,
-53,"5""/38 NAVY",CX2,5.0,1.714,1.6995208,14.48,independente,
+53,"5""/38 NAVY",CX2,1.75,4.518,4.5184288,0.43,independente,
+53,"5""/38 NAVY",CX2,2.0,3.94,3.9404031,0.4,circular,XD decidido com esta tabela
+53,"5""/38 NAVY",CX2,2.5,3.225,3.2199771,5.02,circular,XD decidido com esta tabela
+53,"5""/38 NAVY",CX2,3.0,2.667,2.667362,0.36,independente,
+53,"5""/38 NAVY",CX2,5.0,1.714,1.7139281,0.07,independente,
 53,"5""/38 NAVY",CNA,0.01,1.799,1.7990465,0.05,circular,XB4 decidido com esta tabela (contagem nas 10 tabelas de CNα)
 53,"5""/38 NAVY",CNA,0.6,1.799,1.7990465,0.05,independente,
 53,"5""/38 NAVY",CNA,0.8,1.819,1.8190465,0.05,independente,
@@ -39,12 +39,12 @@ pagina,caso,coluna,mach,impresso,modelo,erro_em_unidades,situacao,motivo
 53,"5""/38 NAVY",CNA,1.2,2.35,2.3500368,0.04,circular,XB2 decidido com esta tabela (contagem nas 10 tabelas de CNα)
 53,"5""/38 NAVY",CNA,1.35,2.471,2.4710481,0.05,independente,
 53,"5""/38 NAVY",CNA,1.5,2.606,2.6062374,0.24,circular,XB7 decidido com esta tabela (contagem nas 10 tabelas de CNα)
-53,"5""/38 NAVY",CNA,1.75,2.714,2.7202904,6.29,independente,
-53,"5""/38 NAVY",CNA,2.0,2.827,2.8273698,0.37,independente,
-53,"5""/38 NAVY",CNA,2.5,2.953,2.967166,14.17,circular,XB5 decidido com esta tabela (contagem nas 10 tabelas de CNα)
-53,"5""/38 NAVY",CNA,3.0,2.929,2.9430641,14.06,independente,
-53,"5""/38 NAVY",CNA,4.0,2.829,2.8430641,14.06,independente,
-53,"5""/38 NAVY",CNA,5.0,2.729,2.7430641,14.06,independente,
+53,"5""/38 NAVY",CNA,1.75,2.714,2.713741,0.26,independente,
+53,"5""/38 NAVY",CNA,2.0,2.827,2.8267667,0.23,independente,
+53,"5""/38 NAVY",CNA,2.5,2.953,2.9527587,0.24,circular,XB5 decidido com esta tabela (contagem nas 10 tabelas de CNα)
+53,"5""/38 NAVY",CNA,3.0,2.929,2.9286568,0.34,independente,
+53,"5""/38 NAVY",CNA,4.0,2.829,2.8286568,0.34,independente,
+53,"5""/38 NAVY",CNA,5.0,2.729,2.7286568,0.34,independente,
 53,"5""/38 NAVY",CPN,0.6,0.757,0.7560281,0.97,circular,XC decidido com esta tabela
 53,"5""/38 NAVY",CPN,0.8,0.681,0.6811932,0.19,circular,XC decidido com esta tabela
 53,"5""/38 NAVY",CPN,1.05,1.031,1.0310619,0.06,circular,XC decidido com esta tabela
@@ -52,11 +52,11 @@ pagina,caso,coluna,mach,impresso,modelo,erro_em_unidades,situacao,motivo
 53,"5""/38 NAVY",CPN,1.2,1.155,1.1551438,0.14,circular,XC decidido com esta tabela
 53,"5""/38 NAVY",CPN,1.35,1.296,1.2960915,0.09,circular,XC decidido com esta tabela
 53,"5""/38 NAVY",CPN,1.5,1.341,1.3416341,0.63,circular,XC decidido com esta tabela
-53,"5""/38 NAVY",CPN,1.75,1.454,1.4502541,3.75,independente,
-53,"5""/38 NAVY",CPN,2.0,1.532,1.5319168,0.08,circular,XC decidido com esta tabela
-53,"5""/38 NAVY",CPN,2.5,1.624,1.6164623,7.54,independente,
-53,"5""/38 NAVY",CPN,4.0,1.626,1.6200435,5.96,independente,
-53,"5""/38 NAVY",CPN,5.0,1.595,1.5865308,8.47,independente,
+53,"5""/38 NAVY",CPN,1.75,1.454,1.4537541,0.25,independente,
+53,"5""/38 NAVY",CPN,2.0,1.532,1.5322437,0.24,circular,XC decidido com esta tabela
+53,"5""/38 NAVY",CPN,2.5,1.624,1.6243495,0.35,independente,
+53,"5""/38 NAVY",CPN,4.0,1.626,1.6282949,2.29,independente,
+53,"5""/38 NAVY",CPN,5.0,1.595,1.5949077,0.09,independente,
 53,"5""/38 NAVY",CMA,0.6,3.514,3.5152864,1.29,circular,XC decidido com esta tabela
 53,"5""/38 NAVY",CMA,0.8,3.69,3.6904939,0.49,circular,XC decidido com esta tabela
 53,"5""/38 NAVY",CMA,0.95,4.135,4.1368448,1.84,independente,
@@ -66,12 +66,12 @@ pagina,caso,coluna,mach,impresso,modelo,erro_em_unidades,situacao,motivo
 53,"5""/38 NAVY",CMA,1.2,3.653,3.6539692,0.97,circular,XC decidido com esta tabela
 53,"5""/38 NAVY",CMA,1.35,3.494,3.4938361,0.16,identidade,
 53,"5""/38 NAVY",CMA,1.5,3.569,3.5662865,2.71,circular,XC decidido com esta tabela
-53,"5""/38 NAVY",CMA,1.75,3.408,3.4268748,18.87,independente,
-53,"5""/38 NAVY",CMA,2.0,3.331,3.3308769,0.12,circular,XC decidido com esta tabela
-53,"5""/38 NAVY",CMA,2.5,3.206,3.2447078,38.71,independente,
-53,"5""/38 NAVY",CMA,3.0,3.071,3.1098847,38.88,independente,
-53,"5""/38 NAVY",CMA,4.0,3.066,3.0988163,32.82,identidade,
-53,"5""/38 NAVY",CMA,5.0,3.043,3.0817479,38.75,independente,
+53,"5""/38 NAVY",CMA,1.75,3.408,3.409126,1.13,independente,
+53,"5""/38 NAVY",CMA,2.0,3.331,3.3292424,1.76,circular,XC decidido com esta tabela
+53,"5""/38 NAVY",CMA,2.5,3.206,3.2056641,0.34,independente,
+53,"5""/38 NAVY",CMA,3.0,3.071,3.0708409,0.16,independente,
+53,"5""/38 NAVY",CMA,4.0,3.066,3.0597726,6.23,identidade,
+53,"5""/38 NAVY",CMA,5.0,3.043,3.0427042,0.3,independente,
 53,"5""/38 NAVY",CYPA,0.01,-0.769,-0.7694,0.4,independente,
 53,"5""/38 NAVY",CYPA,0.6,-0.769,-0.7694,0.4,independente,
 53,"5""/38 NAVY",CYPA,0.8,-0.769,-0.7694,0.4,independente,

@@ -283,7 +283,7 @@ As constantes são as de um polinômio f(δ) = C1 + C3·δ² + C5·δ⁴ avaliad
 
 **Continua em aberto.**
 - Mach 0,6: o CPN calculado fica acima do impresso nas três tabelas com boattail (M437 +0,004; XM380E5 +0,002; 5"/38 −0,001). Vários pares de coeficientes fecham as três ao mesmo tempo, e nenhum é uma troca limpa de glifo. Em Mach 0,8, o mesmo acontece só no M437 (+0,002).
-- 5"/38 de Mach 2,5 a 5: o CPN fica 0,006 a 0,009 abaixo, e o CNα impresso 0,014 abaixo do reconstruído. O desvio é sistemático e aparece só nessa geometria, com as duas outras fechando: o mais provável é um coeficiente de XB/XC com peso alto só no 5"/38, ou a própria transcrição dessas linhas.
+- ~~5"/38 de Mach 2,5 a 5: CPN 0,006 a 0,009 abaixo e CNα 0,014 acima~~ — resolvido: era o cartão C205 (seção T15).
 - 5"/38 em Mach 1,75: pede XC15 = 0,629, contra 0,550 do M437.
 - CX2 do M437 em Mach 1,5, 1,75 e 2,5 (−0,007 a −0,030): o 5"/38 e o XM380E5 fecham, o que aponta para a transcrição dessas células do M437 ou para um termo que só pesa com boattail de 1 cal.
 
@@ -314,3 +314,21 @@ Cada tabela de saída (pp. 29 a 68) está em `python/tabelas/`, com o cabeçalho
 **O M1 (pp. 44/47).** As duas páginas do scan são a mesma impressão (mesmo título, "M1", mesmo cabeçalho, o mesmo traço cortando a linha de Mach 1,75). Uma das duas tabelas do relatório não está no scan. Magnus, Cmq e Clp fecham com a geometria do cabeçalho, mas CX, CX2, CNα, CPN e CMα não, e nenhuma mudança isolada de OR, DM, BD, VN ou VB resolve. Fica registrado como caso em aberto.
 
 **CPN do M101.** Com a página relida pelas identidades, o CPN do M101 fica 0,007 abaixo em Mach 1,2, e o CMα 0,009 a 0,018 acima em Mach 1,0, 1,05, 1,5 e 2,0. É a única geometria com boattail em que o centro de pressão não fecha. O boattail de 0,45 cal fica entre o do 5"/38 (0,35) e o do XM380E5 (0,59), que fecham.
+
+## T15 — Auditoria contra as convenções do relatório; o cartão C205
+
+**Convenções (Nomenclatura, pp. 7-8; Apêndice B, pp. 76-77).** Estilo NACA/BRL clássico: q̄ = ½ρV², A = πd²/4, referência d. CMα e o Magnus em torno do CG; CPN, CPF1 e CPF5 em calibres do nariz; derivadas por sen ᾱ; Magnus, Cmq e Clp com **pd/2V e qd/2V** (as fontes modernas usam pd/V e qd/V, e dão a metade). O arrasto de guinada é CX2 + CNα (p. 15). Tudo isso está em `python/convencoes.py`, com testes.
+
+**O cartão C205 estava sem implementar.** A linha impressa `IF(CART.GT.0.0) CNPT=0.0` tinha ficado como dúvida de transcrição (T8). Nesta impressão o B sai como A ou P: a linha de cima traz "XA7" onde o código é XB7. A leitura é `IF(CNBT.GT.0.0) CNBT=0.0`, ou seja, a força normal do boattail não pode somar. Ela só age quando a ogiva é curta (CVNN < 0) no supersônico, que é exatamente o 5"/38 de Mach 1,75 a 5:
+
+| Tabela | CNα, CPN, CMα e CX2 no critério | |
+|---|---|---|
+| 5"/38 (p. 53) | 38 → **53** de 56 | o "CNα 0,014 acima, sistemático" (T5) e o "CPN 0,006 a 0,009 abaixo" (T11) eram isto |
+| as outras 12 | sem mudança | nenhuma piora |
+
+Com a regra, o XC15 de Mach 1,75, decidido só pelo M437, passa a ser confirmado também pelo 5"/38 (antes ele parecia pedir 0,629).
+
+**Outras diferenças entre o programa original e esta reconstrução**, sem efeito nas tabelas, agora documentadas em `convencoes.py`:
+
+- Campos em branco no cartão: no original, DM vazio vale 0, BD vazio vale 1,00, OR vazio vale ogiva secante e **TEMP vazio vale 0 °F**. As tabelas sem propriedades de massa imprimem densidade 0,00270, que é a de 0 °F. O `Projetil` usa por omissão DM = 0,12 e BD = 1,02 (os valores de NAUTO = 1, "dimensões automáticas") e TEMP = 59 °F. Para reproduzir um cartão em branco, basta passar zero.
+- Nomes: o programa imprime "CNPA5" para o coeficiente quíntico e "CNPA-5" para a inclinação secante a 5°; aqui são CNPA5P e CNPA5.

@@ -48,9 +48,8 @@ CIRCULARES = {"M437": _POR["M437"], "5/38": _POR["5/38"], "XM380E5": set()}
 PENDENTES = {
     "M437": {},
     "5/38": {
-        11: "Mach 1,75: pede XC15 = 0,629 e o M437, 0,550, com o XC12 lido sem dúvida",
-        **{j: "Mach 2,5 a 5: 0,006 a 0,009 abaixo, sistemático; o CNα impresso também "
-              "fica 0,014 abaixo do reconstruído nesses Mach (NOTAS, T5)" for j in (13, 14, 15, 16)},
+        # Mach 1,75 e 2,5 a 5 fecharam com o cartão C205 (NOTAS, T15).
+        15: "Mach 4: +0,0023 com o XC15 constante de 2,5 a 5 (o M437 pedia -0,9211 ali)",
     },
     "XM380E5": {
         1: "Mach 0,6: +0,0019 (o M437 tem +0,0044, circular); nenhum coeficiente isolado "

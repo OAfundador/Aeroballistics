@@ -81,7 +81,7 @@ CORRECOES = {
     # Mach 2,5: com o XC15 de 2,5 a 5 constante (abaixo), o M437 sozinho pede XC1 = 1,9899.
     # O glifo do listing é ambíguo entre 0 e 9 e a linha fica 1,88 1,99 2,03 2,00 1,97.
     # Conferência independente: o CPN do XM380E5 em Mach 2,5 passa de −0,080 a +0,0001, e o
-    # do 5"/38, de −0,168 a −0,008 (o mesmo desvio que ele tem em Mach 4 e 5).
+    # do 5"/38, de −0,168 a +0,0004 (com o cartão C205, NOTAS T15).
     (1, 13): (1.90, 1.99),
     # Mach 1,35 e 1,5: o 3º dígito está apagado (0 ou 1) e o 4º é ambíguo (3 ou 7). As
     # tabelas M437 e 5"/38 pedem −0,8157 e −0,6192; os únicos valores compatíveis com o glifo
@@ -122,17 +122,18 @@ AUSENTES = {15: list(range(8, 17))}  # XC15: cartão de continuação não impre
 # Ver NOTAS_TRANSCRICAO.md, seções T6.2 e T13.
 RECUPERADOS = {(15, 8): 1.4366, (15, 9): 2.0052, (15, 10): 0.9839, (15, 12): 0.2079}
 
-# Mach 1,75: decidido SÓ pelo M437 (0,5500). O 5"/38 pediria 0,629 (resíduo −0,004 no
-# CPN), com o XC12 lido sem dúvida (−,3949): fica em aberto. O XM380E5 fecha (+0,0003).
+# Mach 1,75: decidido SÓ pelo M437 (0,5500). O XM380E5 fecha (+0,0003) e, depois do cartão
+# C205 (NOTAS, T15), também o 5"/38 (−0,0002), que antes parecia pedir 0,629.
 #
 # Mach 2,5 a 5: nas linhas XC12, XC13, XC14 e XC16 os quatro últimos valores do listing são
 # iguais; o XC15 segue o mesmo padrão. O M437 pede −0,9152, −0,9211 e −0,9190 em Mach 3, 4 e
 # 5, iguais dentro da resolução da impressão (±0,008): vale a média, −0,9184. Em Mach 2,5
 # ele pede −0,9167 depois de corrigido o XC1 (CORRECOES). O XM380E5 fecha nos quatro Mach
 # (resíduo ≤ 0,0005), mas pesa pouco no XC15 (CCRT ≈ 0). O 5"/38 fica 0,006 a 0,009 abaixo
-# em 2,5, 4 e 5: desvio sistemático dele, o mesmo do CNα (seção T5).
+# em 2,5, 4 e 5: era o cartão C205, que faltava (NOTAS, T15); com ele o 5"/38 fecha em 2,5 e 5
+# e fica +0,0023 em 4.
 DECIDIDOS_M437 = {(15, 11): 0.5500, **{(15, j): -0.9184 for j in (13, 14, 15, 16)}}
-INCERTOS = {(15, 11): "o 5\"/38 pede 0,629 e o M437, 0,550"}
+INCERTOS = {}
 
 for (_linha, _j), _v in {**RECUPERADOS, **DECIDIDOS_M437}.items():
     XC[_linha - 1, _j] = _v

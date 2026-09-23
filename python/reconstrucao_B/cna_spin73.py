@@ -5,7 +5,14 @@ from xb_lidos import XB
 from dados_cna import MACH
 from ajustar_B import regressores
 
+def cna_j(VL, VN, VB, OR, j, XB=XB):
+    """CNα no ponto j da grade. Cartão C205: a parcela do boattail (B7..B9) não pode ser
+    positiva -- IF(CNBT.GT.0.0) CNBT=0.0."""
+    x = np.array(regressores(VL, VN, VB, OR, MACH[j]))
+    return float(x[:6] @ XB[:6, j] + min(x[6:] @ XB[6:, j], 0.0))
+
+
 def cna(VL, VN, VB, OR, M):
     """Interpola linearmente em Mach entre os pontos da grade (a grade é a do programa)."""
-    vals = [np.array(regressores(VL, VN, VB, OR, m)) @ XB[:, j] for j, m in enumerate(MACH)]
+    vals = [cna_j(VL, VN, VB, OR, j) for j in range(len(MACH))]
     return float(np.interp(M, MACH, vals))
