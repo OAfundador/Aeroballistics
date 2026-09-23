@@ -1,0 +1,37 @@
+# Whyte, R. H. "Aerodynamic Coefficients of the M483A1 Determined from Spark Range Tests". BRL Contractor
+# Report BRL-CR-659, abr. 1991 (DTIC ADA235620; archive.org DTIC_ADA235620). Approved for public release.
+# Tabela 3 ("Multiple Fit - Six Degree of Freedom Results"), pp. 24-25 do PDF: 65 tiros do BRL Transonic
+# Range (1975 e 1987-89) reduzidos em grupos de 2 a 5 tiros.
+#
+# CONVENÇÕES DA FONTE (Lista de símbolos, p. 45 do PDF): as MESMAS do SPIN-73 -- A = πd²/4; CX, CN, Cm por
+# ½ρAV²(d); Cnp, Clp com pd/2V; Cmq (soma Cmq + Cmα̇) com qd/2V; CPN do nariz. Nenhum fator de conversão.
+#   CX0 = coluna "CX" (o CX2 é separado); CNA = "CNa"; CMA = "Cma" (termo linear; o ajuste tem Cma3);
+#   CMQ = "Cmq"; CNPA = "Cnpa" (linear); CLP = "Clp".
+# Valores FIXADOS no ajuste, e por isso fora deste arquivo: CX2 (1,8 / 2,0 / 3,0 / 4,0 / 5,0 redondos),
+# CYpa (-1,00 na maioria dos grupos), Cma3/CNa3. O Clp foi "estimado de dados de yawsonde" (Ref. 1 da fonte).
+# DBSQ = guinada quadrática média, graus².
+#
+# Geometria (Fig. 1 e Tabela 1, d = 6,092 in = 154,74 mm): comprimento 35,354 in = 5,80 cal; ogiva composta
+# de 17,325 in = 2,844 cal (ponta cônica de 3,74 in, arco de R 22,0 in e arco principal de R 57,77 in =
+# 9,48 cal); meplat 0,600 in = 0,098 cal; boattail 1,554 in = 0,255 cal (8°); cinta 6,20 in = 1,018 cal;
+# CG 562,9 mm = 3,64 cal do nariz (tiros de 1988); massa 46,86 kg; Ix 0,1575, Iy 1,687 kg·m².
+RD,MACH,D2,CX0,CNA,CMA,CMQ,CNPA,CLP
+G01,0.677,85.3,0.156,1.859,4.257,-11.4,,-0.0285
+G02,0.756,9.5,0.153,1.992,4.523,-4.3,,-0.0285
+G03,0.846,9.2,0.160,1.991,4.752,-13.6,,-0.0285
+G04,0.866,36.7,0.162,1.828,4.771,-17.1,,-0.0285
+G05,0.867,31.7,0.163,1.961,4.758,-16.9,,-0.0285
+G06,0.867,11.2,0.163,2.118,4.786,-15.3,,-0.0285
+G07,0.897,15.9,0.176,1.880,4.854,-10.8,,-0.0285
+G08,0.902,34.8,0.193,1.884,4.861,-9.1,,-0.0285
+G09,0.922,17.0,0.202,1.972,4.717,-5.4,,-0.0285
+G10,0.929,55.9,0.208,1.988,4.595,-12.3,,-0.0285
+G11,0.956,12.8,0.241,2.160,4.588,-13.9,,-0.0280
+G12,0.964,8.4,0.255,2.168,4.450,-20.5,,-0.0280
+G13,1.002,5.9,0.329,2.442,4.631,-30.4,-1.49,-0.0275
+G14,1.239,0.5,0.370,2.518,4.768,-26.6,0.53,-0.0260
+G15,1.317,0.6,0.361,2.566,4.817,-42.8,1.46,-0.0260
+G16,1.550,1.0,0.332,2.043,4.883,-34.2,0.91,-0.0240
+G17,1.871,1.4,0.299,2.367,4.746,-31.6,0.89,-0.0230
+G18,2.066,2.5,0.281,2.569,4.624,-35.0,0.88,-0.0230
+G19,2.279,2.9,0.262,2.830,4.535,-29.8,0.51,-0.0230

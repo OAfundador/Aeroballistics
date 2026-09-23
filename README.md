@@ -105,6 +105,8 @@ Cada valor lido no scan é classificado como **verificado** (leitura clara, ou c
 
 A reconstrução reproduz o SPIN-73 como ele era, erros incluídos. Contra dados de voo livre da família 7,62 NATO, o modelo de 1973 superestima o Magnus (+0,3 a +0,5) e o amortecimento Cmq (2,5 vezes no transônico, 10 % no supersônico). Ajustes a dados experimentais ficam em `python/experimental/` e nunca alteram o programa reconstruído.
 
+**Benchmarks de voo livre** (`python/experimental/benchmarks/`): 155 mm M101 (Karpov 1964), 155 mm M483A1 (Whyte 1991) e .50 M33 (McCoy 1990), com as convenções de cada fonte convertidas. No supersônico, o SPIN-73 acerta CMα, CNα, CX0 e Cmq a menos de 8 % nos dois 155 mm, mas subestima o CMα da .50 em 21 %. No subsônico, o CX0 erra de −14 % a +25 % conforme a forma.
+
 ## Licença
 
 Código sob a licença MIT (ver [LICENSE](LICENSE)). O relatório original é de domínio público (Distribution A).
