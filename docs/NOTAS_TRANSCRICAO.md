@@ -174,3 +174,28 @@ Transcrição parcial em `original/listing_p84-86.f`. O listing não traz númer
 - **Cmq (C232-C238) e Clp (C239)** confirmam as formas já usadas; o Clp divide por SFNG, que no texto é 5,51.
 
 Dúvida de transcrição: o cartão C205 foi lido `IF(CART.GT.0.0) CNPT=0.0`. A leitura mais provável é `IF(CNBT.GT.0.0) CNBT=0.0` (zerar a força normal do boattail se ela sair positiva), mas os nomes não conferem com nenhuma variável do trecho; não foi implementado até a releitura.
+
+## T9 — DATA XD (CX2) e o cartão final do XE5
+
+**Leitura.** XD1 e o primeiro cartão de XD2 no pé da p. 80, nítidos; o resto na p. 81, desbotado. Os statements aqui são de três cartões (7 + 7 + 3 valores). XD1 sobe de 0,5 em 0,5 até Mach 1,2 e desce no mesmo passo; XD4 vai de −1 a 0 de 0,1 em 0,1. Dados em `python/reconstrucao_D/xd_lidos.py`.
+
+**Validação com duas tabelas.** Na equação CX2 = XD1 + XD2·CXCL + XD3·CRAT + XD4·VB − CNα, o 175 mm M437 dá pesos 0,10 e −0,06 a XD2 e XD3; o 5"/38, 0,59 e 0,47. Fixando XD1 e XD4, cada Mach dá duas equações para XD2 e XD3, e a solução devolve os valores lidos em 0,01 / 0,6 / 0,9 / 1,0 / 1,05 / 1,35 / 2,0. Usou-se o CNα IMPRESSO de cada tabela, para isolar o XD do erro do CNα reconstruído.
+
+| Célula | Leitura | Decisão | Evidência |
+|---|---|---|---|
+| XD3, Mach 0,8 | .? | 0,4 | 5"/38 pede +0,0996; completa .3 .3 .4 .5 .6 |
+| XD2, Mach 1,35 | ilegível | 0,5 | duas tabelas: 0,501 |
+| XD2, Mach 2,0 | .6? | 0,5 | duas tabelas: 0,501 (com XD3 = 0,998) |
+| XD2, Mach 2,5 | .6? | mantido, duvidoso | só o M437 é confiável ali; resíduo +0,020 |
+
+**Erros na transcrição antiga do M437 (`m437_tabela.csv`), achados pelo XD:**
+
+| Célula | Transcrito | Scan relido | DATA XD | Situação |
+|---|---|---|---|---|
+| CX2, Mach 1,05 | 4,567 | **4,507** | 4,506 | corrigido pela releitura |
+| CX2, Mach 0,8 | 2,603 | 2,6?3 (ambíguo) | 2,805 | fica como transcrito; fora da validação |
+| CX2, Mach 1,1 | 5,132 | ilegível | 5,002 | fica como transcrito; fora da validação |
+
+Em aberto: resíduo de 0,007 a 0,009 no M437 em Mach 1,5 e 1,75, onde o 5"/38 fecha exato.
+
+**XE5.** Na p. 81, entre o XE4 (statement 56) e o XF1 (58), o cartão de continuação `1 0.3,0.3,0.27,0.25,0.20/` aparece impresso duas vezes e o statement 57 falta — o mesmo defeito do XC15 (seção T6). Os cinco valores impressos (Mach 2 a 5) são **exatamente** os do termo de corpo longo que as tabelas de 7, 9 e 10 calibres tinham identificado (seção T3). Os 12 primeiros valores, do cartão que não foi impresso, continuam vindo das tabelas.

@@ -26,9 +26,15 @@ PENDENTES = {
     **{("CPN", m): "XC12 desbotado / XC15 sem cartão (NOTAS, T6)"
        for m in (0.6, 0.8, 0.95, 1.0, 1.35, 1.5, 1.75, 2.5, 3.0, 4.0, 5.0)},
     **{("CMA", m): "segue o CPN" for m in (0.6, 0.8, 1.0, 1.35, 1.5, 1.75, 2.5, 3.0, 4.0, 5.0)},
+    ("CX2", 0.8): "célula impressa ambígua (2,6?3); o DATA XD pede 2,805 (NOTAS, T9)",
+    ("CX2", 1.1): "célula impressa ilegível; o DATA XD dá 5,002 (NOTAS, T9)",
+    ("CX2", 1.5): "resíduo de ~0,007 em aberto no M437 (o 5\"/38 fecha)",
+    ("CX2", 1.75): "resíduo de ~0,009 em aberto no M437 (o 5\"/38 fecha)",
+    ("CX2", 2.5): "XD2 em Mach 2,5 duvidoso",
 }
-TOL = {"CMA": 0.004}
-COLUNAS = ["CNA", "CPN", "CMA", "CYPA", "CNPA", "CPF1", "CPF5", "CNPA5", "CMQ", "CLP"]
+# O CX2 subtrai o CNα reconstruído, então herda o erro dele (até 0,0022); tolerância maior.
+TOL = {"CMA": 0.004, "CX2": 0.0045}
+COLUNAS = ["CNA", "CPN", "CMA", "CX2", "CYPA", "CNPA", "CPF1", "CPF5", "CNPA5", "CMQ", "CLP"]
 
 
 @pytest.mark.parametrize("col", COLUNAS)
@@ -55,5 +61,5 @@ def test_pendencias_ainda_pendentes():
 
 
 def test_colunas_sem_data_saem_nan():
-    """CX e CX2 dependem de XA e XD, ainda não lidos: o programa não inventa valor."""
-    assert np.all(np.isnan(T["CX"])) and np.all(np.isnan(T["CX2"]))
+    """O CX depende do XA, ainda não lido: o programa não inventa valor."""
+    assert np.all(np.isnan(T["CX"]))
