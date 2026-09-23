@@ -60,7 +60,8 @@ class Projetil:
     VL: float          # comprimento total, calibres
     VN: float          # comprimento da ogiva, calibres
     VB: float          # comprimento do boattail, calibres
-    VCG: float         # CG a partir do nariz, calibres
+    VCG: float | None = None  # CG a partir do nariz, calibres (obrigatório no cálculo; se
+                              # faltar, spin73.massa.completar pode estimá-lo -- opcional)
     DIA: float = 0.0   # diâmetro, in (0 = sem análise de estabilidade)
     IX: float = 0.0    # momento axial de inércia, lb·in²
     IY: float = 0.0    # momento transversal de inércia, lb·in²
@@ -282,6 +283,10 @@ def clp(p: Projetil, k: CoefAjuste, j: int) -> float:
 
 def coeficientes(p: Projetil, k: CoefAjuste) -> dict:
     """Todas as colunas aerodinâmicas nos 17 pontos de Mach (NaN onde falta DATA)."""
+    if p.VCG is None:
+        raise ValueError("VCG (CG a partir do nariz, calibres) não informado. Informe-o, ou "
+                         "estime-o com spin73.massa.completar(p) (adição opcional; "
+                         "--estimar-massa na linha de comando).")
     nomes = ("CX", "CX2", "CNA", "CMA", "CPN", "CYPA", "CNPA", "CPF1", "CPF2", "CNPA2",
              "CPF5", "CNPA5", "CNPA3", "CNPA5P", "CMQ", "CLP")
     cols = {n: np.empty(N_MACH) for n in nomes}

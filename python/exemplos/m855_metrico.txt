@@ -1,0 +1,16 @@
+# 5,56 mm M855 em unidades métricas, com a estimativa de massa (adições opcionais).
+# Geometria: McCoy, BRL-MR-3476 (1985), Fig. 3; massa e passo, Tabela 1 e texto.
+# CG e inércias NÃO estão aqui: ESTIMAR_MASSA os estima pela geometria e pela massa.
+nome     = M855 (métrico)
+VL       = 4.05       # comprimento total, calibres
+VN       = 1.90       # ogiva, calibres
+VB       = 0.40       # boattail, calibres
+OR       = 7.9        # raio da ogiva, calibres
+DM       = 0.12       # meplat, calibres (não cotado na fonte)
+BD       = 1.00       # sem cinta
+D_MM     = 5.69       # diâmetro, mm
+MASSA_G  = 4.05       # massa, g
+PASSO_POL = 7         # raia de 1 volta em 7 polegadas
+TEMP_C   = 15         # °C
+ESTIMAR_MASSA = solido
+ANG_BT   = 8.5        # ângulo do boattail, graus (Fig. 3)

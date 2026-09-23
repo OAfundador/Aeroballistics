@@ -3,7 +3,7 @@
 - `jp2/` — scan em alta resolução do relatório (DTIC AD0915628, Distribution A): 96 páginas JP2 de ~2600×3400 px, `DTIC_AD0915628_0000.jp2` a `_0095.jp2`. Índice do arquivo = página impressa + 3. Extraído de `DTIC_AD0915628_jp2.zip`.
 - `cache/` — páginas já giradas e com autocontraste, geradas por `ferramentas/recorte.py`. Pode ser apagado.
 
-- `BRL620_Hitchcock.pdf` — Hitchcock, *Aerodynamic Data for Spinning Projectiles*, BRL Report 620 (AD-800 469), usado em `python/experimental/hitchcock/`. Páginas extraídas com `ferramentas/pagina_pdf.py`.
+- `BRL620_Hitchcock.pdf` — Hitchcock, *Aerodynamic Data for Spinning Projectiles*, BRL Report 620 (AD-800 469), usado em `python/experimental/hitchcock/` e nas fórmulas de inércia de `spin73.massa` (p. 9). Páginas extraídas com `ferramentas/pagina_pdf.py`.
 - `MR1833_Piddington.pdf` — BRL MR 1833 (AD815788), família 7,62 NATO, usado em `python/experimental/`.
 
 - Benchmarks de voo livre (archive.org, DTIC, todos com liberação pública), usados em `python/experimental/benchmarks/`:
@@ -21,6 +21,6 @@
     - `DTIC_AD0078604.pdf` — Roecker, 105 mm M1 (BRL MR 929, 1955): o relatório só dá comprimento (≈4,7 cal) e boattail (0,5 cal, 9°); ogiva e raio não estão cotados, e a p. 47 do SPIN-73, que traria o cartão do M1, repete a p. 44 no scan.
     - `DTIC_AD0729238.pdf` — Regan e Schermerhorn, 20 mm Navy GP (NOLTR 71-95, 1971): só gráficos, sem tabela rodada a rodada.
 
-  \* PDFs "MRC" da DTIC: o texto fica numa máscara JBIG2, que o Pillow não lê e o leitor de PDF do Windows também não. Foram lidos com um decodificador JBIG2 escrito para isso (fora do repositório; basta qualquer leitor de PDF baseado em PDFium ou pdf.js para ver as mesmas páginas).
+  \* PDFs "MRC" da DTIC: o texto fica numa máscara JBIG2, que o Pillow não lê e o leitor de PDF do Windows também não. Foram lidos com `ferramentas/pdf_paginas.py`, que usa o decodificador JBIG2 em Python puro de `ferramentas/jbig2.py` (qualquer leitor de PDF baseado em PDFium ou pdf.js mostra as mesmas páginas).
 
 Nenhum desses arquivos é versionado (ver `.gitignore`): são grandes e estão disponíveis na DTIC.

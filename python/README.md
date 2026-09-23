@@ -4,13 +4,23 @@ O programa reconstruído e seus testes. Visão geral e uso em [../README.md](../
 
 ## Programa: o pacote `spin73/`
 
-- `spin73/nucleo.py` — as equações (seguindo o código Fortran onde ele foi transcrito), a análise de estabilidade, `tabela()`, `formatar()` e `avisos()`.
+Canônico (o programa de 1973):
+
+- `spin73/nucleo.py` — as equações (seguindo o código Fortran onde ele foi transcrito), a análise de estabilidade, `tabela()`, `formatar()`, `avisos()` e o cartão de entrada `Projetil`.
 - `spin73/dados/` — os blocos `DATA`, cada um com a leitura, as células decididas e a evidência (`xa_lidos.py` … `xf_lidos.py`); `__init__.py` monta o conjunto e registra a situação de cada bloco.
+
+Adições opcionais (nenhuma é aplicada sem ser pedida):
+
 - `spin73/convencoes.py` — conversões entre a convenção do relatório e a moderna.
-- `spin73/correcoes/` — correções opcionais sobre a saída (interface, registro e a correção de voo livre).
+- `spin73/unidades.py` — entradas em unidades métricas (mm, g, g·cm², °C, CG a partir da base).
+- `spin73/massa.py` — estimativa de CG, massa e inércias que faltam no cartão.
+- `spin73/correcoes/` — correções sobre a saída (interface, registro e a correção de voo livre).
+
+Interfaces:
+
 - `spin73/aero.py` — `Aerodinamica`, a interface para simuladores.
 - `spin73/cli.py` — linha de comando (`python -m spin73`).
-- `exemplos/m437.txt` — arquivo de entrada do caso de validação.
+- `exemplos/m437.txt` — arquivo de entrada do caso de validação; `exemplos/m855_metrico.txt`, um cartão em unidades métricas com a estimativa de massa.
 
 Os antigos `spin73.py`, `dados_spin73.py`, `convencoes.py` e `reconstrucao_*/x?_lidos.py` agora só redirecionam para o pacote, para que os scripts e testes de cada etapa continuem funcionando. Uso como biblioteca em [../docs/BIBLIOTECA.md](../docs/BIBLIOTECA.md).
 
@@ -44,9 +54,9 @@ O XE5 (termo de corpo longo do Magnus) está em `spin73/dados/__init__.py`. Os b
 python -m pytest -q .
 ```
 
-`test_modelo_completo.py` roda o programa inteiro a partir da geometria contra a tabela do M437; cada célula que não fecha está listada com o motivo, e as células decididas pela própria tabela ficam fora da validação.
+`test_modelo_completo.py` roda o programa inteiro a partir da geometria contra a tabela do M437; cada célula que não fecha está listada com o motivo, e as células decididas pela própria tabela ficam fora da validação. `test_biblioteca.py` e `test_massa.py` cobrem as interfaces e as adições opcionais.
 
 ## Outros
 
-- `experimental/` — recalibração com dados de voo livre (separada da reconstrução).
+- `experimental/` — o que compara o SPIN-73 com medições, separado da reconstrução: `benchmarks/` (voo livre), `correcao/` (ajuste da correção de voo livre), `massa/` (validação da estimativa de massa), `hitchcock/` (compêndio BRL 620) e a recalibração com a 7,62 NATO (BRL MR 1833).
 - `relatorio/` — relatório HTML de comparação (fase anterior; não inclui os blocos lidos depois).

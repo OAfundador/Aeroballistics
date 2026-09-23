@@ -60,6 +60,6 @@ XG = _XG1.reshape(1, N)
 
 SITUACAO = {
     "XA": "lido (4 células decididas; XA13-15 sem teste)", "XB": "lido (XB10 sem uso)", "XC": "lido, XC15 incompleto",
-    "XD": "lido (3 células decididas)", "XE": "lido (XE5 identificado pelas tabelas)",
+    "XD": "lido (4 células decididas)", "XE": "lido (XE5 identificado pelas tabelas)",
     "XF": "lido", "XG": "lido",
 }

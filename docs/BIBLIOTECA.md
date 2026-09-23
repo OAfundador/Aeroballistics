@@ -29,6 +29,8 @@ CD = c.CD0 + c.CDd2 * np.sin(alfa) ** 2
 Cmpa = aero.momento_magnus(mach, alfa)   # Magnus secante, entre 1° e 5°
 ```
 
+O exemplo usa a correção opcional de voo livre; sem `correcoes`, é o programa de 1973.
+
 A aerodinâmica é calculada **uma vez**, no construtor, nos 17 Mach do programa. Cada chamada só faz interpolação linear em Mach (`numpy.interp`), então é barata o bastante para o laço de integração. Fora de 0,01 a 5, o padrão é usar o valor do extremo (`fora_da_faixa="limitar"`); as alternativas são `"nan"` e `"erro"`.
 
 ### Coeficientes disponíveis
@@ -47,6 +49,46 @@ A aerodinâmica é calculada **uma vez**, no construtor, nos 17 Mach do programa
 | `CPF1`, `CPF5` | `CPmagnus_nariz` | centro de pressão do Magnus, calibres do nariz |
 
 Os momentos são em torno do CG que está no `Projetil` (`VCG`, em calibres a partir do nariz). Detalhes das conversões em `python/spin73/convencoes.py`.
+
+### Entradas em outras unidades
+
+O `Projetil` é o cartão do SPIN-73: calibres, polegadas, libras, lb·in² e °F. `spin73.unidades` monta o mesmo cartão a partir de unidades métricas (conversão exata, nada mais):
+
+```python
+p = spin73.unidades.projetil(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12,
+                             D_MM=5.69, MASSA_G=4.05, IX_GCM2=0.1426, IY_GCM2=1.150,
+                             PASSO_POL=7, TEMP_C=15, CG_BASE=1.54)
+```
+
+| Chave | Unidade | Vira |
+|---|---|---|
+| `D_MM` | mm | `DIA` |
+| `MASSA_G`, `MASSA_KG` | g, kg | `WGT` |
+| `IX_GCM2`, `IY_GCM2`, `IX_KGM2`, `IY_KGM2` | g·cm², kg·m² | `IX`, `IY` |
+| `PASSO_MM`, `PASSO_POL` | uma volta da raia, mm ou polegadas | `TWIST` (calibres por volta) |
+| `TEMP_C` | °C | `TEMP` |
+| `CG_BASE` | CG a partir da **base**, calibres | `VCG` = VL − CG_BASE |
+| `DGUN_MM` | mm | `DGUN` |
+
+As mesmas chaves valem no arquivo de entrada da linha de comando (`spin73 --entrada`), e cada uma tem uma opção (`--d-mm`, `--massa-g`, `--cg-base`...).
+
+### Quando faltam CG, massa ou inércias
+
+`spin73.massa` estima o que o cartão não tem, a partir da geometria. Nunca troca um valor informado.
+
+```python
+p = spin73.Projetil(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12)      # sem VCG, peso, inércias
+p = spin73.massa.completar(p, "solido", massa_g=4.05, d_mm=5.69)     # preenche VCG, WGT, IX, IY
+print(spin73.massa.estimar(p, "solido", massa_g=4.05, d_mm=5.69))   # o que foi estimado
+```
+
+| Método | O que é | Quando usar |
+|---|---|---|
+| `"solido"` | sólido de revolução homogêneo com a geometria do cartão | balas; é o único que dá o CG sem a massa e a massa pela densidade (`densidade=` em kg/m³ ou `material="chumbo"`) |
+| `"bala"` | fórmulas empíricas de Hitchcock (BRL 620) para balas .30 e .50 | balas, com a massa |
+| `"granada"` | as mesmas, para granadas explosivas | granadas ocas, com a massa |
+
+Contra 20 projéteis com valores medidos, com a massa medida dada: em balas, o CG fica a ±0,12 calibre e a inércia axial de −5 % a +3 % (`solido`). Em granadas, o `granada` fica de −11 % a +3 %; o `solido` subestima em 20 a 27 %, porque a massa da granada está na parede. Traçantes erram o CG em 0,2 a 0,45 calibre. Detalhes em `python/experimental/massa/LEIAME.md`.
 
 ## Escolher o modelo
 
@@ -93,13 +135,16 @@ A correção não precisa cuidar das colunas derivadas. Depois de todas as corre
 
 ## O que é o quê
 
-| Módulo | Conteúdo | Muda o programa de 1973? |
+| Módulo | Conteúdo | Canônico ou adição |
 |---|---|---|
-| `spin73.nucleo` | equações, `tabela()`, `estabilidade()` | é o programa |
-| `spin73.dados` | blocos `DATA` XA..XG, com a proveniência de cada valor | é o programa |
-| `spin73.convencoes` | conversões entre convenções | não |
-| `spin73.correcoes` | correções opcionais e a interface | não: só por cima da saída, e só se pedidas |
-| `spin73.aero` | `Aerodinamica`, a interface para simuladores | não |
+| `spin73.nucleo` | equações, `tabela()`, `estabilidade()`, o cartão `Projetil` | **canônico**: é o programa |
+| `spin73.dados` | blocos `DATA` XA..XG, com a proveniência de cada valor | **canônico**: é o programa |
+| `spin73.aero` | `Aerodinamica`, a interface para simuladores | sem opções, canônico |
+| `spin73.convencoes` | saída na convenção moderna | adição: conversão exata |
+| `spin73.unidades` | entrada em unidades métricas | adição: conversão exata |
+| `spin73.massa` | estimativa de CG, massa e inércias | adição: muda entradas que faltavam |
+| `spin73.correcoes` | correções dos coeficientes e a interface para escrever novas | adição: muda saídas, só se pedidas |
+| `spin73.cli` | linha de comando | diz no cabeçalho se a saída é canônica ou tem adições |
 
 As correções são **ajustadas** em `python/experimental/correcao/`, com validação cruzada deixando um grupo de projéteis de fora (ver o LEIAME de lá). O ajuste grava `spin73/correcoes/voo_livre.json`, que a biblioteca só lê. Para refazer o ajuste depois de acrescentar dados:
 

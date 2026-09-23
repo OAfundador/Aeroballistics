@@ -1,7 +1,7 @@
 # Brandon, F. J. "Aerodynamic Properties of the 152mm XM617 Projectile". BRL Memorandum Report No. 1998,
 # jul. 1969 (DTIC AD0857512; archive.org DTIC_AD0857512). Distribution Statement A (p. 2 do PDF).
 # Tabela 1 (p. 12 do relatório): rodada a rodada, BRL Transonic Range, escala real, tubo XM81E12.
-# O PDF é MRC (texto em máscara JBIG2): lido com um decodificador JBIG2 local (fora do repositório).
+# O PDF é MRC (texto em máscara JBIG2): páginas extraídas com ferramentas/pdf_paginas.py.
 #
 # CONVENÇÕES DA FONTE (Lista de símbolos, pp. 9-10), modernas:
 #   AT  = raiz do quadrado médio da guinada, graus; CD total na guinada da rodada;

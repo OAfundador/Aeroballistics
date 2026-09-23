@@ -1,7 +1,7 @@
 # Karpov, B. G., Skeggs, K., Hull, B. "Aerodynamic Characteristics of the 175mm T203 Shell and the 175mm
 # Square Base Shell with Fuze M51A5". BRL Memorandum Report No. 956, dez. 1955 (DTIC AD0086528; archive.org
 # DTIC_AD0086528). Tabelas 1 e 2 (pp. 14-15 do relatório): modelos de 90 mm, BRL Transonic Range.
-# O PDF é MRC (texto em máscara JBIG2): lido com um decodificador JBIG2 local (fora do repositório).
+# O PDF é MRC (texto em máscara JBIG2): páginas extraídas com ferramentas/pdf_paginas.py.
 #
 # CONVENÇÕES DA FONTE (Tabela de símbolos, p. 5; texto pp. 8-13): notação K do BRL, valores COMO IMPRESSOS.
 #   D2 = quadrado médio da guinada, graus²; KD total na guinada da rodada; KN normal (do desvio, "swerve");

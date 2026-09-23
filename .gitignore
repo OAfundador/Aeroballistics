@@ -22,3 +22,6 @@ fontes/*.pdf
 *.egg-info/
 build/
 dist/
+
+# estado local do Claude Code
+.claude/

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "spin73"
-version = "0.3.0"
+version = "0.4.0"
 description = "SPIN-73 reconstruído: coeficientes aerodinâmicos de projéteis estabilizados por rotação (Picatinny TR 4588, 1973)"
 readme = "README.md"
 license = "MIT"

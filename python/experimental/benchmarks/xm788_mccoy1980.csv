@@ -1,7 +1,7 @@
 # McCoy, R. L. "Aerodynamic Characteristics of the 30mm, XM788 Projectile". BRL Memorandum Report
 # ARBRL-MR-03019, maio 1980 (DTIC ADA086096; archive.org DTIC_ADA086096). Approved for public release.
 # Tabela I (p. 41 do relatório): rodada a rodada, BRL Aerodynamics Range.
-# O PDF é MRC (texto em máscara JBIG2): lido com um decodificador JBIG2 local (fora do repositório).
+# O PDF é MRC (texto em máscara JBIG2): páginas extraídas com ferramentas/pdf_paginas.py.
 #
 # CONVENÇÕES DA FONTE (Lista de símbolos, pp. 45-47), as mesmas do McCoy 1982 (30 mm XM788E1/XM789):
 #   CD total na guinada da rodada (AT, graus); CLA = sustentação por sen αt; CMA em torno do CG;

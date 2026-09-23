@@ -1,0 +1,34 @@
+Estimativa de CG e inércias (spin73.massa) contra valores MEDIDOS e publicados.
+
+Razão estimado/medido (a massa medida é dada). CG a partir da base, cal.
+s_g ∝ Ix²/Iy: a última coluna é o erro que a estimativa leva ao fator giroscópico.
+* = projéteis da mesma família dos que deram as fórmulas de Hitchcock (não independentes).
+
+projétil        tipo        CG med |  CG sól     Ix     Iy    s_g  ρ ef. | Hitchcock     CG     Ix     Iy    s_g
+----------------------------------------------------------------------------------------------------------------
+SS-109          bala         1.520 |   1.596  1.006  1.100  0.919   9.38 |      bala  1.628  1.053  1.123  0.987
+M855            bala         1.540 |   1.594  1.023  1.078  0.971   9.29 |      bala  1.620  1.057  1.081  1.034
+L110            traçante     2.520 |   2.076  0.963  1.112  0.834   7.00 |      bala  2.052  0.968  1.050  0.892
+M856            traçante     2.570 |   2.110  0.951  1.086  0.832   7.10 |      bala  2.072  0.955  1.034  0.882
+M118            bala         1.800 |   1.745  1.031  1.034  1.028   9.77 |      bala  1.676  1.107  1.027  1.193
+190 Sierra      bala         1.810 |   1.796  1.023  1.052  0.995  10.32 |      bala  1.724  1.096  1.042  1.154
+168 Sierra      bala         1.540 |   1.660  0.998  1.200  0.831   9.66 |      bala  1.592  1.061  1.136  0.991
+.50 M33         bala         1.780 |   1.832  0.950  1.072  0.842   7.69 |      bala  1.784  1.032  1.076  0.990
+Ball M1         bala*        1.827 |   1.825  1.000  1.105  0.906   9.20 |      bala  1.776  1.071  1.121  1.022
+Ball M2         bala*        1.455 |   1.414  1.180  0.971  1.433   9.62 |      bala  1.500  1.236  0.969  1.576
+A.P. M2         bala*        1.980 |   1.810  0.967  0.984  0.950   8.17 |      bala  1.828  0.981  0.936  1.029
+Tracer M1       traçante*    2.097 |   1.898  0.905  1.036  0.791   6.93 |      bala  1.900  0.914  0.975  0.856
+XM788           granada      1.250 |   1.450  0.727  1.010  0.524   3.91 |   granada  1.309  0.893  0.981  0.812
+XM788E1         granada      1.350 |   1.509  0.742  1.074  0.513   3.85 |   granada  1.354  0.907  1.036  0.794
+XM789           granada      1.400 |   1.509  0.767  1.135  0.518   3.77 |   granada  1.354  0.938  1.095  0.803
+M437            granada      2.010 |   2.117  0.764  0.955  0.611   4.45 |   granada  2.066  1.029  1.211  0.875
+T203 (modelo)   modelo       1.940 |   2.117  0.818  1.638  0.409   4.81 |   granada  2.066  1.103  2.079  0.586
+XM617           especial     1.066 |   1.006  1.039  1.082  0.998   3.62 |   granada  1.182  1.340  1.542  1.166
+M101            granada      1.550 |   1.717  0.773  0.903  0.661   4.61 |   granada  1.691  0.994  1.035  0.954
+M483A1          granada      2.160 |   2.330  0.811  1.320  0.499   3.56 |   granada  2.175  0.997  1.376  0.723
+
+ρ ef. = massa medida / volume do contorno, g/cm³.
+balas (sem traçantes, sem *) solido   : |ΔCG| até 0.12 cal; Ix 0.95-1.03; Iy 1.03-1.20
+balas (sem traçantes, sem *) hitchcock: |ΔCG| até 0.12 cal; Ix 1.03-1.11; Iy 1.03-1.14
+granadas                     solido   : |ΔCG| até 0.20 cal; Ix 0.73-0.81; Iy 0.90-1.32
+granadas                     hitchcock: |ΔCG| até 0.14 cal; Ix 0.89-1.03; Iy 0.98-1.38
