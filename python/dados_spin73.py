@@ -6,7 +6,8 @@ evidência de cada uma. Aqui só se monta o conjunto que o programa usa.
 
 Situação de cada bloco (ver docs/NOTAS_TRANSCRICAO.md):
 
-  XA1..XA15  arrasto CX            NÃO LIDO (p. 79)                    -> NaN
+  XA1..XA15  arrasto CX            lidos (p. 79); 4 células decididas pelas tabelas;
+                                   XA13..XA15 lidos mas sem tabela que os teste (VN > 3)
   XB1..XB10  força normal CNα      XB1..XB9 lidos (6 correções decididas); XB10 não
                                    aparece no código transcrito até agora
   XC1..XC17  centro de pressão     lidos; cartão de XC15 ausente no listing, com
@@ -25,11 +26,12 @@ import sys
 import numpy as np
 
 _AQUI = os.path.dirname(os.path.abspath(__file__))
-for _sub in ("reconstrucao_B", "reconstrucao_C", "reconstrucao_D", "reconstrucao_F"):
+for _sub in ("reconstrucao_A", "reconstrucao_B", "reconstrucao_C", "reconstrucao_D", "reconstrucao_F"):
     _p = os.path.join(_AQUI, _sub)
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
+from xa_lidos import XA as _XA                      # noqa: E402
 from xb_lidos import XB as _XB                      # noqa: E402
 from xc_lidos import XC as _XC                      # noqa: E402
 from xd_lidos import XD as _XD                      # noqa: E402
@@ -44,7 +46,7 @@ def _nan(n):
     return np.full((n, N), np.nan)
 
 
-XA = _nan(15)
+XA = _XA.copy()
 
 XB = np.vstack([_XB, _nan(1)])                       # XB10: sem uso identificado
 
@@ -65,7 +67,7 @@ XF = _XF.copy()
 XG = _XG1.reshape(1, N)
 
 SITUACAO = {
-    "XA": "não lido", "XB": "lido (XB10 sem uso)", "XC": "lido, XC15 incompleto",
+    "XA": "lido (4 células decididas; XA13-15 sem teste)", "XB": "lido (XB10 sem uso)", "XC": "lido, XC15 incompleto",
     "XD": "lido (3 células decididas)", "XE": "lido (XE5 identificado pelas tabelas)",
     "XF": "lido", "XG": "lido",
 }

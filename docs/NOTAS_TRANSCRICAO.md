@@ -199,3 +199,22 @@ Dúvida de transcrição: o cartão C205 foi lido `IF(CART.GT.0.0) CNPT=0.0`. A 
 Em aberto: resíduo de 0,007 a 0,009 no M437 em Mach 1,5 e 1,75, onde o 5"/38 fecha exato.
 
 **XE5.** Na p. 81, entre o XE4 (statement 56) e o XF1 (58), o cartão de continuação `1 0.3,0.3,0.27,0.25,0.20/` aparece impresso duas vezes e o statement 57 falta — o mesmo defeito do XC15 (seção T6). Os cinco valores impressos (Mach 2 a 5) são **exatamente** os do termo de corpo longo que as tabelas de 7, 9 e 10 calibres tinham identificado (seção T3). Os 12 primeiros valores, do cartão que não foi impresso, continuam vindo das tabelas.
+
+## T10 — DATA XA (CX) e o programa completo
+
+**Leitura** (p. 79, `python/reconstrucao_A/xa_lidos.py`). XA1..XA10 em statements de 2 linhas; XA11 e XA12 em 3 cartões (7 + 7 + 3); XA13..XA15 em 2 linhas (10 + 7). A contagem até 17 decide o número de zeros iniciais de XA4 (6), XA9 (3), XA13 (3), XA14 (5) e XA15 (3). XA1 tem forma de curva de arrasto (0,20 subsônico, pico de 0,41 em Mach 1,05, 0,18 em Mach 5).
+
+**Validação com duas tabelas.** O 175 mm M437 e o 5"/38 dão ao XA2 pesos de sinal oposto (VNX − 2,5 = +0,41 e −0,35) e ao XA7 pesos bem diferentes (boattail de 1,00 e 0,35 cal). Com a leitura final, **o CX fecha em 17 de 17 Mach nas duas tabelas** (erro máximo 0,0011 e 0,0013). A coluna CX do 5"/38 foi transcrita nesta sessão (`dados_cx.py`).
+
+| Célula | Leitura | Decisão | Evidência |
+|---|---|---|---|
+| XA2, Mach 1,05 | −,0487 (zoom baixo) | **−,0687**, relido em zoom | as duas tabelas pediam −,0688 (par 4/6) |
+| XA10, Mach 1,0 | ,02 (parecia fora da sequência) | mantido | as duas tabelas fecham com ,02 |
+| XA1, Mach 0,01 e 0,6 | ,2?? (desbotado) | ,2014 | o CX desses Mach fica 0,002 abaixo do de 0,8 nas duas tabelas; degrau igual só pode vir do XA1 (peso 1 em ambas) |
+| XA2, Mach 0,01 e 0,6 | ,0157? | ,0057 | igual ao 3º valor, como em quase todos os XA; as duas tabelas pedem ,0064 |
+
+O CX = 0,105 do M437 em Mach 0,01 e 0,6, que tinha sido decidido pelo s_d impresso (seção T), bate com o DATA — mas essas duas linhas ficam fora da validação do XA, porque decidiram XA1 e XA2 ali.
+
+XA13..XA15 (ogiva maior que 3 calibres) estão lidos mas **não testados**: nenhuma tabela transcrita tem VN > 3. O candidato é o 175 mm SRC (p. 68, VN = 5,5).
+
+**O programa completo.** Com o XA, `spin73.tabela()` roda da geometria até a análise de estabilidade. No M437 fecham 17 de 17: CX, CYPA, CNPA, CPF1, CNPA5, CLP, SPIN e RECIP5. As falhas restantes (CPN, CMα e, por consequência, s_g, ω e λ) estão todas nos Mach em que o XC não está completo: o XC12 desbotado e o cartão ausente do XC15.

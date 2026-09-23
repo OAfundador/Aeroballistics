@@ -32,9 +32,20 @@ PENDENTES = {
     ("CX2", 1.75): "resíduo de ~0,009 em aberto no M437 (o 5\"/38 fecha)",
     ("CX2", 2.5): "XD2 em Mach 2,5 duvidoso",
 }
+_SEM_CMA = (1.35, 1.5, 1.75, 2.5, 3.0, 4.0, 5.0)
+PENDENTES.update({
+    **{("GYRO", m): "depende do CMα" for m in (0.6, 0.8, 1.0) + _SEM_CMA},
+    **{(c, m): "depende do CMα (via s_g)" for c in ("W1", "W2", "L15") for m in (0.8,) + _SEM_CMA},
+    **{(c, m): "depende do CMα (via s_g)" for c in ("L1", "L2", "L25") for m in _SEM_CMA},
+    ("SBAR", 1.1): "herda o Cmq de Mach 1,1", ("SBAR5", 1.1): "herda o Cmq de Mach 1,1",
+    ("SBAR", 1.75): "no limite do arredondamento",
+})
 # O CX2 subtrai o CNα reconstruído, então herda o erro dele (até 0,0022); tolerância maior.
-TOL = {"CMA": 0.004, "CX2": 0.0045}
-COLUNAS = ["CNA", "CPN", "CMA", "CX2", "CYPA", "CNPA", "CPF1", "CPF5", "CNPA5", "CMQ", "CLP"]
+# O RECIP = 1/(s_d(2−s_d)) amplifica ~100x o erro de s_d quando s_d ~ −0,07 (Mach 0,01 e 0,6).
+TOL = {"CMA": 0.004, "CX2": 0.0045, "SPIN": 0.15, "W1": 0.05, "W2": 0.05, "RECIP": 0.08,
+       "RECIP5": 0.003, **{c: 1.5e-6 for c in ("L1", "L2", "L15", "L25")}}
+COLUNAS = ["CX", "CX2", "CNA", "CPN", "CMA", "CYPA", "CNPA", "CPF1", "CPF5", "CNPA5", "CMQ", "CLP",
+           "GYRO", "SBAR", "RECIP", "SBAR5", "RECIP5", "SPIN", "W1", "W2", "L1", "L2", "L15", "L25"]
 
 
 @pytest.mark.parametrize("col", COLUNAS)
@@ -60,6 +71,8 @@ def test_pendencias_ainda_pendentes():
     assert not resolvidas, f"remova de PENDENTES: {resolvidas}"
 
 
-def test_colunas_sem_data_saem_nan():
-    """O CX depende do XA, ainda não lido: o programa não inventa valor."""
-    assert np.all(np.isnan(T["CX"]))
+def test_cpn_sem_data_sai_nan():
+    """Onde o cartão XC15 não foi impresso nem recuperado, o CPN sai NaN: o programa
+    não inventa valor."""
+    for m in _SEM_CMA:
+        assert np.isnan(T["CPN"][MACH.index(m)])
