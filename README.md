@@ -22,6 +22,8 @@ O centro de pressão fecha em 13 de 17 Mach, mas em 12 deles o resultado é **ci
 
 Tolerância: ±0,0015 nas colunas de 3 casas (o arredondamento da impressão); ±1 no último dígito nas demais. `python -m pytest -q python` roda 161 testes.
 
+**Tamanho do erro** em todas as tabelas de 1973 transcritas (1030 células): 85 % indistinguíveis do original, erro mediano de 0,24 unidade na última casa impressa. Detalhe por coluna em [validation/LEIAME.md](validation/LEIAME.md).
+
 ## Uso rápido
 
 ```
@@ -86,6 +88,7 @@ Cada valor lido no scan é classificado como **verificado** (leitura clara, ou c
 | `python/` | O programa (`spin73.py`), os blocos `DATA` (`dados_spin73.py` e `reconstrucao_*/`) e os testes |
 | `python/experimental/` | Recalibração com dados de voo livre (BRL MR 1833, 7,62 NATO; compêndio de Hitchcock, BRL 620) — **separada** da reconstrução |
 | `original/` | Transcrição literal do listing Fortran (parcial: pp. 84–86) |
+| `validation/` | Comparação do erro contra todas as tabelas de 1973 transcritas |
 | `docs/` | Notas de transcrição: cada leitura do scan, com a evidência que a decidiu |
 | `ferramentas/` | Leitura do scan: recortes girados e com zoom; extração de páginas de PDF escaneado |
 | `fontes/` | O scan do relatório (não versionado; ver `fontes/LEIAME.md`) |
