@@ -1,0 +1,15 @@
+# 175 mm M437 -- caso de validação do relatório (Tabela 14, p. 65)
+nome  = 175MM M437
+VL    = 5.510      # comprimento total, calibres
+VN    = 2.910      # ogiva, calibres
+VB    = 1.000      # boattail, calibres
+VCG   = 3.500      # CG a partir do nariz, calibres
+DM    = 0.079      # meplat, calibres
+BD    = 1.050      # cinta, calibres
+OR    = 25.0       # raio da ogiva, calibres
+DIA   = 6.885      # diâmetro, polegadas
+IX    = 954.1      # inércia axial, lb·in²
+IY    = 10850.0    # inércia transversal, lb·in²
+WGT   = 148.0      # peso, lb
+TWIST = 20.0       # passo de raia, calibres por volta
+TEMP  = 59.0       # temperatura, °F

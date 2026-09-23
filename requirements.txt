@@ -1,0 +1,5 @@
+numpy>=1.24
+pytest>=7
+# só para ferramentas/ (leitura do scan) e python/relatorio/ (figuras)
+pillow>=9
+matplotlib>=3.7

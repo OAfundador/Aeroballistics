@@ -419,10 +419,111 @@ def ler_tabela(caminho: str) -> dict:
     return {c: np.array([float(r[c]) for r in rows]) for c in rd.fieldnames}
 
 
+# ---------------------------------------------------------------------------
+# Avisos: onde a reconstrução é menos confiável para uma dada geometria
+# ---------------------------------------------------------------------------
+def avisos(p: Projetil) -> list[str]:
+    """Limitações da reconstrução que afetam ESTE projétil (docs/NOTAS_TRANSCRICAO.md)."""
+    a = [
+        "CPN e CMα em Mach 2,5: o cartão XC15 não foi impresso no relatório e foi "
+        "recuperado pelo 175 mm M437; o 5\"/38 discorda em 0,17 cal (T11).",
+        "CPN e CMα em Mach 3: XC15 recuperado pelo M437, sem conferência independente (T11).",
+        "Cmq em Mach 1,1: algum DATA XF está mal lido (o M437 difere 0,038).",
+    ]
+    if p.VN > 3.0:
+        a.append("Ogiva > 3 cal: o CX usa XA13..XA15 e o CPN usa XC17, lidos mas sem "
+                 "nenhuma tabela que os valide.")
+    if p.VL > 6.0:
+        a.append("Corpo > 6 cal: termos de corpo longo XE5 (Magnus; os 12 primeiros valores "
+                 "vêm das tabelas) e XF9 (Cmq; validado só no 20 mm 9 cal).")
+    if p.VB > 1.0:
+        a.append("Boattail > 1 cal: ramo do código (VB**0,5) sem nenhuma tabela de validação.")
+    if 0.65 <= p.VB:
+        a.append("Boattail >= 0,65 cal: o termo DXBT do CX segue o texto do relatório; o cartão "
+                 "do código (p. 83) ainda não foi transcrito (E6).")
+    if p.DIA > 0:
+        a.append("s_g, ω, λ, DELT e DISP dependem do CMα e herdam as incertezas dele.")
+    return a
+
+
+def ler_entrada(caminho: str) -> Projetil:
+    """Lê um projétil de um arquivo texto com linhas 'CHAVE = valor' (# comenta).
+
+    Chaves: as do cartão de entrada (VL, VN, VB, VCG, DIA, IX, IY, WGT, TWIST, DM, BD,
+    OR, BOOM, TEMP, DGUN) e 'nome'.
+    """
+    campos = {}
+    with open(caminho, encoding="utf-8") as f:
+        for linha in f:
+            linha = linha.split("#", 1)[0].strip()
+            if not linha:
+                continue
+            chave, valor = (x.strip() for x in linha.split("=", 1))
+            campos[chave] = valor if chave == "nome" else float(valor)
+    return Projetil(**campos)
+
+
+def salvar_csv(t: dict, caminho: str) -> None:
+    """Todas as colunas, uma linha por Mach."""
+    import csv
+    cols = ["MACH"] + [n for n, _ in COLUNAS_AERO] + [n for n, _ in COLUNAS_ESTAB if n in t]
+    with open(caminho, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(cols)
+        for i in range(N_MACH):
+            w.writerow([f"{t[c][i]:.6g}" if np.isfinite(t[c][i]) else "" for c in cols])
+
+
+def _main(argv=None):
+    import argparse
+    ap = argparse.ArgumentParser(
+        prog="spin73",
+        description="SPIN-73 reconstruído: coeficientes aerodinâmicos e estabilidade de um "
+                    "projétil estabilizado por rotação, a partir da geometria.")
+    ap.add_argument("--entrada", help="arquivo 'CHAVE = valor' com o cartão de entrada")
+    ap.add_argument("--exemplo", action="store_true",
+                    help="roda o caso de validação do relatório (175 mm M437)")
+    for nome, ajuda in (("VL", "comprimento total, cal"), ("VN", "ogiva, cal"),
+                        ("VB", "boattail, cal"), ("VCG", "CG a partir do nariz, cal"),
+                        ("DIA", "diâmetro, in"), ("IX", "inércia axial, lb·in²"),
+                        ("IY", "inércia transversal, lb·in²"), ("WGT", "peso, lb"),
+                        ("TWIST", "passo de raia, cal/volta"), ("DM", "meplat, cal"),
+                        ("BD", "cinta, cal"), ("OR", "raio da ogiva, cal"),
+                        ("TEMP", "temperatura, °F")):
+        ap.add_argument(f"--{nome}", type=float, help=ajuda)
+    ap.add_argument("--nome", default="")
+    ap.add_argument("--csv", help="grava todas as colunas neste arquivo CSV")
+    a = ap.parse_args(argv)
+
+    if a.exemplo:
+        p = M437
+    elif a.entrada:
+        p = ler_entrada(a.entrada)
+    else:
+        campos = {k: v for k, v in vars(a).items()
+                  if k not in ("entrada", "exemplo", "csv") and v not in (None, "")}
+        faltam = [k for k in ("VL", "VN", "VB", "VCG") if k not in campos]
+        if faltam:
+            ap.error("informe --exemplo, --entrada ou pelo menos --VL --VN --VB --VCG "
+                     f"(faltam: {', '.join(faltam)})")
+        p = Projetil(**campos)
+
+    t = tabela(p)
+    print(formatar(t, f"SPIN-73 reconstruído -- {p.nome or 'projétil'}"))
+    print()
+    print("AVISOS (limitações da reconstrução para esta geometria):")
+    for x in avisos(p):
+        print("  - " + x)
+    if a.csv:
+        salvar_csv(t, a.csv)
+        print()
+        print(f"CSV gravado em {a.csv}")
+
+
 if __name__ == "__main__":
     import os
     import sys
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    print(formatar(tabela(M437), f"SPIN-73 reconstruído -- {M437.nome}"))
+    _main()
