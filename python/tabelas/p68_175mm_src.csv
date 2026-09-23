@@ -1,0 +1,127 @@
+# 175MM SRC -- tabela de saída do SPIN-73 (Whyte 1973), p. 68 (JP2 0071).
+# A única tabela com ogiva maior que 3 calibres (ramos XA13..XA15 do CX e XC17 do CPN).
+# Leitura com classes de glifo (A = 6 ou 8; [xy] = x ou y; ? = ilegível); ver resolver_glifos.py.
+#
+# entrada: VCG=4.030 DM=0.090 BD=1.000 OR=120.000 BOOM=0.000
+# entrada: DIA=0 IX=0 IY=0 WGT=0 TWIST=0
+# cabecalho: VCG 4.03?; 4.030 pela identidade CNPA5 = CYPA*(VCG-CPF5) com colunas impressas (5.220 - 1.320/1.110 = 4.031)
+# cabecalho: VL 6.5??, VN 5.5??, VB 0.70? com os últimos dígitos ilegíveis
+# decidir: VL 6.49 6.60 CMQ | cabeçalho 6.5??
+# decidir: VN 5.49 5.60 CPF1 | cabeçalho 5.5??
+# decidir: VB 0.695 0.710 CYPA | cabeçalho 0.70?
+#
+# Gerado por resolver_glifos.py a partir de leituras/p68_175mm_src.txt
+#
+# identidade: CNPA 0.01 0.17A -> 0.176 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA 0.6 0.17A -> 0.176 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA 0.8 0.3A4 -> 0.384 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA 0.9 0.A?5 -> 0.815 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 0.9 4.6A7 -> 4.687 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CYPA 0.95 -1.5A5 -> -1.565 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 0.95 4.A60 -> 4.860 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA5 0.95 1.A97 -> 1.897 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA 1.0 1.3A2 -> 1.382 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA3 1.0 45.0A3 -> 45.083 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNA 1.1 2.3AA -> 2.388 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CMA 1.1 3.A92 -> 3.892 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPN 1.1 2.?00 -> 2.400 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA5 1.2 1.5[27]A -> 1.528 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CMA 1.35 3.7A0 -> 3.760 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA5P 1.35 -73.A90 -> -73.890 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA5 1.35 1.5[27]A -> 1.528 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CMA 1.5 3.7?7 -> 3.717 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA3 1.5 9.9A3 -> 9.983 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA5 1.5 1.5A4 -> 1.584 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPN 1.75 2.6A3 -> 2.683 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNA 2.0 2.6A2 -> 2.662 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CMA 2.0 3.5A6 -> 3.566 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPN 2.0 2.A91 -> 2.691 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA 2.0 1.6[27]2 -> 1.622 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPN 2.5 2.A00 -> 2.800 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CMA 3.0 3.3?0 -> 3.320 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPN 3.0 2.A01 -> 2.801 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPN 4.0 2.75A -> 2.758 | única leitura que fecha as identidades entre colunas impressas
+#
+# duvidosa: CX 0.01 0.?3? | não resolvido pelas identidades
+# duvidosa: CX2 0.01 ?.A25 | não resolvido pelas identidades
+# duvidosa: CNA 0.01 ?.A3? | não resolvido pelas identidades
+# duvidosa: CMA 0.01 3.9?3 | não resolvido pelas identidades
+# duvidosa: CPN 0.01 ?.A94 | não resolvido pelas identidades
+# duvidosa: CMQ 0.01 -1A.975 | não resolvido pelas identidades
+# duvidosa: CX 0.6 0.?3? | não resolvido pelas identidades
+# duvidosa: CX2 0.6 ?.A25 | não resolvido pelas identidades
+# duvidosa: CNA 0.6 ?.63? | não resolvido pelas identidades
+# duvidosa: CMA 0.6 4.0?? | não resolvido pelas identidades
+# duvidosa: CPN 0.6 ?.A7A | não resolvido pelas identidades
+# duvidosa: CMQ 0.6 -1A.975 | não resolvido pelas identidades
+# duvidosa: CX2 0.8 2.2?? | não resolvido pelas identidades
+# duvidosa: CNA 0.8 ?.A5? | não resolvido pelas identidades
+# duvidosa: CMA 0.8 4.3?A | não resolvido pelas identidades
+# duvidosa: CPN 0.8 ?.?14 | não resolvido pelas identidades
+# duvidosa: CNPA3 0.8 115.?39 | não resolvido pelas identidades
+# duvidosa: CNPA5P 0.8 -111?.AA9 | não resolvido pelas identidades
+# duvidosa: CPF5 0.8 5.3?? | não resolvido pelas identidades
+# duvidosa: CMQ 0.8 -1A.975 | não resolvido pelas identidades
+# duvidosa: CX 0.9 0.?67 | não resolvido pelas identidades
+# duvidosa: CX2 0.9 2.7A5 | não resolvido pelas identidades
+# duvidosa: CNA 0.9 ?.7?? | não resolvido pelas identidades
+# duvidosa: CMA 0.9 5.17? | não resolvido pelas identidades
+# duvidosa: CPN 0.9 ?.?3A | não resolvido pelas identidades
+# duvidosa: CNPA3 0.9 A4.0A3 | não resolvido pelas identidades
+# duvidosa: CX2 0.95 2.9?4 | não resolvido pelas identidades
+# duvidosa: CNA 0.95 2.0A7 (nenhuma leitura fecha as identidades) | não resolvido pelas identidades
+# duvidosa: CMA 0.95 5.0?A (nenhuma leitura fecha as identidades) | não resolvido pelas identidades
+# duvidosa: CPN 0.95 ?.A9A (nenhuma leitura fecha as identidades) | não resolvido pelas identidades
+# duvidosa: CNPA5P 0.95 -A22.77A | não resolvido pelas identidades
+# duvidosa: CPF5 0.95 5.24? | não resolvido pelas identidades
+# duvidosa: CX 1.0 0.26? | não resolvido pelas identidades
+# duvidosa: CNA 1.0 ?.2?1 | não resolvido pelas identidades
+# duvidosa: CPN 1.0 2.?27 | não resolvido pelas identidades
+# duvidosa: CLP 1.0 -.02A | não resolvido pelas identidades
+# duvidosa: CX2 1.05 3.7?4 | não resolvido pelas identidades
+# duvidosa: CMA 1.05 4.?44 (nenhuma leitura fecha as identidades) | não resolvido pelas identidades
+# duvidosa: CPN 1.05 2.?49 (nenhuma leitura fecha as identidades) | não resolvido pelas identidades
+# duvidosa: CNPA5P 1.05 -232.77A | não resolvido pelas identidades
+# duvidosa: CNPA5 1.05 1.6A0 (nenhuma leitura fecha as identidades) | não resolvido pelas identidades
+# duvidosa: CLP 1.05 -.02A | não resolvido pelas identidades
+# duvidosa: CX 1.1 0.2?5 | não resolvido pelas identidades
+# duvidosa: CMQ 1.1 -2A.523 | não resolvido pelas identidades
+# duvidosa: CX 1.2 0.?7? | não resolvido pelas identidades
+# duvidosa: CX2 1.2 4.54? | não resolvido pelas identidades
+# duvidosa: CNA 1.2 2.42A | não resolvido pelas identidades
+# duvidosa: CMA 1.2 3.A?3 | não resolvido pelas identidades
+# duvidosa: CPN 1.2 2.45A | não resolvido pelas identidades
+# duvidosa: CX 1.5 0.25? | não resolvido pelas identidades
+# duvidosa: CX2 1.5 ?.517 | não resolvido pelas identidades
+# duvidosa: CMQ 1.5 -37.50A | não resolvido pelas identidades
+# duvidosa: CNA 1.75 2.70A | não resolvido pelas identidades
+# duvidosa: CNPA5P 1.75 -50.77A | não resolvido pelas identidades
+# duvidosa: CMQ 1.75 -3A.50A | não resolvido pelas identidades
+# duvidosa: CMQ 2.0 -39.50A | não resolvido pelas identidades
+# duvidosa: CX2 2.5 1.9A4 | não resolvido pelas identidades
+# duvidosa: CMQ 2.5 -40.50A | não resolvido pelas identidades
+# duvidosa: CX 3.0 0.1?4 | não resolvido pelas identidades
+# duvidosa: CX2 3.0 1.65? | não resolvido pelas identidades
+# duvidosa: CMQ 3.0 -40.50A | não resolvido pelas identidades
+# duvidosa: CMQ 4.0 -39.50A | não resolvido pelas identidades
+# duvidosa: CX2 5.0 1.0?5 | não resolvido pelas identidades
+# duvidosa: CMA 5.0 3.29? | não resolvido pelas identidades
+# duvidosa: CMQ 5.0 -38.00A | não resolvido pelas identidades
+MACH,CX,CX2,CNA,CMA,CPN,CYPA,CNPA,CNPA3,CNPA5P,CPF1,CPF5,CNPA5,CMQ,CLP
+0.01,,,,,,-1.110,0.176,126.694,-1229.444,4.189,5.220,1.320,,-0.043
+0.6,,,,,,-1.110,0.176,126.694,-1229.444,4.189,5.220,1.320,,-0.043
+0.8,0.133,,,,,-1.110,0.384,,,4.376,,1.424,,-0.041
+0.9,,,,,,-1.240,0.815,,,4.687,5.300,1.575,-21.356,-0.034
+0.95,0.207,,,,,-1.565,1.299,66.028,,4.860,,1.897,-23.537,-0.030
+1.0,,3.275,,4.549,,-1.435,1.382,45.083,-413.333,4.993,5.279,1.792,-27.092,
+1.05,0.296,,2.323,,,-1.305,1.439,27.028,,5.133,5.322,,-26.313,
+1.1,,4.149,2.388,3.892,2.400,-1.240,1.458,19.083,-153.333,5.206,5.347,1.634,,-0.028
+1.2,,,,,,-1.110,1.404,13.450,-97.000,5.294,5.407,1.528,-31.057,-0.028
+1.35,0.267,,2.542,3.760,2.551,-1.110,1.424,11.139,-73.890,5.313,5.407,1.528,-33.233,-0.027
+1.5,,,2.595,3.717,2.597,-1.110,1.490,9.983,-62.333,5.373,5.457,1.584,,-0.027
+1.75,0.225,2.976,,3.646,2.683,-1.110,1.556,8.828,,5.432,5.507,1.639,,-0.027
+2.0,0.205,2.571,2.662,3.566,2.691,-1.110,1.622,7.672,-39.222,5.491,5.557,1.695,,-0.026
+2.5,0.182,,2.798,3.440,2.800,-1.110,1.632,6.517,-27.667,5.501,5.557,1.695,,-0.025
+3.0,,,2.700,3.320,2.801,-1.110,1.626,5.361,-16.111,5.495,5.542,1.678,,-0.024
+4.0,0.143,1.331,2.600,3.309,2.758,-1.110,1.615,5.361,-16.111,5.485,5.532,1.667,,-0.023
+5.0,0.126,,2.500,,2.714,-1.110,1.587,5.361,-16.111,5.460,5.507,1.639,,-0.022

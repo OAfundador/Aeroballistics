@@ -1,3 +1,4 @@
+# SUPERADO: a geometria de cada caso está agora no cabeçalho de python/tabelas/pNN_*.csv (NOTAS, T14).
 # Geometria das tabelas de saída do SPIN-73 decidida pelas colunas de Magnus.
 # VL e VB: CYPA supersônico (E1=-0.16) e transônico (E1=-0.23 em Mach 0.95). VN: CPF1 e CPF5.
 # metodo: M = decidido pelo modelo; C = cabeçalho legível e compatível; ? = incerto.

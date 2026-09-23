@@ -28,6 +28,28 @@ PENDENTES = {
     32: {},
     35: {("CNA", 0.95): "CNα reconstruído 0,0019 acima (reconstrucao_B, PENDENTES)"},
     38: {},
+    41: {("CMA", 3.0): "0,0044: no limite (CMα impresso fecha a identidade com CPN e CNα impressos)"},
+    53: {
+        **{("CNA", M): "CNα do 5\"/38 0,006 a 0,014 abaixo de Mach 1,75 a 5 (reconstrucao_B, PENDENTES)"
+           for M in (1.75, 2.5, 3.0, 4.0, 5.0)},
+        **{("CX2", M): "herda o CNα (a equação subtrai o CNα reconstruído)" for M in (1.75, 3.0, 5.0)},
+        **{("CMA", M): "herda o CNα e o CPN" for M in (1.75, 2.5, 3.0, 4.0, 5.0)},
+        **{("CPN", M): "5\"/38 fica 0,004 a 0,009 fora (reconstrucao_C, PENDENTES)"
+           for M in (1.75, 2.5, 4.0, 5.0)},
+    },
+    # M1 (pp. 44/47, a mesma impressão nas duas páginas do scan): Magnus, Cmq e Clp fecham com
+    # a geometria do cabeçalho, mas CX, CX2, CNα, CPN e CMα não (CX +0,005 e CX2 até +0,23,
+    # sistemáticos). Nenhuma mudança isolada de OR, DM, BD, VN ou VB fecha as cinco colunas.
+    44: {(c, M): "a geometria do cabeçalho não reproduz CX, CX2, CNα, CPN e CMα (NOTAS, T14)"
+         for c in ("CX", "CX2", "CNA", "CPN", "CMA") for M in MACH if (c, M) != ("CX", 0.01)},
+    56: {("CNA", 1.0): "CNα reconstruído 0,0016 abaixo"},
+    59: {("CNA", 0.95): "CNα reconstruído 0,004 abaixo (reconstrucao_B, PENDENTES)",
+         **{("CMA", M): "CMα do M101 0,009 a 0,018 acima: segue o CNα e o CPN reconstruídos"
+            for M in (1.0, 1.05, 1.5, 2.0)},
+         ("CPN", 1.2): "CPN do M101 0,007 abaixo (boattail de 0,45 cal; NOTAS, T14)"},
+    62: {("CNA", 0.95): "CNα reconstruído 0,0018 abaixo"},
+    68: {("CNA", 1.05): "CNα reconstruído 0,0016 acima",
+         ("CPN", 1.5): "CPN 0,0025 acima (XC17, ogiva > 3 cal)"},
     50: {
         ("CNA", 0.95): "CNα reconstruído 0,0017 abaixo (como no M437 em 0,8 e 1,05)",
         ("CPN", 0.6): "o resíduo subsônico de Mach 0,6 (+0,0018; o M437 tem +0,004): "
@@ -35,6 +57,9 @@ PENDENTES = {
                       "o CMα fica dentro da tolerância dele",
     },
 }
+
+# Uma célula circular já está fora da validação: não precisa (nem pode) ser pendência.
+PENDENTES = {pag: {k: v for k, v in p.items() if k not in CIRCULARES[pag]} for pag, p in PENDENTES.items()}
 
 
 def _celulas(pag):

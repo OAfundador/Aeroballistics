@@ -1,0 +1,225 @@
+pagina,caso,coluna,mach,impresso,modelo,erro_em_unidades,situacao,motivo
+35,20MM 7 CAL ANSR,CX,0.01,0.222,0.221973,0.03,independente,
+35,20MM 7 CAL ANSR,CX,0.6,0.222,0.221973,0.03,independente,
+35,20MM 7 CAL ANSR,CX,0.8,0.224,0.223973,0.03,independente,
+35,20MM 7 CAL ANSR,CX,0.9,0.262,0.262053,0.05,independente,
+35,20MM 7 CAL ANSR,CX,0.95,0.321,0.321336,0.34,independente,
+35,20MM 7 CAL ANSR,CX,1.0,0.418,0.417601,0.4,independente,
+35,20MM 7 CAL ANSR,CX,1.1,0.462,0.462492,0.49,independente,
+35,20MM 7 CAL ANSR,CX,1.2,0.454,0.4541945,0.19,independente,
+35,20MM 7 CAL ANSR,CX,1.35,0.437,0.437533,0.53,independente,
+35,20MM 7 CAL ANSR,CX,1.5,0.42,0.4199885,0.01,independente,
+35,20MM 7 CAL ANSR,CX,1.75,0.394,0.3930845,0.92,independente,
+35,20MM 7 CAL ANSR,CX,2.0,0.371,0.3707255,0.27,independente,
+35,20MM 7 CAL ANSR,CX,2.5,0.331,0.330639,0.36,independente,
+35,20MM 7 CAL ANSR,CX,3.0,0.298,0.298067,0.07,independente,
+35,20MM 7 CAL ANSR,CX,4.0,0.26,0.260067,0.07,independente,
+35,20MM 7 CAL ANSR,CX,5.0,0.238,0.238067,0.07,independente,
+35,20MM 7 CAL ANSR,CX2,0.01,3.179,3.1786403,0.36,independente,
+35,20MM 7 CAL ANSR,CX2,0.6,3.179,3.1786403,0.36,independente,
+35,20MM 7 CAL ANSR,CX2,1.2,7.328,7.3276458,0.35,independente,
+35,20MM 7 CAL ANSR,CX2,1.5,6.116,6.1158224,0.18,independente,
+35,20MM 7 CAL ANSR,CX2,2.0,4.895,4.8948366,0.16,independente,
+35,20MM 7 CAL ANSR,CX2,2.5,4.252,4.2522737,0.27,independente,
+35,20MM 7 CAL ANSR,CX2,3.0,3.594,3.5936391,0.36,independente,
+35,20MM 7 CAL ANSR,CX2,4.0,3.009,3.0086391,0.36,independente,
+35,20MM 7 CAL ANSR,CX2,5.0,2.424,2.4236391,0.36,independente,
+35,20MM 7 CAL ANSR,CNA,0.01,2.226,2.2263597,0.36,circular,XB4 decidido com esta tabela (contagem nas 10 tabelas de CNα)
+35,20MM 7 CAL ANSR,CNA,0.6,2.226,2.2263597,0.36,independente,
+35,20MM 7 CAL ANSR,CNA,0.8,2.246,2.2463597,0.36,independente,
+35,20MM 7 CAL ANSR,CNA,0.9,2.296,2.296286,0.29,independente,
+35,20MM 7 CAL ANSR,CNA,0.95,2.326,2.3278682,1.87,independente,
+35,20MM 7 CAL ANSR,CNA,1.0,2.361,2.3617243,0.72,circular,XB3 decidido com esta tabela (contagem nas 10 tabelas de CNα)
+35,20MM 7 CAL ANSR,CNA,1.05,2.436,2.436049,0.05,independente,
+35,20MM 7 CAL ANSR,CNA,1.1,2.458,2.4580267,0.03,independente,
+35,20MM 7 CAL ANSR,CNA,1.2,2.522,2.5223542,0.35,circular,XB2 decidido com esta tabela (contagem nas 10 tabelas de CNα)
+35,20MM 7 CAL ANSR,CNA,1.35,2.618,2.6179292,0.07,independente,
+35,20MM 7 CAL ANSR,CNA,1.5,2.734,2.7341776,0.18,circular,XB7 decidido com esta tabela (contagem nas 10 tabelas de CNα)
+35,20MM 7 CAL ANSR,CNA,1.75,2.844,2.8434926,0.51,independente,
+35,20MM 7 CAL ANSR,CNA,2.0,2.955,2.9551634,0.16,independente,
+35,20MM 7 CAL ANSR,CNA,2.5,3.078,3.0777263,0.27,circular,XB5 decidido com esta tabela (contagem nas 10 tabelas de CNα)
+35,20MM 7 CAL ANSR,CNA,3.0,3.051,3.0513609,0.36,independente,
+35,20MM 7 CAL ANSR,CNA,4.0,2.951,2.9513609,0.36,independente,
+35,20MM 7 CAL ANSR,CNA,5.0,2.851,2.8513609,0.36,independente,
+35,20MM 7 CAL ANSR,CPN,0.01,1.793,1.7927831,0.22,independente,
+35,20MM 7 CAL ANSR,CPN,0.6,1.783,1.7827831,0.22,independente,
+35,20MM 7 CAL ANSR,CPN,0.8,1.763,1.7627831,0.22,independente,
+35,20MM 7 CAL ANSR,CPN,0.95,1.678,1.678026,0.03,independente,
+35,20MM 7 CAL ANSR,CPN,1.0,1.658,1.6581066,0.11,independente,
+35,20MM 7 CAL ANSR,CPN,1.05,1.646,1.6462672,0.27,identidade,
+35,20MM 7 CAL ANSR,CPN,1.2,1.626,1.6257876,0.21,independente,
+35,20MM 7 CAL ANSR,CPN,1.35,1.652,1.6522435,0.24,independente,
+35,20MM 7 CAL ANSR,CPN,1.75,1.737,1.7371137,0.11,independente,
+35,20MM 7 CAL ANSR,CPN,2.0,1.794,1.7941234,0.12,independente,
+35,20MM 7 CAL ANSR,CPN,2.5,1.842,1.8421688,0.17,independente,
+35,20MM 7 CAL ANSR,CPN,3.0,1.827,1.8268055,0.19,independente,
+35,20MM 7 CAL ANSR,CPN,4.0,1.797,1.7968055,0.19,independente,
+35,20MM 7 CAL ANSR,CPN,5.0,1.767,1.7668055,0.19,independente,
+35,20MM 7 CAL ANSR,CMA,0.01,5.003,5.0031132,0.11,independente,
+35,20MM 7 CAL ANSR,CMA,0.8,5.115,5.1154483,0.45,independente,
+35,20MM 7 CAL ANSR,CMA,0.9,5.351,5.3513984,0.4,independente,
+35,20MM 7 CAL ANSR,CMA,0.95,5.495,5.4983641,3.36,independente,
+35,20MM 7 CAL ANSR,CMA,1.0,5.624,5.6253757,1.38,independente,
+35,20MM 7 CAL ANSR,CMA,1.05,5.831,5.8312504,0.25,independente,
+35,20MM 7 CAL ANSR,CMA,1.2,6.088,6.0894988,1.5,independente,
+35,20MM 7 CAL ANSR,CMA,1.35,6.25,6.2509774,0.98,independente,
+35,20MM 7 CAL ANSR,CMA,1.5,6.416,6.4171471,1.15,independente,
+35,20MM 7 CAL ANSR,CMA,1.75,6.548,6.5482401,0.24,independente,
+35,20MM 7 CAL ANSR,CMA,2.0,6.637,6.6369323,0.07,independente,
+35,20MM 7 CAL ANSR,CMA,2.5,6.765,6.764323,0.68,independente,
+35,20MM 7 CAL ANSR,CMA,3.0,6.753,6.753255,0.26,independente,
+35,20MM 7 CAL ANSR,CMA,4.0,6.62,6.6204764,0.48,independente,
+35,20MM 7 CAL ANSR,CMA,5.0,6.482,6.4816978,0.3,independente,
+35,20MM 7 CAL ANSR,CYPA,0.01,-1.12,-1.12,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,0.6,-1.12,-1.12,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,0.8,-1.12,-1.12,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,0.9,-1.26,-1.26,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,0.95,-1.61,-1.61,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,1.0,-1.47,-1.47,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,1.05,-1.33,-1.33,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,1.1,-1.26,-1.26,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,1.2,-1.12,-1.12,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,1.35,-1.12,-1.12,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,1.5,-1.12,-1.12,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,1.75,-1.12,-1.12,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,2.0,-1.12,-1.12,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,2.5,-1.12,-1.12,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,3.0,-1.12,-1.12,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,4.0,-1.12,-1.12,0.0,independente,
+35,20MM 7 CAL ANSR,CYPA,5.0,-1.12,-1.12,0.0,independente,
+35,20MM 7 CAL ANSR,CNPA,0.01,-0.801,-0.8008,0.2,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA,0.6,-0.801,-0.8008,0.2,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA,0.8,-0.577,-0.5768,0.2,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA,0.9,-0.145,-0.1449,0.1,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA,0.95,0.298,0.29785,0.15,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA,1.0,0.419,0.41895,0.05,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA,1.05,0.512,0.51205,0.05,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA,1.1,0.548,0.5481,0.1,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA,1.2,0.521,0.5208,0.2,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA,1.35,0.543,0.5432,0.2,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA,1.5,0.666,0.6664,0.4,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA,1.75,0.79,0.7896,0.4,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA,2.0,0.913,0.9128,0.2,independente,
+35,20MM 7 CAL ANSR,CNPA,2.5,0.924,0.924,0.0,independente,
+35,20MM 7 CAL ANSR,CNPA,3.0,0.902,0.9016,0.4,independente,
+35,20MM 7 CAL ANSR,CNPA,4.0,0.879,0.8792,0.2,independente,
+35,20MM 7 CAL ANSR,CNPA,5.0,0.823,0.8232,0.2,independente,
+35,20MM 7 CAL ANSR,CPF1,0.01,3.325,3.325,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF1,0.6,3.325,3.325,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF1,0.8,3.525,3.525,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF1,0.9,3.925,3.925,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF1,0.95,4.225,4.225,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF1,1.0,4.325,4.325,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF1,1.05,4.425,4.425,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF1,1.1,4.475,4.475,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF1,1.2,4.505,4.505,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF1,1.35,4.525,4.525,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF1,1.5,4.635,4.635,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF1,1.75,4.745,4.745,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF1,2.0,4.855,4.855,0.0,independente,
+35,20MM 7 CAL ANSR,CPF1,2.5,4.865,4.865,0.0,independente,
+35,20MM 7 CAL ANSR,CPF1,3.0,4.845,4.845,0.0,independente,
+35,20MM 7 CAL ANSR,CPF1,4.0,4.825,4.825,0.0,independente,
+35,20MM 7 CAL ANSR,CPF1,5.0,4.775,4.775,0.0,independente,
+35,20MM 7 CAL ANSR,CPF5,0.01,4.425,4.425,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF5,0.6,4.425,4.425,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF5,0.8,4.525,4.525,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF5,0.9,4.575,4.575,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF5,0.95,4.625,4.625,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF5,1.0,4.625,4.625,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF5,1.05,4.625,4.625,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF5,1.1,4.625,4.625,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF5,1.2,4.625,4.625,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF5,1.35,4.625,4.625,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF5,1.5,4.725,4.725,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF5,1.75,4.825,4.825,0.0,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CPF5,2.0,4.925,4.925,0.0,independente,
+35,20MM 7 CAL ANSR,CPF5,2.5,4.925,4.925,0.0,independente,
+35,20MM 7 CAL ANSR,CPF5,3.0,4.895,4.895,0.0,independente,
+35,20MM 7 CAL ANSR,CPF5,4.0,4.875,4.875,0.0,independente,
+35,20MM 7 CAL ANSR,CPF5,5.0,4.825,4.825,0.0,independente,
+35,20MM 7 CAL ANSR,CNPA5,0.01,0.431,0.4312,0.2,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA5,0.6,0.431,0.4312,0.2,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA5,0.8,0.543,0.5432,0.2,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA5,0.9,0.674,0.6741,0.1,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA5,0.95,0.942,0.94185,0.15,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA5,1.0,0.86,0.85995,0.05,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA5,1.05,0.778,0.77805,0.05,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA5,1.1,0.737,0.7371,0.1,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA5,1.2,0.655,0.6552,0.2,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA5,1.35,0.655,0.6552,0.2,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA5,1.5,0.767,0.7672,0.2,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA5,1.75,0.879,0.8792,0.2,circular,"XE5 de Mach 0,01 a 1,75 (cartão não impresso) identificado pelas tabelas de corpo longo"
+35,20MM 7 CAL ANSR,CNPA5,2.0,0.991,0.9912,0.2,independente,
+35,20MM 7 CAL ANSR,CNPA5,2.5,0.991,0.9912,0.2,independente,
+35,20MM 7 CAL ANSR,CNPA5,3.0,0.958,0.9576,0.4,independente,
+35,20MM 7 CAL ANSR,CNPA5,4.0,0.935,0.9352,0.2,independente,
+35,20MM 7 CAL ANSR,CNPA5,5.0,0.879,0.8792,0.2,independente,
+35,20MM 7 CAL ANSR,CNPA3,0.01,136.472,136.4722222,0.22,independente,
+35,20MM 7 CAL ANSR,CNPA3,0.6,136.472,136.4722222,0.22,independente,
+35,20MM 7 CAL ANSR,CNPA3,0.8,124.028,124.0277778,0.22,independente,
+35,20MM 7 CAL ANSR,CNPA3,0.9,90.583,90.5833333,0.33,independente,
+35,20MM 7 CAL ANSR,CNPA3,0.95,71.139,71.1388889,0.11,independente,
+35,20MM 7 CAL ANSR,CNPA3,1.0,48.583,48.5833333,0.33,independente,
+35,20MM 7 CAL ANSR,CNPA3,1.05,29.139,29.1388889,0.11,independente,
+35,20MM 7 CAL ANSR,CNPA3,1.1,20.583,20.5833333,0.33,independente,
+35,20MM 7 CAL ANSR,CNPA3,1.2,14.517,14.5166667,0.33,independente,
+35,20MM 7 CAL ANSR,CNPA3,1.35,12.028,12.0277778,0.22,independente,
+35,20MM 7 CAL ANSR,CNPA3,1.5,10.783,10.7833333,0.33,independente,
+35,20MM 7 CAL ANSR,CNPA3,1.75,9.539,9.5388889,0.11,independente,
+35,20MM 7 CAL ANSR,CNPA3,2.0,8.294,8.2944444,0.44,independente,
+35,20MM 7 CAL ANSR,CNPA3,2.5,7.05,7.05,0.0,independente,
+35,20MM 7 CAL ANSR,CNPA3,3.0,5.806,5.8055556,0.44,independente,
+35,20MM 7 CAL ANSR,CNPA3,4.0,5.806,5.8055556,0.44,independente,
+35,20MM 7 CAL ANSR,CNPA3,5.0,5.806,5.8055556,0.44,independente,
+35,20MM 7 CAL ANSR,CNPA5P,0.01,-1327.222,-1327.2222222,0.22,independente,
+35,20MM 7 CAL ANSR,CNPA5P,0.6,-1327.222,-1327.2222222,0.22,independente,
+35,20MM 7 CAL ANSR,CNPA5P,0.8,-1202.778,-1202.7777778,0.22,independente,
+35,20MM 7 CAL ANSR,CNPA5P,0.9,-868.333,-868.3333333,0.33,independente,
+35,20MM 7 CAL ANSR,CNPA5P,0.95,-673.889,-673.8888889,0.11,independente,
+35,20MM 7 CAL ANSR,CNPA5P,1.0,-448.333,-448.3333333,0.33,independente,
+35,20MM 7 CAL ANSR,CNPA5P,1.05,-253.889,-253.8888889,0.11,independente,
+35,20MM 7 CAL ANSR,CNPA5P,1.1,-168.333,-168.3333333,0.33,independente,
+35,20MM 7 CAL ANSR,CNPA5P,1.2,-107.667,-107.6666667,0.33,independente,
+35,20MM 7 CAL ANSR,CNPA5P,1.35,-82.778,-82.7777778,0.22,independente,
+35,20MM 7 CAL ANSR,CNPA5P,1.5,-70.333,-70.3333333,0.33,independente,
+35,20MM 7 CAL ANSR,CNPA5P,1.75,-57.889,-57.8888889,0.11,independente,
+35,20MM 7 CAL ANSR,CNPA5P,2.0,-45.444,-45.4444444,0.44,independente,
+35,20MM 7 CAL ANSR,CNPA5P,2.5,-33.0,-33.0,0.0,independente,
+35,20MM 7 CAL ANSR,CNPA5P,3.0,-20.556,-20.5555556,0.44,independente,
+35,20MM 7 CAL ANSR,CNPA5P,4.0,-20.556,-20.5555556,0.44,independente,
+35,20MM 7 CAL ANSR,CNPA5P,5.0,-20.556,-20.5555556,0.44,independente,
+35,20MM 7 CAL ANSR,CMQ,0.01,-31.495,-31.495112,0.11,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,0.6,-31.495,-31.495112,0.11,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,0.8,-31.495,-31.495112,0.11,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,0.9,-34.826,-34.825934,0.07,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,0.95,-37.631,-37.6311584,0.16,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,1.0,-42.168,-42.1680028,0.0,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,1.05,-42.378,-42.3778344,0.17,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,1.1,-45.703,-45.7025448,0.46,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,1.2,-49.398,-49.3980256,0.03,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,1.35,-54.523,-54.5233556,0.36,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,1.5,-61.769,-61.7694108,0.41,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,1.75,-63.769,-63.7694108,0.41,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,2.0,-65.769,-65.7694108,0.41,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,2.5,-67.769,-67.7694108,0.41,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,3.0,-67.769,-67.7694108,0.41,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,4.0,-65.769,-65.7694108,0.41,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CMQ,5.0,-62.769,-62.7694108,0.41,circular,entrada VL decidida por esta coluna
+35,20MM 7 CAL ANSR,CLP,0.01,-0.046,-0.0462432,0.24,independente,
+35,20MM 7 CAL ANSR,CLP,0.6,-0.046,-0.0462432,0.24,independente,
+35,20MM 7 CAL ANSR,CLP,0.8,-0.044,-0.0439564,0.04,independente,
+35,20MM 7 CAL ANSR,CLP,0.9,-0.037,-0.0370962,0.1,independente,
+35,20MM 7 CAL ANSR,CLP,0.95,-0.032,-0.0322686,0.27,independente,
+35,20MM 7 CAL ANSR,CLP,1.0,-0.03,-0.03049,0.49,independente,
+35,20MM 7 CAL ANSR,CLP,1.05,-0.03,-0.0302359,0.24,independente,
+35,20MM 7 CAL ANSR,CLP,1.1,-0.03,-0.0299819,0.02,independente,
+35,20MM 7 CAL ANSR,CLP,1.2,-0.03,-0.0297278,0.27,independente,
+35,20MM 7 CAL ANSR,CLP,1.35,-0.029,-0.0294737,0.47,independente,
+35,20MM 7 CAL ANSR,CLP,1.5,-0.029,-0.0292196,0.22,independente,
+35,20MM 7 CAL ANSR,CLP,1.75,-0.029,-0.0285844,0.42,independente,
+35,20MM 7 CAL ANSR,CLP,2.0,-0.028,-0.0279492,0.05,independente,
+35,20MM 7 CAL ANSR,CLP,2.5,-0.027,-0.0266788,0.32,independente,
+35,20MM 7 CAL ANSR,CLP,3.0,-0.025,-0.0254083,0.41,independente,
+35,20MM 7 CAL ANSR,CLP,4.0,-0.025,-0.0247731,0.23,independente,
+35,20MM 7 CAL ANSR,CLP,5.0,-0.024,-0.0241379,0.14,independente,

@@ -50,9 +50,19 @@ class TabelaImpressa:
         return s.Projetil(nome=self.nome, **{**self.entrada, **self.decididas(), **mudancas})
 
     def circulares(self) -> set:
-        """(coluna, Mach) usadas para decidir entradas: não validam nada nesta tabela."""
+        """(coluna, Mach) usadas para decidir entradas: não validam nada nesta tabela.
+        Colunas presas a elas por identidade (as de Magnus) vão junto."""
         cols = {c for (_, _, c, _) in self.decidir.values()}
+        for c in list(cols):
+            cols |= LIGADAS.get(c, set())
         return {(c, round(float(m), 2)) for c in cols for m in s.MACH_GRID}
+
+
+# Colunas que são função direta de outra: decidir uma entrada por uma delas tira as demais
+# da validação. CNPA = CYPA·(VCG − CPF1), CNPA5 = CYPA·(VCG − CPF5), e CNPA3/CNPA5P saem
+# de CNPA e CNPA5 (NOTAS, T12).
+_MAGNUS = {"CYPA", "CPF1", "CPF5", "CNPA", "CNPA5", "CNPA3", "CNPA5P"}
+LIGADAS = {c: _MAGNUS for c in _MAGNUS}
 
 
 def _decidir(tb, voltas=3):
@@ -65,12 +75,18 @@ def _decidir(tb, voltas=3):
         p = s.Projetil(nome=tb.nome, **{**tb.entrada, **atual, var: x})
         calc = s.tabela(p)[col]
         imp = tb.colunas[col]
-        ok = [j for j, m in enumerate(s.MACH_GRID) if np.isfinite(imp[j])
-              and (col, round(float(m), 2)) not in tb.identidade]
+        # células resolvidas por identidade também valem aqui: são valores impressos,
+        # desambiguados sem modelo (só ficam fora das contagens de validação)
+        ok = [j for j in range(len(s.MACH_GRID)) if np.isfinite(imp[j])]
         return float(np.sum(np.abs(calc[ok] - imp[ok])))       # L1: robusto a uma célula ruim
 
+    fixos = {v: lo for v, (lo, hi, _, _) in tb.decidir.items() if lo == hi}
+    atual.update(fixos)
+    atual = {v: x for v, x in atual.items() if "#" not in v}
     for _ in range(voltas):
         for var, (lo, hi, _, _) in tb.decidir.items():
+            if lo == hi:
+                continue
             grade = np.linspace(lo, hi, 81)
             k = int(np.argmin([custo(var, x) for x in grade]))
             a, b = grade[max(k - 1, 0)], grade[min(k + 1, 80)]
@@ -104,6 +120,13 @@ def ler(caminho: str) -> TabelaImpressa:
             elif txt.startswith("decidir:"):
                 var, lo, hi, col = txt.split(":", 1)[1].split("|")[0].split()
                 dec[var] = (float(lo), float(hi), col, txt.split("|", 1)[-1].strip())
+            elif txt.startswith("decidido:"):
+                # valor já decidido em outra etapa, pelas colunas listadas (circulares aqui)
+                atrib, cols = txt.split(":", 1)[1].split("|")[0].split()
+                var, val = atrib.split("=")
+                for i, col in enumerate(cols.split(",")):
+                    dec[var if i == 0 else f"{var}#{i}"] = (float(val), float(val), col,
+                                                            txt.split("|", 1)[-1].strip())
             elif txt.startswith("identidade:") or txt.startswith("duvidosa:"):
                 corpo = txt.split(":", 1)[1].strip()
                 col, mach = corpo.split()[:2]

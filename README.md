@@ -20,9 +20,13 @@ O código-fonte original só existe como listing Fortran impresso num relatório
 
 O centro de pressão do M437 fecha em 14 de 17 Mach, mas em 13 deles o resultado é **circular**: o listing impresso perdeu um cartão de `DATA` (a continuação do XC15), e a própria tabela do M437 foi usada para recuperá-lo. Nesses Mach, ela não pode mais servir de teste. A conferência independente vem de mais duas tabelas com boattail: o 5"/38 (p. 53) e o **105 mm XM380E5 (p. 50), transcrito por inteiro, que não decidiu nenhum `DATA` do centro de pressão**. O programa reproduz 16 dos 17 Mach do CPN dele, e 98 % de todas as suas células (ver `python/tabelas/`).
 
-Tolerância: ±0,0015 nas colunas de 3 casas (o arredondamento da impressão); ±1 no último dígito nas demais. `python -m pytest -q python` roda 196 testes.
+Tolerância: ±0,0015 nas colunas de 3 casas (o arredondamento da impressão); ±1 no último dígito nas demais. `python -m pytest -q python` roda 218 testes.
 
-**Tamanho do erro** em todas as tabelas de 1973 transcritas (1235 células, 985 independentes): 88 % indistinguíveis do original, 94 % no critério, erro mediano de 0,26 unidade na última casa impressa. Detalhe por coluna em [validation/LEIAME.md](validation/LEIAME.md).
+**Todos os casos do relatório.** As 13 tabelas de saída do relatório (pp. 29 a 68) estão transcritas em `python/tabelas/`. O programa roda com a entrada impressa de cada uma, e as 1612 células legíveis independentes ficam **88 % indistinguíveis do original e 95 % no critério**, com erro mediano de 0,26 unidade na última casa impressa. Doze dos treze casos fecham. O que não fecha, o M1 das pp. 44/47, tem as duas páginas do scan com a mesma impressão. Detalhe por caso e por coluna em [validation/LEIAME.md](validation/LEIAME.md); para rodar:
+
+```
+python validation/comparacao_erros.py
+```
 
 ## Uso rápido
 
@@ -74,7 +78,7 @@ Detalhes, com a evidência de cada leitura, em [docs/NOTAS_TRANSCRICAO.md](docs/
 O programa imprime avisos específicos para cada geometria (`s.avisos(p)`). Os principais:
 
 - **Centro de pressão de Mach 1,2 a 5**: o cartão do XC15 não foi impresso e foi recuperado pelas tabelas. O XM380E5 confere em todos esses Mach, mas o 5"/38 fica 0,004 a 0,009 calibre fora em Mach 1,75 e de 2,5 a 5. Em Mach 0,6 resta um resíduo de 0,002 a 0,004 calibre. As colunas de estabilidade herdam essas incertezas, porque dependem do CMα.
-- **Ogiva maior que 3 calibres, boattail maior que 1 calibre**: ramos do código lidos, mas sem nenhuma tabela de 1973 que os valide.
+- **Boattail maior que 1 calibre**: ramo do código lido, mas sem nenhuma tabela de 1973 que o valide. O ramo de ogiva maior que 3 calibres tem uma só tabela (175 mm SRC).
 
 ## Como cada número foi validado
 
@@ -85,10 +89,10 @@ Cada valor lido no scan é classificado como **verificado** (leitura clara, ou c
 | Diretório | Conteúdo |
 |---|---|
 | `python/` | O programa (`spin73.py`), os blocos `DATA` (`dados_spin73.py` e `reconstrucao_*/`) e os testes |
-| `python/tabelas/` | Tabelas de saída de 1973 transcritas por inteiro, com a entrada impressa |
+| `python/tabelas/` | As 13 tabelas de saída de 1973, com a entrada impressa; leituras brutas com os glifos ambíguos em `leituras/` |
 | `python/experimental/` | Recalibração com dados de voo livre (BRL MR 1833, 7,62 NATO; compêndio de Hitchcock, BRL 620) — **separada** da reconstrução |
 | `original/` | Transcrição literal do listing Fortran (parcial: pp. 84–86) |
-| `validation/` | Comparação do erro contra todas as tabelas de 1973 transcritas |
+| `validation/` | Todos os casos do relatório rodados e comparados, célula a célula |
 | `docs/` | Notas de transcrição: cada leitura do scan, com a evidência que a decidiu |
 | `ferramentas/` | Leitura do scan: recortes girados e com zoom; extração de páginas de PDF escaneado |
 | `fontes/` | O scan do relatório (não versionado; ver `fontes/LEIAME.md`) |

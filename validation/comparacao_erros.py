@@ -1,168 +1,171 @@
 """
-Quanto a reconstrução erra: o programa (só a geometria) contra TODAS as tabelas de 1973
-transcritas até agora.
+Todos os casos do relatório: o programa reconstruído roda com a entrada impressa de cada
+tabela de 1973 e cada saída legível é comparada com a impressa.
+
+Casos: o 175 mm M437 (python/m437_tabela.csv, com estabilidade) e as tabelas completas de
+python/tabelas/ (uma por página). Entradas ilegíveis no cabeçalho foram decididas, cada uma,
+por uma coluna declarada no CSV; essa coluna fica circular naquele caso.
 
 O erro de cada célula é medido em UNIDADES DA ÚLTIMA CASA IMPRESSA: numa coluna de 3
 casas, 1 unidade = 0,001. Como o programa original arredondava para essa casa, até
 ±0,5 unidade o modelo é indistinguível dele; o critério do projeto é ±1,5 unidade.
 
-Células em que algum DATA foi DECIDIDO usando a própria tabela (circulares) são contadas
-à parte: elas mostram que a decisão é coerente, mas não validam nada.
+Ficam fora das estatísticas (mas no CSV de cada caso, com o motivo):
+  - circular: algum DATA ou entrada foi decidido usando esta célula (python/circularidade.py);
+  - identidade: célula ambígua no scan, desambiguada por identidade entre colunas impressas
+    (no M437, as três células que a transcrição marcou como ambíguas).
 
-    python validation/comparacao_erros.py        -> resumo + validation/erros_por_celula.csv
+    python validation/comparacao_erros.py
+      -> validation/casos/pNN_*.csv         cada caso, célula a célula
+      -> validation/resumo_por_caso.csv     uma linha por caso
+      -> validation/resumo_erros.csv        uma linha por coluna
+      -> validation/erros_por_celula.csv    todas as células
 """
 import csv
 import os
+import re
 import sys
 
 import numpy as np
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 PY = os.path.join(AQUI, "..", "python")
-for sub in ("", "reconstrucao_A", "reconstrucao_B", "reconstrucao_C", "reconstrucao_D",
-            "reconstrucao_F"):
-    sys.path.insert(0, os.path.join(PY, sub))
+sys.path.insert(0, PY)
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
+import circularidade                                        # noqa: E402
 import spin73 as s                                          # noqa: E402
-import magnus_clp as mc                                     # noqa: E402
 import tabelas_impressas as ti                              # noqa: E402
 import test_modelo_completo as tm                           # noqa: E402
-import test_tabelas_impressas as tt                         # noqa: E402
-from dados_cna import T as T_CNA                            # noqa: E402
-from dados_cx import CX_538                                 # noqa: E402
-from dados_cx2 import CX2_538, DECIDIDAS as CX2_DEC_538     # noqa: E402
-from dados_cpn import CMA_538, CPN_538                      # noqa: E402
-from xb_lidos import CORRECOES as XB_CORR                   # noqa: E402
-from xd_lidos import DECIDIDOS as XD_DEC                    # noqa: E402
 
 MACH = [round(float(m), 2) for m in s.MACH_GRID]
-K = s.CoefAjuste.do_listing()
 CASAS = {"SPIN": 1, "W1": 2, "W2": 2, "DELT": 4, **{c: 6 for c in ("L1", "L2", "L15", "L25")}}
-linhas = []          # (tabela, coluna, Mach, impresso, modelo, independente)
-
-
-def registra(tab, col, modelo, impresso, circulares=(), casas=None):
-    for j, M in enumerate(MACH):
-        imp = impresso[j]
-        if imp is None or not np.isfinite(imp):
-            continue
-        linhas.append((tab, col, M, float(imp), float(modelo[j]),
-                       j not in circulares, casas or CASAS.get(col, 3)))
-
-
-# 1. 175 mm M437 inteiro (p. 65)
-t437 = s.tabela(s.M437)
-for col in tm.COLUNAS:
-    circ = {j for j, M in enumerate(MACH) if (col, M) in tm.CIRCULARES}
-    registra("175 mm M437", col, t437[col], tm.TAB[col], circ)
-
-# 2. CNα em 10 tabelas: as 6 correções de XB foram decididas por elas
-circ_xb = {j for (_, j) in XB_CORR}
-for pag, (nome, VL, VN, VB, OR, cna) in T_CNA.items():
-    if pag == 65 or pag in tt.TABELAS:        # essas entram inteiras abaixo
-        continue
-    p = s.Projetil(VL=VL, VN=VN, VB=VB, VCG=VL / 2, OR=OR)
-    modelo = [s.normal_e_momento(p, K, j)["CNA"] for j in range(17)]
-    registra(f"{nome} (p. {pag})", "CNA", modelo, cna, circ_xb)
-
-# 3. Magnus e Clp em 6 tabelas (XE e XG1 lidos). XE5 em Mach 1,5 e 1,75 veio das
-#    tabelas de 7 e 9 calibres: circular nelas.
-for nome, tb in mc.TABELAS.items():
-    if "M437" in nome:
-        continue
-    p = s.Projetil(VL=tb["VL"], VN=tb["VN"], VB=tb["VB"], VCG=tb["VL"] / 2)
-    mg = [s.magnus(p, K, j) for j in range(17)]
-    circ = {10, 11} if tb["VL"] > 6 else set()
-    registra(nome, "CYPA", [m["CYPA"] for m in mg], tb["CYPA"])
-    registra(nome, "CPF1", [m["CPF1"] for m in mg], tb["CPF1"], circ)
-    registra(nome, "CPF5", [m["CPF5"] for m in mg], tb["CPF5"], circ)
-    if "CLP" in tb:
-        registra(nome, "CLP", [s.clp(p, K, j) for j in range(17)], tb["CLP"])
-
-# 4. 5"/38 NAVY (p. 53): CX, CX2, CPN, CMα
-p538 = s.Projetil(VL=4.59, VN=2.15, VB=0.35, VCG=2.71, DM=0.100, BD=1.040, OR=5.3)
-t538 = s.tabela(p538)
-registra('5"/38 NAVY (p. 53)', "CX", t538["CX"], CX_538, {0, 1})
-registra('5"/38 NAVY (p. 53)', "CX2", t538["CX2"], CX2_538,
-         {j for (_, j) in XD_DEC} | set(CX2_DEC_538))
-circ_cpn_538 = {1, 2, 6, 8, 9, 10, 12}    # XC decidido com o 5"/38 + M437 nesses Mach
-registra('5"/38 NAVY (p. 53)', "CPN", t538["CPN"], CPN_538, circ_cpn_538)
-registra('5"/38 NAVY (p. 53)', "CMA", t538["CMA"], CMA_538, circ_cpn_538)
-
-# 5. Cmq em mais três tabelas (reconstrucao_F/test_cmq.py). O VCG do M101 foi decidido
-#    pela coluna CMQ: circular inteiro. A coluna do 9 cal foi lida com 1 casa.
-#    O 2º cartão do XF7 foi recuperado pelo 5"/38: circular nele de Mach 1,1 a 2,5.
-import test_cmq as tc                                       # noqa: E402
-for nome, (VL, VCG, VB, col) in tc.T.items():
-    if nome in ("M437", "XM380E5"):
-        continue
-    p = s.Projetil(VL=VL, VN=2.0, VB=VB, VCG=VCG)
-    circ = set(range(17)) if nome == "M101" else {j for (n, j) in tc.CIRCULARES if n == nome}
-    registra(f"Cmq {nome}", "CMQ", [s.cmq(p, K, j) for j in range(17)], col, circ,
-             casas=1 if nome == "9cal" else 3)
-
-
-# 6. Tabelas inteiras de python/tabelas/ (hoje: 105 mm XM380E5, p. 50), com a entrada
-#    impressa. Células resolvidas por identidade entre colunas impressas ficam de fora.
-for pag, tb in tt.TABELAS.items():
-    t_ = s.tabela(tb.projetil())
-    for col, v in tb.colunas.items():
-        if col == "MACH":
-            continue
-        imp = [np.nan if (col, M) in tb.identidade else v[j] for j, M in enumerate(MACH)]
-        circ = {j for j, M in enumerate(MACH) if (col, M) in tt.CIRCULARES[pag]}
-        registra(f"{tb.nome} (p. {pag})", col, t_[col], imp, circ)
-
-
-# ------------------------------------------------------------------ resumo
-def unidades(l):
-    return abs(l[4] - l[3]) * 10 ** l[6]
-
-
-with open(os.path.join(AQUI, "erros_por_celula.csv"), "w", newline="", encoding="utf-8") as f:
-    w = csv.writer(f)
-    w.writerow(["tabela", "coluna", "mach", "impresso", "modelo", "erro", "erro_em_unidades",
-                "independente"])
-    for l in linhas:
-        w.writerow([l[0], l[1], l[2], l[3], round(l[4], 7), round(l[4] - l[3], 7),
-                    round(unidades(l), 2), "sim" if l[5] else "circular"])
-
-ind = [l for l in linhas if l[5]]
-u = np.array([unidades(l) for l in ind])
-print(f"Células comparadas: {len(linhas)}  (independentes: {len(ind)}, "
-      f"circulares: {len(linhas) - len(ind)})")
-print(f"Nas independentes: {100 * np.mean(u <= 0.5):.0f} % indistinguíveis do original (±0,5 unidade), "
-      f"{100 * np.mean(u <= 1.5):.0f} % no critério do projeto (±1,5), "
-      f"mediana {np.median(u):.2f} unidade")
-# A coluna CNA do 90 mm M71 (p. 44) vem de uma página sabidamente degradada.
-u71 = np.array([unidades(l) for l in ind if "M71" not in l[0]])
-print(f"Sem o 90 mm M71: {len(u71)} células, {100 * np.mean(u71 <= 0.5):.0f} % indistinguíveis, "
-      f"{100 * np.mean(u71 <= 1.5):.0f} % no critério, mediana {np.median(u71):.2f} unidade\n")
-
-print(f"{'coluna':8s} {'tabelas':>7s} {'células':>7s} {'<=0,5':>6s} {'<=1,5':>6s} {'mediana':>8s} "
-      f"{'máx (un.)':>10s}  pior célula")
-ordem = ["CX", "CX2", "CNA", "CPN", "CMA", "CYPA", "CNPA", "CPF1", "CPF5", "CNPA5", "CNPA3",
+ORDEM = ["CX", "CX2", "CNA", "CPN", "CMA", "CYPA", "CNPA", "CPF1", "CPF5", "CNPA5", "CNPA3",
          "CNPA5P", "CMQ", "CLP", "GYRO", "SBAR", "RECIP", "SBAR5", "RECIP5", "SPIN", "W1", "W2",
          "L1", "L2", "L15", "L25", "DELT", "DISP"]
-resumo = []
-for col in ordem:
-    c = [l for l in ind if l[1] == col]
-    if not c:
-        continue
-    uu = np.array([unidades(l) for l in c])
-    pior = c[int(np.argmax(uu))]
-    ntab = len({l[0] for l in c})
-    resumo.append((col, ntab, len(c), 100 * np.mean(uu <= 0.5), 100 * np.mean(uu <= 1.5),
-                   np.median(uu), uu.max(), pior))
-    print(f"{col:8s} {ntab:7d} {len(c):7d} {100 * np.mean(uu <= 0.5):5.0f}% {100 * np.mean(uu <= 1.5):5.0f}% "
-          f"{np.median(uu):8.2f} {uu.max():10.1f}  {pior[0]}, Mach {pior[2]:g}: "
-          f"{pior[3]:g} impresso x {pior[4]:.4g} modelo")
 
-with open(os.path.join(AQUI, "resumo_erros.csv"), "w", newline="", encoding="utf-8") as f:
-    w = csv.writer(f)
-    w.writerow(["coluna", "tabelas", "celulas_independentes", "pct_ate_0.5_unidade",
-                "pct_ate_1.5_unidade", "mediana_unidades", "max_unidades"])
-    for r in resumo:
-        w.writerow([r[0], r[1], r[2], round(r[3], 1), round(r[4], 1), round(r[5], 2), round(r[6], 1)])
+
+def casos():
+    """(página, nome, entrada decidida, tabela calculada, colunas impressas, circulares, identidade)."""
+    circ437 = {**{k: "decidido com esta tabela (test_modelo_completo.CIRCULARES)"
+                  for k in tm.CIRCULARES}, **circularidade.circulares(65)}
+    # células que a transcrição antiga marcou como ambíguas no scan (não são erro do modelo)
+    amb437 = {k: v for k, v in tm.PENDENTES.items() if "célula impressa" in v}
+    out = [(65, "175 mm M437", {}, s.tabela(s.M437), tm.TAB, circ437, amb437)]
+    for tb in ti.todas():
+        out.append((tb.pagina, tb.nome, tb.decididas(), s.tabela(tb.projetil()), tb.colunas,
+                    circularidade.circulares(tb.pagina, tb), tb.identidade))
+    return sorted(out, key=lambda c: c[0])
+
+
+def celulas(caso):
+    pag, nome, _, calc, imp, circ, ident = caso
+    for col in ORDEM:
+        if col not in imp or col not in calc:
+            continue
+        for j, M in enumerate(MACH):
+            v = imp[col][j]
+            if not np.isfinite(v):
+                continue
+            casas = CASAS.get(col, 3)
+            m = float(calc[col][j])
+            un = abs(m - v) * 10 ** casas if np.isfinite(m) else np.inf
+            if (col, M) in ident:
+                st = "identidade"
+            elif (col, M) in circ:
+                st = "circular"
+            else:
+                st = "independente"
+            yield dict(pagina=pag, caso=nome, coluna=col, mach=M, impresso=float(v),
+                       modelo=round(m, 7), erro_em_unidades=round(un, 2), situacao=st,
+                       motivo=circ.get((col, M), "") if st == "circular" else "")
+
+
+def estat(u):
+    u = np.asarray(u, float)
+    if not u.size:
+        return dict(n=0, ate_05=np.nan, ate_15=np.nan, mediana=np.nan, maximo=np.nan)
+    return dict(n=u.size, ate_05=100 * np.mean(u <= 0.5), ate_15=100 * np.mean(u <= 1.5),
+                mediana=float(np.median(u)), maximo=float(u.max()))
+
+
+def _slug(nome):
+    return re.sub(r"[^a-z0-9]+", "_", nome.lower()).strip("_")
+
+
+def main():
+    os.makedirs(os.path.join(AQUI, "casos"), exist_ok=True)
+    todas, por_caso = [], []
+    campos = ["pagina", "caso", "coluna", "mach", "impresso", "modelo", "erro_em_unidades",
+              "situacao", "motivo"]
+    for caso in casos():
+        cel = list(celulas(caso))
+        todas += cel
+        pag, nome, decididas = caso[:3]
+        with open(os.path.join(AQUI, "casos", f"p{pag:02d}_{_slug(nome)}.csv"), "w", newline="",
+                  encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=campos)
+            w.writeheader()
+            w.writerows(cel)
+        ind = [c["erro_em_unidades"] for c in cel if c["situacao"] == "independente"]
+        e = estat(ind)
+        pior = max((c for c in cel if c["situacao"] == "independente"),
+                   key=lambda c: c["erro_em_unidades"], default=None)
+        por_caso.append(dict(
+            pagina=pag, caso=nome, celulas_legiveis=len(cel), independentes=e["n"],
+            circulares=sum(c["situacao"] == "circular" for c in cel),
+            por_identidade=sum(c["situacao"] == "identidade" for c in cel),
+            pct_ate_05=round(e["ate_05"], 1), pct_ate_15=round(e["ate_15"], 1),
+            mediana_un=round(e["mediana"], 2),
+            pior=(f"{pior['coluna']} Mach {pior['mach']:g}: impresso {pior['impresso']:.{CASAS.get(pior['coluna'], 3)}f}, "
+                  f"modelo {pior['modelo']:.{CASAS.get(pior['coluna'], 3) + 1}f}" if pior else ""),
+            entradas_decididas=" ".join(f"{k}={v:g}" for k, v in decididas.items() if "#" not in k)))
+
+    with open(os.path.join(AQUI, "erros_por_celula.csv"), "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=campos)
+        w.writeheader()
+        w.writerows(todas)
+    with open(os.path.join(AQUI, "resumo_por_caso.csv"), "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=list(por_caso[0]))
+        w.writeheader()
+        w.writerows(por_caso)
+
+    ind = [c for c in todas if c["situacao"] == "independente"]
+    e = estat([c["erro_em_unidades"] for c in ind])
+    sem_m1 = estat([c["erro_em_unidades"] for c in ind if c["pagina"] != 44])
+    print(f"{len(por_caso)} casos, {len(todas)} células legíveis: {len(ind)} independentes, "
+          f"{sum(c['situacao'] == 'circular' for c in todas)} circulares, "
+          f"{sum(c['situacao'] == 'identidade' for c in todas)} desambiguadas por identidade")
+    print(f"Independentes: {e['ate_05']:.0f} % indistinguíveis do original (±0,5 unidade), "
+          f"{e['ate_15']:.0f} % no critério (±1,5), mediana {e['mediana']:.2f} unidade")
+    print(f"Sem o M1 (pp. 44/47, geometria do cabeçalho não fecha): {sem_m1['n']} células, "
+          f"{sem_m1['ate_05']:.0f} % / {sem_m1['ate_15']:.0f} %, mediana {sem_m1['mediana']:.2f}\n")
+
+    print(f"{'p.':>3s} {'caso':24s} {'legív.':>6s} {'indep.':>6s} {'<=0,5':>6s} {'<=1,5':>6s} "
+          f"{'mediana':>7s}  pior célula independente")
+    for r in por_caso:
+        print(f"{r['pagina']:3d} {r['caso'][:24]:24s} {r['celulas_legiveis']:6d} {r['independentes']:6d} "
+              f"{r['pct_ate_05']:5.0f}% {r['pct_ate_15']:5.0f}% {r['mediana_un']:7.2f}  {r['pior']}")
+
+    print(f"\n{'coluna':8s} {'casos':>5s} {'células':>7s} {'<=0,5':>6s} {'<=1,5':>6s} {'mediana':>8s}")
+    resumo = []
+    for col in ORDEM:
+        c = [x for x in ind if x["coluna"] == col and x["pagina"] != 44]
+        if not c:
+            continue
+        e = estat([x["erro_em_unidades"] for x in c])
+        ncasos = len({x["pagina"] for x in c})
+        resumo.append((col, ncasos, e))
+        print(f"{col:8s} {ncasos:5d} {e['n']:7d} {e['ate_05']:5.0f}% {e['ate_15']:5.0f}% {e['mediana']:8.2f}")
+    with open(os.path.join(AQUI, "resumo_erros.csv"), "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["coluna", "casos", "celulas_independentes", "pct_ate_0.5_unidade",
+                    "pct_ate_1.5_unidade", "mediana_unidades", "max_unidades"])
+        for col, n, e in resumo:
+            w.writerow([col, n, e["n"], round(e["ate_05"], 1), round(e["ate_15"], 1),
+                        round(e["mediana"], 2), round(e["maximo"], 1)])
+
+
+if __name__ == "__main__":
+    main()

@@ -1,3 +1,4 @@
+# SUPERADO: a geometria de cada caso está agora no cabeçalho de python/tabelas/pNN_*.csv (NOTAS, T14).
 # Geometria de entrada impressa no cabeçalho de cada tabela de saída (calibres).
 # confianca: A = confirmado por previsão do modelo; B = leitura visual clara; C = dígitos em dúvida (marcados com ?)
 # Tabelas sem propriedades de massa (Ix, Iy, peso = 0) não têm seção de estabilidade.

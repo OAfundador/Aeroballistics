@@ -1,0 +1,177 @@
+# 20MM 10 CAL CONE-CYL -- tabela de saída do SPIN-73 (Whyte 1973), p. 41 (JP2 0044).
+# Leitura com classes de glifo (A = 6 ou 8; [xy] = x ou y; ? = ilegível); ver resolver_glifos.py.
+# Nesta página quase todo 6 e 8 sai como "A".
+#
+# entrada: VB=0.000 VCG=6.747 BD=1.000 OR=1000.000 BOOM=0.000
+# entrada: DIA=0 IX=0 IY=0 WGT=0 TWIST=0
+# cabecalho: VCG impresso A.747; 6.747 é o único que fecha CNPA5 = CYPA*(VCG-CPF5) (a leitura antiga, 5.747, deixava CMα, CNPA, CNPA5 e Cmq fora)
+# cabecalho: OR 1000 = ogiva cônica; VN 2.83A = cone de 10 graus de semiângulo (0,5/tan 10° = 2,836)
+# decidir: VL 9.99 10.01 CYPA | cabeçalho 10.00?
+# decidir: VN 2.836 2.838 CNA | cabeçalho 2.83A
+# decidir: DM 0.000 0.010 CX | cabeçalho 0.00?
+#
+# Gerado por resolver_glifos.py a partir de leituras/p41_20mm_10cal_cone.txt
+#
+# identidade: CNA 0.01 2.A00 -> 2.600 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CMA 0.01 A.903 -> 8.903 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPN 0.01 3.[13]22 -> 3.322 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CYPA 0.01 -1.A00 -> -1.600 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA 0.01 -[27].[59]01 -> -2.501 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA5P 0.01 -1913.AA9 -> -1913.889 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 0.01 5.1A4 -> 5.184 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF5 0.01 A.[27]A4 -> 6.284 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CMA 0.6 A.9[27]9 -> 8.929 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CYPA 0.6 -1.A00 -> -1.600 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA 0.6 -[27].[59]01 -> -2.501 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 0.6 5.1A4 -> 5.184 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF5 0.6 A.[27]A4 -> 6.284 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNA 0.8 2.A[27]0 -> 2.620 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPN 0.9 3.[27]47 -> 3.247 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CYPA 0.9 -1.A00 -> -1.800 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 0.9 5.7A4 -> 5.784 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF5 0.9 A.434 -> 6.434 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA5 0.9 -.5A3 -> -0.563 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CYPA 0.95 -[27].300 -> -2.300 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA 0.95 -1.5[27]5 -> -1.525 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA3 0.95 101.A0A -> 101.806 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 0.95 A.0A4 -> 6.084 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF5 0.95 A.4A4 -> 6.484 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA5 0.95 -.A05 -> -0.605 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA 1.0 -1.1A[27] -> -1.182 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 1.0 A.1A4 -> 6.184 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF5 1.0 A.4A4 -> 6.484 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNA 1.05 2.A42 -> 2.642 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPN 1.05 3.[13]2A -> 3.126 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CYPA 1.05 -1.[79]00 -> -1.900 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA 1.05 -.AA0 -> -0.880 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA3 1.05 41.A0A -> 41.806 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 1.05 A.[27]A4 -> 6.284 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF5 1.05 A.4A4 -> 6.484 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CYPA 1.1 -1.A00 -> -1.800 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA 1.1 -.74[13] -> -0.743 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 1.1 A.3[13]4 -> 6.334 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF5 1.1 A.4A4 -> 6.484 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA5P 1.2 -171.AA7 -> -171.667 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CMA 1.35 10.4A0 -> 10.460 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CYPA 1.35 -1.A00 -> -1.600 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA 1.35 -.5A[13] -> -0.581 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 1.35 A.3A4 -> 6.384 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF5 1.35 A.4A4 -> 6.484 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPN 1.5 2.9A5 -> 2.965 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CYPA 1.5 -1.A[07]0 -> -1.600 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 1.5 A.7[09]4 -> 6.794 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF5 1.5 A.AA4 -> 6.884 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CMA 1.75 11.5?7 -> 11.567 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPN 1.75 2.AA3 -> 2.883 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CYPA 1.75 -1.A00 -> -1.600 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA 1.75 0.73[13] -> 0.731 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA3 1.75 13.A0A -> 13.806 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 1.75 7.[27]04 -> 7.204 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF5 1.75 7.[27]A4 -> 7.284 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA5 1.75 0.A59 -> 0.859 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CMA 2.0 12.1?7 -> 12.117 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPN 2.0 2.A3[27] -> 2.832 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CYPA 2.0 -1.A00 -> -1.600 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA 2.0 1.3A[27] -> 1.387 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA3 2.0 12.0[27]A -> 12.028 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 2.0 7.A14 -> 7.614 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF5 2.0 7.[46]A4 -> 7.684 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPN 2.5 2.AA5 -> 2.665 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CYPA 2.5 -1.[46]00 -> -1.600 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA3 2.5 10.[27]50 -> 10.250 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA5P 2.5 -A5.000 -> -65.000 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 2.5 7.A24 -> 7.624 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF5 2.5 7.AA4 -> 7.684 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CMA 3.0 13.5A7 -> 13.587 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPN 3.0 2.43A -> 2.436 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CYPA 3.0 -1.A00 -> -1.600 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA 3.0 1.[27][27][27] -> 1.227 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA3 3.0 A.472 -> 8.472 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA5P 3.0 -47.[27][27][27] -> -47.222 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF5 3.0 7.5A4 -> 7.564 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNA 4.0 3.05[27] -> 3.052 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CYPA 4.0 -1.A00 -> -1.600 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA3 4.0 A.472 -> 8.472 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA5P 4.0 -47.[27][27][27] -> -47.222 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 4.0 7.4[13]4 -> 7.434 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF5 4.0 7.4A4 -> 7.484 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CYPA 5.0 -1.A[07]0 -> -1.600 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA3 5.0 A.472 -> 8.472 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA5P 5.0 -47.[27][27][27] -> -47.222 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF1 5.0 7.2[13]4 -> 7.234 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CPF5 5.0 7.2A4 -> 7.284 | única leitura que fecha as identidades entre colunas impressas
+# identidade: CNPA5 5.0 0.A59 -> 0.859 | única leitura que fecha as identidades entre colunas impressas
+#
+# duvidosa: CNA 0.6 2.A0[03] | não resolvido pelas identidades
+# duvidosa: CPN 0.6 3.[13]1[27] | não resolvido pelas identidades
+# duvidosa: CNPA3 0.6 1?5.1?9 | não resolvido pelas identidades
+# duvidosa: CNPA5P 0.6 -1913.AA9 | não resolvido pelas identidades
+# duvidosa: CMA 0.8 9.0?0 | não resolvido pelas identidades
+# duvidosa: CPN 0.8 3.29[27] | não resolvido pelas identidades
+# duvidosa: CYPA 0.8 -1.A00 (nenhuma leitura fecha as identidades) | não resolvido pelas identidades
+# duvidosa: CNPA 0.8 -[27].[13]A[13] (nenhuma leitura fecha as identidades) | não resolvido pelas identidades
+# duvidosa: CNPA3 0.8 177.3A[13] | não resolvido pelas identidades
+# duvidosa: CNPA5P 0.8 -173A.[13][13][13] | não resolvido pelas identidades
+# duvidosa: CPF1 0.8 5.3AA (nenhuma leitura fecha as identidades) | não resolvido pelas identidades
+# duvidosa: CPF5 0.8 A.[13]AA (nenhuma leitura fecha as identidades) | não resolvido pelas identidades
+# duvidosa: CNPA5 0.8 -.5A1 (nenhuma leitura fecha as identidades) | não resolvido pelas identidades
+# duvidosa: CNA 0.9 2.A3[17] | não resolvido pelas identidades
+# duvidosa: CMA 0.9 9.??0 | não resolvido pelas identidades
+# duvidosa: CNPA3 0.9 1[27]9.5A3 | não resolvido pelas identidades
+# duvidosa: CNPA5P 0.9 -1[27]5A.[13][13][13] | não resolvido pelas identidades
+# duvidosa: CNA 0.95 2.A5[17] | não resolvido pelas identidades
+# duvidosa: CMA 0.95 9.??9 | não resolvido pelas identidades
+# duvidosa: CPN 0.95 3.[27]1[27] | não resolvido pelas identidades
+# duvidosa: CNPA5P 0.95 -9A0.55A | não resolvido pelas identidades
+# duvidosa: CNA 1.0 2.A[17]0 | não resolvido pelas identidades
+# duvidosa: CMA 1.0 9.4A7 | não resolvido pelas identidades
+# duvidosa: CNPA3 1.0 A9.5A3 | não resolvido pelas identidades
+# duvidosa: CNPA5P 1.0 -A5A.[13][13][13] | não resolvido pelas identidades
+# duvidosa: CMA 1.05 9.5AA | não resolvido pelas identidades
+# duvidosa: CNPA5P 1.05 -3A0.55A | não resolvido pelas identidades
+# duvidosa: CNA 1.1 2.A5A | não resolvido pelas identidades
+# duvidosa: CMA 1.1 9.7?A | não resolvido pelas identidades
+# duvidosa: CPN 1.1 3.0A4 | não resolvido pelas identidades
+# duvidosa: CNPA3 1.1 [27]9.5A3 | não resolvido pelas identidades
+# duvidosa: CNPA5P 1.1 -[27]5A.[13][13][13] | não resolvido pelas identidades
+# duvidosa: CMA 1.2 10.04? | não resolvido pelas identidades
+# duvidosa: CYPA 1.2 -1.[46]00 (nenhuma leitura fecha as identidades) | não resolvido pelas identidades
+# duvidosa: CNPA 1.2 -.A13 (nenhuma leitura fecha as identidades) | não resolvido pelas identidades
+# duvidosa: CPF1 1.2 A.3A4 (nenhuma leitura fecha as identidades) | não resolvido pelas identidades
+# duvidosa: CPF5 1.2 A.4[13]4 (nenhuma leitura fecha as identidades) | não resolvido pelas identidades
+# duvidosa: CNA 1.35 2.7A[48] | não resolvido pelas identidades
+# duvidosa: CPN 1.35 2.99? | não resolvido pelas identidades
+# duvidosa: CNPA3 1.35 17.3A1 | não resolvido pelas identidades
+# duvidosa: CNPA5P 1.35 -13A.[13][13][13] | não resolvido pelas identidades
+# duvidosa: CMQ 1.35 -75.0A0 | não resolvido pelas identidades
+# duvidosa: CNA 1.5 2.AA[46] | não resolvido pelas identidades
+# duvidosa: CMA 1.5 10.91? | não resolvido pelas identidades
+# duvidosa: CNPA3 1.5 15.5A3 | não resolvido pelas identidades
+# duvidosa: CNPA5P 1.5 -11A.[13][13][13] | não resolvido pelas identidades
+# duvidosa: CNPA5P 1.75 -100.55A | não resolvido pelas identidades
+# duvidosa: CNPA5P 2.0 -A[27].[27][27]A | não resolvido pelas identidades
+# duvidosa: CNA 2.5 3.19A | não resolvido pelas identidades
+# duvidosa: CMA 2.5 13.0?7 | não resolvido pelas identidades
+# duvidosa: CMA 4.0 13.24A | não resolvido pelas identidades
+# duvidosa: CPN 4.0 2.40A | não resolvido pelas identidades
+# duvidosa: CNA 5.0 2.95[27] | não resolvido pelas identidades
+# duvidosa: CMA 5.0 12.9?2 | não resolvido pelas identidades
+# duvidosa: CPN 5.0 2.[37]7A | não resolvido pelas identidades
+MACH,CX,CX2,CNA,CMA,CPN,CYPA,CNPA,CNPA3,CNPA5P,CPF1,CPF5,CNPA5,CMQ,CLP
+0.01,,,2.600,8.903,3.322,-1.600,-2.501,195.139,-1913.889,5.184,6.284,-0.741,,-0.066
+0.6,,,,8.929,,-1.600,-2.501,,,5.184,6.284,-0.741,,-0.066
+0.8,,,2.620,,,,,,,,,,-37.685,-0.063
+0.9,,,,,3.247,-1.800,-1.733,,,5.784,6.434,-0.563,,-0.053
+0.95,,,,,,-2.300,-1.525,101.806,,6.084,6.484,-0.605,,-0.046
+1.0,,,,,,-2.100,-1.182,,,6.184,6.484,-0.552,,-0.044
+1.05,,,2.642,,3.126,-1.900,-0.880,41.806,,6.284,6.484,-0.500,,-0.043
+1.1,,,,,,-1.800,-0.743,,,6.334,6.484,-0.473,,-0.043
+1.2,0.453,,2.710,,3.040,,,20.917,-171.667,,,-0.421,,-0.042
+1.35,0.429,,,10.460,,-1.600,-0.581,,,6.384,6.484,-0.421,,-0.042
+1.5,,,,,2.965,-1.600,0.075,,,6.794,6.884,0.219,,-0.042
+1.75,0.375,5.947,2.994,11.567,2.883,-1.600,0.731,13.806,,7.204,7.284,0.859,,-0.041
+2.0,0.345,5.345,3.095,12.117,2.832,-1.600,1.387,12.028,,7.614,7.684,1.499,,-0.040
+2.5,0.295,,,,2.665,-1.600,1.403,10.250,-65.000,7.624,7.684,1.499,,-0.038
+3.0,0.257,4.123,3.152,13.587,2.436,-1.600,1.227,8.472,-47.222,7.514,7.564,1.307,,-0.036
+4.0,0.219,,3.052,,,-1.600,1.099,8.472,-47.222,7.434,7.484,1.179,,-0.035
+5.0,,,,,,-1.600,0.779,8.472,-47.222,7.234,7.284,0.859,,-0.034

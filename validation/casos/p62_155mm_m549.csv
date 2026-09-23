@@ -1,0 +1,175 @@
+pagina,caso,coluna,mach,impresso,modelo,erro_em_unidades,situacao,motivo
+62,155MM M549,CX,0.01,0.113,0.113445,0.45,circular,entrada BD decidida por esta coluna
+62,155MM M549,CX,0.6,0.113,0.113445,0.45,circular,entrada BD decidida por esta coluna
+62,155MM M549,CX,0.8,0.115,0.115445,0.45,circular,entrada BD decidida por esta coluna
+62,155MM M549,CX,0.9,0.135,0.1351164,0.12,circular,entrada BD decidida por esta coluna
+62,155MM M549,CX,1.05,0.34,0.3403683,0.37,circular,entrada BD decidida por esta coluna
+62,155MM M549,CX,1.1,0.337,0.3372486,0.25,circular,entrada BD decidida por esta coluna
+62,155MM M549,CX,1.2,0.327,0.3273619,0.36,circular,entrada BD decidida por esta coluna
+62,155MM M549,CX,1.35,0.31,0.3104643,0.46,circular,entrada BD decidida por esta coluna
+62,155MM M549,CX,1.5,0.294,0.2942732,0.27,circular,entrada BD decidida por esta coluna
+62,155MM M549,CX,1.75,0.27,0.269291,0.71,circular,entrada BD decidida por esta coluna
+62,155MM M549,CX,2.0,0.25,0.2498744,0.13,circular,entrada BD decidida por esta coluna
+62,155MM M549,CX,2.5,0.217,0.2171994,0.2,circular,entrada BD decidida por esta coluna
+62,155MM M549,CX,3.0,0.196,0.1962696,0.27,circular,entrada BD decidida por esta coluna
+62,155MM M549,CX,4.0,0.158,0.1582696,0.27,circular,entrada BD decidida por esta coluna
+62,155MM M549,CX,5.0,0.136,0.1362696,0.27,circular,entrada BD decidida por esta coluna
+62,155MM M549,CX2,1.75,4.242,4.2416474,0.35,circular,entrada OR decidida por esta coluna
+62,155MM M549,CX2,2.0,3.672,3.6714807,0.52,circular,entrada OR decidida por esta coluna
+62,155MM M549,CX2,3.0,2.536,2.5362961,0.3,circular,entrada OR decidida por esta coluna
+62,155MM M549,CX2,4.0,2.101,2.1005123,0.49,circular,entrada OR decidida por esta coluna
+62,155MM M549,CNA,0.8,1.59,1.5901061,0.11,independente,
+62,155MM M549,CNA,0.95,1.744,1.7421548,1.85,independente,
+62,155MM M549,CNA,1.0,1.905,1.9041276,0.87,identidade,
+62,155MM M549,CNA,1.05,2.04,2.0409261,0.93,identidade,
+62,155MM M549,CNA,1.2,2.188,2.1886476,0.65,identidade,
+62,155MM M549,CNA,1.35,2.305,2.3050344,0.03,independente,
+62,155MM M549,CNA,1.5,2.43,2.4292238,0.78,independente,
+62,155MM M549,CNA,1.75,2.557,2.5571902,0.19,independente,
+62,155MM M549,CNA,2.0,2.68,2.686357,6.36,identidade,
+62,155MM M549,CNA,2.5,2.837,2.8371039,0.1,independente,
+62,155MM M549,CNA,3.0,2.771,2.7710903,0.09,independente,
+62,155MM M549,CNA,4.0,2.671,2.6710903,0.09,independente,
+62,155MM M549,CNA,5.0,2.571,2.5710903,0.09,independente,
+62,155MM M549,CPN,1.0,0.937,0.936461,0.54,identidade,
+62,155MM M549,CPN,1.1,1.406,1.4071522,1.15,identidade,
+62,155MM M549,CPN,1.2,1.537,1.5377629,0.76,identidade,
+62,155MM M549,CPN,1.5,1.828,1.827171,0.83,identidade,
+62,155MM M549,CPN,2.0,2.138,2.1386164,0.62,identidade,
+62,155MM M549,CPN,2.5,2.329,2.3293543,0.35,identidade,
+62,155MM M549,CPN,3.0,2.376,2.3765455,0.55,identidade,
+62,155MM M549,CPN,4.0,2.345,2.3456185,0.62,identidade,
+62,155MM M549,CPN,5.0,2.314,2.3146193,0.62,identidade,
+62,155MM M549,CMA,0.95,5.281,5.2807824,0.22,identidade,
+62,155MM M549,CMA,1.0,4.92,4.9193879,0.61,identidade,
+62,155MM M549,CMA,1.05,4.506,4.5041369,1.86,identidade,
+62,155MM M549,CMA,1.2,4.339,4.3384186,0.58,identidade,
+62,155MM M549,CMA,1.5,4.112,4.1122606,0.26,identidade,
+62,155MM M549,CMA,2.0,3.703,3.7108894,7.89,identidade,
+62,155MM M549,CMA,2.5,3.379,3.3779854,1.01,independente,
+62,155MM M549,CMA,3.0,3.17,3.1686156,1.38,independente,
+62,155MM M549,CMA,4.0,3.139,3.136879,2.12,identidade,
+62,155MM M549,CMA,5.0,3.101,3.0991425,1.86,independente,
+62,155MM M549,CYPA,0.01,-0.963,-0.963,0.0,identidade,
+62,155MM M549,CYPA,0.6,-0.963,-0.963,0.0,identidade,
+62,155MM M549,CYPA,0.8,-0.963,-0.963,0.0,identidade,
+62,155MM M549,CYPA,0.9,-1.076,-1.076,0.0,identidade,
+62,155MM M549,CYPA,1.0,-1.245,-1.2455,0.5,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CYPA,1.05,-1.132,-1.1325,0.5,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CYPA,1.1,-1.076,-1.076,0.0,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CYPA,1.2,-0.963,-0.963,0.0,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CYPA,1.35,-0.963,-0.963,0.0,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CYPA,1.5,-0.963,-0.963,0.0,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CYPA,1.75,-0.963,-0.963,0.0,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CYPA,2.0,-0.963,-0.963,0.0,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CYPA,2.5,-0.963,-0.963,0.0,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CYPA,3.0,-0.963,-0.963,0.0,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CYPA,4.0,-0.963,-0.963,0.0,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CYPA,5.0,-0.963,-0.963,0.0,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA,0.8,-0.235,-0.2345067,0.49,identidade,
+62,155MM M549,CNPA,1.1,0.639,0.6396331,0.63,identidade,
+62,155MM M549,CNPA,1.2,0.651,0.6514133,0.41,identidade,
+62,155MM M549,CNPA,1.35,0.669,0.6694933,0.49,identidade,
+62,155MM M549,CNPA,1.5,0.678,0.6785333,0.53,identidade,
+62,155MM M549,CNPA,1.75,0.687,0.6875733,0.57,identidade,
+62,155MM M549,CNPA,2.0,0.696,0.6966133,0.61,identidade,
+62,155MM M549,CNPA,2.5,0.705,0.7056533,0.65,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA,3.0,0.714,0.7146933,0.69,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA,4.0,0.714,0.7146933,0.69,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA,5.0,0.714,0.7146933,0.69,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CPF1,0.8,3.276,3.2764832,0.48,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CPF1,0.9,3.594,3.5946125,0.61,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CPF1,1.05,4.044,4.0441748,0.17,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CPF1,1.1,4.114,4.1144545,0.45,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CPF1,1.2,4.196,4.1964417,0.44,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CPF1,1.35,4.215,4.2152163,0.22,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CPF1,1.5,4.224,4.2246037,0.6,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CPF1,1.75,4.234,4.233991,0.01,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CPF1,2.0,4.243,4.2433783,0.38,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CPF1,2.5,4.253,4.2527656,0.23,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CPF1,3.0,4.262,4.262153,0.15,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CPF1,4.0,4.262,4.262153,0.15,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CPF1,5.0,4.262,4.262153,0.15,identidade,
+62,155MM M549,CPF5,0.01,4.121,4.121343,0.34,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,0.6,4.121,4.121343,0.34,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,0.8,4.215,4.2152163,0.22,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,0.9,4.209,4.2089713,0.03,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,0.95,4.162,4.1625524,0.55,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,1.0,4.195,4.1949239,0.08,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,1.05,4.234,4.2337554,0.24,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,1.1,4.256,4.2562296,0.23,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,1.2,4.309,4.3090896,0.09,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,1.35,4.309,4.3090896,0.09,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,1.5,4.309,4.3090896,0.09,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,1.75,4.309,4.3090896,0.09,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,2.0,4.309,4.3090896,0.09,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,2.5,4.309,4.3090896,0.09,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,3.0,4.309,4.3090896,0.09,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,4.0,4.309,4.3090896,0.09,circular,entrada VN decidida por esta coluna
+62,155MM M549,CPF5,5.0,4.309,4.3090896,0.09,circular,entrada VN decidida por esta coluna
+62,155MM M549,CNPA5,0.01,0.579,0.5790933,0.09,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,0.6,0.579,0.5790933,0.09,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,0.8,0.669,0.6694933,0.49,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,0.9,0.741,0.7413331,0.33,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,0.95,0.873,0.8729074,0.09,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,1.0,0.84,0.8406177,0.62,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,1.05,0.808,0.8083279,0.33,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,1.1,0.792,0.7921831,0.18,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,1.2,0.76,0.7598933,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,1.35,0.76,0.7598933,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,1.5,0.76,0.7598933,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,1.75,0.76,0.7598933,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,2.0,0.76,0.7598933,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,2.5,0.76,0.7598933,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,3.0,0.76,0.7598933,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,4.0,0.76,0.7598933,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5,5.0,0.76,0.7598933,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA3,0.01,110.072,110.0722222,0.22,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA3,0.6,110.072,110.0722222,0.22,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA3,0.8,100.028,100.0277778,0.22,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA3,0.9,73.033,73.0333333,0.33,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA3,1.0,39.133,39.1333333,0.33,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA3,1.1,16.533,16.5333333,0.33,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA3,1.35,9.628,9.6277778,0.22,identidade,
+62,155MM M549,CNPA3,1.75,7.619,7.6188889,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA3,2.0,6.614,6.6144444,0.44,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA3,3.0,4.606,4.6055556,0.44,identidade,
+62,155MM M549,CNPA3,4.0,4.606,4.6055556,0.44,identidade,
+62,155MM M549,CNPA3,5.0,4.606,4.6055556,0.44,identidade,
+62,155MM M549,CNPA5P,0.01,-1063.222,-1063.2222222,0.22,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5P,0.6,-1063.222,-1063.2222222,0.22,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5P,0.8,-962.778,-962.7777778,0.22,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5P,0.9,-692.833,-692.8333333,0.33,identidade,
+62,155MM M549,CNPA5P,1.1,-127.833,-127.8333333,0.33,circular,presa por identidade a uma coluna que decidiu uma entrada
+62,155MM M549,CNPA5P,1.75,-38.689,-38.6888889,0.11,identidade,
+62,155MM M549,CMQ,0.01,-12.772,-12.7721745,0.17,circular,entrada VL decidida por esta coluna
+62,155MM M549,CMQ,0.6,-12.772,-12.7721745,0.17,circular,entrada VL decidida por esta coluna
+62,155MM M549,CMQ,0.8,-12.772,-12.7721745,0.17,circular,entrada VL decidida por esta coluna
+62,155MM M549,CMQ,0.95,-17.482,-17.4824355,0.44,circular,entrada VL decidida por esta coluna
+62,155MM M549,CMQ,1.0,-21.247,-21.2470538,0.05,circular,entrada VL decidida por esta coluna
+62,155MM M549,CMQ,1.1,-22.437,-22.4373286,0.33,circular,entrada VL decidida por esta coluna
+62,155MM M549,CMQ,1.35,-25.13,-25.1296565,0.34,circular,entrada VL decidida por esta coluna
+62,155MM M549,CMQ,1.5,-26.922,-26.9223925,0.39,circular,entrada VL decidida por esta coluna
+62,155MM M549,CMQ,1.75,-26.922,-26.9223925,0.39,circular,entrada VL decidida por esta coluna
+62,155MM M549,CMQ,2.0,-26.922,-26.9223925,0.39,circular,entrada VL decidida por esta coluna
+62,155MM M549,CMQ,2.5,-26.922,-26.9223925,0.39,circular,entrada VL decidida por esta coluna
+62,155MM M549,CMQ,3.0,-26.922,-26.9223925,0.39,circular,entrada VL decidida por esta coluna
+62,155MM M549,CMQ,4.0,-26.922,-26.9223925,0.39,circular,entrada VL decidida por esta coluna
+62,155MM M549,CMQ,5.0,-26.922,-26.9223925,0.39,circular,entrada VL decidida por esta coluna
+62,155MM M549,CLP,0.01,-0.037,-0.0373249,0.32,independente,
+62,155MM M549,CLP,0.6,-0.037,-0.0373249,0.32,independente,
+62,155MM M549,CLP,0.8,-0.035,-0.0354791,0.48,independente,
+62,155MM M549,CLP,0.9,-0.03,-0.0299419,0.06,independente,
+62,155MM M549,CLP,0.95,-0.026,-0.0260454,0.05,independente,
+62,155MM M549,CLP,1.0,-0.025,-0.0246098,0.39,independente,
+62,155MM M549,CLP,1.05,-0.024,-0.0244047,0.4,independente,
+62,155MM M549,CLP,1.1,-0.024,-0.0241996,0.2,independente,
+62,155MM M549,CLP,1.2,-0.024,-0.0239946,0.01,independente,
+62,155MM M549,CLP,1.35,-0.024,-0.0237895,0.21,independente,
+62,155MM M549,CLP,1.5,-0.024,-0.0235844,0.42,independente,
+62,155MM M549,CLP,1.75,-0.023,-0.0230717,0.07,independente,
+62,155MM M549,CLP,2.0,-0.023,-0.022559,0.44,independente,
+62,155MM M549,CLP,2.5,-0.022,-0.0215336,0.47,independente,
+62,155MM M549,CLP,3.0,-0.021,-0.0205082,0.49,independente,
+62,155MM M549,CLP,4.0,-0.02,-0.0199955,0.0,independente,
+62,155MM M549,CLP,5.0,-0.019,-0.0194828,0.48,independente,

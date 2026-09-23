@@ -286,3 +286,31 @@ As constantes são as de um polinômio f(δ) = C1 + C3·δ² + C5·δ⁴ avaliad
 - 5"/38 de Mach 2,5 a 5: o CPN fica 0,006 a 0,009 abaixo, e o CNα impresso 0,014 abaixo do reconstruído. O desvio é sistemático e aparece só nessa geometria, com as duas outras fechando: o mais provável é um coeficiente de XB/XC com peso alto só no 5"/38, ou a própria transcrição dessas linhas.
 - 5"/38 em Mach 1,75: pede XC15 = 0,629, contra 0,550 do M437.
 - CX2 do M437 em Mach 1,5, 1,75 e 2,5 (−0,007 a −0,030): o 5"/38 e o XM380E5 fecham, o que aponta para a transcrição dessas células do M437 ou para um termo que só pesa com boattail de 1 cal.
+
+## T14 — Todas as tabelas do relatório transcritas
+
+Cada tabela de saída (pp. 29 a 68) está em `python/tabelas/`, com o cabeçalho de entrada. A comparação com o programa, caso a caso, está em `validation/` (ver `validation/LEIAME.md`).
+
+**Método de leitura.** Na impressão matricial, 6 e 8 saem quase iguais, assim como os pares 1/3, 2/7, 4/9, 5/9 e 0/6. A leitura bruta (`python/tabelas/leituras/`) marca cada glifo ambíguo como uma classe: `A` = 6 ou 8, `[27]` = 2 ou 7, `?` = ilegível. Depois, `resolver_glifos.py` testa todas as combinações contra as identidades entre colunas **impressas**: CMα = (VCG − CPN)·CNα, CNPA = CYPA·(VCG − CPF1), CNPA5 = CYPA·(VCG − CPF5) e CNPA3 + 0,1·CNPA5P = 3,75. Uma célula que sai com o mesmo valor em todas as combinações consistentes fica resolvida, marcada "identidade" e fora das estatísticas. O que continua ambíguo fica vazio. Nenhum `DATA` e nenhum resultado do modelo entram nessa etapa. `verificar_identidades.py` confere as tabelas prontas: as 12 passam sem violação.
+
+**Entradas ilegíveis.** Um dígito ilegível do cabeçalho é decidido por uma coluna só, dentro da faixa que o glifo permite, e essa coluna fica circular no caso (`python/circularidade.py`). Leituras antigas do cabeçalho corrigidas nesta etapa:
+
+| Tabela | Entrada | Antes | Agora | Evidência |
+|---|---|---|---|---|
+| 20 mm M56A3 (p. 29) | meplat DM | 0,200 | 0,260 | zoom 7: o 6 é cheio, diferente do 0 aberto ao lado; com 0,200 o CX ficava até 0,024 fora |
+| 20 mm M56A3 (p. 29) | VCG | 2,?00 | 2,260 | identidade de Magnus com colunas impressas |
+| 20 mm cone (p. 41) | VCG | ?,747 | 6,747 | só 6,747 fecha CNPA5 = CYPA·(VCG − CPF5) |
+| 155 mm M101 (p. 59) | BD | 1,026 | 1,021 (decidido pelo CX) | com 1,026 o CX ficava 0,0027 acima em todo Mach |
+| 155 mm M549 (p. 62) | VN | ?,90? | 2,99? (zoom 8) → 2,991 | com 2,90 o CPF5 ficava 0,02 abaixo em todo Mach |
+| 155 mm M549 (p. 62) | OR | ?8,9 | 18,9 | com 8,9 o CX2 erra 0,33 |
+| 105 mm XM380E5 (p. 50) | VN | 2,400 | 2,900 | leitura em alta resolução (T13) |
+
+**Um `DATA` corrigido: XB3 em Mach 2,0**, lido 0,0059 e decidido 0,0050 (par 9/0). Nas tabelas de corpo longo, o CNα de Mach 2,0 errava na proporção do CXLL (o peso do XB3): 7 cal −0,0027, 9 cal −0,0039, 10 cal −0,0047, e as curtas fechavam. O valor foi decidido só pelo 9 cal. O 7 cal e o 10 cal, fora da decisão, passaram a fechar.
+
+**Leituras antigas corrigidas pelas identidades:** CNA do M56A3 em Mach 1,35 (2,650 → 2,659); CMα do 5"/38 em Mach 1,05 (3,749 → 3,739) e 4,0 (3,060 → 3,066); CPF1 do 5"/38 em Mach 0,9 (2,747 → 2,742, já apontada em T2).
+
+**Primeira validação de XA13–XA15 e XC17.** O 175 mm SRC (p. 68, ogiva de 5,5 cal) é a única tabela com VN > 3. Com ele, o CX fecha nas 9 células legíveis e o CPN nas 3, uma delas a 0,0025. Os ramos de ogiva longa, até agora só lidos, passam a ter uma conferência.
+
+**O M1 (pp. 44/47).** As duas páginas do scan são a mesma impressão (mesmo título, "M1", mesmo cabeçalho, o mesmo traço cortando a linha de Mach 1,75). Uma das duas tabelas do relatório não está no scan. Magnus, Cmq e Clp fecham com a geometria do cabeçalho, mas CX, CX2, CNα, CPN e CMα não, e nenhuma mudança isolada de OR, DM, BD, VN ou VB resolve. Fica registrado como caso em aberto.
+
+**CPN do M101.** Com a página relida pelas identidades, o CPN do M101 fica 0,007 abaixo em Mach 1,2, e o CMα 0,009 a 0,018 acima em Mach 1,0, 1,05, 1,5 e 2,0. É a única geometria com boattail em que o centro de pressão não fecha. O boattail de 0,45 cal fica entre o do 5"/38 (0,35) e o do XM380E5 (0,59), que fecham.

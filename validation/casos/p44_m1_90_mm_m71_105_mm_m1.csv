@@ -1,0 +1,160 @@
+pagina,caso,coluna,mach,impresso,modelo,erro_em_unidades,situacao,motivo
+44,M1 (90 MM M71 / 105 MM M1),CX,0.01,0.127,0.1274305,0.43,independente,
+44,M1 (90 MM M71 / 105 MM M1),CX,1.05,0.405,0.3996725,5.33,independente,
+44,M1 (90 MM M71 / 105 MM M1),CX,1.2,0.403,0.3972917,5.71,independente,
+44,M1 (90 MM M71 / 105 MM M1),CX,1.5,0.374,0.3681245,5.88,independente,
+44,M1 (90 MM M71 / 105 MM M1),CX,2.0,0.33,0.3236079,6.39,independente,
+44,M1 (90 MM M71 / 105 MM M1),CX,2.5,0.293,0.2879062,5.09,independente,
+44,M1 (90 MM M71 / 105 MM M1),CX,4.0,0.223,0.2195125,3.49,independente,
+44,M1 (90 MM M71 / 105 MM M1),CX,5.0,0.201,0.1975125,3.49,independente,
+44,M1 (90 MM M71 / 105 MM M1),CX2,0.01,2.551,2.5330683,17.93,independente,
+44,M1 (90 MM M71 / 105 MM M1),CX2,0.6,2.551,2.5330683,17.93,independente,
+44,M1 (90 MM M71 / 105 MM M1),CX2,0.9,3.617,3.5836314,33.37,independente,
+44,M1 (90 MM M71 / 105 MM M1),CX2,0.95,4.221,3.9873039,233.7,independente,
+44,M1 (90 MM M71 / 105 MM M1),CX2,1.35,5.527,5.4743745,52.63,independente,
+44,M1 (90 MM M71 / 105 MM M1),CX2,1.5,4.941,4.8905344,50.47,independente,
+44,M1 (90 MM M71 / 105 MM M1),CX2,1.75,4.374,4.3244003,49.6,independente,
+44,M1 (90 MM M71 / 105 MM M1),CNA,0.6,1.673,1.6769317,3.93,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNA,0.8,1.693,1.6969317,3.93,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNA,0.9,1.745,1.7497019,4.7,independente,
+44,M1 (90 MM M71 / 105 MM M1),CNA,0.95,1.927,1.9326961,5.7,independente,
+44,M1 (90 MM M71 / 105 MM M1),CNA,1.05,2.147,2.1764508,29.45,independente,
+44,M1 (90 MM M71 / 105 MM M1),CNA,1.1,2.222,2.2303908,8.39,independente,
+44,M1 (90 MM M71 / 105 MM M1),CNA,1.2,2.307,2.3137086,6.71,circular,XB2 decidido com esta tabela (contagem nas 10 tabelas de CNα)
+44,M1 (90 MM M71 / 105 MM M1),CNA,1.35,2.437,2.4422922,5.29,independente,
+44,M1 (90 MM M71 / 105 MM M1),CNA,1.5,2.573,2.5761323,3.13,circular,XB7 decidido com esta tabela (contagem nas 10 tabelas de CNα)
+44,M1 (90 MM M71 / 105 MM M1),CNA,3.0,2.903,2.9057321,2.73,independente,
+44,M1 (90 MM M71 / 105 MM M1),CNA,5.0,2.703,2.7057321,2.73,independente,
+44,M1 (90 MM M71 / 105 MM M1),CPN,0.9,0.417,0.4485976,31.6,independente,
+44,M1 (90 MM M71 / 105 MM M1),CPN,1.2,1.216,1.2322065,16.21,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CPN,1.35,1.384,1.3955282,11.53,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CPN,1.5,1.421,1.4420135,21.01,independente,
+44,M1 (90 MM M71 / 105 MM M1),CPN,1.75,1.533,1.5579551,24.96,independente,
+44,M1 (90 MM M71 / 105 MM M1),CPN,4.0,1.709,1.746095,37.09,independente,
+44,M1 (90 MM M71 / 105 MM M1),CPN,5.0,1.676,1.7137784,37.78,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CMA,0.6,3.96,3.9109981,49.0,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CMA,0.9,4.473,4.4291996,43.8,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMA,1.05,4.131,4.0922677,38.73,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMA,1.2,4.069,4.043885,25.11,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CMA,1.35,3.889,3.8697432,19.26,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CMA,1.5,4.012,3.9620566,49.94,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMA,1.75,3.901,3.8285237,72.48,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMA,2.5,3.759,3.6624509,96.55,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMA,5.0,3.524,3.4260564,97.94,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CYPA,0.01,-0.802,-0.802,0.0,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CYPA,0.6,-0.802,-0.802,0.0,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CYPA,0.95,-1.131,-1.131,0.0,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CYPA,1.0,-1.037,-1.037,0.0,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CYPA,1.05,-0.943,-0.943,0.0,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CYPA,1.1,-0.896,-0.896,0.0,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CYPA,1.2,-0.802,-0.802,0.0,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CYPA,1.35,-0.802,-0.802,0.0,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CYPA,1.75,-0.802,-0.802,0.0,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CYPA,2.0,-0.802,-0.802,0.0,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CYPA,2.5,-0.802,-0.802,0.0,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CYPA,3.0,-0.802,-0.802,0.0,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CYPA,4.0,-0.802,-0.802,0.0,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CYPA,5.0,-0.802,-0.802,0.0,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA,0.01,-0.491,-0.49124,0.24,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA,1.05,0.333,0.33314,0.14,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA,1.2,0.396,0.39612,0.12,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA,1.35,0.411,0.41116,0.16,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA,1.5,0.419,0.41868,0.32,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA,1.75,0.426,0.4262,0.2,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA,2.0,0.434,0.43372,0.28,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA,2.5,0.441,0.44124,0.24,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA,3.0,0.449,0.44876,0.24,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA,4.0,0.449,0.44876,0.24,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA,5.0,0.449,0.44876,0.24,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CPF1,0.01,2.367,2.3674813,0.48,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CPF1,0.6,2.367,2.3674813,0.48,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CPF1,0.8,2.559,2.5550125,3.99,circular,entrada VN decidida por esta coluna
+44,M1 (90 MM M71 / 105 MM M1),CPF1,0.95,3.08,3.0800707,0.07,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CPF1,1.05,3.333,3.3332768,0.28,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CPF1,1.2,3.474,3.4739152,0.08,circular,entrada VN decidida por esta coluna
+44,M1 (90 MM M71 / 105 MM M1),CPF1,1.35,3.493,3.4926683,0.33,circular,entrada VN decidida por esta coluna
+44,M1 (90 MM M71 / 105 MM M1),CPF1,1.75,3.511,3.5114214,0.42,circular,entrada VN decidida por esta coluna
+44,M1 (90 MM M71 / 105 MM M1),CPF1,2.0,3.521,3.520798,0.2,circular,entrada VN decidida por esta coluna
+44,M1 (90 MM M71 / 105 MM M1),CPF1,2.5,3.53,3.5301746,0.17,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CPF1,3.0,3.54,3.5395511,0.45,circular,entrada VN decidida por esta coluna
+44,M1 (90 MM M71 / 105 MM M1),CPF1,4.0,3.54,3.5395511,0.45,circular,entrada VN decidida por esta coluna
+44,M1 (90 MM M71 / 105 MM M1),CPF1,5.0,3.54,3.5395511,0.45,circular,entrada VN decidida por esta coluna
+44,M1 (90 MM M71 / 105 MM M1),CPF5,0.01,3.399,3.3989027,0.1,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CPF5,0.6,3.399,3.3989027,0.1,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CPF5,0.8,3.491,3.4926683,1.67,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CPF5,0.95,3.462,3.4623873,0.39,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CPF5,1.0,3.49,3.4897975,0.2,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CPF5,1.05,3.523,3.5226723,0.33,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CPF5,1.2,3.586,3.5864339,0.43,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CPF5,1.35,3.586,3.5864339,0.43,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CPF5,1.75,3.586,3.5864339,0.43,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CPF5,2.0,3.586,3.5864339,0.43,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CPF5,2.5,3.586,3.5864339,0.43,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CPF5,3.0,3.586,3.5864339,0.43,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CPF5,4.0,3.586,3.5864339,0.43,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CPF5,5.0,3.586,3.5864339,0.43,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA5,0.01,0.336,0.33596,0.04,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA5,0.6,0.336,0.33596,0.04,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA5,0.8,0.411,0.41116,0.16,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA5,0.95,0.546,0.54558,0.42,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA5,1.0,0.529,0.52866,0.34,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA5,1.05,0.512,0.51174,0.26,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA5,1.1,0.503,0.50328,0.28,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA5,1.2,0.486,0.48636,0.36,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA5,1.35,0.486,0.48636,0.36,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA5,1.75,0.486,0.48636,0.36,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA5,2.0,0.486,0.48636,0.36,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA5,2.5,0.486,0.48636,0.36,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA5,3.0,0.486,0.48636,0.36,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA5,4.0,0.486,0.48636,0.36,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA5,5.0,0.486,0.48636,0.36,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA3,0.01,91.494,91.4944444,0.44,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA3,0.6,91.494,91.4944444,0.44,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA3,0.8,83.119,83.1388889,19.89,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA3,1.35,7.939,7.9388889,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA3,1.5,7.103,7.1033333,0.33,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA3,1.75,6.268,6.2677778,0.22,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA3,2.0,5.432,5.4322222,0.22,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA3,2.5,4.597,4.5966667,0.33,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA3,3.0,3.761,3.7611111,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA3,4.0,3.761,3.7611111,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA3,5.0,3.761,3.7611111,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA5P,0.01,-877.444,-877.4444444,0.44,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA5P,0.6,-877.444,-877.4444444,0.44,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA5P,0.8,-793.686,-793.8888889,202.89,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA5P,1.35,-41.889,-41.8888889,0.11,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA5P,1.5,-33.533,-33.5333333,0.33,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA5P,2.0,-16.822,-16.8222222,0.22,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA5P,2.5,-8.467,-8.4666667,0.33,identidade,
+44,M1 (90 MM M71 / 105 MM M1),CNPA5P,3.0,-0.111,-0.1111111,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA5P,4.0,-0.111,-0.1111111,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CNPA5P,5.0,-0.111,-0.1111111,0.11,circular,presa por identidade a uma coluna que decidiu uma entrada
+44,M1 (90 MM M71 / 105 MM M1),CMQ,0.01,-7.495,-7.4948588,0.14,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMQ,0.6,-7.495,-7.4948588,0.14,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMQ,0.8,-7.495,-7.4948588,0.14,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMQ,0.95,-12.134,-12.1335632,0.44,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMQ,1.35,-17.697,-17.6968508,0.15,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMQ,1.5,-17.299,-17.2985782,0.42,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMQ,1.75,-17.299,-17.2985782,0.42,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMQ,2.0,-17.299,-17.2985782,0.42,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMQ,2.5,-17.299,-17.2985782,0.42,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMQ,3.0,-17.299,-17.2985782,0.42,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMQ,4.0,-17.299,-17.2985782,0.42,independente,
+44,M1 (90 MM M71 / 105 MM M1),CMQ,5.0,-17.299,-17.2985782,0.42,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,0.01,-0.031,-0.031049,0.05,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,0.6,-0.031,-0.031049,0.05,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,0.8,-0.03,-0.0295136,0.49,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,0.9,-0.025,-0.0249074,0.09,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,0.95,-0.022,-0.0216661,0.33,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,1.0,-0.02,-0.0204719,0.47,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,1.05,-0.02,-0.0203013,0.3,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,1.1,-0.02,-0.0201307,0.13,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,1.2,-0.02,-0.0199601,0.04,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,1.35,-0.02,-0.0197895,0.21,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,1.5,-0.02,-0.0196189,0.38,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,1.75,-0.019,-0.0191924,0.19,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,2.0,-0.019,-0.0187659,0.23,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,2.5,-0.018,-0.0179129,0.09,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,3.0,-0.017,-0.0170599,0.06,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,4.0,-0.017,-0.0166334,0.37,independente,
+44,M1 (90 MM M71 / 105 MM M1),CLP,5.0,-0.016,-0.0162069,0.21,independente,

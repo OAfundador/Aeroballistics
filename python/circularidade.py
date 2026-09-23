@@ -44,8 +44,9 @@ def circulares(pagina, tabela=None):
     d = {}
     if tabela is not None:
         for (col, M) in tabela.circulares():
-            var = next(v for v, (_, _, c, _) in tabela.decidir.items() if c == col)
-            d[(col, M)] = f"entrada {var} decidida por esta coluna"
+            var = [v for v, (_, _, c, _) in tabela.decidir.items() if c == col]
+            d[(col, M)] = (f"entrada {var[0]} decidida por esta coluna" if var else
+                           "presa por identidade a uma coluna que decidiu uma entrada")
     for (b, j) in _XB_CORR:
         por = _XB_POR.get((b, j), PAGINAS_XB)
         if pagina in por:
