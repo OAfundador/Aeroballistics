@@ -1,299 +1,303 @@
-# SPIN-73 reconstruído
+**English** | [Português](README.pt-BR.md)
 
-Reconstrução, em Python, do programa **SPIN-73** (R. H. Whyte, *SPIN-73, an Updated Version of the SPINNER Computer Program*, Picatinny Arsenal TR 4588, 1973; DTIC AD0915628, Distribution A — aprovado para divulgação pública).
+# SPIN-73 reconstructed
 
-O SPIN-73 estima os coeficientes aerodinâmicos de um projétil estabilizado por rotação só a partir da geometria, em 17 números de Mach (0,01 a 5), e faz a análise de estabilidade. O código original só existe como listing Fortran impresso num relatório escaneado. Aqui ele foi reconstruído lendo o scan — as equações, os blocos `DATA` com as constantes empíricas e o próprio código — e conferido contra as 13 tabelas de saída que o programa imprimiu em 1973.
+A Python reconstruction of **SPIN-73** (R. H. Whyte, *SPIN-73, an Updated Version of the SPINNER Computer Program*, Picatinny Arsenal TR 4588, 1973; DTIC AD0915628, Distribution A — approved for public release).
 
-**Resultado:** nas células que não participaram de nenhuma decisão de leitura, 89 % ficam indistinguíveis do original e 95 % dentro de ±1,5 unidade da última casa impressa (91 % e 97 % sem o caso M1, cuja página aparece duplicada no scan e cuja geometria não fecha).
+SPIN-73 estimates the aerodynamic coefficients of a spin-stabilized projectile from its geometry alone, at 17 Mach numbers (0.01 to 5), and runs a stability analysis. The original code survives only as a Fortran listing printed in a scanned report. It was reconstructed here by reading the scan — the equations, the `DATA` blocks with the empirical constants, and the code itself — and checked against the 13 output tables the program printed in 1973.
 
-## Sumário
+**Result:** among the cells that took no part in any reading decision, 89 % are indistinguishable from the original and 95 % fall within ±1.5 units of the last printed digit (91 % and 97 % without the M1 case, whose page is duplicated in the scan and whose geometry does not close).
 
-1. [Como usar](#1-como-usar)
-2. [Entradas e saídas](#2-entradas-e-saídas)
-3. [O conceito da reprodução canônica](#3-o-conceito-da-reprodução-canônica)
-4. [Verificações e resultados](#4-verificações-e-resultados)
-5. [Documentos base e de onde lemos](#5-documentos-base-e-de-onde-lemos)
-6. [O que não conseguimos ler](#6-o-que-não-conseguimos-ler)
-7. [O que a reconstrução revelou](#7-o-que-a-reconstrução-revelou)
-8. [O que fizemos de diferente](#8-o-que-fizemos-de-diferente)
-9. [Adições opcionais](#9-adições-opcionais)
-10. [O SPIN-73 contra medições de voo livre](#10-o-spin-73-contra-medições-de-voo-livre)
-11. [Estrutura do repositório](#11-estrutura-do-repositório)
-12. [Limitações](#12-limitações)
-13. [Licença e fonte](#13-licença-e-fonte)
+The code, its comments and the detailed notes are in Portuguese. Names that come from the 1973 program (input card fields, output columns) are kept as in the original.
+
+## Contents
+
+1. [How to use](#1-how-to-use)
+2. [Inputs and outputs](#2-inputs-and-outputs)
+3. [The canonical reproduction](#3-the-canonical-reproduction)
+4. [Checks and results](#4-checks-and-results)
+5. [Source documents and what was read](#5-source-documents-and-what-was-read)
+6. [What could not be read](#6-what-could-not-be-read)
+7. [What the reconstruction revealed](#7-what-the-reconstruction-revealed)
+8. [What we do differently](#8-what-we-do-differently)
+9. [Optional additions](#9-optional-additions)
+10. [SPIN-73 against free-flight measurements](#10-spin-73-against-free-flight-measurements)
+11. [Repository layout](#11-repository-layout)
+12. [Limitations](#12-limitations)
+13. [License and source](#13-license-and-source)
 
 ---
 
-## 1. Como usar
+## 1. How to use
 
-### Instalação
+### Installation
 
-Na raiz do repositório (Python 3.10 ou mais novo; a única dependência é o numpy):
+From the repository root (Python 3.10 or newer; the only dependency is numpy):
 
 ```bash
 pip install -e .
 ```
 
-Sem instalar, dá para rodar de dentro de `python/` com `python -m spin73`.
+Without installing, run `python -m spin73` from inside `python/`.
 
-### Linha de comando
+### Command line
 
-O caso de validação do relatório (175 mm M437):
+The report's validation case (175 mm M437):
 
 ```bash
 spin73 --exemplo
 ```
 
-Um projétil seu, com o cartão do SPIN-73 (comprimentos em calibres, diâmetro em polegadas, inércias em lb·in², peso em lb, passo em calibres por volta):
+Your own projectile, with the SPIN-73 input card (lengths in calibers, diameter in inches, inertias in lb·in², weight in lb, twist in calibers per turn):
 
 ```bash
-spin73 --VL 5.0 --VN 2.0 --VB 0.4 --VCG 3.0 --OR 8 --DIA 1.0 --IX 0.5 --IY 4.0 --WGT 0.5 --TWIST 25 --csv saida.csv
+spin73 --VL 5.0 --VN 2.0 --VB 0.4 --VCG 3.0 --OR 8 --DIA 1.0 --IX 0.5 --IY 4.0 --WGT 0.5 --TWIST 25 --csv output.csv
 ```
 
-O mesmo em unidades métricas, estimando o CG e as inércias que faltam (adição opcional):
+The same in metric units, estimating the missing CG and inertias (an optional addition):
 
 ```bash
 spin73 --VL 4.05 --VN 1.90 --VB 0.40 --OR 7.9 --d-mm 5.69 --massa-g 4.05 --passo-pol 7 --estimar-massa
 ```
 
-Ou num arquivo `CHAVE = valor` (modelos em [python/exemplos/](python/exemplos/)):
+Or from a `KEY = value` file (examples in [python/exemplos/](python/exemplos/)):
 
 ```bash
 spin73 --entrada python/exemplos/m855_metrico.txt
 ```
 
-A primeira linha da saída diz o modo: `Modo: canônico (SPIN-73 de 1973)` ou a lista das adições usadas. `spin73 --help` mostra todas as opções.
+The first line of the output states the mode: `Modo: canônico (SPIN-73 de 1973)` (the canonical 1973 program) or the list of additions in use. `spin73 --help` lists every option. The option names are in Portuguese: `--entrada` input file, `--exemplo` example, `--massa-g` mass in grams, `--passo-pol` twist length in inches, `--estimar-massa` estimate mass properties, `--correcao` correction.
 
-### Como biblioteca (por exemplo, num 6DOF)
+### As a library (for example, in a 6DOF simulator)
 
 ```python
 import spin73
 
 p = spin73.Projetil(VL=4.05, VN=1.90, VB=0.40, VCG=2.51, OR=7.9, DIA=0.224)
-aero = spin73.Aerodinamica(p, convencao="moderna")   # canônico, na convenção moderna
-c = aero(mach)             # c.CD0, c.CDd2, c.CNa, c.Cma, c.Cmq_Cmad, c.Clp, c.Cmpa ... (escalar ou array)
+aero = spin73.Aerodinamica(p, convencao="moderna")   # canonical, in the modern convention
+c = aero(mach)             # c.CD0, c.CDd2, c.CNa, c.Cma, c.Cmq_Cmad, c.Clp, c.Cmpa ... (scalar or array)
 ```
 
-A aerodinâmica é calculada uma vez, na construção; cada chamada só interpola em Mach. Guia completo, com as adições opcionais e como escrever uma correção nova: [docs/BIBLIOTECA.md](docs/BIBLIOTECA.md).
+The aerodynamics is computed once, at construction; each call only interpolates in Mach. The full guide, with the optional additions and how to write a new correction, is [docs/BIBLIOTECA.md](docs/BIBLIOTECA.md) (in Portuguese).
 
-## 2. Entradas e saídas
+## 2. Inputs and outputs
 
-### O cartão de entrada (Apêndice B do relatório)
+### The input card (Appendix B of the report)
 
-Só as quatro primeiras são obrigatórias. Com elas sai a tabela aerodinâmica inteira; com as cinco de massa e raia, sai também a análise de estabilidade.
+Only the first four inputs are required. With them the full aerodynamic table is produced; with the five mass and twist inputs, the stability analysis too.
 
-| Entrada | O que é | Unidade | Precisa? | Se omitir | O que ela muda |
+| Input | What it is | Unit | Needed? | Default | Affects |
 |---|---|---|---|---|---|
-| `VL` | comprimento total | calibres | **sim** | — | tudo |
-| `VN` | comprimento da ogiva | calibres | **sim** | — | tudo |
-| `VB` | comprimento do boattail (0 = base reta) | calibres | **sim** | — | tudo |
-| `VCG` | CG a partir do **nariz** | calibres | **sim**¹ | — | CMα, momento de Magnus, Cmq |
-| `OR` | raio da ogiva (1000 = nariz cônico) | calibres | recomendada | 2·VN² | CX, CNα, CPN, CMα |
-| `DM` | diâmetro do meplat (ponta chata) | calibres | recomendada | 0,12 | CX, CNα, CPN, CMα |
-| `BD` | diâmetro da cinta | calibres | opcional | 1,02 | CX |
-| `BOOM` | "boom length" do cartão original | calibres | raramente | 0 | CX |
-| `DIA` | diâmetro | polegadas | para estabilidade | 0 (sem estabilidade) | estabilidade |
-| `IX`, `IY` | inércias axial e transversal | lb·in² | para estabilidade | — | estabilidade |
-| `WGT` | peso | lb | para estabilidade | — | estabilidade |
-| `TWIST` | passo de raia | calibres por volta | para estabilidade | — | estabilidade |
-| `TEMP` | temperatura do ar | °F | opcional | 59 | só a estabilidade |
-| `DGUN` | diâmetro do tubo | polegadas | opcional | = DIA | rotação, na estabilidade |
+| `VL` | overall length | calibers | **yes** | — | everything |
+| `VN` | ogive (nose) length | calibers | **yes** | — | everything |
+| `VB` | boattail length (0 = flat base) | calibers | **yes** | — | everything |
+| `VCG` | CG measured from the **nose** | calibers | **yes**¹ | — | CMα, Magnus moment, Cmq |
+| `OR` | ogive radius (1000 = conical nose) | calibers | recommended | 2·VN² | CX, CNα, CPN, CMα |
+| `DM` | meplat (flat tip) diameter | calibers | recommended | 0.12 | CX, CNα, CPN, CMα |
+| `BD` | rotating band diameter | calibers | optional | 1.02 | CX |
+| `BOOM` | "boom length" of the original card | calibers | rarely | 0 | CX |
+| `DIA` | diameter | inches | for stability | 0 (no stability) | stability |
+| `IX`, `IY` | axial and transverse moments of inertia | lb·in² | for stability | — | stability |
+| `WGT` | weight | lb | for stability | — | stability |
+| `TWIST` | rifling twist | calibers per turn | for stability | — | stability |
+| `TEMP` | air temperature | °F | optional | 59 | stability only |
+| `DGUN` | bore diameter | inches | optional | = DIA | spin rate, in the stability analysis |
 
-¹ Pode ser estimado pela geometria com a adição opcional de massa (seção 9).
+¹ Can be estimated from the geometry with the optional mass-property addition (section 9).
 
-Cada entrada tem uma forma em unidades métricas (`D_MM`, `MASSA_G`, `IX_GCM2`, `PASSO_MM` ou `PASSO_POL`, `TEMP_C`, `CG_BASE`...), no arquivo, na linha de comando e no Python. O Mach não é entrada: o programa sempre calcula os 17 Mach do relatório.
+Every input also has a metric form (`D_MM`, `MASSA_G` in grams, `IX_GCM2`, `PASSO_MM` or `PASSO_POL` for the twist length per turn, `TEMP_C`, `CG_BASE` for the CG measured from the base...), in the input file, on the command line and in Python. Mach is not an input: the program always computes the report's 17 Mach numbers.
 
-### O que sai
+### Outputs
 
-| Bloco | Colunas |
+| Block | Columns |
 |---|---|
-| Aerodinâmica (sempre) | `CX` arrasto a guinada zero · `CX2` termo de guinada · `CNA` força normal · `CMA` momento de arfagem em torno do CG · `CPN` centro de pressão (calibres do nariz) · `CYPA` força de Magnus · `CNPA`, `CNPA5` momento de Magnus a 1° e 5° · `CPF1`, `CPF5` centro do Magnus · `CNPA3`, `CNPA5P` polinômio de Magnus · `CMQ` amortecimento em arfagem · `CLP` amortecimento de rolamento |
-| Estabilidade (com massa e raia) | `GYRO` (s_g) · `SBAR`, `SBAR5` (s_d) · `RECIP`, `RECIP5` · `SPIN` · `W1`, `W2` (frequências) · `L1`, `L2`, `L15`, `L25` (amortecimentos) · `DELT` · `DISP` |
+| Aerodynamics (always) | `CX` zero-yaw axial force · `CX2` yaw term · `CNA` normal force · `CMA` pitching moment about the CG · `CPN` center of pressure (calibers from the nose) · `CYPA` Magnus force · `CNPA`, `CNPA5` Magnus moment at 1° and 5° · `CPF1`, `CPF5` Magnus center of pressure · `CNPA3`, `CNPA5P` Magnus polynomial · `CMQ` pitch damping · `CLP` roll damping |
+| Stability (with mass and twist) | `GYRO` (s_g) · `SBAR`, `SBAR5` (s_d) · `RECIP`, `RECIP5` · `SPIN` · `W1`, `W2` (frequencies) · `L1`, `L2`, `L15`, `L25` (damping rates) · `DELT` · `DISP` |
 
-**Convenção do relatório** (pp. 7–8), estilo NACA/BRL clássico: taxas adimensionais em **pd/2V e qd/2V**, derivadas por sen ᾱ, posições em calibres a partir do nariz, momentos em torno do CG. Fontes modernas (McCoy, PRODAS, CFD) usam pd/V e qd/V, e o valor delas é a **metade** do SPIN-73 para Cmq, Clp e Magnus. O arrasto de guinada é CX2 + CNα, não o CX2. `convencao="moderna"` faz as conversões (`python/spin73/convencoes.py`).
+**The report's convention** (pp. 7–8), in the classic NACA/BRL style: nondimensional rates **pd/2V and qd/2V**, derivatives per sin ᾱ, positions in calibers from the nose, moments about the CG. Modern sources (McCoy, PRODAS, CFD) use pd/V and qd/V, and their values are **half** of SPIN-73's for Cmq, Clp and Magnus. The yaw drag is CX2 + CNα, not CX2. `convencao="moderna"` performs the conversions (`python/spin73/convencoes.py`).
 
-## 3. O conceito da reprodução canônica
+## 3. The canonical reproduction
 
-A meta é reproduzir **o que o programa de 1973 imprimia**, erros e defeitos incluídos, e não melhorá-lo. Tudo o que muda resultados fica fora do núcleo, como adição opcional.
+The goal is to reproduce **what the 1973 program printed**, errors and defects included, not to improve it. Everything that changes results lives outside the core, as an optional addition.
 
-- **Três fontes dentro do relatório.** O texto dá as equações; o listing dá os blocos `DATA` com as constantes empíricas; o código mostra o que o programa fazia de fato. **Onde o texto e o código divergem, vale o código** — foi ele que gerou as tabelas.
-- **Cada valor lido tem uma classe.** *Verificado*: leitura clara, ou confirmada por uma identidade independente. *Decidido pelo modelo*: escolhido porque reproduz as tabelas. *Pendente*: em aberto. A classe e a evidência de cada célula estão nos módulos `python/spin73/dados/x?_lidos.py`.
-- **A impressão matricial confunde dígitos** (6/8, 1/3, 2/7, 4/9, 0/6, 5/9). Toda leitura ambígua foi decidida por uma identidade que não dependia dela. Nas tabelas de saída, as identidades são entre colunas **impressas**: CMα = (VCG − CPN)·CNα, CNPA = CYPA·(VCG − CPF1), CNPA5 = CYPA·(VCG − CPF5) e CNPA3 + 0,1·CNPA5P = 3,75.
-- **Sem circularidade.** Um valor decidido usando uma tabela nunca é usado para validar essa mesma tabela. `python/circularidade.py` marca, célula a célula, o que ficou circular, e essas células saem da estatística.
-- **Tolerância.** O erro é medido em unidades da última casa impressa. Até ±0,5 unidade, o resultado é indistinguível do original (ele arredondava nessa casa); o critério do projeto é ±1,5 unidade (±0,0015 nas colunas de 3 casas).
+- **Three sources inside the report.** The text gives the equations; the listing gives the `DATA` blocks with the empirical constants; the code shows what the program actually did. **Where text and code disagree, the code wins**: it is what generated the tables.
+- **Every value read has a class.** *Verified*: a clear reading, or one confirmed by an independent identity. *Decided by the model*: chosen because it reproduces the tables. *Pending*: still open. The class and the evidence for each cell are in the modules `python/spin73/dados/x?_lidos.py`.
+- **The dot-matrix printout confuses digits** (6/8, 1/3, 2/7, 4/9, 0/6, 5/9). Every ambiguous reading was decided by an identity that did not depend on it. In the output tables the identities are between **printed** columns: CMα = (VCG − CPN)·CNα, CNPA = CYPA·(VCG − CPF1), CNPA5 = CYPA·(VCG − CPF5) and CNPA3 + 0.1·CNPA5P = 3.75.
+- **No circularity.** A value decided from a table is never used to validate that same table. `python/circularidade.py` flags, cell by cell, what became circular, and those cells are left out of the statistics.
+- **Tolerance.** Errors are measured in units of the last printed digit. Within ±0.5 unit the result is indistinguishable from the original (which rounded at that digit); the project criterion is ±1.5 units (±0.0015 for 3-decimal columns).
 
-## 4. Verificações e resultados
+## 4. Checks and results
 
-### O caso de validação do relatório (175 mm M437, p. 65), partindo só da geometria
+### The report's validation case (175 mm M437, p. 65), starting from the geometry only
 
-| Bloco | Colunas | Reproduz a tabela de 1973 |
+| Block | Columns | Reproduces the 1973 table |
 |---|---|---|
-| Força axial | CX | 17 de 17 Mach (e 17 de 17 no 5"/38) |
-| Força axial de guinada | CX2 | 12 de 17 (2 células ilegíveis no scan; 3 com resíduo de 0,007 a 0,02) |
-| Força normal | CNA | 15 de 17 |
-| Magnus | CYPA, CNPA, CPF1, CPF5, CNPA5, CNPA3, CNPA5P | 16 ou 17 de 17 |
-| Amortecimentos | CMQ, CLP | 17 de 17 |
-| Centro de pressão | CPN, CMA | teste independente em só 4 Mach no M437 (ver abaixo) |
-| Estabilidade | GYRO, SBAR, RECIP, SPIN, W1, W2, λ, DELT, DISP | 15 a 17 de 17; as que dependem do CMα só são independentes nos mesmos Mach |
+| Axial force | CX | 17 of 17 Mach numbers (and 17 of 17 for the 5"/38) |
+| Yaw axial force | CX2 | 12 of 17 (2 cells illegible in the scan; 3 with residuals of 0.007 to 0.02) |
+| Normal force | CNA | 15 of 17 |
+| Magnus | CYPA, CNPA, CPF1, CPF5, CNPA5, CNPA3, CNPA5P | 16 or 17 of 17 |
+| Damping | CMQ, CLP | 17 of 17 |
+| Center of pressure | CPN, CMA | independent test at only 4 Mach numbers for the M437 (see below) |
+| Stability | GYRO, SBAR, RECIP, SPIN, W1, W2, λ, DELT, DISP | 15 to 17 of 17; the columns that depend on CMα are independent only at the same Mach numbers |
 
-O centro de pressão do M437 fecha em 14 de 17 Mach, mas em 13 deles o resultado é **circular**: o listing impresso perdeu um cartão de `DATA` (a continuação do XC15), e a tabela do M437 foi usada para recuperá-lo. A conferência independente vem de mais duas tabelas com boattail: o 5"/38 (p. 53) e o **105 mm XM380E5 (p. 50), transcrito por inteiro e sem ter decidido nenhum `DATA` do centro de pressão**: o programa reproduz 16 dos 17 Mach do CPN dele e 98 % de todas as suas células.
+The M437 center of pressure matches at 14 of 17 Mach numbers, but at 13 of them the result is **circular**: the printed listing lost a `DATA` card (the continuation of XC15), and the M437 table was used to recover it. The independent check comes from two more tables with a boattail: the 5"/38 (p. 53) and the **105 mm XM380E5 (p. 50), transcribed in full and not used to decide any center-of-pressure `DATA`**. The program reproduces 16 of its 17 CPN values and 98 % of all its cells.
 
-### Todos os casos do relatório
+### Every case in the report
 
-As 13 tabelas de saída (pp. 29 a 68) estão transcritas em `python/tabelas/`, e o programa roda com a entrada impressa de cada uma. São 2718 células legíveis: 1612 independentes, 779 circulares e 327 desambiguadas só por identidade.
+The 13 output tables (pp. 29 to 68) are transcribed in `python/tabelas/`, and the program runs with each table's printed input. There are 2718 legible cells: 1612 independent, 779 circular and 327 disambiguated by identities only.
 
-| p. | Caso | Independentes | ≤ 0,5 un. | ≤ 1,5 un. | Observação |
+| p. | Case | Independent | ≤ 0.5 unit | ≤ 1.5 units | Note |
 |---|---|---|---|---|---|
-| 29 | 20 mm M56A3 | 171 | 94 % | 99 % | meplat relido: 0,260 |
+| 29 | 20 mm M56A3 | 171 | 94 % | 99 % | meplat re-read: 0.260 |
 | 32 | 20 mm 5 cal ANSR | 189 | 85 % | 99 % | |
 | 35 | 20 mm 7 cal ANSR | 153 | 94 % | 99 % | |
-| 38 | 20 mm 9 cal ANSR | 177 | 94 % | 99 % | cabeçalho inteiro legível |
-| 41 | 20 mm 10 cal cone-cilindro | 22 | 91 % | 100 % | VCG decidido pelas identidades de Magnus |
-| 44/47 | M1 | 60 | 50 % | 50 % | página duplicada no scan (seção 6) |
-| 50 | 105 mm XM380E5 | 217 | 93 % | 98 % | o teste mais limpo: quase nada circular |
-| 53 | 5"/38 NAVY | 180 | 95 % | 98 % | fechou com o cartão C205 |
-| 56 | 5"/54 NAVY | 22 | 91 % | 96 % | página muito degradada |
-| 59 | 155 mm M101/107 | 32 | 78 % | 81 % | CPN e CMα fora de 0,007 a 0,018 |
-| 62 | 155 mm M549 | 29 | 83 % | 93 % | ogiva relida: 2,99 |
-| 65 | 175 mm M437 | 317 | 89 % | 95 % | o único com estabilidade |
-| 68 | 175 mm SRC | 43 | 77 % | 95 % | ogiva de 5,5 cal: único teste de XA13–XA15 e XC17 |
+| 38 | 20 mm 9 cal ANSR | 177 | 94 % | 99 % | header fully legible |
+| 41 | 20 mm 10 cal cone-cylinder | 22 | 91 % | 100 % | VCG decided by the Magnus identities |
+| 44/47 | M1 | 60 | 50 % | 50 % | page duplicated in the scan (section 6) |
+| 50 | 105 mm XM380E5 | 217 | 93 % | 98 % | the cleanest test: almost nothing circular |
+| 53 | 5"/38 NAVY | 180 | 95 % | 98 % | matched once card C205 was implemented |
+| 56 | 5"/54 NAVY | 22 | 91 % | 96 % | heavily degraded page |
+| 59 | 155 mm M101/107 | 32 | 78 % | 81 % | CPN and CMα off by 0.007 to 0.018 |
+| 62 | 155 mm M549 | 29 | 83 % | 93 % | ogive re-read: 2.99 |
+| 65 | 175 mm M437 | 317 | 89 % | 95 % | the only case with a stability analysis |
+| 68 | 175 mm SRC | 43 | 77 % | 95 % | 5.5-caliber ogive: the only test of XA13–XA15 and XC17 |
 
-Por coluna, sem o M1: Magnus, Cmq e Clp de 97 a 100 % dentro de ±0,5 unidade; CX 87 %; CNα 77 %; CPN 79 %; CMα 52 % (82 % no critério — ele acumula os erros do CNα e do CPN). Detalhe célula a célula em [validation/LEIAME.md](validation/LEIAME.md).
+By column, without the M1: Magnus, Cmq and Clp 97 to 100 % within ±0.5 unit; CX 87 %; CNα 77 %; CPN 79 %; CMα 52 % (82 % within the criterion — it accumulates the errors of CNα and CPN). Cell-by-cell detail in [validation/LEIAME.md](validation/LEIAME.md) (in Portuguese).
 
-### Como rodar as verificações
+### Running the checks
 
-A última linha confere as 12 transcrições de tabela sem usar o modelo, só pelas identidades entre colunas impressas; hoje, nenhuma violação.
+The last line checks the 12 table transcriptions without the model, using only the identities between printed columns; it currently finds no violations.
 
 ```bash
-python -m pytest -q python                  # 266 testes (e 3 pulados: colunas não transcritas)
-python validation/comparacao_erros.py       # todos os casos, célula a célula
+python -m pytest -q python                  # 266 tests (and 3 skipped: columns not transcribed)
+python validation/comparacao_erros.py       # every case, cell by cell
 python python/tabelas/verificar_identidades.py 29 32 35 38 41 44 50 53 56 59 62 68
 ```
 
-## 5. Documentos base e de onde lemos
+## 5. Source documents and what was read
 
-### O relatório
+### The report
 
-Whyte, R. H. *SPIN-73, an Updated Version of the SPINNER Computer Program*. Technical Report 4588, Picatinny Arsenal, 1973 (DTIC AD0915628). O que foi lido de cada parte:
+Whyte, R. H. *SPIN-73, an Updated Version of the SPINNER Computer Program*. Technical Report 4588, Picatinny Arsenal, 1973 (DTIC AD0915628). What was read from each part:
 
-| Parte | Páginas | Onde está aqui |
+| Part | Pages | Where it lives here |
 |---|---|---|
-| Nomenclatura e convenções | 7–8 | `python/spin73/convencoes.py` |
-| Texto com as equações de cada coeficiente e da estabilidade | até a p. 18 | `python/spin73/nucleo.py` (divergências na seção 7) |
-| Tabela 1: erro provável do SPIN-73 contra experimento | 28 | citada em `python/experimental/benchmarks/` |
-| 13 tabelas de saída | 29–68 | `python/tabelas/` (leituras brutas em `leituras/`) |
-| Apêndice B: o cartão de entrada | 76–77 | `spin73.Projetil` |
-| `DIMENSION` e os blocos `DATA` XA … XG | 79–81 | `python/spin73/dados/` |
-| O código | 84–86 transcritas literalmente | `original/listing_p84-86.f` |
+| Nomenclature and conventions | 7–8 | `python/spin73/convencoes.py` |
+| Text with the equations for each coefficient and for the stability analysis | up to p. 18 | `python/spin73/nucleo.py` (differences in section 7) |
+| Table 1: probable error of SPIN-73 against experiment | 28 | cited in `python/experimental/benchmarks/` |
+| 13 output tables | 29–68 | `python/tabelas/` (raw readings in `leituras/`) |
+| Appendix B: the input card | 76–77 | `spin73.Projetil` |
+| `DIMENSION` and the `DATA` blocks XA … XG | 79–81 | `python/spin73/dados/` |
+| The code | 84–86, transcribed verbatim | `original/listing_p84-86.f` |
 
-**De onde a leitura veio.** Do scan em alta resolução da DTIC (96 páginas JP2 de cerca de 2600 × 3400 px; não versionado, ver [fontes/LEIAME.md](fontes/LEIAME.md)). Várias leituras antigas, feitas num scan de resolução menor, foram corrigidas nele (por exemplo, a ogiva do XM380E5: 2,400 → 2,900). As ferramentas estão em `ferramentas/`: `recorte.py` (recortes girados, com zoom e autocontraste), `pagina_pdf.py` (páginas CCITT de PDFs escaneados) e `pdf_paginas.py` com `jbig2.py` (PDFs "MRC" da DTIC, em que o texto fica numa máscara JBIG2; o decodificador é Python puro).
+**Where the readings came from.** DTIC's high-resolution scan (96 JP2 pages of about 2600 × 3400 px; not versioned, see [fontes/LEIAME.md](fontes/LEIAME.md)). Several earlier readings, made from a lower-resolution scan, were corrected on it (for example, the XM380E5 ogive: 2.400 → 2.900). The tools are in `ferramentas/`: `recorte.py` (rotated crops with zoom and autocontrast), `pagina_pdf.py` (CCITT pages from scanned PDFs) and `pdf_paginas.py` with `jbig2.py` (DTIC "MRC" PDFs, which store the text in a JBIG2 mask; the decoder is pure Python).
 
-### Documentos de apoio (todos com liberação pública)
+### Supporting documents (all approved for public release)
 
-| Documento | Para quê |
+| Document | Used for |
 |---|---|
-| Hitchcock, *Aerodynamic Data for Spinning Projectiles*, BRL Report 620 (AD-800 469) | dados do calibre .30 e as fórmulas empíricas de inércia usadas na estimativa de massa |
-| Piddington, BRL MR 1833, 1967 (AD815788) | família 7,62 NATO: primeira comparação com voo livre |
-| Karpov 1955 e 1964; Brandon 1969; McCoy 1980, 1982, 1985, 1988 e 1990; Whyte 1991 | medições de voo livre (seção 10); lista completa, com os números DTIC, em [fontes/LEIAME.md](fontes/LEIAME.md) |
+| Hitchcock, *Aerodynamic Data for Spinning Projectiles*, BRL Report 620 (AD-800 469) | cal .30 data, and the empirical inertia formulas used in the mass estimate |
+| Piddington, BRL MR 1833, 1967 (AD815788) | the 7.62 NATO family: the first comparison with free flight |
+| Karpov 1955 and 1964; Brandon 1969; McCoy 1980, 1982, 1985, 1988 and 1990; Whyte 1991 | free-flight measurements (section 10); the full list, with DTIC numbers, is in [fontes/LEIAME.md](fontes/LEIAME.md) |
 
-## 6. O que não conseguimos ler
+## 6. What could not be read
 
-| O quê | Por quê | O que foi feito |
+| What | Why | What was done |
 |---|---|---|
-| **Três cartões `DATA`**: a continuação do XC15 (centro de pressão, Mach 1,2 a 5), o primeiro cartão do XE5 (Magnus de corpo longo) e o segundo do XF7 (Cmq, Mach 1,1 a 2,5) | não foram impressos: em cada caso, a impressão repete um cartão vizinho no lugar | recuperados pelas tabelas de saída, marcados *decididos pelo modelo* e fora da validação |
-| Células desbotadas ou ambíguas dos `DATA` | a linha do XC12, por exemplo, está desbotada | decididas pelas tabelas, com a evidência registrada: 4 no XA, 7 no XB, 7 no XC, 4 no XD |
-| **Uma tabela de saída inteira** | as pp. 44 e 47 do scan são a mesma impressão (mesmo título, cabeçalho e artefatos): falta a tabela de uma delas (90 mm M71 ou 105 mm M1) | o caso "M1" fica registrado, fora da conclusão |
-| Dígitos de cabeçalho | ilegíveis ou ambíguos em 10 dos 13 casos (a entrada decidida de cada um está em `validation/resumo_por_caso.csv`) | cada um decidido por uma coluna, que fica circular naquele caso |
-| Páginas muito degradadas | 5"/54 (p. 56), M101 (p. 59), 20 mm 5 cal (p. 32) | poucas células independentes nelas |
-| Código da p. 83 | ainda não transcrito; tem o ramo do boattail maior que 0,65 cal | segue o texto do relatório; a saída avisa quando esse ramo é usado |
-| Referência 71 (Whyte 1970) | não disponível | a coluna `DISP` é reproduzida pela fórmula do código, sem interpretação física |
-| `XB10` | declarado no `DIMENSION`, não encontrado no código transcrito | sem uso |
+| **Three `DATA` cards**: the continuation of XC15 (center of pressure, Mach 1.2 to 5), the first card of XE5 (long-body Magnus) and the second card of XF7 (Cmq, Mach 1.1 to 2.5) | never printed: in each case the printout repeats a neighboring card in their place | recovered from the output tables, flagged *decided by the model* and left out of the validation |
+| Faded or ambiguous `DATA` cells | the XC12 row, for example, is faded | decided from the tables, with the evidence recorded: 4 in XA, 7 in XB, 7 in XC, 4 in XD |
+| **One whole output table** | pp. 44 and 47 of the scan are the same printout (same title, header and artifacts): the table of one of them (90 mm M71 or 105 mm M1) is missing | the "M1" case is recorded but kept out of the conclusions |
+| Header digits | illegible or ambiguous in 10 of the 13 cases (the decided input for each is in `validation/resumo_por_caso.csv`) | each decided by a single column, which becomes circular for that case |
+| Heavily degraded pages | 5"/54 (p. 56), M101 (p. 59), 20 mm 5 cal (p. 32) | few independent cells in them |
+| The code on p. 83 | not yet transcribed; it holds the branch for boattails longer than 0.65 caliber | follows the report text; the output warns when that branch is used |
+| Reference 71 (Whyte 1970) | not available | the `DISP` column is reproduced from the code's formula, without a physical interpretation |
+| `XB10` | declared in `DIMENSION`, not found in the transcribed code | unused |
 
-**Resíduos em aberto:** CPN em Mach 0,6 (0,002 a 0,004 cal), CPN do M101 em Mach 1,2 (0,007 cal), centro do Magnus do 175 mm SRC (+0,005) e CX2 do M437 em Mach 1,5, 1,75 e 2,5. Todas as leituras, com a evidência de cada uma, estão em [docs/NOTAS_TRANSCRICAO.md](docs/NOTAS_TRANSCRICAO.md).
+**Open residuals:** CPN at Mach 0.6 (0.002 to 0.004 caliber), the M101 CPN at Mach 1.2 (0.007 caliber), the Magnus center of pressure of the 175 mm SRC (+0.005) and the M437 CX2 at Mach 1.5, 1.75 and 2.5. Every reading, with its evidence, is in [docs/NOTAS_TRANSCRICAO.md](docs/NOTAS_TRANSCRICAO.md) (in Portuguese).
 
-## 7. O que a reconstrução revelou
+## 7. What the reconstruction revealed
 
-Divergências entre o texto e o código, e termos que o texto não documenta:
+Differences between the text and the code, and terms the text does not document:
 
-- **Sinal trocado no texto** nas taxas de amortecimento λ (p. 18): o texto imprime −CNα(1 ± 1/σ); o código e as tabelas usam −CNα(1 ∓ 1/σ).
-- **Constante do fator giroscópico**: o código usa 1352,4 onde a física com g = 32,174 dá 1349,8 (+0,19 %).
-- **Termos de corpo longo** não documentados, ativos acima de 6 calibres: XE5 no Magnus e XF9 no amortecimento.
-- **A13, A14 e A15** no arrasto: o termo de ogiva longa tem três trechos (quebras em 3,48 e 3,97 calibres); o texto só descreve o primeiro.
-- **Descarte do boattail** no centro de pressão quando o momento do boattail sai positivo, e da força normal do boattail quando ela sai positiva (cartão C205, que só age com ogiva curta no supersônico).
-- **CNPA3 e CNPA5**: os "coeficientes do polinômio de Magnus" não usam o valor calculado a 2°; o programa soma uma constante fixa, e as duas colunas obedecem a CNPA3 + 0,1·CNPA5 = 3,75 para qualquer projétil. Defeito do original, reproduzido.
-- **O expoente supersônico do boattail** já vale em Mach 0,95 (o texto não diz o limiar; o código diz).
+- **A sign error in the text** for the damping rates λ (p. 18): the text prints −CNα(1 ± 1/σ); the code and the tables use −CNα(1 ∓ 1/σ).
+- **The gyroscopic stability constant**: the code uses 1352.4 where the physics with g = 32.174 gives 1349.8 (+0.19 %).
+- **Undocumented long-body terms**, active above 6 calibers: XE5 in the Magnus terms and XF9 in the pitch damping.
+- **A13, A14 and A15** in the drag: the long-ogive term has three segments (breaks at 3.48 and 3.97 calibers); the text describes only the first.
+- **The boattail is discarded** in the center of pressure when the boattail moment comes out positive, and the boattail normal force is discarded when it comes out positive (card C205, which only acts on short ogives at supersonic speeds).
+- **CNPA3 and CNPA5**: the "Magnus polynomial coefficients" do not use the value computed at 2°; the program adds a fixed constant instead, so the two columns satisfy CNPA3 + 0.1·CNPA5 = 3.75 for any projectile. A defect of the original, reproduced.
+- **The supersonic boattail exponent** already applies at Mach 0.95 (the text does not give the threshold; the code does).
 
-## 8. O que fizemos de diferente
+## 8. What we do differently
 
-O núcleo reproduz o comportamento do programa de 1973, inclusive os defeitos. As diferenças são de interface e estão documentadas:
+The core reproduces the behavior of the 1973 program, defects included. The differences are in the interface, and they are documented:
 
-- **Campos em branco no cartão.** No original, DM vazio vale 0, BD vazio vale 1,00 e TEMP vazio vale 0 °F. Aqui a omissão dá DM = 0,12 e BD = 1,02 (os valores de "dimensões automáticas" do próprio programa) e TEMP = 59 °F. Para reproduzir um cartão em branco, passe zero.
-- **Nomes de coluna.** O programa imprime "CNPA5" para o coeficiente quíntico e "CNPA-5" para a inclinação secante a 5°; aqui são `CNPA5P` e `CNPA5`.
-- **O CG pode faltar** no cartão: sem ele o programa pede o CG, ou a estimativa opcional de massa.
-- **Saída** em tabela de texto, CSV ou objeto Python, em vez da impressora de linha; a regra do original de pular a análise dinâmica quando s_g < 1,001 é seguida.
-- **Tudo o que muda resultados é opcional** e fica fora do núcleo (seção 9).
+- **Blank card fields.** In the original, a blank DM is 0, a blank BD is 1.00 and a blank TEMP is 0 °F. Here the defaults are DM = 0.12 and BD = 1.02 (the program's own "automatic dimensions" values) and TEMP = 59 °F. To reproduce a blank card, pass zero.
+- **Column names.** The program prints "CNPA5" for the quintic coefficient and "CNPA-5" for the secant slope at 5°; here they are `CNPA5P` and `CNPA5`.
+- **The CG may be missing** from the card: without it, the program asks for the CG or for the optional mass estimate.
+- **Output** as a text table, a CSV file or a Python object, instead of a line printer. The original's rule of skipping the dynamic analysis when s_g < 1.001 is kept.
+- **Everything that changes results is optional** and lives outside the core (section 9).
 
-## 9. Adições opcionais
+## 9. Optional additions
 
-Nenhuma é aplicada sem ser pedida, e nenhuma altera o canônico.
+None is applied unless requested, and none changes the canonical output.
 
-| Adição | O que faz | Muda | Como pedir |
+| Addition | What it does | What it changes | How to request it |
 |---|---|---|---|
-| Convenção moderna | pd/V, qd/V, CLα, CDδ² | só a apresentação (conversão exata) | `convencao="moderna"` |
-| Unidades métricas | mm, g, g·cm², °C, CG a partir da base | só a entrada (conversão exata) | `spin73.unidades`, `--d-mm`, `--massa-g`... |
-| Estimativa de massa | CG, massa e inércias que faltam no cartão, por sólido de revolução homogêneo ou pelas fórmulas de Hitchcock (BRL 620) | entradas que faltavam | `spin73.massa`, `--estimar-massa` |
-| Correção de voo livre | arrasto ajustado ao tamanho do projétil (número de Reynolds), mais duas peças no limite da validação | coeficientes | `correcoes="voo_livre"` ou `"voo_livre:CX0"`, `--correcao` |
-| Correções suas | qualquer objeto com `aplicar(tabela, projetil, contexto)` | coeficientes | [docs/BIBLIOTECA.md](docs/BIBLIOTECA.md) |
+| Modern convention | pd/V, qd/V, CLα, CDδ² | presentation only (exact conversion) | `convencao="moderna"` |
+| Metric units | mm, g, g·cm², °C, CG from the base | input only (exact conversion) | `spin73.unidades`, `--d-mm`, `--massa-g`... |
+| Mass-property estimate | CG, mass and inertias missing from the card, from a homogeneous solid of revolution or from Hitchcock's formulas (BRL 620) | inputs that were missing | `spin73.massa`, `--estimar-massa` |
+| Free-flight correction | drag adjusted for projectile size (Reynolds number), plus two pieces at the edge of the validation rule | coefficients | `correcoes="voo_livre"` or `"voo_livre:CX0"`, `--correcao` |
+| Your own corrections | any object with `aplicar(table, projectile, context)` | coefficients | [docs/BIBLIOTECA.md](docs/BIBLIOTECA.md) |
 
-**Estimativa de massa, validada contra 20 projéteis com valores medidos** (a massa medida dada): em balas, o CG fica a ±0,12 calibre e a inércia axial de −5 % a +3 %. Em granadas, as fórmulas de Hitchcock ficam de −11 % a +3 %; o sólido homogêneo subestima em 20 a 27 %, porque a massa da granada fica na parede. Detalhes em [python/experimental/massa/LEIAME.md](python/experimental/massa/LEIAME.md).
+**The mass-property estimate, validated against 20 projectiles with measured values** (with the measured mass given): for bullets, the CG is within ±0.12 caliber and the axial inertia within −5 % to +3 %. For shells, Hitchcock's formulas are within −11 % to +3 %, while the homogeneous solid underestimates by 20 to 27 %, because a shell's mass sits in its wall. Details in [python/experimental/massa/LEIAME.md](python/experimental/massa/LEIAME.md) (in Portuguese).
 
-## 10. O SPIN-73 contra medições de voo livre
+## 10. SPIN-73 against free-flight measurements
 
-A seção 4 responde se a reconstrução reproduz o SPIN-73. Esta responde **se o SPIN-73 acerta a realidade**. "Voo livre" é o ensaio em que o projétil é disparado de verdade numa pista instrumentada, e os coeficientes saem do movimento medido. Aqui não se atira nada: as medições são dos relatórios publicados, transcritas rodada a rodada.
+Section 4 asks whether the reconstruction reproduces SPIN-73. This section asks **whether SPIN-73 matches reality**. "Free flight" is the test in which the projectile is actually fired through an instrumented aeroballistic range, and the coefficients are extracted from its measured motion. Nothing is fired here: the measurements come from published reports, transcribed round by round.
 
-- **Benchmarks** ([python/experimental/benchmarks/](python/experimental/benchmarks/LEIAME.md)): 155 mm M101 e M483A1, .50 M33, 5,56 NATO, 7,62 match, 30 mm XM788/XM788E1/XM789, 175 mm T203 (modelo de 90 mm) e 152 mm XM617 (cone-cilindro). No supersônico, o SPIN-73 acerta CMα, CNα e CX0 a poucos por cento nos projéteis de artilharia e no cone-cilindro, mas subestima o CMα das balas de boattail longo (.50: 21 %; 7,62 match: 9 a 14 %). No subsônico, o CX0 erra de −33 % a +25 % conforme a forma e o tamanho.
-- **Correção empírica** ([python/experimental/correcao/](python/experimental/correcao/LEIAME.md)): dez grupos de projéteis e 1391 valores medidos. Uma correção só entra se reduzir o erro em projéteis que o ajuste não viu (validação cruzada deixando um grupo de fora). O arrasto é a peça firme: o erro supersônico cai de 6,6 % para 4,8 % e o subsônico de 19,3 % para 15,1 %, melhorando 7 de 9 ou 10 grupos. O CMα e o Magnus não melhoram com nenhuma forma simples e ficam como no SPIN-73.
-- **Recalibração com a 7,62 NATO** (BRL MR 1833) e o compêndio de Hitchcock: [python/experimental/README.md](python/experimental/README.md).
+- **Benchmarks** ([python/experimental/benchmarks/](python/experimental/benchmarks/LEIAME.md)): 155 mm M101 and M483A1, .50 M33, 5.56 NATO, 7.62 match, 30 mm XM788/XM788E1/XM789, 175 mm T203 (90 mm model) and 152 mm XM617 (a cone-cylinder). At supersonic speeds, SPIN-73 gets CMα, CNα and CX0 within a few percent for the artillery projectiles and the cone-cylinder, but underestimates CMα for bullets with long boattails (.50: 21 %; 7.62 match: 9 to 14 %). At subsonic speeds, CX0 is off by −33 % to +25 %, depending on shape and size.
+- **Empirical correction** ([python/experimental/correcao/](python/experimental/correcao/LEIAME.md)): ten projectile groups and 1391 measured values. A correction is accepted only if it reduces the error on projectiles the fit has not seen (leave-one-group-out cross-validation). Drag is the robust piece: the supersonic error drops from 6.6 % to 4.8 % and the subsonic error from 19.3 % to 15.1 %, improving 7 of 9 or 10 groups. CMα and Magnus do not improve with any simple form and are left as in SPIN-73.
+- **Recalibration with the 7.62 NATO family** (BRL MR 1833) and Hitchcock's compendium: [python/experimental/README.md](python/experimental/README.md).
 
-Nada disso altera o programa reconstruído.
+None of this changes the reconstructed program.
 
-## 11. Estrutura do repositório
+## 11. Repository layout
 
-| Diretório | Conteúdo |
+| Directory | Contents |
 |---|---|
-| `python/spin73/` | **A biblioteca** (tabela de módulos abaixo) |
-| `python/tabelas/` | As 13 tabelas de saída de 1973, com a entrada impressa; leituras brutas com os glifos ambíguos em `leituras/` |
-| `python/reconstrucao_*/` | A reconstrução de cada bloco `DATA`, com os testes e a análise que decidiram cada leitura |
-| `python/exemplos/` | Arquivos de entrada de exemplo |
-| `python/experimental/` | Comparações com medições: `benchmarks/`, `correcao/`, `massa/`, `hitchcock/` e a recalibração com a 7,62 NATO — **separado** da reconstrução |
-| `validation/` | Todos os casos do relatório rodados e comparados, célula a célula |
-| `original/` | Transcrição literal do listing Fortran (pp. 84–86) |
-| `docs/` | Notas de transcrição (cada leitura, com a evidência) e o guia da biblioteca |
-| `ferramentas/` | Leitura dos scans: recortes, páginas de PDF, decodificador JBIG2 |
-| `fontes/` | Os PDFs e o scan (não versionados; ver `fontes/LEIAME.md`) |
+| `python/spin73/` | **The library** (module table below) |
+| `python/tabelas/` | The 13 output tables from 1973, with their printed input; raw readings with the ambiguous glyphs marked in `leituras/` |
+| `python/reconstrucao_*/` | The reconstruction of each `DATA` block, with the tests and analyses that decided each reading |
+| `python/exemplos/` | Example input files |
+| `python/experimental/` | Comparisons with measurements: `benchmarks/`, `correcao/`, `massa/`, `hitchcock/` and the 7.62 NATO recalibration — **kept separate** from the reconstruction |
+| `validation/` | Every case in the report, run and compared cell by cell |
+| `original/` | Verbatim transcription of the Fortran listing (pp. 84–86) |
+| `docs/` | Transcription notes (every reading, with its evidence) and the library guide |
+| `ferramentas/` | Scan-reading tools: crops, PDF pages, JBIG2 decoder |
+| `fontes/` | The PDFs and the scan (not versioned; see `fontes/LEIAME.md`) |
 
-| Módulo | Conteúdo | |
+| Module | Contents | |
 |---|---|---|
-| `spin73.nucleo` | equações, `tabela()`, `estabilidade()`, o cartão `Projetil` | canônico |
-| `spin73.dados` | blocos `DATA` XA…XG, com a proveniência de cada valor | canônico |
-| `spin73.aero` | `Aerodinamica`: coeficientes em qualquer Mach, para simuladores | canônico sem opções |
-| `spin73.convencoes` | convenção do relatório ↔ moderna | adição |
-| `spin73.unidades` | entradas em unidades métricas | adição |
-| `spin73.massa` | estimativa de CG, massa e inércias | adição |
-| `spin73.correcoes` | correções da saída e a interface para escrever novas | adição |
-| `spin73.cli` | linha de comando | — |
+| `spin73.nucleo` | the equations, `tabela()`, `estabilidade()`, the `Projetil` input card | canonical |
+| `spin73.dados` | the `DATA` blocks XA…XG, with the provenance of each value | canonical |
+| `spin73.aero` | `Aerodinamica`: coefficients at any Mach number, for simulators | canonical without options |
+| `spin73.convencoes` | report convention ↔ modern convention | addition |
+| `spin73.unidades` | inputs in metric units | addition |
+| `spin73.massa` | CG, mass and inertia estimate | addition |
+| `spin73.correcoes` | output corrections and the interface for writing new ones | addition |
+| `spin73.cli` | command line | — |
 
-## 12. Limitações
+## 12. Limitations
 
-A saída traz avisos específicos para cada geometria (`spin73.avisos(p)`). Os principais:
+The output carries warnings specific to each geometry (`spin73.avisos(p)`). The main ones:
 
-- **Centro de pressão de Mach 1,2 a 5**: depende do cartão do XC15, recuperado pelas tabelas. Três tabelas com boattail conferem (M437, 5"/38 e XM380E5, com até 0,0025 calibre de resíduo); o M101 ainda fica 0,007 calibre fora em Mach 1,2. As colunas de estabilidade herdam essas incertezas, porque dependem do CMα.
-- **Boattail maior que 1 calibre**: ramo do código lido, mas sem nenhuma tabela de 1973 que o valide. O ramo de ogiva maior que 3 calibres tem uma só tabela (175 mm SRC).
-- **Formas fora do modelo**: o SPIN-73 descreve ogiva (ou cone) com meplat, cilindro e boattail cônico ou base reta. Nariz arredondado, base com degrau ou base arredondada não têm representação; a base arredondada entra como tronco de cone.
-- **Contra a realidade**, o erro é o do modelo de 1973: a Tabela 1 do relatório dá erro provável de 0,12 a 0,17 no CMα contra experimento (seção 10).
+- **Center of pressure from Mach 1.2 to 5**: it depends on the XC15 card, recovered from the tables. Three tables with a boattail agree (M437, 5"/38 and XM380E5, with residuals up to 0.0025 caliber); the M101 is still 0.007 caliber off at Mach 1.2. The stability columns inherit these uncertainties, because they depend on CMα.
+- **Boattails longer than 1 caliber**: that branch of the code has been read, but no 1973 table validates it. The branch for ogives longer than 3 calibers has a single table (175 mm SRC).
+- **Shapes outside the model**: SPIN-73 describes an ogive (or cone) with a meplat, a cylinder, and a conical boattail or a flat base. A rounded nose, a stepped (heel) base or a rounded base cannot be represented; a rounded base is entered as a conical frustum.
+- **Against reality**, the error is that of the 1973 model: Table 1 of the report gives a probable error of 0.12 to 0.17 in CMα against experiment (section 10).
 
-## 13. Licença e fonte
+## 13. License and source
 
-Código sob a licença MIT (ver [LICENSE](LICENSE)). O relatório original é de domínio público (Distribution A).
+The code is under the MIT license (see [LICENSE](LICENSE)). The original report is in the public domain (Distribution A).
 
-Whyte, R. H. *SPIN-73, an Updated Version of the SPINNER Computer Program*. Technical Report 4588, Picatinny Arsenal, Dover, NJ, novembro de 1973. DTIC AD0915628. Distribution A: approved for public release.
+Whyte, R. H. *SPIN-73, an Updated Version of the SPINNER Computer Program*. Technical Report 4588, Picatinny Arsenal, Dover, NJ, November 1973. DTIC AD0915628. Distribution A: approved for public release.

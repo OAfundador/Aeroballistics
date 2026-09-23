@@ -1,6 +1,6 @@
 # python/
 
-O programa reconstruído e seus testes. Visão geral e uso em [../README.md](../README.md).
+O programa reconstruído e seus testes. Visão geral e uso em [../README.pt-BR.md](../README.pt-BR.md) (em inglês: [../README.md](../README.md)).
 
 ## Programa: o pacote `spin73/`
 
