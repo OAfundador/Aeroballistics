@@ -298,6 +298,6 @@ The output carries warnings specific to each geometry (`spin73.avisos(p)`). The 
 
 ## 13. License and source
 
-The code is under the MIT license (see [LICENSE](LICENSE)). The original report is in the public domain (Distribution A).
+The code in this repository is under the MIT license (see [LICENSE](LICENSE)). The original report was written by the Armament Systems Department of General Electric under U.S. Army contract DAAA21-73-C-0033, for Picatinny Arsenal, and was approved for public release, distribution unlimited (Distribution A), by ARDEC in 2010. This repository does not redistribute the report; it is available from DTIC. This is an independent reconstruction for research purposes, not affiliated with or endorsed by the U.S. Army or General Electric.
 
 Whyte, R. H. *SPIN-73, an Updated Version of the SPINNER Computer Program*. Technical Report 4588, Picatinny Arsenal, Dover, NJ, November 1973. DTIC AD0915628. Distribution A: approved for public release.
