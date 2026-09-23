@@ -20,7 +20,7 @@ O código-fonte original só existe como listing Fortran impresso num relatório
 
 O centro de pressão do M437 fecha em 14 de 17 Mach, mas em 13 deles o resultado é **circular**: o listing impresso perdeu um cartão de `DATA` (a continuação do XC15), e a própria tabela do M437 foi usada para recuperá-lo. Nesses Mach, ela não pode mais servir de teste. A conferência independente vem de mais duas tabelas com boattail: o 5"/38 (p. 53) e o **105 mm XM380E5 (p. 50), transcrito por inteiro, que não decidiu nenhum `DATA` do centro de pressão**. O programa reproduz 16 dos 17 Mach do CPN dele, e 98 % de todas as suas células (ver `python/tabelas/`).
 
-Tolerância: ±0,0015 nas colunas de 3 casas (o arredondamento da impressão); ±1 no último dígito nas demais. `python -m pytest -q python` roda 227 testes.
+Tolerância: ±0,0015 nas colunas de 3 casas (o arredondamento da impressão); ±1 no último dígito nas demais. `python -m pytest -q python` roda 251 testes.
 
 **Todos os casos do relatório.** As 13 tabelas de saída do relatório (pp. 29 a 68) estão transcritas em `python/tabelas/`. O programa roda com a entrada impressa de cada uma, e as 1612 células legíveis independentes ficam **89 % indistinguíveis do original e 95 % no critério** (97 % sem o M1), com erro mediano de 0,26 unidade na última casa impressa. Doze dos treze casos fecham. O que não fecha, o M1 das pp. 44/47, tem as duas páginas do scan com a mesma impressão. Detalhe por caso e por coluna em [validation/LEIAME.md](validation/LEIAME.md); para rodar:
 
@@ -31,31 +31,30 @@ python validation/comparacao_erros.py
 ## Uso rápido
 
 ```
-pip install -r requirements.txt
-python python/spin73.py --exemplo
+pip install -e .
+spin73 --exemplo
 ```
+
+(Sem instalar: `cd python` e `python -m spin73 --exemplo`.)
 
 Para um projétil seu, direto na linha de comando (comprimentos em calibres, diâmetro em polegadas, inércias em lb·in², peso em lb, passo em calibres por volta):
 
 ```
-python python/spin73.py --VL 5.0 --VN 2.0 --VB 0.4 --VCG 3.0 --OR 8 --DIA 1.0 --IX 0.5 --IY 4.0 --WGT 0.5 --TWIST 25 --csv saida.csv
+spin73 --VL 5.0 --VN 2.0 --VB 0.4 --VCG 3.0 --OR 8 --DIA 1.0 --IX 0.5 --IY 4.0 --WGT 0.5 --TWIST 25 --csv saida.csv
 ```
 
-ou num arquivo `CHAVE = valor` (modelo em [python/exemplos/m437.txt](python/exemplos/m437.txt)):
+ou num arquivo `CHAVE = valor` (modelo em [python/exemplos/m437.txt](python/exemplos/m437.txt)): `spin73 --entrada meu_projetil.txt`. Com `--correcao voo_livre` sai a versão corrigida com dados de voo livre (ver abaixo).
 
-```
-python python/spin73.py --entrada meu_projetil.txt
-```
-
-Em Python:
+### Como biblioteca (por exemplo, num 6DOF)
 
 ```python
-import spin73 as s
-p = s.Projetil(VL=5.0, VN=2.0, VB=0.4, VCG=3.0, OR=8.0)
-t = s.tabela(p)            # dicionário: uma array de 17 valores por coluna
-print(s.formatar(t))
-print(s.avisos(p))         # limitações que afetam ESTA geometria
+import spin73
+p = spin73.Projetil(VL=4.05, VN=1.90, VB=0.40, VCG=2.51, OR=7.9, DIA=0.224)
+aero = spin73.Aerodinamica(p, correcoes="voo_livre", convencao="moderna")
+c = aero(mach)             # c.CD0, c.CNa, c.Cma, c.Cmq_Cmad, c.Clp, c.Cmpa ... (escalar ou array)
 ```
+
+Sem `correcoes`, é o programa de 1973. A convenção pode ser a do relatório (`"spin73"`: pd/2V, qd/2V) ou a moderna (`"moderna"`: pd/V, qd/V, CLα, CDδ²). Correções novas e blocos `DATA` alternativos entram sem mexer no núcleo. Guia completo em [docs/BIBLIOTECA.md](docs/BIBLIOTECA.md).
 
 Sem diâmetro, inércias, peso e passo de raia, o programa calcula só os coeficientes aerodinâmicos, como o original.
 
@@ -92,7 +91,8 @@ Cada valor lido no scan é classificado como **verificado** (leitura clara, ou c
 
 | Diretório | Conteúdo |
 |---|---|
-| `python/` | O programa (`spin73.py`), os blocos `DATA` (`dados_spin73.py` e `reconstrucao_*/`) e os testes |
+| `python/spin73/` | **A biblioteca**: núcleo (o programa de 1973), blocos `DATA`, convenções, correções opcionais e a interface `Aerodinamica` |
+| `python/` | Testes, transcrições das tabelas e a reconstrução bloco a bloco (`reconstrucao_*/`, com a evidência de cada leitura) |
 | `python/tabelas/` | As 13 tabelas de saída de 1973, com a entrada impressa; leituras brutas com os glifos ambíguos em `leituras/` |
 | `python/experimental/` | Recalibração com dados de voo livre (BRL MR 1833, 7,62 NATO; compêndio de Hitchcock, BRL 620) — **separada** da reconstrução |
 | `original/` | Transcrição literal do listing Fortran (parcial: pp. 84–86) |

@@ -1,32 +1,6 @@
-"""DATA XE1..XE4, XF1..XF9 e XG1 lidos no listing (p. 81 do relatório, JP2 alta resolução).
-Esta página está impressa em colunas e é bem mais legível que as pp. 79-80."""
-import numpy as np
-XE = np.array([
- [-.16,-.16,-.16,-.18,-.23,-.21,-.19,-.18,-.16,-.16,-.16,-.16,-.16,-.16,-.16,-.16,-.16],
- [1.8,1.8,2.0,2.4,2.7,2.8,2.9,2.95,2.98,3.00,3.01,3.02,3.03,3.04,3.05,3.05,3.05],
- [2.5,2.5,2.6,2.75,2.9,3.0,3.06,3.07,3.08,3.08,3.08,3.09,3.09,3.09,3.09,3.09,3.09],   # E3 (2 graus): 3o valor duvidoso
- [2.9,2.9,3.0,3.05,3.1,3.1,3.1,3.1,3.1,3.1,3.1,3.1,3.1,3.1,3.1,3.1,3.1],
-])
-XF = np.array([
- [1.72,1.72,1.72,2.31,2.88,3.79,3.84,4.24,4.64,4.93,5.21,5.21,5.21,5.21,5.21,5.21,5.21],
- [3.18]*7 + [3.29,3.4,3.4,3.4,3.4,3.4,3.4,3.40,3.40,3.40],
- [1.06,1.06,1.06,1.05,1.04,1.03,1.02,1.01,1.,1.,1.,1.,1.,1.,1.,1.,1.],
- [-3.3,-3.3,-3.3,-3.2,-3.18,-3.16,-3.13,-3.10,-3.00,-2.50,-1.59,-1.59,-1.59,-1.59,-1.59,-1.59,-1.59],
- [-1.3]*7 + [-1.28,-1.26,-1.26,-1.26,-1.26,-1.26,-1.26,-1.26,-1.26,-1.26],
- [0.]*17,
- [-.7]*7 + [-.715] + [-.73]*9,                                                     # 2o cartão ausente: ver AUSENTES
- [1.09,1.09,1.09,.8,.6,.3,-.002,-.23,-.47,-1.15,-1.83,-1.83,-1.83,-1.83,-1.83,-1.83,-1.83],
- [0.]*9 + [1.0,2.0,4.0,6.0,8.0,8.0,6.0,3.0],                                       # F9: não documentado; nº de zeros inferido (17 no total)
-])
+"""Redirecionamento: o bloco DATA agora vive em spin73/dados/xf_lidos.py (pacote da biblioteca)."""
+import os as _os
+import sys as _sys
 
-# DEFEITO DA IMPRESSÃO no XF7 (o mesmo do XC15 e do XE5): depois do 1º cartão (7 valores,
-# Mach 0,01 a 1,05) vêm DUAS cópias do 3º cartão, "-.73, -.73, -.73 /". O 2º cartão (7
-# valores, Mach 1,1 a 2,5) não foi impresso. Os 3 últimos (Mach 3 a 5) são os impressos.
-# Recuperados pela coluna CMQ do 5"/38 (peso do XF7 = −5,093·(VCG−3)·VB = +0,52), que pede
-# −0,7146 em Mach 1,1 e −0,729 a −0,731 de 1,2 a 2,5. O M437 (peso −2,55) e o XM380E5
-# (−1,02), que não entraram na decisão, pedem −0,7151 / −0,7150 e −0,7300 / −0,7298.
-# Era o "XF mal lido em Mach 1,1" que deixava o Cmq do M437 0,038 fora (NOTAS, seção T13).
-AUSENTES = {7: list(range(7, 14))}
-RECUPERADOS = {(7, 7): -.715, **{(7, j): -.73 for j in range(8, 14)}}
-
-XG1 = np.array([-.0364,-.0364,-.0346,-.0292,-.0254,-.0240,-.0238,-.0236,-.0234,-.0232,-.0230,-.0225,-.0220,-.0210,-.0200,-.0195,-.0190])
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), ".."))
+from spin73.dados.xf_lidos import *            # noqa: E402,F401,F403

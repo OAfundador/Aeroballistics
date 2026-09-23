@@ -30,7 +30,7 @@ ESCOLHA do atributo também é feita sem o grupo de fora (validação cruzada an
 o erro de predição medido é o de um projétil que o ajuste nunca viu. Cada grupo pesa o
 mesmo no ajuste e na métrica, para que as 45 rodadas do M101 não dominem as 16 da .50.
 
-    python experimental/correcao/ajuste.py      -> tabela de resultados + correcao_ajustada.json
+    python experimental/correcao/ajuste.py      -> tabela de resultados + spin73/correcoes/voo_livre.json
 """
 import json
 import os
@@ -44,7 +44,8 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 import dados                                            # noqa: E402
-import reynolds as rn                                   # noqa: E402
+from spin73.correcoes import reynolds as rn             # noqa: E402
+from spin73.correcoes.voo_livre import ARQUIVO as ARQUIVO_JSON   # noqa: E402
 
 REGIMES = [("subsônico", 0.0, 0.9), ("transônico", 0.9, 1.25), ("supersônico", 1.25, 9.0)]
 GRUPOS = ["762", "556b", "556t", "50", "m101", "m483"]
@@ -298,9 +299,10 @@ def main():
     for reg, (b, cc, n, det) in cpn_derivado(ls, final).items():
         print(f"CPN   {reg:12s} grupos {n}  SPIN-73 {b:7.3f}cal corrigido {cc:7.3f}cal  melhora em "
               f"{sum(1 for eb, ec in det.values() if ec < eb)}/{n}")
-    with open(os.path.join(AQUI, "correcao_ajustada.json"), "w", encoding="utf-8") as f:
+    # o resultado vai para a biblioteca, que o aplica (spin73.correcoes.VooLivre)
+    with open(ARQUIVO_JSON, "w", encoding="utf-8") as f:
         json.dump(final, f, ensure_ascii=False, indent=1)
-    print("\nModelo final (todos os grupos), aplicado por aplicar.tabela_corrigida():")
+    print("\nModelo final (todos os grupos), aplicado por spin73.Aerodinamica(..., correcoes='voo_livre'):")
     for c, regs in final.items():
         for reg, d in regs.items():
             if d["coef"]:

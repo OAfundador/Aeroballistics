@@ -1,0 +1,106 @@
+# Usar o SPIN-73 como biblioteca
+
+## Instalação
+
+Na raiz do repositório:
+
+```
+pip install -e .
+```
+
+`-e` instala no modo editável: o seu código passa a enxergar o pacote `spin73` que está em `python/spin73/`, e qualquer mudança no repositório vale na hora, sem reinstalar. A única dependência é o numpy.
+
+## Num simulador 6DOF
+
+```python
+import numpy as np
+import spin73
+
+p = spin73.Projetil(VL=4.05, VN=1.90, VB=0.40, VCG=2.51, OR=7.9, DM=0.12,
+                    DIA=0.224, nome="M855")          # calibres; DIA em polegadas
+
+aero = spin73.Aerodinamica(p,
+                           correcoes="voo_livre",    # ou None para o SPIN-73 de 1973
+                           convencao="moderna")      # ou "spin73"
+
+# dentro do laço de integração
+c = aero(mach)                 # escalar ou array
+CD = c.CD0 + c.CDd2 * np.sin(alfa) ** 2
+Cmpa = aero.momento_magnus(mach, alfa)   # Magnus secante, entre 1° e 5°
+```
+
+A aerodinâmica é calculada **uma vez**, no construtor, nos 17 Mach do programa. Cada chamada só faz interpolação linear em Mach (`numpy.interp`), então é barata o bastante para o laço de integração. Fora de 0,01 a 5, o padrão é usar o valor do extremo (`fora_da_faixa="limitar"`); as alternativas são `"nan"` e `"erro"`.
+
+### Coeficientes disponíveis
+
+| `convencao="spin73"` | `convencao="moderna"` | Significado |
+|---|---|---|
+| `CX0` | `CD0` | arrasto a guinada zero |
+| `CX2` | `CDd2` = CX2 + CNα | arrasto de guinada, por sen²α |
+| `CNA` | `CNa`, `CLa` = CNα − CD0 | força normal / sustentação, por sen α |
+| `CMA` | `Cma` | momento de arfagem em torno do CG, por sen α (positivo tomba) |
+| `CPN` | `CP_nariz`, `CP_base` | centro de pressão, calibres |
+| `CMQ` (qd/2V) | `Cmq_Cmad` (qd/V) = CMQ/2 | amortecimento em arfagem, Cmq + Cmα̇ |
+| `CLP` (pd/2V) | `Clp` (pd/V) = CLP/2 | amortecimento de rolamento |
+| `CYPA` (pd/2V) | `CNpa` (pd/V) | força de Magnus |
+| `CNPA`, `CNPA5` (pd/2V) | `Cmpa`, `Cmpa_5graus` (pd/V) | momento de Magnus a 1° e 5° (secante) |
+| `CPF1`, `CPF5` | `CPmagnus_nariz` | centro de pressão do Magnus, calibres do nariz |
+
+Os momentos são em torno do CG que está no `Projetil` (`VCG`, em calibres a partir do nariz). Detalhes das conversões em `python/spin73/convencoes.py`.
+
+## Escolher o modelo
+
+| O que muda | Como |
+|---|---|
+| Nada: o programa de 1973 | `Aerodinamica(p)` |
+| Correção de voo livre completa | `correcoes="voo_livre"` |
+| Só parte dela | `correcoes="voo_livre:CX0"` ou `"voo_livre:CX0,CNA"` |
+| Uma correção sua | `correcoes=MinhaCorrecao()` ou uma lista, aplicada na ordem |
+| Outros blocos `DATA` | `dados=CoefAjuste(...)` (por exemplo, constantes recalibradas) |
+
+`aero.descrever()` diz o que foi aplicado; `aero.tabela_original` guarda a saída sem correção, para comparar.
+
+## Escrever uma correção nova
+
+Uma correção é qualquer objeto com `nome` e `aplicar(t, p, ctx)`. `t` é a tabela na convenção do SPIN-73: um array de 17 valores por coluna, nas colunas de `spin73.tabela`. `ctx.d_mm` é o diâmetro real, quando existir.
+
+```python
+from spin73 import correcoes
+
+class MagnusMenor(correcoes.Correcao):
+    nome = "magnus_menor"
+    descricao = "momento de Magnus × 0,8 no supersônico"
+
+    def aplicar(self, t, p, ctx):
+        out = correcoes.base.copiar(t)
+        sup = t["MACH"] >= 1.25
+        out["CNPA"][sup] *= 0.8
+        out["CNPA5"][sup] *= 0.8
+        return out
+
+correcoes.registrar("magnus_menor", MagnusMenor)     # opcional: chamar pelo nome
+aero = spin73.Aerodinamica(p, ["voo_livre", "magnus_menor"])
+```
+
+A correção não precisa cuidar das colunas derivadas. Depois de todas as correções, a biblioteca recalcula:
+
+- CPN = VCG − CMα/CNα;
+- CPF1 e CPF5 a partir do Magnus;
+- o CX2, preservando o arrasto de guinada CX2 + CNα;
+- a análise de estabilidade, se o projétil tiver massa e passo de raia.
+
+## O que é o quê
+
+| Módulo | Conteúdo | Muda o programa de 1973? |
+|---|---|---|
+| `spin73.nucleo` | equações, `tabela()`, `estabilidade()` | é o programa |
+| `spin73.dados` | blocos `DATA` XA..XG, com a proveniência de cada valor | é o programa |
+| `spin73.convencoes` | conversões entre convenções | não |
+| `spin73.correcoes` | correções opcionais e a interface | não: só por cima da saída, e só se pedidas |
+| `spin73.aero` | `Aerodinamica`, a interface para simuladores | não |
+
+As correções são **ajustadas** em `python/experimental/correcao/`, com validação cruzada deixando um grupo de projéteis de fora (ver o LEIAME de lá). O ajuste grava `spin73/correcoes/voo_livre.json`, que a biblioteca só lê. Para refazer o ajuste depois de acrescentar dados:
+
+```
+python python/experimental/correcao/ajuste.py
+```

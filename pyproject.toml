@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spin73"
+version = "0.2.0"
+description = "SPIN-73 reconstruído: coeficientes aerodinâmicos de projéteis estabilizados por rotação (Picatinny TR 4588, 1973)"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Luiz Guilherme de P. Sanches" }]
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24"]
+
+[project.optional-dependencies]
+teste = ["pytest>=7"]
+
+[project.scripts]
+spin73 = "spin73.cli:_executar"
+
+[tool.setuptools]
+package-dir = { "" = "python" }
+
+[tool.setuptools.packages.find]
+where = ["python"]
+include = ["spin73*"]
+
+[tool.setuptools.package-data]
+spin73 = ["correcoes/*.json"]

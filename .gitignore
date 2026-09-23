@@ -17,3 +17,8 @@ docs/AVALIACAO_FASE8.md
 
 # PDFs de referência (disponíveis na DTIC)
 fontes/*.pdf
+
+# empacotamento (pip install -e .)
+*.egg-info/
+build/
+dist/

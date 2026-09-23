@@ -2,11 +2,17 @@
 
 O programa reconstruído e seus testes. Visão geral e uso em [../README.md](../README.md).
 
-## Programa
+## Programa: o pacote `spin73/`
 
-- `spin73.py` — as equações (seguindo o código Fortran onde ele foi transcrito), a análise de estabilidade, `tabela()`, `formatar()`, `avisos()` e a linha de comando.
-- `dados_spin73.py` — reúne todos os blocos `DATA` e registra a situação de cada um.
+- `spin73/nucleo.py` — as equações (seguindo o código Fortran onde ele foi transcrito), a análise de estabilidade, `tabela()`, `formatar()` e `avisos()`.
+- `spin73/dados/` — os blocos `DATA`, cada um com a leitura, as células decididas e a evidência (`xa_lidos.py` … `xf_lidos.py`); `__init__.py` monta o conjunto e registra a situação de cada bloco.
+- `spin73/convencoes.py` — conversões entre a convenção do relatório e a moderna.
+- `spin73/correcoes/` — correções opcionais sobre a saída (interface, registro e a correção de voo livre).
+- `spin73/aero.py` — `Aerodinamica`, a interface para simuladores.
+- `spin73/cli.py` — linha de comando (`python -m spin73`).
 - `exemplos/m437.txt` — arquivo de entrada do caso de validação.
+
+Os antigos `spin73.py`, `dados_spin73.py`, `convencoes.py` e `reconstrucao_*/x?_lidos.py` agora só redirecionam para o pacote, para que os scripts e testes de cada etapa continuem funcionando. Uso como biblioteca em [../docs/BIBLIOTECA.md](../docs/BIBLIOTECA.md).
 
 ## Blocos DATA reconstruídos
 
@@ -20,7 +26,7 @@ Cada diretório guarda a leitura do scan, as células decididas (com a evidênci
 | `reconstrucao_D/` | XD1..XD4 | CX2 |
 | `reconstrucao_F/` | XE1..XE4, XF1..XF9, XG1 | Magnus, Cmq, Clp |
 
-O XE5 (termo de corpo longo do Magnus) está em `dados_spin73.py`.
+O XE5 (termo de corpo longo do Magnus) está em `spin73/dados/__init__.py`. Os blocos lidos ficam em `spin73/dados/`; cada diretório `reconstrucao_*` guarda os testes e a análise que os decidiram.
 
 ## Tabelas de 1973 transcritas
 

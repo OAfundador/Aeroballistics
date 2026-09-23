@@ -12,7 +12,8 @@ sys.path[:0] = [AQUI, os.path.join(AQUI, "..", "..")]
 import ajuste as aj                                     # noqa: E402
 import aplicar                                          # noqa: E402
 import dados                                            # noqa: E402
-import reynolds as rn                                   # noqa: E402
+from spin73.correcoes import reynolds as rn             # noqa: E402
+from spin73.correcoes.voo_livre import ARQUIVO          # noqa: E402
 import spin73 as s                                      # noqa: E402
 
 
@@ -52,7 +53,7 @@ def test_correcao_do_cx0_generaliza(ls):
 
 
 def test_json_reproduz_o_ajuste(ls):
-    with open(os.path.join(AQUI, "correcao_ajustada.json"), encoding="utf-8") as f:
+    with open(ARQUIVO, encoding="utf-8") as f:
         salvo = json.load(f)
     novo = aj.ajuste_final(ls)
     for c in aj.APLICADOS:
@@ -63,7 +64,7 @@ def test_json_reproduz_o_ajuste(ls):
 
 
 def test_so_entra_o_que_foi_aceito():
-    with open(os.path.join(AQUI, "correcao_ajustada.json"), encoding="utf-8") as f:
+    with open(ARQUIVO, encoding="utf-8") as f:
         salvo = json.load(f)
     for c, regs in salvo.items():
         for reg, d in regs.items():

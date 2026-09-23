@@ -13,6 +13,9 @@ CÓDIGO, que é o que gerou as tabelas de 1973; onde ainda não foi, seguem o te
 relatório (pp. 13-18). Cada divergência entre os dois está marcada no ponto em que ocorre
 e registrada em docs/NOTAS_TRANSCRICAO.md.
 
+Este é o núcleo: o programa de 1973, sem correções. A interface para simuladores
+(Aerodinamica, convenções, correções opcionais) está em spin73/aero.py.
+
 Uso:
     import spin73 as s
     t = s.tabela(s.M437)                  # dicionário com todas as colunas
@@ -24,6 +27,15 @@ temperatura em °F.
 """
 
 from __future__ import annotations
+
+__all__ = [
+    "MACH_GRID", "N_MACH", "J_SUPERSONICO", "G_FT", "K_ESTAB",
+    "Projetil", "CoefAjuste", "densidade_ar", "vel_som",
+    "cx", "normal_e_momento", "cx2", "magnus", "coef_polinomio_magnus", "cmq", "clp",
+    "coeficientes", "estabilidade", "tabela",
+    "COLUNAS_AERO", "COLUNAS_ESTAB", "formatar", "M437", "ler_tabela", "avisos",
+    "ler_entrada", "salvar_csv",
+]
 
 from dataclasses import dataclass, field
 import math
@@ -105,8 +117,8 @@ class CoefAjuste:
 
     @classmethod
     def do_listing(cls) -> "CoefAjuste":
-        """Os DATA reconstruídos (ver dados_spin73.py para a situação de cada bloco)."""
-        import dados_spin73 as d
+        """Os DATA reconstruídos (ver spin73/dados/ para a situação de cada bloco)."""
+        from . import dados as d
         return cls(a=d.XA.copy(), B=d.XB.copy(), C=d.XC.copy(), D=d.XD.copy(),
                    E=d.XE.copy(), F=d.XF.copy(), G=d.XG.copy())
 
@@ -368,7 +380,7 @@ def estabilidade(p: Projetil, MACH, CX, CNA, CMA, CNPA, CNPA5, CMQ, CLP,
 def tabela(p: Projetil, k: CoefAjuste | None = None) -> dict:
     """Todas as colunas que o SPIN-73 imprime, para um projétil.
 
-    As colunas cujo DATA ainda não foi reconstruído saem NaN (ver dados_spin73.py);
+    As colunas cujo DATA ainda não foi reconstruído saem NaN (ver spin73/dados/);
     a análise de estabilidade depende do CX e sai NaN enquanto o XA não for lido.
     """
     k = CoefAjuste.do_listing() if k is None else k
@@ -478,58 +490,3 @@ def salvar_csv(t: dict, caminho: str) -> None:
         w.writerow(cols)
         for i in range(N_MACH):
             w.writerow([f"{t[c][i]:.6g}" if np.isfinite(t[c][i]) else "" for c in cols])
-
-
-def _main(argv=None):
-    import argparse
-    ap = argparse.ArgumentParser(
-        prog="spin73",
-        description="SPIN-73 reconstruído: coeficientes aerodinâmicos e estabilidade de um "
-                    "projétil estabilizado por rotação, a partir da geometria.")
-    ap.add_argument("--entrada", help="arquivo 'CHAVE = valor' com o cartão de entrada")
-    ap.add_argument("--exemplo", action="store_true",
-                    help="roda o caso de validação do relatório (175 mm M437)")
-    for nome, ajuda in (("VL", "comprimento total, cal"), ("VN", "ogiva, cal"),
-                        ("VB", "boattail, cal"), ("VCG", "CG a partir do nariz, cal"),
-                        ("DIA", "diâmetro, in"), ("IX", "inércia axial, lb·in²"),
-                        ("IY", "inércia transversal, lb·in²"), ("WGT", "peso, lb"),
-                        ("TWIST", "passo de raia, cal/volta"), ("DM", "meplat, cal"),
-                        ("BD", "cinta, cal"), ("OR", "raio da ogiva, cal"),
-                        ("TEMP", "temperatura, °F")):
-        ap.add_argument(f"--{nome}", type=float, help=ajuda)
-    ap.add_argument("--nome", default="")
-    ap.add_argument("--csv", help="grava todas as colunas neste arquivo CSV")
-    a = ap.parse_args(argv)
-
-    if a.exemplo:
-        p = M437
-    elif a.entrada:
-        p = ler_entrada(a.entrada)
-    else:
-        campos = {k: v for k, v in vars(a).items()
-                  if k not in ("entrada", "exemplo", "csv") and v not in (None, "")}
-        faltam = [k for k in ("VL", "VN", "VB", "VCG") if k not in campos]
-        if faltam:
-            ap.error("informe --exemplo, --entrada ou pelo menos --VL --VN --VB --VCG "
-                     f"(faltam: {', '.join(faltam)})")
-        p = Projetil(**campos)
-
-    t = tabela(p)
-    print(formatar(t, f"SPIN-73 reconstruído -- {p.nome or 'projétil'}"))
-    print()
-    print("AVISOS (limitações da reconstrução para esta geometria):")
-    for x in avisos(p):
-        print("  - " + x)
-    if a.csv:
-        salvar_csv(t, a.csv)
-        print()
-        print(f"CSV gravado em {a.csv}")
-
-
-if __name__ == "__main__":
-    import os
-    import sys
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    if hasattr(sys.stdout, "reconfigure"):
-        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    _main()
