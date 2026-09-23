@@ -1,0 +1,10 @@
+# Geometria da família 7.62 NATO (BRL MR 1833, Fig. 1 e Tabela I), convertida para as entradas do SPIN-73.
+# d = 0.308 in. Ogiva: 0.554 in (mesma nos quatro). Boattail 9 graus, 0.173 in (M-62: base arredondada, 0.123 in).
+# CG da Tabela I, confirmado pela identidade CPN - CMA*d/CNA na Tabela II (dispersão <= 0.005 in, exceto M-62: 0.02).
+# Raio da ogiva: figura indica "30R" (provavelmente 3.0 in = 9.74 cal) -- INCERTO; não usado nas equações de Magnus.
+# Ranhuras (knurl; 2a ranhura no M-61) e base arredondada do M-62 NÃO existem no modelo SPIN-73.
+projetil,L_in,CG_base_in,VL,VN,VB,VCG,DM,BD,OR,obs
+M-80,1.108,0.431,3.597,1.799,0.562,2.198,0.195,1.000,9.74?,
+M-59,1.259,0.511,4.088,1.799,0.562,2.429,0.195,1.000,9.74?,
+M-61,1.265,0.509,4.107,1.799,0.562,2.455,0.195,1.000,9.74?,segunda ranhura (fora do modelo)
+M-62,1.322,0.602,4.292,1.799,0.399,2.338,0.195,1.000,9.74?,base arredondada (VB aproximado)

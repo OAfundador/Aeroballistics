@@ -1,0 +1,66 @@
+==============================================================================
+Cmq  (q·d/2V) -- modelo completo: XF1..XF9 lidos, termo de corpo longo F9
+==============================================================================
+proj     n  viés do SPIN-73  dispersão exp
+M-80    15            -2.19           1.40  <-- viés maior que a dispersão
+M-59    11            -3.95           2.36  <-- viés maior que a dispersão
+M-61     8            -3.40           2.42  <-- viés maior que a dispersão
+M-62     8            -4.85           1.30  <-- viés maior que a dispersão
+
+erro puro entre rodadas repetidas: 1.13 (16 pares)
+
+Contra a curva experimental ajustada por MMQ:
+proj    Mach   experimento   SPIN-73      dif
+M-80    1.20    -4.92±5.54    -14.73    -9.81
+M-80    1.50    -6.35±2.89     -7.98    -1.62
+M-80    2.00    -7.58±3.69     -7.98    -0.39
+M-80    2.50    -7.35±2.82     -7.98    -0.62
+M-59    1.20    -7.07±4.42    -17.31   -10.23
+M-59    1.50    -9.44±2.32    -12.22    -2.77
+M-59    2.00   -11.58±2.96    -12.22    -0.63
+M-59    2.50   -11.47±2.27    -12.22    -0.75
+M-61    1.20    -7.16±4.38    -17.23   -10.07
+M-61    1.50    -9.56±2.30    -12.32    -2.76
+M-61    2.00   -11.74±2.93    -12.32    -0.59
+M-61    2.50   -11.63±2.25    -12.32    -0.70
+M-62    1.20    -7.97±3.96    -21.06   -13.09
+M-62    1.50   -10.72±2.08    -16.44    -5.72
+M-62    2.00   -13.24±2.66    -16.44    -3.20
+M-62    2.50   -13.18±2.04    -16.44    -3.27
+
+==============================================================================
+Centro de pressão CPN (calibres do nariz) -- só onde o DATA XC existe
+==============================================================================
+pontos de Mach com reconstrução: 0.01, 0.60, 0.80, 0.90, 0.95, 1.00, 1.05, 1.10, 1.20, 2.00
+
+proj     n  viés do SPIN-73  dispersão exp
+M-59     2            +0.01           0.02
+
+Contra a curva experimental ajustada (CNα·CPN, momento em torno do nariz),
+nos dois Mach do supersônico em que a reconstrução existe:
+proj    Mach          CPN exp  CPN SPIN-73     dif
+M-80    1.20       1.316±0.433        1.363  +0.047
+M-80    2.00       1.394±0.252        1.655  +0.261
+M-59    1.20       1.594±0.296        1.375  -0.219
+M-59    2.00       1.692±0.171        1.691  -0.001
+M-61    1.20       1.605±0.290        1.375  -0.230
+M-61    2.00       1.704±0.168        1.693  -0.011
+M-62    1.20       1.794±0.188        1.324  -0.470
+M-62    2.00       1.915±0.110        1.662  -0.254
+
+Sensibilidade ao raio de ogiva suposto (M-80, Mach 2,0):
+  OR =  8.00 cal -> CPN = 1.594
+  OR =  9.74 cal -> CPN = 1.655
+  OR = 12.00 cal -> CPN = 1.707
+
+==============================================================================
+RECALIBRAÇÃO: fator k(M) em  experimento ≈ k(M) · SPIN-73
+==============================================================================
+
+Cmq: n = 42 rodadas, resíduo rms = 1.68
+  Mach:          1.20        1.50        2.00        2.50        3.00
+  k:        0.40±0.04   0.66±0.03   0.90±0.04   0.90±0.03   0.65±0.07
+
+O centro de pressão não entra na recalibração: a reconstrução só existe em
+Mach 1,2 e 2,0 no supersônico (cartão XC15 não impresso), o que deixa poucas
+rodadas utilizáveis. Ver NOTAS_TRANSCRICAO.md, seção T6.2.
