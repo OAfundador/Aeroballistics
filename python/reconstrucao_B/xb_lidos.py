@@ -21,7 +21,14 @@ CORRECOES = {  # (linha B, índice de Mach): (lido, decidido)
     (3, 8): (-.0100, -.0106),   # M 1.20
     (7, 10): (-.1490, -.1695),  # M 1.50
     (5, 13): (.0667, .0609),    # M 2.50
+    # M 2.0: lido .0059 (o último glifo parece 9). As tabelas de corpo longo erram na
+    # proporção do CXLL (peso do XB3): 7 cal -0,0027 (CXLL 2,85), 9 cal -0,0039 (4,85),
+    # 10 cal -0,0047 (5,01), e as curtas fecham. Decidido SÓ pelo 9 cal (p. 38), que pede
+    # 0,0051 +- 0,0003; com .0050 (par 9/0) o 7 cal e o 10 cal, fora da decisão, fecham.
+    (3, 12): (.0059, .0050),
 }
+# Tabela(s) que decidiram cada correção; sem registro = decidida pela contagem nas 10 tabelas.
+DECIDIDO_POR = {(3, 12): {38}}
 XB_LIDO = XB.copy()
 for (b, j), (lido, dec) in CORRECOES.items():
     assert abs(XB[b - 1, j] - lido) < 1e-9, (b, j)

@@ -4,6 +4,9 @@ Cada CSV traz, em linhas de comentário, a entrada impressa no cabeçalho da tab
 células que exigiram decisão:
 
     # entrada: VL=5.580 VN=2.900 ...                   geometria e massa (argumentos de Projetil)
+    # decidir: VN 1.40 2.00 CNA | motivo                entrada ilegível: decidida pela coluna
+                                                        indicada, dentro do intervalo; essa coluna
+                                                        fica CIRCULAR nesta tabela
     # identidade: COLUNA MACH leitura -> valor | motivo   resolvida por identidade entre
                                                         colunas impressas (fora das contagens)
     # duvidosa: COLUNA MACH leitura | motivo            deixada vazia no CSV
@@ -34,9 +37,51 @@ class TabelaImpressa:
     colunas: dict
     identidade: dict = field(default_factory=dict)    # (coluna, Mach) -> texto
     duvidosas: dict = field(default_factory=dict)     # (coluna, Mach) -> texto
+    decidir: dict = field(default_factory=dict)       # entrada -> (min, max, coluna, texto)
+    _decididas: dict = field(default=None, repr=False)
+
+    def decididas(self) -> dict:
+        """Entradas ilegíveis decididas pelo modelo: {nome: valor}, com 3 casas (as do cabeçalho)."""
+        if self._decididas is None:
+            self._decididas = _decidir(self) if self.decidir else {}
+        return self._decididas
 
     def projetil(self, **mudancas) -> s.Projetil:
-        return s.Projetil(nome=self.nome, **{**self.entrada, **mudancas})
+        return s.Projetil(nome=self.nome, **{**self.entrada, **self.decididas(), **mudancas})
+
+    def circulares(self) -> set:
+        """(coluna, Mach) usadas para decidir entradas: não validam nada nesta tabela."""
+        cols = {c for (_, _, c, _) in self.decidir.values()}
+        return {(c, round(float(m), 2)) for c in cols for m in s.MACH_GRID}
+
+
+def _decidir(tb, voltas=3):
+    """Cada entrada ilegível é ajustada à SUA coluna (mínimo desvio absoluto nas células
+    legíveis), com as demais fixas; repete algumas voltas porque elas interagem."""
+    atual = {v: 0.5 * (lo + hi) for v, (lo, hi, _, _) in tb.decidir.items()}
+
+    def custo(var, x):
+        col = tb.decidir[var][2]
+        p = s.Projetil(nome=tb.nome, **{**tb.entrada, **atual, var: x})
+        calc = s.tabela(p)[col]
+        imp = tb.colunas[col]
+        ok = [j for j, m in enumerate(s.MACH_GRID) if np.isfinite(imp[j])
+              and (col, round(float(m), 2)) not in tb.identidade]
+        return float(np.sum(np.abs(calc[ok] - imp[ok])))       # L1: robusto a uma célula ruim
+
+    for _ in range(voltas):
+        for var, (lo, hi, _, _) in tb.decidir.items():
+            grade = np.linspace(lo, hi, 81)
+            k = int(np.argmin([custo(var, x) for x in grade]))
+            a, b = grade[max(k - 1, 0)], grade[min(k + 1, 80)]
+            for _ in range(40):                           # seção áurea no intervalo vizinho
+                c, d = b - 0.618 * (b - a), a + 0.618 * (b - a)
+                if custo(var, c) < custo(var, d):
+                    b = d
+                else:
+                    a = c
+            atual[var] = 0.5 * (a + b)
+    return {v: round(x, 3) for v, x in atual.items()}
 
 
 def _chave(col, mach):
@@ -44,7 +89,7 @@ def _chave(col, mach):
 
 
 def ler(caminho: str) -> TabelaImpressa:
-    entrada, ident, duv, dados, nome = {}, {}, {}, [], ""
+    entrada, ident, duv, dec, dados, nome = {}, {}, {}, {}, [], ""
     with open(caminho, encoding="utf-8") as f:
         for linha in f:
             if not linha.startswith("#"):
@@ -56,6 +101,9 @@ def ler(caminho: str) -> TabelaImpressa:
             if txt.startswith("entrada:"):
                 for k, v in re.findall(r"(\w+)=([-\d.]+)", txt):
                     entrada[k] = float(v)
+            elif txt.startswith("decidir:"):
+                var, lo, hi, col = txt.split(":", 1)[1].split("|")[0].split()
+                dec[var] = (float(lo), float(hi), col, txt.split("|", 1)[-1].strip())
             elif txt.startswith("identidade:") or txt.startswith("duvidosa:"):
                 corpo = txt.split(":", 1)[1].strip()
                 col, mach = corpo.split()[:2]
@@ -65,7 +113,7 @@ def ler(caminho: str) -> TabelaImpressa:
     colunas = {c: np.array([float(r[c]) if r[c].strip() else np.nan for r in linhas])
                for c in rd.fieldnames}
     pagina = int(re.match(r"p(\d+)", os.path.basename(caminho)).group(1))
-    return TabelaImpressa(pagina, nome, caminho, entrada, colunas, ident, duv)
+    return TabelaImpressa(pagina, nome, caminho, entrada, colunas, ident, duv, dec)
 
 
 def carregar(pagina: int) -> TabelaImpressa:

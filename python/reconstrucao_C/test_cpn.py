@@ -3,7 +3,7 @@
 175 mm M437 (p. 65, boattail 1,00 cal), 5"/38 NAVY (p. 53, 0,35 cal) e 105 mm XM380E5
 (p. 50, 0,59 cal). As geometrias dão pesos bem diferentes aos coeficientes de boattail
 (C12..C16), então uma leitura errada em C1..C11 não pode se disfarçar de erro em
-C12..C16, nem o contrário. O XM380E5 não decidiu nenhum DATA: é teste em todos os Mach.
+C12..C16, nem o contrário. O XM380E5 não decidiu nenhum XC: é teste em todos os Mach.
 
 Usa o CNα IMPRESSO de cada tabela (ver cpn_spin73.cpn_cma): sem isso, o erro do CNα
 reconstruído entra no resíduo do CPN multiplicado por ~3.
@@ -80,7 +80,7 @@ def test_pendencias_ainda_pendentes(nome):
 
 
 def test_xm380e5_e_teste_em_todo_mach():
-    """A terceira tabela não decidiu nada: fica independente em 16 dos 17 Mach."""
+    """A terceira tabela não decidiu nenhum XC: fica independente em 16 dos 17 Mach."""
     assert sum(1 for n, _ in CASOS if n == "XM380E5") == 16
 
 

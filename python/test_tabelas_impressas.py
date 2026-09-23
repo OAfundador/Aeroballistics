@@ -2,13 +2,15 @@
 
 Para cada tabela, cada célula legível é comparada com o valor calculado. Ficam de fora:
   - células resolvidas por identidade entre colunas impressas (marcadas no CSV);
-  - CIRCULARES: células em que algum DATA foi decidido usando essa mesma tabela;
+  - circulares: células em que algum DATA ou entrada foi decidido usando essa mesma
+    tabela (circularidade.py);
   - PENDENTES: células que não fecham, cada uma com o motivo. Se uma passar a fechar,
     o teste acusa e ela deve sair da lista.
 """
 import numpy as np
 import pytest
 
+import circularidade
 import spin73 as s
 import tabelas_impressas as ti
 
@@ -19,11 +21,13 @@ TABELAS = {tb.pagina: tb for tb in ti.todas()}
 # o erro do CNα reconstruído (até 0,002), ampliado.
 TOL = {"CMA": 0.004, "CX2": 0.0045}
 
-CIRCULARES = {
-    50: set(),          # nenhum DATA foi decidido pelo XM380E5: a tabela inteira é teste
-}
+CIRCULARES = {pag: circularidade.circulares(pag, tb) for pag, tb in TABELAS.items()}
 
 PENDENTES = {
+    29: {},
+    32: {},
+    35: {("CNA", 0.95): "CNα reconstruído 0,0019 acima (reconstrucao_B, PENDENTES)"},
+    38: {},
     50: {
         ("CNA", 0.95): "CNα reconstruído 0,0017 abaixo (como no M437 em 0,8 e 1,05)",
         ("CPN", 0.6): "o resíduo subsônico de Mach 0,6 (+0,0018; o M437 tem +0,004): "
@@ -63,6 +67,6 @@ def test_pendencias_ainda_pendentes(pag):
 
 
 def test_toda_tabela_classificada():
-    assert set(CIRCULARES) == set(TABELAS) == set(PENDENTES)
+    assert set(TABELAS) == set(PENDENTES)
     for pag in TABELAS:
         assert not set(CIRCULARES[pag]) & set(PENDENTES[pag])

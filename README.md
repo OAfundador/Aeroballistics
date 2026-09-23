@@ -18,7 +18,7 @@ O código-fonte original só existe como listing Fortran impresso num relatório
 | Centro de pressão | CPN, CMA | teste independente em só 4 Mach no M437; ver a terceira tabela abaixo |
 | Estabilidade | GYRO, SBAR, RECIP, SPIN, W1, W2, λ, DELT, DISP | 15 a 17 de 17; as que dependem do CMα só são independentes nos mesmos 5 Mach |
 
-O centro de pressão do M437 fecha em 14 de 17 Mach, mas em 13 deles o resultado é **circular**: o listing impresso perdeu um cartão de `DATA` (a continuação do XC15), e a própria tabela do M437 foi usada para recuperá-lo. Nesses Mach, ela não pode mais servir de teste. A conferência independente vem de mais duas tabelas com boattail: o 5"/38 (p. 53) e o **105 mm XM380E5 (p. 50), transcrito por inteiro e que não decidiu nenhum `DATA`**. O programa reproduz 16 dos 17 Mach do CPN dele, e 98 % de todas as suas células (ver `python/tabelas/`).
+O centro de pressão do M437 fecha em 14 de 17 Mach, mas em 13 deles o resultado é **circular**: o listing impresso perdeu um cartão de `DATA` (a continuação do XC15), e a própria tabela do M437 foi usada para recuperá-lo. Nesses Mach, ela não pode mais servir de teste. A conferência independente vem de mais duas tabelas com boattail: o 5"/38 (p. 53) e o **105 mm XM380E5 (p. 50), transcrito por inteiro, que não decidiu nenhum `DATA` do centro de pressão**. O programa reproduz 16 dos 17 Mach do CPN dele, e 98 % de todas as suas células (ver `python/tabelas/`).
 
 Tolerância: ±0,0015 nas colunas de 3 casas (o arredondamento da impressão); ±1 no último dígito nas demais. `python -m pytest -q python` roda 196 testes.
 

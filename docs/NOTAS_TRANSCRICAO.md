@@ -262,7 +262,7 @@ As constantes são as de um polinômio f(δ) = C1 + C3·δ² + C5·δ⁴ avaliad
 
 **Leitura.** A p. 50 é das mais nítidas do relatório. As 15 colunas foram transcritas por inteiro (`python/tabelas/p50_105mm_xm380e5.csv`), sem usar o modelo para decidir dígitos. Nove células foram resolvidas por identidades entre colunas **impressas** — CMα = (VCG − CPN)·CNα, CNPA = CYPA·(VCG − CPF1), CNPA5 = CYPA·(VCG − CPF5) e CNPA3 + 0,1·CNPA5P = 3,75 — e ficam fora das contagens. Sete ficaram ilegíveis. O cabeçalho confirma VN = 2,900: a leitura antiga (2,400) vinha do scan de baixa resolução.
 
-**Nenhum DATA foi decidido por esta tabela**: ela é teste em todas as células. Com o programa inteiro, partindo só da entrada impressa, 222 células independentes: **92 % indistinguíveis do original, 98 % no critério.** Magnus, Cmq e Clp fecham em todas as células legíveis.
+**Nenhum DATA de XC, XD, XE ou XF foi decidido por esta tabela**: nesses blocos ela é teste em todas as células. A exceção é o CNα, que entrou com o das outras nove tabelas na contagem que decidiu as correções de XB (T5); nos cinco Mach dessas correções ele é circular. Com o programa inteiro, partindo só da entrada impressa, 222 células independentes: **92 % indistinguíveis do original, 98 % no critério.** Magnus, Cmq e Clp fecham em todas as células legíveis.
 
 **O que ela resolveu.** Onde havia duas tabelas para duas incógnitas, agora há três: sobra um grau de liberdade para achar qual célula está errada.
 
