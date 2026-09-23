@@ -52,7 +52,7 @@ E3 (Magnus a 2°) não aparece diretamente nas tabelas. Deve ser recuperável da
 
 **E5.** Expoentes A, B do boattail ("subsonic"/"supersonic"): o limiar de Mach não é dado. Assumido Mach ≥ 1.0 como supersônico.
 
-**E6.** DXBT: o texto dá (VB − 0.65)·A₁₀. A linha 308 do listing parece ter outra forma (`XA10(J)*0.35 + (VB-1.0)*...`), ainda não lida com segurança.
+**E6.** DXBT: o texto dá (VB − 0.65)·A₁₀. A linha 308 do listing parece ter outra forma (a10 multiplicado por uma constante, mais um termo em VB − 1), ainda não lida com segurança.
 
 **E7.** a₁₀ não aparece na soma principal de CX, só em DXBT; a₁₃ aparece só em DXN. Pode estar correto, mas vale conferir no listing.
 
@@ -164,16 +164,16 @@ No 20 mm 5 cal ANSR (p. 32) o boattail é zero, o que zera C12..C16 e deixa o CP
 
 ## T8 — O que o código (pp. 84-85) resolveu
 
-Transcrição parcial em `original/listing_p84-86.f`. O listing não traz número de cartão nas colunas 73-80 em quase todas as linhas; a numeração usada aqui (Cnnn) é a sequência de statements do compilador, impressa à esquerda.
+O que as pp. 84–86 do listing calculam está descrito, com as nossas palavras e a nossa notação, em `python/spin73/programa.py` (e em [PROGRAMA_ORIGINAL.md](PROGRAMA_ORIGINAL.md)); o listing em si não é reproduzido neste repositório. Ele não traz número de cartão nas colunas 73-80 em quase todas as linhas; a numeração usada aqui (Cnnn) é a sequência de statements do compilador, impressa à esquerda.
 
-- **A1, viés de s_g — resolvido.** O cartão C241 calcula `STAB = 1352.4*XY*TT/(IR*RHO*FC*CMA)`. Com Ix, Iy em lb·in² e comprimentos em polegadas, isso é s_g = 1352,4·Ix²/(ρ·Iy·CMα·passo²·d³). A fórmula física com g = 32,174 dá 1349,8 no lugar de 1352,4: a diferença, +0,19 %, era o viés. Com a constante do código, o GYRO do M437 fecha em todas as linhas (erro máximo 0,0009, viés médio 0,017 %).
-- **E5, limiar do boattail — confirmado no código.** `IF(J.GE.5)` no cartão C189, com J a partir de 1: o expoente supersônico vale desde Mach 0,95.
+- **A1, viés de s_g — resolvido.** O cartão C241 calcula, com Ix, Iy em lb·in² e comprimentos em polegadas, s_g = 1352,4·Ix²/(ρ·Iy·CMα·passo²·d³). A fórmula física com g = 32,174 dá 1349,8 no lugar de 1352,4: a diferença, +0,19 %, era o viés. Com a constante do código, o GYRO do M437 fecha em todas as linhas (erro máximo 0,0009, viés médio 0,017 %).
+- **E5, limiar do boattail — confirmado no código.** O cartão C189 troca para o expoente supersônico a partir do 5º ponto da grade de Mach: ele vale desde Mach 0,95.
 - **A13, A14, A15 — onde entram.** O DXN do CX tem três trechos, com quebras em VN = 3,48 e 3,97: (VN − 3)·A13; 0,48·A13 + (VN − 3,48)·A14; 0,48·A13 + 0,49·A14 + (VN − 3,97)·A15. Os coeficientes 0,48 e 0,49 são exatamente as larguras dos trechos anteriores, o que torna o DXN contínuo. O texto do relatório só documenta o primeiro trecho.
-- **Termo de corpo longo do Magnus = XE5.** Cartões C216-C222: se VL > 6, `DCPF = (VL−6)*XE5(J)` soma-se ao CPF depois do colchete. Os valores de K identificados pelas tabelas (seção T3) são o XE5. Para VB = 0, somar ao CPF ou dentro do colchete dá o mesmo resultado — por isso a identificação pelas tabelas ANSR funcionou —, mas com boattail as duas formas diferem.
+- **Termo de corpo longo do Magnus = XE5.** Cartões C216-C222: se VL > 6, o termo e5·(VL − 6) soma-se ao CPF depois do colchete. Os valores de K identificados pelas tabelas (seção T3) são o XE5. Para VB = 0, somar ao CPF ou dentro do colchete dá o mesmo resultado — por isso a identificação pelas tabelas ANSR funcionou —, mas com boattail as duas formas diferem.
 - **Regra do boattail no CPN, ausente do texto.** Cartões C209-C210: se o momento do boattail (AMOMBT) sair positivo, o programa faz CNAT = CNAB e AMOMBT = 0, descartando toda a contribuição do boattail.
 - **Cmq (C232-C238) e Clp (C239)** confirmam as formas já usadas; o Clp divide por SFNG, que no texto é 5,51.
 
-Dúvida de transcrição: o cartão C205 foi lido `IF(CART.GT.0.0) CNPT=0.0`. A leitura mais provável é `IF(CNBT.GT.0.0) CNBT=0.0` (zerar a força normal do boattail se ela sair positiva), mas os nomes não conferem com nenhuma variável do trecho; não foi implementado até a releitura.
+Dúvida de transcrição: o cartão C205 é uma condição cujos nomes de variável, como impressos, não conferem com nenhuma variável do trecho. A leitura mais provável é zerar a força normal do boattail se ela sair positiva; não foi implementado até a releitura.
 
 ## T9 — DATA XD (CX2) e o cartão final do XE5
 
@@ -239,16 +239,15 @@ Com isso o XC não tem mais NaN e o programa produz as 24 colunas do M437 a part
 
 ## T12 — A p. 86: CNPA3, CNPA5, DELT, DISP e a regra de instabilidade
 
-Linhas das fórmulas lidas em zoom e acrescentadas a `original/listing_p84-86.f`. Com elas, o programa produz **todas as colunas que o original imprime**.
+Linhas das fórmulas lidas em zoom (resumidas em `python/spin73/programa.py`). Com elas, o programa produz **todas as colunas que o original imprime**.
 
 **CNPA3 e CNPA5 (cartões C278-C281) — um defeito do original.**
 
-    XMAG1 = CNPAA5 − CNPA              (momento de Magnus a 5° menos o a 1°)
-    XMAG2 = CNPAA5 − CNPA + 0.3
-    CNPA5 = (XMAG2 − 9.0·XMAG1)/0.0072
-    CNPA3 = (XMAG1 − CNPA5·.0001)/0.01
+    D = CNPA(5°) − CNPA(1°)            (momento de Magnus a 5° menos o a 1°)
+    CNPA5 = ((D + 0,3) − 9·D)/0,0072
+    CNPA3 = (D − 0,0001·CNPA5)/0,01
 
-As constantes são as de um polinômio f(δ) = C1 + C3·δ² + C5·δ⁴ avaliado em δ = 0,1 e 0,3. Mas o XMAG2 não usa o valor a 2°: o CNPAA2 é calculado (cartões C224-C227) e nunca usado. O XMAG2 é o XMAG1 mais uma constante. Consequência: as duas colunas impressas carregam **um único grau de liberdade** e obedecem a **CNPA3 + 0,1·CNPA5 = 3,75** para qualquer projétil. As 17 linhas do M437 confirmam a identidade — por exemplo 4,481 − 0,7311 = 3,7499 e 16,113 − 12,3633 = 3,7497 —, e o modelo reproduz as duas colunas nas 16 linhas legíveis. O "•" da segunda linha, ambíguo no scan, é um "+": a leitura como "·" erra por 7 % a 400 %. Vem daqui também o fator de 1,34 que a hipótese de um polinômio em sen α passando por 1°, 2° e 5° deixava sem explicação: o código não usa esses ângulos.
+As constantes são as de um polinômio f(δ) = C1 + C3·δ² + C5·δ⁴ avaliado em δ = 0,1 e 0,3. Mas o segundo ponto não usa o valor a 2°: ele é calculado (cartões C224-C227) e nunca usado. O segundo ponto é D mais uma constante. Consequência: as duas colunas impressas carregam **um único grau de liberdade** e obedecem a **CNPA3 + 0,1·CNPA5 = 3,75** para qualquer projétil. As 17 linhas do M437 confirmam a identidade — por exemplo 4,481 − 0,7311 = 3,7499 e 16,113 − 12,3633 = 3,7497 —, e o modelo reproduz as duas colunas nas 16 linhas legíveis. O "•" da segunda linha, ambíguo no scan, é um "+": a leitura como "·" erra por 7 % a 400 %. Vem daqui também o fator de 1,34 que a hipótese de um polinômio em sen α passando por 1°, 2° e 5° deixava sem explicação: o código não usa esses ângulos.
 
 **DELT (C266)** = 6,28/(20·W1): o período de nutação dividido por 20. Fecha nos 17 Mach do M437. A nota antiga "não bate em Mach 0,01" (item A2) era leitura: o impresso é 0,7049, não 0,7649 (par 6/0).
 
@@ -319,7 +318,7 @@ Cada tabela de saída (pp. 29 a 68) está em `python/tabelas/`, com o cabeçalho
 
 **Convenções (Nomenclatura, pp. 7-8; Apêndice B, pp. 76-77).** Estilo NACA/BRL clássico: q̄ = ½ρV², A = πd²/4, referência d. CMα e o Magnus em torno do CG; CPN, CPF1 e CPF5 em calibres do nariz; derivadas por sen ᾱ; Magnus, Cmq e Clp com **pd/2V e qd/2V** (as fontes modernas usam pd/V e qd/V, e dão a metade). O arrasto de guinada é CX2 + CNα (p. 15). Tudo isso está em `python/convencoes.py`, com testes.
 
-**O cartão C205 estava sem implementar.** A linha impressa `IF(CART.GT.0.0) CNPT=0.0` tinha ficado como dúvida de transcrição (T8). Nesta impressão o B sai como A ou P: a linha de cima traz "XA7" onde o código é XB7. A leitura é `IF(CNBT.GT.0.0) CNBT=0.0`, ou seja, a força normal do boattail não pode somar. Ela só age quando a ogiva é curta (CVNN < 0) no supersônico, que é exatamente o 5"/38 de Mach 1,75 a 5:
+**O cartão C205 estava sem implementar.** A linha tinha ficado como dúvida de transcrição (T8), porque os nomes de variável, como impressos, não existiam no trecho. Nesta impressão o B sai como A ou P: a linha de cima traz "XA7" onde o código é XB7. Relidos assim, os nomes são os da força normal do boattail, e a condição diz que ela não pode somar (se sair positiva, vale zero). Ela só age quando a ogiva é curta (CVNN < 0) no supersônico, que é exatamente o 5"/38 de Mach 1,75 a 5:
 
 | Tabela | CNα, CPN, CMα e CX2 no critério | |
 |---|---|---|

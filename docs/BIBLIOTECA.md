@@ -140,6 +140,7 @@ A correção não precisa cuidar das colunas derivadas. Depois de todas as corre
 | `spin73.nucleo` | equações, `tabela()`, `estabilidade()`, o cartão `Projetil` | **canônico**: é o programa |
 | `spin73.dados` | blocos `DATA` XA..XG, com a proveniência de cada valor | **canônico**: é o programa |
 | `spin73.aero` | `Aerodinamica`, a interface para simuladores | sem opções, canônico |
+| `spin73.programa` | o programa original como objetos (`SPIN73.de_coluna("CMA")`, `bloco.calcular(p)`) | documentação |
 | `spin73.convencoes` | saída na convenção moderna | adição: conversão exata |
 | `spin73.unidades` | entrada em unidades métricas | adição: conversão exata |
 | `spin73.massa` | estimativa de CG, massa e inércias | adição: muda entradas que faltavam |

@@ -169,7 +169,7 @@ By column, without the M1: Magnus, Cmq and Clp 97 to 100 % within ±0.5 unit; CX
 The last line checks the 12 table transcriptions without the model, using only the identities between printed columns; it currently finds no violations.
 
 ```bash
-python -m pytest -q python                  # 266 tests (and 3 skipped: columns not transcribed)
+python -m pytest -q python                  # 272 tests (and 3 skipped: columns not transcribed)
 python validation/comparacao_erros.py       # every case, cell by cell
 python python/tabelas/verificar_identidades.py 29 32 35 38 41 44 50 53 56 59 62 68
 ```
@@ -188,7 +188,7 @@ Whyte, R. H. *SPIN-73, an Updated Version of the SPINNER Computer Program*. Tech
 | 13 output tables | 29–68 | `python/tabelas/` (raw readings in `leituras/`) |
 | Appendix B: the input card | 76–77 | `spin73.Projetil` |
 | `DIMENSION` and the `DATA` blocks XA … XG | 79–81 | `python/spin73/dados/` |
-| The code | 84–86, transcribed verbatim | `original/listing_p84-86.f` |
+| The code | 84–86, read | described block by block, in our own words and notation, in `python/spin73/programa.py` and [docs/PROGRAMA_ORIGINAL.md](docs/PROGRAMA_ORIGINAL.md) (the listing itself is not reproduced) |
 
 **Where the readings came from.** DTIC's high-resolution scan (96 JP2 pages of about 2600 × 3400 px; not versioned, see [fontes/LEIAME.md](fontes/LEIAME.md)). Several earlier readings, made from a lower-resolution scan, were corrected on it (for example, the XM380E5 ogive: 2.400 → 2.900). The tools are in `ferramentas/`: `recorte.py` (rotated crops with zoom and autocontrast), `pagina_pdf.py` (CCITT pages from scanned PDFs) and `pdf_paginas.py` with `jbig2.py` (DTIC "MRC" PDFs, which store the text in a JBIG2 mask; the decoder is pure Python).
 
@@ -271,8 +271,7 @@ None of this changes the reconstructed program.
 | `python/exemplos/` | Example input files |
 | `python/experimental/` | Comparisons with measurements: `benchmarks/`, `correcao/`, `massa/`, `hitchcock/` and the 7.62 NATO recalibration — **kept separate** from the reconstruction |
 | `validation/` | Every case in the report, run and compared cell by cell |
-| `original/` | Verbatim transcription of the Fortran listing (pp. 84–86) |
-| `docs/` | Transcription notes (every reading, with its evidence) and the library guide |
+| `docs/` | Transcription notes (every reading, with its evidence), the block-by-block map of the original program and the library guide |
 | `ferramentas/` | Scan-reading tools: crops, PDF pages, JBIG2 decoder |
 | `fontes/` | The PDFs and the scan (not versioned; see `fontes/LEIAME.md`) |
 
@@ -281,6 +280,7 @@ None of this changes the reconstructed program.
 | `spin73.nucleo` | the equations, `tabela()`, `estabilidade()`, the `Projetil` input card | canonical |
 | `spin73.dados` | the `DATA` blocks XA…XG, with the provenance of each value | canonical |
 | `spin73.aero` | `Aerodinamica`: coefficients at any Mach number, for simulators | canonical without options |
+| `spin73.programa` | the original program as objects: each block's formulas, rules, sources, gaps and implementation (`spin73 --programa`) | documentation |
 | `spin73.convencoes` | report convention ↔ modern convention | addition |
 | `spin73.unidades` | inputs in metric units | addition |
 | `spin73.massa` | CG, mass and inertia estimate | addition |

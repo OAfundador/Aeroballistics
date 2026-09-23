@@ -25,3 +25,6 @@ dist/
 
 # estado local do Claude Code
 .claude/
+
+# Material privado (cópias literais do relatório): fica só na máquina local
+fontes/privado/

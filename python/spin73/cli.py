@@ -71,7 +71,13 @@ def main(argv=None):
                    help=f"pode repetir ({', '.join(_corr.disponiveis())}; "
                         "'voo_livre:CX0' para só um coeficiente)")
     ap.add_argument("--csv", help="grava todas as colunas neste arquivo CSV")
+    ap.add_argument("--programa", action="store_true",
+                    help="mostra o programa original bloco a bloco (spin73.programa) e sai")
     a = ap.parse_args(argv)
+    if a.programa:
+        from .programa import SPIN73
+        print(SPIN73.descrever())
+        return
 
     # camadas, da mais fraca para a mais forte: --exemplo, --entrada, opções da linha de
     # comando. Uma grandeza dada numa camada substitui a mesma grandeza das de baixo, em

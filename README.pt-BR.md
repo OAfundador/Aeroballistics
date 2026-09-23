@@ -167,7 +167,7 @@ Por coluna, sem o M1: Magnus, Cmq e Clp de 97 a 100 % dentro de ±0,5 unidade; C
 A última linha confere as 12 transcrições de tabela sem usar o modelo, só pelas identidades entre colunas impressas; hoje, nenhuma violação.
 
 ```bash
-python -m pytest -q python                  # 266 testes (e 3 pulados: colunas não transcritas)
+python -m pytest -q python                  # 272 testes (e 3 pulados: colunas não transcritas)
 python validation/comparacao_erros.py       # todos os casos, célula a célula
 python python/tabelas/verificar_identidades.py 29 32 35 38 41 44 50 53 56 59 62 68
 ```
@@ -186,7 +186,7 @@ Whyte, R. H. *SPIN-73, an Updated Version of the SPINNER Computer Program*. Tech
 | 13 tabelas de saída | 29–68 | `python/tabelas/` (leituras brutas em `leituras/`) |
 | Apêndice B: o cartão de entrada | 76–77 | `spin73.Projetil` |
 | `DIMENSION` e os blocos `DATA` XA … XG | 79–81 | `python/spin73/dados/` |
-| O código | 84–86 transcritas literalmente | `original/listing_p84-86.f` |
+| O código | 84–86 lidas | descrito bloco a bloco, com as nossas palavras e a nossa notação, em `python/spin73/programa.py` e [docs/PROGRAMA_ORIGINAL.md](docs/PROGRAMA_ORIGINAL.md) (o listing em si não é reproduzido) |
 
 **De onde a leitura veio.** Do scan em alta resolução da DTIC (96 páginas JP2 de cerca de 2600 × 3400 px; não versionado, ver [fontes/LEIAME.md](fontes/LEIAME.md)). Várias leituras antigas, feitas num scan de resolução menor, foram corrigidas nele (por exemplo, a ogiva do XM380E5: 2,400 → 2,900). As ferramentas estão em `ferramentas/`: `recorte.py` (recortes girados, com zoom e autocontraste), `pagina_pdf.py` (páginas CCITT de PDFs escaneados) e `pdf_paginas.py` com `jbig2.py` (PDFs "MRC" da DTIC, em que o texto fica numa máscara JBIG2; o decodificador é Python puro).
 
@@ -269,8 +269,7 @@ Nada disso altera o programa reconstruído.
 | `python/exemplos/` | Arquivos de entrada de exemplo |
 | `python/experimental/` | Comparações com medições: `benchmarks/`, `correcao/`, `massa/`, `hitchcock/` e a recalibração com a 7,62 NATO — **separado** da reconstrução |
 | `validation/` | Todos os casos do relatório rodados e comparados, célula a célula |
-| `original/` | Transcrição literal do listing Fortran (pp. 84–86) |
-| `docs/` | Notas de transcrição (cada leitura, com a evidência) e o guia da biblioteca |
+| `docs/` | Notas de transcrição (cada leitura, com a evidência), o mapa do programa original bloco a bloco e o guia da biblioteca |
 | `ferramentas/` | Leitura dos scans: recortes, páginas de PDF, decodificador JBIG2 |
 | `fontes/` | Os PDFs e o scan (não versionados; ver `fontes/LEIAME.md`) |
 
@@ -279,6 +278,7 @@ Nada disso altera o programa reconstruído.
 | `spin73.nucleo` | equações, `tabela()`, `estabilidade()`, o cartão `Projetil` | canônico |
 | `spin73.dados` | blocos `DATA` XA…XG, com a proveniência de cada valor | canônico |
 | `spin73.aero` | `Aerodinamica`: coeficientes em qualquer Mach, para simuladores | canônico sem opções |
+| `spin73.programa` | o programa original como objetos: fórmulas, regras, fontes, lacunas e implementação de cada bloco (`spin73 --programa`) | documentação |
 | `spin73.convencoes` | convenção do relatório ↔ moderna | adição |
 | `spin73.unidades` | entradas em unidades métricas | adição |
 | `spin73.massa` | estimativa de CG, massa e inércias | adição |

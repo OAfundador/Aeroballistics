@@ -8,6 +8,7 @@ Canônico (o programa de 1973):
 
 - `spin73/nucleo.py` — as equações (seguindo o código Fortran onde ele foi transcrito), a análise de estabilidade, `tabela()`, `formatar()`, `avisos()` e o cartão de entrada `Projetil`.
 - `spin73/dados/` — os blocos `DATA`, cada um com a leitura, as células decididas e a evidência (`xa_lidos.py` … `xf_lidos.py`); `__init__.py` monta o conjunto e registra a situação de cada bloco.
+- `spin73/programa.py` — o programa original descrito como objetos, bloco a bloco, com as nossas palavras (gera `docs/PROGRAMA_ORIGINAL.md`).
 
 Adições opcionais (nenhuma é aplicada sem ser pedida):
 

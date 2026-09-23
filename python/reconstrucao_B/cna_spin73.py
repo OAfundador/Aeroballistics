@@ -7,7 +7,7 @@ from ajustar_B import regressores
 
 def cna_j(VL, VN, VB, OR, j, XB=XB):
     """CNα no ponto j da grade. Cartão C205: a parcela do boattail (B7..B9) não pode ser
-    positiva -- IF(CNBT.GT.0.0) CNBT=0.0."""
+    positiva (se sair positiva, vale zero)."""
     x = np.array(regressores(VL, VN, VB, OR, MACH[j]))
     return float(x[:6] @ XB[:6, j] + min(x[6:] @ XB[6:, j], 0.0))
 

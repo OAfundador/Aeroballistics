@@ -8,10 +8,11 @@ Picatinny Arsenal TR 4588, nov. 1973 (DTIC AD0915628, Distribution A).
 O programa estima os coeficientes aerodinâmicos de um projétil estabilizado por
 rotação a partir da geometria, em 17 números de Mach, e faz a análise de estabilidade.
 
-Onde o código Fortran já foi transcrito (original/listing_p84-86.f), as equações seguem o
-CÓDIGO, que é o que gerou as tabelas de 1973; onde ainda não foi, seguem o texto do
-relatório (pp. 13-18). Cada divergência entre os dois está marcada no ponto em que ocorre
-e registrada em docs/NOTAS_TRANSCRICAO.md.
+Onde o código Fortran foi lido (pp. 84-86 do listing), as equações seguem o CÓDIGO, que é
+o que gerou as tabelas de 1973; onde não foi, seguem o texto do relatório (pp. 13-18). Cada
+divergência entre os dois está marcada no ponto em que ocorre e registrada em
+docs/NOTAS_TRANSCRICAO.md. O mapa do programa original, bloco a bloco e com as nossas
+palavras, está em spin73/programa.py (e docs/PROGRAMA_ORIGINAL.md).
 
 Este é o núcleo: o programa de 1973, sem correções. A interface para simuladores
 (Aerodinamica, convenções, correções opcionais) está em spin73/aero.py.
@@ -45,7 +46,7 @@ import numpy as np
 MACH_GRID = np.array([0.01, 0.6, 0.8, 0.9, 0.95, 1.0, 1.05, 1.1, 1.2,
                       1.35, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0])
 N_MACH = MACH_GRID.size
-J_SUPERSONICO = 4        # listing C189: IF(J.GE.5) com J a partir de 1 -> Mach 0,95
+J_SUPERSONICO = 4        # listing C189: expoente supersônico a partir do 5º Mach da grade (0,95)
 
 G_FT = 32.174            # ft/s², conversões de peso e inércia
 K_ESTAB = 1352.4         # constante do fator giroscópico no listing (cartão C241)
@@ -191,10 +192,10 @@ def normal_e_momento(p: Projetil, k: CoefAjuste, j: int) -> dict:
     CNAB = (B[0] + B[1] * CVNN + B[2] * CXLL + B[3] * CCRT
             + B[4] * CVNN ** 2 + B[5] * CXLL ** 2)
     CNBT = B[6] * VBNP + B[7] * VBX * CVNN + B[8] * VBX * CXLL
-    # Cartão C205, ausente do texto: IF(CNBT.GT.0.0) CNBT=0.0 -- a força normal do
-    # boattail não pode somar. Impresso "IF(CART.GT.0.0) CNPT=0.0" (B sai como A/P nesta
-    # impressão). Só age com ogiva curta (CVNN < 0) no supersônico; é o que tirava o 5"/38
-    # 0,014 fora no CNα de Mach 1,75 a 5 (NOTAS, T15).
+    # Cartão C205, ausente do texto: a força normal do boattail não pode somar (se sair
+    # positiva, vale zero). No scan, os nomes dessa linha saem com o B lido como A ou P.
+    # Só age com ogiva curta (CVNN < 0) no supersônico; é o que tirava o 5"/38 0,014 fora
+    # no CNα de Mach 1,75 a 5 (NOTAS, T15).
     if CNBT > 0.0:
         CNBT = 0.0
     CNAT = CNAB + CNBT
@@ -245,14 +246,12 @@ def magnus(p: Projetil, k: CoefAjuste, j: int) -> dict:
 def coef_polinomio_magnus(cnpa1: float, cnpa5: float) -> tuple[float, float]:
     """Colunas impressas CNPA3 e CNPA5 ("coeficientes do polinômio" de Magnus).
 
-    Código, cartões C278-C281:
-        XMAG1 = CNPAA5 - CNPA            (momento a 5° menos o a 1°)
-        XMAG2 = CNPAA5 - CNPA + 0.3
-        CNPA5 = (XMAG2 - 9.0*XMAG1)/0.0072
-        CNPA3 = (XMAG1 - CNPA5*.0001)/0.01
+    Código, cartões C278-C281. Com D = CNPA(5°) − CNPA(1°):
+        CNPA5P = ((D + 0,3) − 9·D)/0,0072
+        CNPA3  = (D − 0,0001·CNPA5P)/0,01
     As constantes são as de um polinômio f(δ) = C1 + C3·δ² + C5·δ⁴ avaliado em δ = 0,1 e
-    0,3. Mas o XMAG2 não usa o valor a 2° (CNPAA2, calculado nos cartões C224-C227 e nunca
-    usado): é o XMAG1 mais uma constante. Por isso as duas colunas impressas carregam UM
+    0,3. Mas o segundo ponto não usa o valor a 2° (calculado nos cartões C224-C227 e nunca
+    usado): é D mais uma constante. Por isso as duas colunas impressas carregam UM
     único grau de liberdade e obedecem a CNPA3 + 0,1·CNPA5 = 3,75 em qualquer projétil --
     identidade que as tabelas de 1973 confirmam linha a linha. Defeito do original,
     mantido. Nos arquivos, "CNPA5P" é esta coluna e "CNPA5" é o CNPA*5 (valor a 5°).
@@ -329,8 +328,8 @@ def estabilidade(p: Projetil, MACH, CX, CNA, CMA, CNPA, CNPA5, CMQ, CLP,
     passo_in = p.TWIST * p.DGUN                            # uma volta, em polegadas
     P = V * 2.0 * math.pi / (passo_in / 12.0)              # rad/s
 
-    # Cartão C241: STAB = 1352.4*XY*TT/(IR*RHO*FC*CMA). Com Ix, Iy em lb·in² e
-    # comprimentos em polegadas, é  s_g = 1352,4·Ix²/(ρ·Iy·CMα·passo²·d³).
+    # Cartão C241: com Ix, Iy em lb·in² e comprimentos em polegadas, o código calcula
+    #   s_g = 1352,4·Ix²/(ρ·Iy·CMα·passo²·d³).
     # A fórmula física com g = 32,174 daria 1349,8 no lugar de 1352,4: a diferença,
     # +0,19 %, é o "viés de s_g" que ficou em aberto até o código ser lido.
     sg = K_ESTAB * p.IX ** 2 / (rho * p.IY * CMA * passo_in ** 2 * p.DIA ** 3)
@@ -361,9 +360,9 @@ def estabilidade(p: Projetil, MACH, CX, CNA, CMA, CNPA, CNPA5, CMQ, CLP,
 
     # Cartão C266: período de nutação dividido por 20 (passo de integração sugerido).
     DELT = 6.28 / (W1 * 20.0)
-    # Cartão C256: DISP = ((CNAT-CX0)*TH*(W1-W2)*3.635)/(CMA*WGT*DIA*VEL), com TH = Iy em
+    # Cartão C256: DISP = (CNα − CX)·Iy·(ω₁ − ω₂)·3,635/(CMα·peso·diâmetro·V), com Iy em
     # lb·in². A referência 71 do relatório (Whyte 1970), que explicaria a grandeza, não
-    # está disponível; a fórmula é reproduzida como está no código.
+    # está disponível; a fórmula é a do código.
     DISP = (CNA - CX) * p.IY * (W1 - W2) * 3.635 / (CMA * p.WGT * p.DIA * V)
 
     out = dict(MACH=MACH, GYRO=sg, SBAR=sd, RECIP=recip, SBAR5=sd5,
