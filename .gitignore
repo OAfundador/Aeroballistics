@@ -14,3 +14,6 @@ trabalho/
 # Documentos internos das sessões de trabalho (ficam só na pasta local)
 docs/CONTEXTO_CLAUDE_CODE.md
 docs/AVALIACAO_FASE8.md
+
+# PDFs de referência (disponíveis na DTIC)
+fontes/*.pdf

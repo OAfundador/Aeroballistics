@@ -6,14 +6,16 @@ Pillow decodifica direto.
 
     python ferramentas/pagina_pdf.py 25 saida.png [caminho_do_pdf]
 
+Sem o terceiro argumento, usa fontes/BRL620_Hitchcock.pdf (ver fontes/LEIAME.md).
+
 O número é a página do PDF, não a impressa. No BRL 620 (AD-800 469, Hitchcock) a
 página impressa é a do PDF menos 5.
 """
-import io, re, struct, sys, zlib
+import io, os, re, struct, sys, zlib
 from PIL import Image
 
-PDF_PADRAO = ("C:/Users/DELL/Downloads/"
-              "pdfcoffee.com_aerodynamic-data-for-spinning-projectiles-pdf-pdf-free.pdf")
+PDF_PADRAO = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                          "fontes", "BRL620_Hitchcock.pdf")
 PDF = sys.argv[3] if len(sys.argv) > 3 else PDF_PADRAO
 d = open(PDF, "rb").read()
 objs = {int(m.group(1)): m.group(2) for m in re.finditer(rb"(\d+)\s+0\s+obj(.*?)endobj", d, re.S)}
