@@ -25,7 +25,7 @@ from .cli import main as _main
 from .nucleo import *                                   # noqa: F401,F403
 from .nucleo import __all__ as _nucleo_all
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 __all__ = ["Aerodinamica", "Coeficientes", "convencoes", "correcoes", "dados", "nucleo",
            *_nucleo_all]

@@ -29,9 +29,33 @@ def test_identidade_confere_transcricao_e_convencoes(ls):
     assert n >= 70 and len(ruins) <= 2, ruins
 
 
-def test_seis_grupos_em_todos_os_coeficientes(ls):
-    for c in ("CX0", "CNA", "CMA"):
-        assert {l["grupo"] for l in ls if l["coef"] == c} == set(aj.GRUPOS)
+def test_grupos_em_cada_coeficiente(ls):
+    """Todos os grupos no CX0; o T203 (OR não cotado) só no CX0."""
+    assert {l["grupo"] for l in ls if l["coef"] == "CX0"} == set(aj.GRUPOS)
+    for c in ("CNA", "CMA"):
+        assert {l["grupo"] for l in ls if l["coef"] == c} == set(aj.GRUPOS) - {"t203"}
+
+
+def test_fontes_novas_pela_identidade():
+    """7,62 match e 30 mm: CMα = (CPN − CG)·(CLα + CD) com os valores de cada rodada, a 2 %.
+    Pega dígito mal lido e CG trocado entre projéteis."""
+    por = {}
+    for l in dados.linhas():
+        if l["grupo"] in ("762m", "30"):
+            por.setdefault((l["proj"], round(l["M"], 4)), {})[l["coef"]] = l
+    n = 0
+    for d in por.values():
+        if all(c in d for c in ("CMA", "CPN", "CNA")):
+            n += 1
+            prev = (d["CMA"]["geo"]["VCG"] - d["CPN"]["med"]) * d["CNA"]["med"]
+            assert abs(prev / d["CMA"]["med"] - 1) < 0.02, d["CMA"]["proj"]
+    assert n >= 70
+
+
+def test_t203_cx0_perto_do_spin73(ls):
+    """O T203 é o M437 em desenvolvimento, e o SPIN-73 foi calibrado nessa família: CX0 a 5 %."""
+    L = [l for l in ls if l["grupo"] == "t203"]
+    assert len(L) >= 12 and all(abs(l["med"] / l["spin"] - 1) < 0.05 for l in L)
 
 
 def test_reynolds_nulo_na_escala_de_referencia():

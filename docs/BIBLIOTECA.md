@@ -60,6 +60,8 @@ Os momentos são em torno do CG que está no `Projetil` (`VCG`, em calibres a pa
 
 `aero.descrever()` diz o que foi aplicado; `aero.tabela_original` guarda a saída sem correção, para comparar.
 
+Nem toda peça da correção de voo livre é igualmente firme. `correcoes.VooLivre().validacao()` devolve, por coeficiente e regime, o erro nos grupos de projéteis deixados de fora e `pior_razao`, o quanto o grupo mais prejudicado piorou (a regra de aceitação corta em 2). O **CX0** é a peça robusta: melhora 7 de 9–10 grupos nos três regimes e nenhum piora mais que 1,5×. As outras peças aceitas passaram perto do limite, e por isso `"voo_livre:CX0"` é a escolha conservadora.
+
 ## Escrever uma correção nova
 
 Uma correção é qualquer objeto com `nome` e `aplicar(t, p, ctx)`. `t` é a tabela na convenção do SPIN-73: um array de 17 valores por coluna, nas colunas de `spin73.tabela`. `ctx.d_mm` é o diâmetro real, quando existir.

@@ -3,28 +3,41 @@
 O SPIN-73 reconstruído reproduz o programa de 1973, erros incluídos. Aqui ele é corrigido com medições de túnel balístico, **sem alterar o programa**: a correção parte da tabela do SPIN-73 e ajusta o que os dados mostram que dá para ajustar.
 
 ```
-python experimental/correcao/ajuste.py      # valida, ajusta e grava correcao_ajustada.json
+python experimental/correcao/ajuste.py      # valida, ajusta e grava python/spin73/correcoes/voo_livre.json
 ```
 
+O ajuste fica aqui; a aplicação está na biblioteca, como correção opcional (desligada por padrão):
+
 ```python
-import aplicar                                       # experimental/correcao/aplicar.py
-t = aplicar.tabela_corrigida(p, d_mm=5.69)           # p: spin73.Projetil; d_mm: diâmetro real
+import spin73
+aero = spin73.Aerodinamica(p, "voo_livre", d_mm=5.69)        # tudo o que foi aceito
+aero = spin73.Aerodinamica(p, "voo_livre:CX0", d_mm=5.69)    # só o arrasto (a peça robusta)
 ```
+
+`aplicar.py` continua existindo como atalho (`aplicar.tabela_corrigida(p, d_mm)`).
 
 ## Dados
 
-`dados.py` junta seis grupos de projéteis, com 810 valores medidos, todos convertidos para a convenção do SPIN-73 (pd/2V, qd/2V, CNα e não CLα, CPN a partir do nariz, CX0 a guinada zero):
+`dados.py` junta dez grupos de projéteis, com 1391 valores medidos, todos convertidos para a convenção do SPIN-73 (pd/2V, qd/2V, CNα e não CLα, CPN a partir do nariz, CX0 a guinada zero):
 
-| Grupo | Projéteis | Fonte | Diâmetro |
-|---|---|---|---|
-| 762 | M-80, M-59, M-61, M-62 | BRL MR 1833 (Piddington 1967) | 7,82 mm |
-| 556b | SS-109, M855 | BRL-MR-3476 (McCoy 1985) | 5,69 mm |
-| 556t | L110, M856 (traçantes apagados) | idem | 5,69 mm |
-| 50 | .50 Ball M33 | BRL-MR-3810 (McCoy 1990) | 12,95 mm |
-| m101 | 155 mm M101 | BRL MR 1582 (Karpov 1964) | 155 mm |
-| m483 | 155 mm M483A1 | BRL-CR-659 (Whyte 1991) | 154,7 mm |
+| Grupo | Projéteis | Fonte | Diâmetro | Forma |
+|---|---|---|---|---|
+| 762 | M-80, M-59, M-61, M-62 | BRL MR 1833 (Piddington 1967) | 7,82 mm | ogiva-cilindro-boattail |
+| 556b | SS-109, M855 | BRL-MR-3476 (McCoy 1985) | 5,69 mm | idem |
+| 556t | L110, M856 (traçantes apagados) | idem | 5,69 mm | longos, base arredondada |
+| 50 | .50 Ball M33 | BRL-MR-3810 (McCoy 1990) | 12,95 mm | boattail longo |
+| m101 | 155 mm M101 | BRL MR 1582 (Karpov 1964) | 155 mm | granada, cinta |
+| m483 | 155 mm M483A1 | BRL-CR-659 (Whyte 1991) | 154,7 mm | ogiva composta |
+| 762m | M118, 190 gr e 168 gr Sierra | BRL-MR-3733 (McCoy 1988) | 7,82 mm | match, boattail de 9,5° a 13° |
+| 30 | XM788, XM788E1, XM789 | ARBRL-MR-03019 (McCoy 1980), ARBRL-TR-03432 (1982) | 29,92 mm | curtos (3,5 cal), ponta cônica, base sem boattail |
+| t203 | 175 mm T203, modelo de 90 mm (só CX0) | BRL MR 956 (Karpov 1955) | 90 mm | a forma do M437 |
+| xm617 | 152 mm XM617 | BRL MR 1998 (Brandon 1969) | 152 mm | **cone-cilindro**, base reta |
 
-**Conferência da transcrição e das conversões:** CMα = (VCG − CPN)·CNα fecha em 74 de 76 rodadas usando só valores medidos. Isso pega um CLα tomado por CNα, um CPN medido da base tratado como do nariz ou um dígito mal lido. As duas exceções são da 7,62, que a fonte já dá com dispersão de 0,02 pol. no CG.
+**Conferência da transcrição e das conversões:** CMα = (VCG − CPN)·CNα fecha em 152 de 154 rodadas usando só valores medidos (e as rodadas do 7,62 match e do 30 mm, a 2 %). Isso pega um CLα tomado por CNα, um CPN medido da base tratado como do nariz ou um dígito mal lido. As duas exceções são da 7,62 NATO, que a fonte já dá com dispersão de 0,02 pol. no CG. O XM617 fica fora dessa conta: a própria fonte fecha com o CG 0,022 cal atrás do CG do esquema (ver o CSV).
+
+**Arrasto de guinada:** vem da fonte em todos os grupos novos — como número (5,56; T203; XM617) ou lido de gráfico (7,62 match, 30 mm). Com CDδ² de gráfico ou só médio, o CX0 só é tirado de rodadas com guinada até 5°. Na .50 e no M101, vem do próprio SPIN-73 (CX2 + CNα).
+
+**O que ficou de fora e por quê:** a versão de base reta do T203 e o CMα/CNα do T203 (raio de ogiva não cotado; o CX0 do modelo com boattail muda no máximo 2 % com ele), rodadas acima de 10,5° de guinada (o coeficiente deixa de ser linear), o .22 LR (base com degrau), o 105 mm M1 (ogiva não cotada) e o 20 mm Navy (só gráficos). Detalhes em `fontes/LEIAME.md` e nos cabeçalhos dos CSV.
 
 ## O que a correção pode usar
 
@@ -48,38 +61,38 @@ O critério 3 foi acrescentado depois de ver o Cmq transônico. Ele passava em 1
 
 ## Resultado (`resultado_correcao.txt`)
 
-Erro de predição em grupos **não vistos**: RMS por grupo, média entre grupos.
+Erro de predição em grupos **não vistos**: RMS por grupo, média entre grupos. "Pior" é a maior razão entre o erro corrigido e o do SPIN-73 num grupo deixado de fora (o critério 3 rejeita acima de 2).
 
-| Coeficiente | Regime | SPIN-73 | Corrigido | Grupos que melhoram | Decisão |
-|---|---|---|---|---|---|
-| CX0 | subsônico | 19,5 % | **15,4 %** | 4/6 | aceita |
-| CX0 | transônico | 12,7 % | **10,5 %** | 4/6 | aceita |
-| CX0 | supersônico | 7,5 % | **6,0 %** | 4/6 | aceita |
-| CNα | subsônico | 15,1 % | **10,2 %** | 4/6 | aceita |
-| CNα | transônico | 9,3 % | **7,2 %** | 5/6 | aceita |
-| CNα | supersônico | 8,7 % | 8,7 % | 0/6 | nenhuma forma ajuda |
-| CPN (derivado) | subsônico | 0,36 cal | 0,30 cal | 2/5 | consequência |
-| CPN (derivado) | transônico | 0,32 cal | **0,28 cal** | 5/6 | consequência |
-| CMα | todos | 11–13 % | pior | 0/6 | rejeitada |
-| Cmq | transônico | 87 % | 75 % | 4/6 | rejeitada (critério 3) |
-| Cmq | sub, supersônico | — | pior | 0–1 | rejeitada |
-| Magnus | todos | — | pior ou igual | ≤ 3/6 | rejeitada |
+| Coeficiente | Regime | SPIN-73 | Corrigido | Grupos que melhoram | Pior | Decisão |
+|---|---|---|---|---|---|---|
+| CX0 | subsônico | 19,3 % | **15,1 %** | 7/9 | 1,46 | aceita |
+| CX0 | transônico | 10,7 % | **8,2 %** | 7/10 | 1,43 | aceita |
+| CX0 | supersônico | 6,6 % | **4,8 %** | 7/10 | 1,21 | aceita |
+| CNα | subsônico | 13,2 % | 10,7 % | 5/9 | 1,97 | aceita, no limite |
+| CNα | transônico | 11,2 % | 9,8 % | 7/9 | 2,01 | rejeitada, no limite |
+| CNα | supersônico | 8,3 % | 8,8 % | 0/9 | | rejeitada |
+| CMα | todos | 10–12 % | pior | 0–3/9 | | rejeitada |
+| Cmq | transônico | 90 % | 72 % | 6/9 | 1,41 | aceita |
+| Cmq | sub, supersônico | 205 %, 24 % | pior | 0–1 | | rejeitada |
+| Magnus | todos | | pior no sub e no supersônico | ≤ 5/9 | ≥ 1,7 | rejeitada |
+| CPN (derivado) | subsônico | 0,28 cal | 0,26 cal | 4/8 | | consequência |
 
-Modelo final, ajustado nos seis grupos:
+Modelo final, ajustado nos dez grupos:
 
-- **CX0, comprimento de referência do atrito:** 0,10 m no subsônico, 0,33 m no transônico e 0,40 m no supersônico, entre os 20 mm e os 155 mm da base de dados do SPIN-73. Uma bala de 5,56 mm recebe cerca de +0,02 no CX0 em qualquer regime; uma granada de 155 mm, −0,017 no subsônico e −0,002 a −0,005 do transônico em diante.
-- **CNα subsônico:** × (1 + 0,150 − 0,147·log₁₀(d/10 mm)), ou seja, +19 % a 5,56 mm e −2,5 % a 155 mm.
-- **CNα transônico:** × 1,058.
+- **CX0, comprimento de referência do atrito:** 0,20 m no subsônico, 0,68 m no transônico e 0,82 m no supersônico. Uma bala de 5,56 mm recebe +0,020 a +0,027 no CX0; um 30 mm, +0,005 a +0,011; uma granada de 155 mm, −0,010 no subsônico e praticamente nada do transônico em diante.
+- **CNα subsônico:** × (1 + 0,121 − 0,116·log₁₀(d/10 mm)): +15 % a 5,69 mm, −2 % a 155 mm.
+- **Cmq transônico:** × (1 − 0,743 + 0,667·log₁₀(d/10 mm)): o amortecimento cai a 10–20 % do SPIN-73 nas armas portáteis, a 57 % no 30 mm e fica igual (+5 %) no 155 mm.
 
 ## Leitura
 
-- **O arrasto é onde a correção rende**, e por uma razão física identificável: o SPIN-73 não sabe o tamanho do projétil. Ele subestima o CX0 das armas portáteis em 10–20 % no subsônico e superestima o dos 155 mm, exatamente o sinal da lei de atrito.
-- **CMα e Magnus não se corrigem com escala.** Os erros deles são próprios de cada forma: CMα da .50 +27 %, 7,62 subsônica −31 %. Com seis grupos, uma correção por forma não se distingue de ruído, e a validação cruzada mostra isso: todas as tentativas pioram os grupos não vistos. Corrigir essas colunas exige mais variedade de formas, não mais rodadas das mesmas.
-- **O Cmq é dominado pela dispersão experimental** (o erro provável do próprio SPIN-73, na Tabela 1 do relatório, é de 3,0 unidades). No transônico, as armas portáteis pedem um amortecimento bem menor que o do SPIN-73, na mesma direção do fator 0,4 que a 7,62 já tinha dado. Os 155 mm discordam entre si.
-- **O que continua fora:** o grupo .50 piora no CNα transônico (8,5 % → 16,4 %), e os traçantes de 5,56 mm pioram no CX0 subsônico (28 % → 34 %; a base arredondada deles não é o tronco de cone que o SPIN-73 supõe).
+- **O arrasto é onde a correção rende, e é a única peça firme.** O SPIN-73 não sabe o tamanho do projétil: subestima o CX0 das armas portáteis e do 30 mm (no subsônico, até 16 % no 30 mm, 19 % no 7,62 match e 33 % no M855) e superestima o dos 155 mm, exatamente o sinal da lei de atrito. Com os grupos novos, a correção passou de melhorar 4 de 6 grupos para 7 de 9–10, e nenhum grupo piora mais que 1,5×.
+- **As outras peças estão no limite da regra.** Com seis grupos, o CNα sub e transônico eram aceitos; com oito, o subsônico caiu (o 7,62 match, do mesmo calibre do 7,62 NATO e de outra forma, dobrava o erro); com dez, voltou por 1,97× e o transônico caiu por 2,01×. O Cmq transônico foi rejeitado com seis grupos e aceito com oito e com dez. A regra não foi mudada depois de ver isso; a margem fica registrada no JSON (`pior_razao`), e `"voo_livre:CX0"` é a escolha conservadora na biblioteca.
+- **CMα e Magnus não se corrigem com escala.** Os erros são próprios de cada forma: no supersônico, CMα 9 a 14 % baixo no 7,62 match e 21 % na .50, e a 1–2 % no 152 mm cone-cilindro e no T203. Nenhuma correção por escala ajuda, e mais formas (dez grupos agora) não mudaram isso.
+- **O Cmq e o Magnus subsônicos das armas portáteis e do 30 mm** são não lineares na própria fonte (Cmq medido positivo a pequena guinada; coeficientes cúbicos), algo que um coeficiente linear não representa.
 
 ## Limites
 
-- Seis grupos, quatro diâmetros distintos: a correção de escala foi ajustada entre 5,69 e 155 mm e não deve ser extrapolada fora disso.
+- Dez grupos, sete diâmetros distintos: a correção de escala foi ajustada entre 5,69 e 155 mm e não deve ser extrapolada fora disso.
 - **Hipóteses nas entradas:** o meplat das balas de 5,56 mm (DM = 0,12) não está cotado; o raio de ogiva da 7,62 (9,74 cal) é incerto; os boattails arredondados dos traçantes entram como tronco de cone.
-- **Arrasto de guinada:** para 5,56 mm vem da fonte; para .50 e M101, do próprio SPIN-73 (CX2 + CNα). Nas guinadas dessas rodadas, o efeito é de 1 a 3 % no CX0.
+- **Hipóteses nas entradas (grupos novos):** 30 mm com a ponta cônica de 17° dentro do comprimento de ogiva (o SPIN-73 só descreve ogiva + meplat) e base arredondada como base reta; cintas do 30 mm com BD = 1,02 (não cotadas); T203 com OR, DM e BD do cartão do M437.
+- **Arrasto de guinada:** ver "Dados". Na .50 e no M101 vem do próprio SPIN-73 (CX2 + CNα); nas guinadas dessas rodadas, o efeito é de 1 a 3 % no CX0.

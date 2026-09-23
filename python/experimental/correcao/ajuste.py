@@ -25,7 +25,7 @@ generaliza: erro médio menor que o do SPIN-73, melhora em mais da metade dos gr
 grupo com o erro mais que dobrado (ver aceita()). O CPN
 não é corrigido à parte: sai de CMα e CNα corrigidos (CPN = VCG − CMα/CNα).
 
-Validação: os seis grupos de projéteis (dados.py) são deixados de fora um de cada vez. A
+Validação: os grupos de projéteis (dados.py) são deixados de fora um de cada vez. A
 ESCOLHA do atributo também é feita sem o grupo de fora (validação cruzada aninhada), então
 o erro de predição medido é o de um projétil que o ajuste nunca viu. Cada grupo pesa o
 mesmo no ajuste e na métrica, para que as 45 rodadas do M101 não dominem as 16 da .50.
@@ -48,7 +48,7 @@ from spin73.correcoes import reynolds as rn             # noqa: E402
 from spin73.correcoes.voo_livre import ARQUIVO as ARQUIVO_JSON   # noqa: E402
 
 REGIMES = [("subsônico", 0.0, 0.9), ("transônico", 0.9, 1.25), ("supersônico", 1.25, 9.0)]
-GRUPOS = ["762", "556b", "556t", "50", "m101", "m483"]
+GRUPOS = ["762", "556b", "556t", "50", "m101", "m483", "762m", "30", "t203", "xm617"]
 TIPO = {"CX0": "rel", "CNA": "rel", "CMA": "rel", "CMQ": "rel", "CNPA": "abs", "CPN": "abs"}
 # Coeficientes que a correção aplica. O CPN não: sai de CMα e CNα corrigidos (CPN = VCG − CMα/CNα),
 # para que os três fiquem coerentes; ele só é validado, para mostrar o que acontece com ele.
@@ -183,8 +183,9 @@ def aceita(base, corr, det):
 
 def ajuste_final(ls, validacao=None):
     """Com todos os grupos: só (coeficiente, regime) aceitos pela validação cruzada aninhada;
-    o atributo é escolhido por validação cruzada nos seis grupos e os coeficientes, ajustados
-    em todos."""
+    o atributo é escolhido por validação cruzada em todos os grupos e os coeficientes, ajustados
+    em todos. 'pior_razao' registra a margem: o maior erro corrigido/erro do SPIN-73 entre os
+    grupos deixados de fora (a regra (3) corta em 2)."""
     validacao = validacao or {c: validar(ls, c) for c in APLICADOS}
     final = {}
     for c in APLICADOS:
@@ -196,10 +197,12 @@ def ajuste_final(ls, validacao=None):
             L = [l for l in ls if l["coef"] == c and a <= l["M"] < b]
             gs = [g for g in GRUPOS if any(l["grupo"] == g for l in L)]
             atr, cands = escolher(L, tipo, gs, candidatos(c)) if ok else (None, {})
+            pior = max((ec / eb for eb, ec, _ in det.values() if eb > 0), default=float("nan"))
             final[c][reg] = dict(tipo=tipo, atributo=atr,
                                  coef=list(ajustar(L, tipo, atr)) if atr else None,
                                  validacao=dict(spin73=round(base, 4), corrigido=round(corr, 4),
-                                                grupos=n, grupos_que_melhoram=melhora, aceita=ok))
+                                                grupos=n, grupos_que_melhoram=melhora, aceita=ok,
+                                                pior_razao=round(pior, 3)))
     return final
 
 
@@ -281,7 +284,8 @@ def main():
     print("Correção empírica do SPIN-73 — validação cruzada deixando um grupo de fora (aninhada)")
     print("Erro = RMS por grupo, média entre grupos; relativo ao SPIN-73 (%) para CX0, CNα, CMα, Cmq;")
     print("absoluto para Magnus (pd/2V) e CPN (cal). 'corrigido' = predição para o grupo deixado de")
-    print("fora, com atributo e coeficientes ajustados só nos outros cinco.\n")
+    print("fora, com atributo e coeficientes ajustados só nos outros grupos. 'pior' = maior razão")
+    print("corrigido/SPIN-73 entre os grupos deixados de fora (a regra rejeita acima de 2).\n")
     val = {}
     for c, tipo in TIPO.items():
         val[c] = validar(ls, c)
@@ -291,9 +295,10 @@ def main():
             if n == 0:
                 continue
             ok, melhora = aceita(b, cc, det)
+            pior = max(ec / eb for eb, ec, _ in det.values() if eb > 0)
             marca = ("ACEITA" if ok else "rejeitada") if c in APLICADOS else "(correção direta, não usada)"
             print(f"{c:5s} {reg:12s} grupos {n}  SPIN-73 {b * esc:7.2f}{un:3s} corrigido {cc * esc:7.2f}{un:3s}"
-                  f"  melhora em {melhora}/{n}   {marca}")
+                  f"  melhora em {melhora}/{n}  pior {pior:4.2f}  {marca}")
     final = ajuste_final(ls, {c: val[c] for c in APLICADOS})
     print("\nCPN derivado (VCG − CMα/CNα, com as correções aceitas refeitas sem o grupo de fora):")
     for reg, (b, cc, n, det) in cpn_derivado(ls, final).items():

@@ -6,6 +6,10 @@ correções que a validação cruzada deixando um grupo de projéteis de fora ac
 
     CX0  atrito de parede com o número de Reynolds (AtritoReynolds), nos três regimes
     CNα  viés no sub e no transônico (ViesEmpirico)
+    Cmq  viés no transônico (ViesEmpirico)
+
+O CX0 é a peça robusta. As outras passaram perto do limite da regra de aceitação (ver
+validacao(), campo pior_razao); VooLivre(coeficientes=("CX0",)) é a escolha conservadora.
 
 As peças são independentes e podem ser usadas separadas:
 

@@ -1,6 +1,6 @@
 """Base comum de dados de voo livre, na convenção do SPIN-73, para a correção empírica.
 
-Junta as seis fontes de túnel balístico já transcritas e converte cada coeficiente para a
+Junta as fontes de túnel balístico já transcritas e converte cada coeficiente para a
 normalização do SPIN-73 (python/convencoes.py): pd/2V e qd/2V, CNα (não CLα), CPN em
 calibres do NARIZ, CX0 a guinada zero. Cada linha traz também o valor do SPIN-73
 reconstruído no mesmo Mach, com a geometria da fonte.
@@ -13,6 +13,10 @@ não "valide" o outro):
     50    .50 Ball M33                          BRL-MR-3810 (McCoy 1990)
     m101  155 mm M101                           BRL MR 1582 (Karpov 1964)
     m483  155 mm M483A1                         BRL-CR-659 (Whyte 1991)
+    762m  7,62 match, M118/190 Sierra/168 Sierra  BRL-MR-3733 (McCoy 1988)
+    30    30 mm XM788, XM788E1 (TP), XM789      ARBRL-MR-03019 (McCoy 1980), ARBRL-TR-03432 (1982)
+    t203  175 mm T203, modelo de 90 mm (só CX0)  BRL MR 956 (Karpov 1955)
+    xm617 152 mm XM617, cone-cilindro            BRL MR 1998 (Brandon 1969)
 
     linhas() -> lista de dicts: grupo, proj, geo (Projetil), M, coef, med, spin
 """
@@ -61,13 +65,52 @@ GEO = {
     ".50 M33": dict(VL=4.46, VN=2.56, VB=0.78, VCG=4.46 - 1.78, DM=0.18, BD=1.00, OR=8.77),
     "M101": dict(VL=4.51, VN=2.45, VB=0.45, VCG=2.96, DM=0.098, BD=1.026, OR=10.75),
     "M483A1": dict(VL=5.80, VN=2.844, VB=0.255, VCG=3.64, DM=0.098, BD=1.018, OR=9.48),
+    # 7,62 match (McCoy 1988): meplat cotado nos esboços
+    "M118": dict(VL=4.19, VN=2.16, VB=0.74, VCG=4.19 - 1.80, DM=0.18, BD=1.00, OR=7.00),
+    "190 Sierra": dict(VL=4.31, VN=2.09, VB=0.69, VCG=4.31 - 1.81, DM=0.21, BD=1.00, OR=8.80),
+    "168 Sierra": dict(VL=3.98, VN=2.26, VB=0.51, VCG=3.98 - 1.54, DM=0.25, BD=1.00, OR=7.00),
+    # 30 mm (McCoy 1982): ponta cônica de 17° + ogiva R 4,30, base arredondada (VB = 0).
+    # Cintas não cotadas: BD = 1,02 (default do listing), decidido.
+    "XM788E1": dict(VL=3.61, VN=1.85, VB=0.0, VCG=3.61 - 1.35, DM=0.26, BD=1.02, OR=4.30),
+    "XM789": dict(VL=3.61, VN=1.85, VB=0.0, VCG=3.61 - 1.40, DM=0.26, BD=1.02, OR=4.30),
+    "XM789 potted": dict(VL=3.61, VN=1.85, VB=0.0, VCG=3.61 - 1.41, DM=0.26, BD=1.02, OR=4.30),
+    "XM788": dict(VL=3.49, VN=1.84, VB=0.0, VCG=3.49 - 1.25, DM=0.26, BD=1.02, OR=4.30),
+    # T203 (Karpov 1955), modelo de 90 mm: L, ogiva e boattail cotados; OR, DM e BD NÃO cotados,
+    # tomados do cartão do 175 mm M437 no SPIN-73 (p. 65), que tem as mesmas três cotas (decidido).
+    # O OR muda o CMα do SPIN-73 em até 20 % nesta forma, mas o CX0 em ≤ 2 %: só o CX0 é usado.
+    "T203 8BT": dict(VL=5.51, VN=2.91, VB=1.00, VCG=5.51 - 1.940, DM=0.079, BD=1.05, OR=25.0),
+    # XM617: cone-cilindro; OR = 1000 é como o SPIN-73 descreve ogiva cônica (caso da p. 41)
+    "XM617": dict(VL=3.151, VN=1.873, VB=0.0, VCG=3.151 - 1.066, DM=0.009, BD=1.019, OR=1000.0),
 }
 # Diâmetro de referência, mm: dá a escala (número de Reynolds por calibre ∝ d, no mesmo Mach),
 # que o SPIN-73 não tem como entrada aerodinâmica.
 DIAM_MM = {"SS-109": 5.69, "M855": 5.69, "L110": 5.69, "M856": 5.69, ".50 M33": 12.95,
-           "M101": 155.0, "M483A1": 154.74, "M-80": 7.82, "M-59": 7.82, "M-61": 7.82, "M-62": 7.82}
+           "M101": 155.0, "M483A1": 154.74, "M-80": 7.82, "M-59": 7.82, "M-61": 7.82, "M-62": 7.82,
+           "M118": 7.82, "190 Sierra": 7.82, "168 Sierra": 7.82,
+           "XM788E1": 29.92, "XM789": 29.92, "XM789 potted": 29.92, "XM788": 29.92,
+           "T203 8BT": 90.0, "XM617": 152.0}
 # CDδ² das fontes (por sen² da guinada): (supersônico, subsônico)
-CDD2 = {"SS-109": (7.0, 9.8), "M855": (7.0, 9.8), "L110": (5.7, 6.4), "M856": (5.7, 6.4)}
+CDD2 = {"SS-109": (7.0, 9.8), "M855": (7.0, 9.8), "L110": (5.7, 6.4), "M856": (5.7, 6.4),
+        "XM617": (6.57, 6.57)}          # XM617: constante média, "insufficient data" para a variação
+# CDδ² lido de GRÁFICO da fonte: pontos (Mach, CDδ²), interpolação linear, constante fora.
+#   7,62 match: Figs. 21-23 de McCoy 1988 (pontos dos grupos de Mach; o 0,9-0,95 marca o fim do
+#   trecho plano subsônico da curva); 30 mm: Fig. 17 de McCoy 1982 (retas, tracejado de 1,0 a 1,2).
+CDD2_CURVA = {
+    "M118": [(0.80, 3.1), (1.10, 5.3), (1.40, 6.7), (1.80, 6.6), (2.20, 6.2)],
+    "190 Sierra": [(0.70, 2.5), (0.90, 2.5), (1.10, 6.5), (1.40, 7.5), (1.80, 5.3), (2.20, 2.8)],
+    "168 Sierra": [(0.78, 2.9), (0.95, 2.9), (1.12, 4.2), (1.40, 7.6), (1.80, 6.8), (2.20, 5.5)],
+    "XM788E1": [(1.0, 10.0), (1.2, 14.0)],
+    "XM789": [(1.0, 5.5), (1.2, 10.5)],
+    "XM789 potted": [(1.0, 5.5), (1.2, 10.5)],
+    "XM788": [(0.9, 7.9), (1.3, 12.2)],                  # Fig. 12 de McCoy 1980
+}
+# Rodadas com guinada grande demais para um coeficiente linear (o 13931 do 7,62 match voou a
+# 18°, com CMα 18 % abaixo do de pequena guinada) ficam de fora nas fontes novas. O limite
+# deixa passar todas as rodadas das fontes antigas (5,56: até 10,04°).
+GUINADA_MAX = 10.5
+# Com o CDδ² lido de gráfico (ou dado só como média), o CX0 só é tirado de rodadas com guinada
+# pequena, onde a correção de guinada é pequena diante da incerteza dele.
+GUINADA_MAX_CX0_GRAFICO = 5.0
 
 
 class _Cache:
@@ -90,6 +133,9 @@ def _yaw_drag(nome, geo, M, sen2):
     if nome in CDD2:
         sup, sub = CDD2[nome]
         return (sup if M >= 1.0 else sub) * sen2
+    if nome in CDD2_CURVA:
+        Mk, v = zip(*CDD2_CURVA[nome])
+        return float(np.interp(M, Mk, v)) * sen2
     m = _spin_no_mach(nome, geo, M)
     return (m["CX2"] + m["CNA"]) * sen2
 
@@ -170,9 +216,65 @@ def _nato762(out):
              CMA=l["CMA"], CMQ=l["CMQ"], CNPA=l["CNPA"])
 
 
+def _mccoy(out, arquivo, grupo):
+    """CSV no formato de McCoy (1982, 1988): CD na guinada da rodada, CLα, CMα, Magnus com pd/V,
+    Cmq + Cmα̇ com qd/V, CPN da base. CDδ² de CDD2_CURVA (gráfico da fonte)."""
+    arq = os.path.join(BENCH, arquivo)
+    duv = _duvidosas(arq)
+    for r in _csv(arq):
+        nome = r["PROJETIL"]
+        geo = GEO[nome]
+        v = {c: (np.nan if (r["RD"], c) in duv else _f(r[c]))
+             for c in ("MACH", "AT", "CD", "CMA", "CLA", "CMPA", "CMQ", "CPN")}
+        M, at, cd = v["MACH"], v["AT"], v["CD"]
+        if not (np.isfinite(M) and np.isfinite(at)) or at > GUINADA_MAX:
+            continue
+        sen2 = np.sin(np.radians(at)) ** 2
+        cx0 = cd - _yaw_drag(nome, geo, M, sen2) if at <= GUINADA_MAX_CX0_GRAFICO else np.nan
+        _add(out, grupo, nome, geo, M, CX0=cx0, CNA=v["CLA"] + cd, CPN=geo["VL"] - v["CPN"],
+             CMA=v["CMA"], CMQ=2 * v["CMQ"], CNPA=2 * v["CMPA"])
+
+
+def _match762(out):
+    _mccoy(out, "match762_mccoy1988.csv", "762m")
+
+
+def _x30(out):
+    _mccoy(out, "xm788_mccoy1980.csv", "30")
+    _mccoy(out, "x30mm_mccoy1982.csv", "30")
+
+
+def _t203(out):
+    """Só o CX0 do modelo com boattail (ver GEO). KDδ² da fonte: 0,0007/grau² (0,0006 acima de
+    75 grau²); rodadas com guinada rms acima de 5° ficam de fora, porque aí a correção de guinada
+    passa de 15 % do KD e a incerteza do KDδ² (0,0006 ou 0,0007) já pesa."""
+    nome, geo = "T203 8BT", GEO["T203 8BT"]
+    for r in _csv(os.path.join(BENCH, "t203_karpov1955.csv")):
+        if r["PROJETIL"] != nome:
+            continue
+        M, d2, kd = _f(r["MACH"]), _f(r["D2"]), _f(r["KD"])
+        if np.sqrt(d2) > GUINADA_MAX_CX0_GRAFICO:
+            continue
+        kdd2 = 0.0007 if d2 < 75 else 0.0006
+        _add(out, "t203", nome, geo, M, CX0=(kd - kdd2 * d2) / (np.pi / 8))
+
+
+def _xm617(out):
+    """CNα direto (a fonte dá força normal); Cmq e Magnus com qd/V e pd/V."""
+    nome, geo = "XM617", GEO["XM617"]
+    for r in _csv(os.path.join(BENCH, "xm617_brandon1969.csv")):
+        M, at, cd = _f(r["MACH"]), _f(r["AT"]), _f(r["CD"])
+        if at > GUINADA_MAX:
+            continue
+        sen2 = np.sin(np.radians(at)) ** 2
+        cx0 = cd - _yaw_drag(nome, geo, M, sen2) if at <= GUINADA_MAX_CX0_GRAFICO else np.nan
+        _add(out, "xm617", nome, geo, M, CX0=cx0, CNA=_f(r["CNA"]), CPN=geo["VL"] - _f(r["CPN"]),
+             CMA=_f(r["CMA"]), CMQ=2 * _f(r["CMQ"]), CNPA=2 * _f(r["CMPA"]))
+
+
 def linhas():
     out = []
-    for f in (_nato762, _nato556, _m33, _m101, _m483):
+    for f in (_nato762, _nato556, _m33, _m101, _m483, _match762, _x30, _t203, _xm617):
         f(out)
     return out
 
@@ -186,7 +288,9 @@ def identidade_cma(ls=None, tol=0.05):
         por.setdefault((l["proj"], round(l["M"], 4)), {})[l["coef"]] = l
     ruins, n = [], 0
     for (proj, M), d in por.items():
-        if all(c in d for c in ("CMA", "CPN", "CNA")) and d["CPN"]["grupo"] not in ("m101", "m483"):
+        # m101 e m483: CPN derivado aqui mesmo; xm617: a fonte fecha com CG 0,022 cal atrás do
+        # do esquema (ver o CSV), o que tira 4-7 % da identidade com o CG do esquema
+        if all(c in d for c in ("CMA", "CPN", "CNA")) and d["CPN"]["grupo"] not in ("m101", "m483", "xm617"):
             n += 1
             prev = (d["CMA"]["geo"]["VCG"] - d["CPN"]["med"]) * d["CNA"]["med"]
             if abs(prev - d["CMA"]["med"]) > tol * abs(d["CMA"]["med"]):
@@ -199,7 +303,7 @@ if __name__ == "__main__":
         sys.stdout.reconfigure(encoding="utf-8")
     ls = linhas()
     print(f"{len(ls)} valores medidos")
-    for g in ("762", "556b", "556t", "50", "m101", "m483"):
+    for g in sorted({l["grupo"] for l in ls}):
         print(g, {c: sum(1 for l in ls if l["grupo"] == g and l["coef"] == c) for c in COEFS})
     n, ruins = identidade_cma(ls)
     print(f"identidade CMα = (VCG − CPN)·CNα: {n} rodadas, {len(ruins)} fora de 5 %", ruins)

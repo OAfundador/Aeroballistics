@@ -1,6 +1,6 @@
 # Benchmarks: o SPIN-73 contra voo livre
 
-Aqui a pergunta é **"o SPIN-73 acerta a realidade?"**, não "a reconstrução reproduz o SPIN-73?" (esta está em `validation/`). Nos três casos, a reconstrução roda com a geometria da fonte, e o resultado é comparado com as medições de túnel balístico (spark range), rodada a rodada, depois de convertidas para a convenção do SPIN-73.
+Aqui a pergunta é **"o SPIN-73 acerta a realidade?"**, não "a reconstrução reproduz o SPIN-73?" (esta está em `validation/`). Em todos os casos, a reconstrução roda com a geometria da fonte, e o resultado é comparado com as medições de túnel balístico (spark range), rodada a rodada, depois de convertidas para a convenção do SPIN-73.
 
 ```
 python experimental/benchmarks/comparar.py
@@ -12,6 +12,11 @@ python experimental/benchmarks/comparar.py
 | `m483a1_whyte1991.csv` | Whyte, BRL-CR-659 (1991), DTIC ADA235620 | 155 mm M483A1, 65 tiros em 19 grupos | **a mesma do SPIN-73** (qd/2V, pd/2V) |
 | `m33_mccoy1990.csv` | McCoy, BRL-MR-3810 (1990), DTIC ADA219106 | .50 Ball M33, 16 rodadas | moderna; **CLα** em vez de CNα; CPN medido da base |
 | `nato556_mccoy1985.csv` | McCoy, BRL-MR-3476 (1985), DTIC ADA162133 | 5,56 NATO SS-109, M855, L110, M856, 35 rodadas | idem |
+| `match762_mccoy1988.csv` | McCoy, BRL-MR-3733 (1988), DTIC ADA205633 | 7,62 match M118, 190 gr e 168 gr Sierra, 39 rodadas | idem |
+| `xm788_mccoy1980.csv` | McCoy, ARBRL-MR-03019 (1980), DTIC ADA086096 | 30 mm XM788, 16 rodadas | idem (e Clp com pd/V) |
+| `x30mm_mccoy1982.csv` | McCoy, ARBRL-TR-03432 (1982), DTIC ADA121258 | 30 mm XM788E1 e XM789, 43 rodadas | idem |
+| `t203_karpov1955.csv` | Karpov et al., BRL MR 956 (1955), DTIC AD0086528 | 175 mm T203, modelos de 90 mm com boattail e de base reta, 35 rodadas | **notação K** do BRL, como impressa |
+| `xm617_brandon1969.csv` | Brandon, BRL MR 1998 (1969), DTIC AD0857512 | 152 mm XM617, cone-cilindro, escala real, 14 rodadas | moderna, com **CNα** (não CLα); CPN da base |
 
 As conversões estão em `python/convencoes.py`; cada CSV traz no cabeçalho as definições da própria fonte e as células duvidosas.
 
@@ -47,3 +52,13 @@ Em nenhum dos três casos a reconstrução se afasta do que o SPIN-73 de 1973 im
 McCoy, BRL-MR-3476 (1985), DTIC ADA162133: SS-109, M855 e os traçantes L110 e M856, com 35 rodadas. A convenção é a mesma do .50: CLα, pd/V, qd/V, CPN a partir da base. Os comprimentos, 4,1 a 5,2 calibres, estão **dentro** da faixa do SPIN-73.
 
 No supersônico, o SPIN-73 fica 4 a 7 % abaixo no CD e acerta o CMα a 1–10 %. No subsônico, subestima o CD em até 33 % (M855), no mesmo sentido da falta de escala (número de Reynolds) que aparece em todas as armas portáteis. A correção disso está em `../correcao/`.
+
+## 7,62 match, 30 mm, 175 mm T203 e 152 mm XM617
+
+Os CSV guardam os valores como impressos. O CDδ², quando a fonte só o dá em gráfico, foi lido do gráfico e está no cabeçalho (7,62 match: Figs. 21–23; 30 mm: Figs. 12 e 17, retas por trecho).
+
+- **7,62 match** (M118, 190 e 168 gr Sierra; 3,98 a 4,31 cal, boattails de 9,5° a 13°): CMα supersônico 9 a 14 % abaixo do medido, como já acontecia com a .50 — as formas de arma portátil de boattail longo são as que o SPIN-73 erra no momento. CD supersônico 5 a 10 % baixo; subsônico 9 a 19 % baixo.
+- **30 mm** (3,49 e 3,61 cal, ponta cônica, cintas, base sem boattail): CMα e CPN a 0–7 % em todos os regimes, CLα a 2–15 %. O CD fica 6 % baixo no supersônico e **5 a 16 % baixo no subsônico**, de novo o sinal da escala (Reynolds).
+- **175 mm T203, modelo de 90 mm** (é o M437 em desenvolvimento: as três cotas do esboço batem com o cartão do M437 no SPIN-73): **CD a 1 %** e **CMα supersônico a 1 %**. O raio de ogiva não está cotado. Com o OR do M437 (25 cal) o CMα fecha; com o 15,8 cal medido no desenho, ficaria 11 % abaixo em Mach 1,15. Por isso mesmo o CMα do T203 não entra no ajuste da correção (seria circular): só o CX0, que muda no máximo 2 % com o OR. O KN, tirado do desvio da trajetória com 12 % de erro-padrão, sai 27 % acima do SPIN-73 no supersônico — as rodadas que o têm voaram a 4,5–7,4° de guinada, onde a força normal já não é linear. A versão de base reta só está arquivada: com a ogiva de 3,97 cal e o raio não cotado, o CX0 do SPIN-73 muda 15 % conforme o OR.
+- **152 mm XM617, cone-cilindro** (3,15 cal, cone de 14°, base reta, projétil leve): no supersônico, **CD, CMα, CNα e CPN a 0–2 %** do SPIN-73. No transônico, CMα 13 % alto e CD 9 % baixo, com dispersão grande nas próprias medições. Cmq supersônico 42 % mais amortecido no SPIN-73 que o medido. A fonte fecha CPN − CMα/CNα com o CG 0,022 cal atrás do CG do esquema; a comparação usa o do esquema.
+- **Cmq e Magnus subsônicos** no 7,62 match e no 30 mm: a fonte mede Cmq positivo (instabilidade dinâmica a pequena guinada) e Magnus bem mais negativo que o SPIN-73. A fonte trata isso como não linearidade (coeficientes cúbicos). Nenhuma correção linear pega isso.

@@ -1,0 +1,56 @@
+# Karpov, B. G., Skeggs, K., Hull, B. "Aerodynamic Characteristics of the 175mm T203 Shell and the 175mm
+# Square Base Shell with Fuze M51A5". BRL Memorandum Report No. 956, dez. 1955 (DTIC AD0086528; archive.org
+# DTIC_AD0086528). Tabelas 1 e 2 (pp. 14-15 do relatório): modelos de 90 mm, BRL Transonic Range.
+# O PDF é MRC (texto em máscara JBIG2): lido com um decodificador JBIG2 local (fora do repositório).
+#
+# CONVENÇÕES DA FONTE (Tabela de símbolos, p. 5; texto pp. 8-13): notação K do BRL, valores COMO IMPRESSOS.
+#   D2 = quadrado médio da guinada, graus²; KD total na guinada da rodada; KN normal (do desvio, "swerve");
+#   KM momento de tombamento; KH amortecimento; KT Magnus. Conversão (python/experimental/hitchcock/
+#   conversoes.py): CX = KD/(π/8), CMα = KM/(π/8), Cmq(qd/2V) = -(16/π)·KH.
+#   KDδ² (p. 9): 0,0007 por grau² para D2 < 75 e 0,0006 para D2 > 75 (os dois modelos).
+#   Erros-padrão médios (p. 13): KN 12 % / 8 %, KM 1,5 % / 0,9 %, KT 39 %, KH 24 % / 15 %.
+#   Os autores (p. 9) avaliam que o modelo de 90 mm tem 2 a 3 % mais arrasto que o 175 mm real
+#   (rebaixo do corpo mais acentuado, espoleta mais rombuda dentro da tolerância).
+# Passo: 1:32 no 8° B.T.; 1:25 nas rodadas * da base reta (TWIST = 32 / 25 calibres por volta).
+#
+# Geometria (Figs. 1 e 2, "all dimensions are in calibers"):
+#   T203 8BT      : L 5,51; ogiva 2,91; boattail 1 cal a 8°; CG 1,940 cal da base; 21,82 lb;
+#                   A 34,76, B 246,9 lb·in². RAIO DA OGIVA NÃO COTADO.
+#   T203 base reta: L 5,53; ogiva 3,97 (a cabeça alongada 1 cal em lugar do boattail); CG 1,853 da base;
+#                   21,21 lb; A 30,71, B 302,1 lb·in². RAIO DA OGIVA NÃO COTADO.
+PROJETIL,RD,MACH,D2,KD,KN,KM,KH,KT
+T203 8BT,2978,1.142,4.98,0.1376,0.70,1.89,3.06,-0.05
+T203 8BT,2979,1.148,11.64,0.1404,0.64,1.86,3.08,-0.17
+T203 8BT,2975,1.291,0.98,0.1259,,,,
+T203 8BT,2976,1.303,1.26,0.1255,,,,
+T203 8BT,2993,1.412,0.36,0.1206,,,,
+T203 8BT,2992,1.420,1.72,0.1214,,,,
+T203 8BT,2962,1.663,20.66,0.1271,1.30,1.69,3.13,-0.11
+T203 8BT,2961,1.688,1.91,0.1114,,,,
+T203 8BT,2973,1.861,0.98,0.1038,,,,
+T203 8BT,2974,1.869,1.54,0.1050,,,,
+T203 8BT,2963,2.076,0.59,0.0963,,,,
+T203 8BT,2960,2.092,2.81,0.0945,,1.59,3.68,-0.07
+T203 8BT,2970,2.218,1.26,0.0933,,,,
+T203 8BT,2972,2.232,0.93,0.0914,,,,
+T203 8BT,2966,2.381,8.80,0.0939,,1.51,3.60,-0.10
+T203 8BT,2965,2.389,28.46,0.1067,1.55,1.51,2.51,-0.08
+T203 8BT,2991,2.562,55.00,0.1195,1.48,1.48,2.50,-0.09
+T203 8BT,2969,2.602,32.30,0.1032,,1.48,2.76,-0.06
+T203 8BT,2967,2.630,80.70,0.1384,,,,
+T203 base reta,3171,0.965,17.25,0.1116,,1.16,4.26,-0.08
+T203 base reta,3170,1.203,61.97,0.1794,1.05,1.18,3.68,-0.07
+T203 base reta,3174,1.225,0.32,0.1377,,,,
+T203 base reta,3169,1.373,96.55,0.1898,1.23,1.20,2.96,-0.07
+T203 base reta,3176,1.393,3.54,0.1325,1.22,1.16,2.92,
+T203 base reta,3168,1.614,72.31,0.1697,1.28,1.21,3.82,-0.07
+T203 base reta,3181,1.736,2.21,0.1154,,,,
+T203 base reta,3162,1.810,37.99,0.1404,1.23,1.18,4.30,-0.08
+T203 base reta,3177,1.875,3.94,0.1119,,1.15,4.37,-0.09
+T203 base reta,3161,2.107,79.66,0.1455,1.42,1.17,3.11,-0.03
+T203 base reta,3178,2.121,0.94,0.1033,,1.17,3.02,
+T203 base reta,3164,2.229,42.97,0.1262,1.37,1.15,2.54,-0.02
+T203 base reta,3180,2.385,22.06,0.1079,,1.12,3.80,-0.07
+T203 base reta,3163,2.453,11.63,0.0955,,1.15,,
+T203 base reta,3179,2.567,7.42,0.0949,,1.10,3.75,-0.07
+T203 base reta,3167,2.604,6.76,0.0913,1.47,1.11,,-0.06

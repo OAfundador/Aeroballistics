@@ -132,8 +132,63 @@ def nato556():
     return out
 
 
+MCCOY = {"CD": ("CD", 1.0), "CMA": ("CMA", 1.0), "CLA": ("CLA", 1.0),
+         "CMQ": ("CMQ", 2.0), "CMPA": ("CMPA", 2.0), "CPN": ("CPN_BASE", 1.0)}
+
+
+def _por_projetil(arquivo, geos, titulo):
+    """CSV no formato McCoy com vários projéteis; geometria de correcao/dados.py (fonte no CSV)."""
+    todas = ler(os.path.join(AQUI, arquivo))
+    out = []
+    for nome, g in geos.items():
+        rows = [r for r in todas if r["PROJETIL"] == nome]
+        if rows:
+            out.append(comparar(f"{nome} — {titulo}", rows, s.Projetil(nome=nome, **g), MCCOY))
+    return out
+
+
+def _geo(*nomes):
+    sys.path.insert(0, os.path.join(AQUI, "..", "correcao"))
+    import dados
+    return {n: dados.GEO[n] for n in nomes}
+
+
+def match762():
+    return _por_projetil("match762_mccoy1988.csv", _geo("M118", "190 Sierra", "168 Sierra"),
+                         "McCoy 1988 (BRL-MR-3733), 7,62 match")
+
+
+def x30():
+    return (_por_projetil("xm788_mccoy1980.csv", _geo("XM788"), "McCoy 1980 (ARBRL-MR-03019), 30 mm")
+            + _por_projetil("x30mm_mccoy1982.csv", _geo("XM788E1", "XM789", "XM789 potted"),
+                            "McCoy 1982 (ARBRL-TR-03432), 30 mm"))
+
+
+def t203():
+    # OR, DM e BD não cotados: os do M437 (ver correcao/dados.py). CMα e CPN sensíveis a isso.
+    todas = ler(os.path.join(AQUI, "t203_karpov1955.csv"))
+    rows = [r for r in todas if r["PROJETIL"] == "T203 8BT"]
+    p = s.Projetil(nome="T203 8BT", **_geo("T203 8BT")["T203 8BT"])
+    k = 8 / np.pi                                        # notação K do BRL -> C
+    conv = {"KD": ("CD", k), "KN": ("CNA", k), "KM": ("CMA", k), "KH": ("CMQ", -2 * k)}
+    return comparar("175 mm T203 8° B.T., modelo de 90 mm — Karpov 1955 (BRL MR 956)", rows, p, conv)
+
+
+def xm617():
+    # CG do esquema (1,066 da base); a fonte fecha CPN − CMα/CNα com 1,088 (ver o CSV)
+    rows = ler(os.path.join(AQUI, "xm617_brandon1969.csv"))
+    p = s.Projetil(nome="XM617", **_geo("XM617")["XM617"])
+    conv = {"CD": ("CD", 1.0), "CMA": ("CMA", 1.0), "CNA": ("CNA", 1.0),
+            "CMQ": ("CMQ", 2.0), "CMPA": ("CMPA", 2.0), "CPN": ("CPN_BASE", 1.0)}
+    return comparar("152 mm XM617, cone-cilindro — Brandon 1969 (BRL MR 1998)", rows, p, conv)
+
+
 if __name__ == "__main__":
     m101()
     m483a1()
     m33()
     nato556()
+    match762()
+    x30()
+    t203()
+    xm617()
