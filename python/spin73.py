@@ -223,6 +223,28 @@ def magnus(p: Projetil, k: CoefAjuste, j: int) -> dict:
     return out
 
 
+def coef_polinomio_magnus(cnpa1: float, cnpa5: float) -> tuple[float, float]:
+    """Colunas impressas CNPA3 e CNPA5 ("coeficientes do polinômio" de Magnus).
+
+    Código, cartões C278-C281:
+        XMAG1 = CNPAA5 - CNPA            (momento a 5° menos o a 1°)
+        XMAG2 = CNPAA5 - CNPA + 0.3
+        CNPA5 = (XMAG2 - 9.0*XMAG1)/0.0072
+        CNPA3 = (XMAG1 - CNPA5*.0001)/0.01
+    As constantes são as de um polinômio f(δ) = C1 + C3·δ² + C5·δ⁴ avaliado em δ = 0,1 e
+    0,3. Mas o XMAG2 não usa o valor a 2° (CNPAA2, calculado nos cartões C224-C227 e nunca
+    usado): é o XMAG1 mais uma constante. Por isso as duas colunas impressas carregam UM
+    único grau de liberdade e obedecem a CNPA3 + 0,1·CNPA5 = 3,75 em qualquer projétil --
+    identidade que as tabelas de 1973 confirmam linha a linha. Defeito do original,
+    mantido. Nos arquivos, "CNPA5P" é esta coluna e "CNPA5" é o CNPA*5 (valor a 5°).
+    """
+    xmag1 = cnpa5 - cnpa1
+    xmag2 = cnpa5 - cnpa1 + 0.3
+    c5 = (xmag2 - 9.0 * xmag1) / 0.0072
+    c3 = (xmag1 - c5 * 0.0001) / 0.01
+    return c3, c5
+
+
 def cmq(p: Projetil, k: CoefAjuste, j: int) -> float:
     """Amortecimento em arfagem. Código: cartões C232-C238 (F9, ausente do texto)."""
     F = k.F[:, j]
@@ -243,7 +265,7 @@ def clp(p: Projetil, k: CoefAjuste, j: int) -> float:
 def coeficientes(p: Projetil, k: CoefAjuste) -> dict:
     """Todas as colunas aerodinâmicas nos 17 pontos de Mach (NaN onde falta DATA)."""
     nomes = ("CX", "CX2", "CNA", "CMA", "CPN", "CYPA", "CNPA", "CPF1", "CPF2", "CNPA2",
-             "CPF5", "CNPA5", "CMQ", "CLP")
+             "CPF5", "CNPA5", "CNPA3", "CNPA5P", "CMQ", "CLP")
     cols = {n: np.empty(N_MACH) for n in nomes}
     for j in range(N_MACH):
         nm = normal_e_momento(p, k, j)
@@ -255,6 +277,7 @@ def coeficientes(p: Projetil, k: CoefAjuste) -> dict:
         cols["CNPA"][j], cols["CPF1"][j] = mg["CNPA1"], mg["CPF1"]
         cols["CNPA2"][j], cols["CPF2"][j] = mg["CNPA2"], mg["CPF2"]
         cols["CNPA5"][j], cols["CPF5"][j] = mg["CNPA5"], mg["CPF5"]
+        cols["CNPA3"][j], cols["CNPA5P"][j] = coef_polinomio_magnus(mg["CNPA1"], mg["CNPA5"])
         cols["CMQ"][j] = cmq(p, k, j)
         cols["CLP"][j] = clp(p, k, j)
     cols["MACH"] = MACH_GRID.copy()
@@ -313,10 +336,24 @@ def estabilidade(p: Projetil, MACH, CX, CNA, CMA, CNPA, CNPA5, CMQ, CLP,
                     + k2 / 2.0 * (1.0 + sinal / sig) * CMQ
                     + sinal * k1 / sig * cnpa)
 
-    return dict(MACH=MACH, GYRO=sg, SBAR=sd, RECIP=recip, SBAR5=sd5,
-                RECIP5=recip5, SPIN=P, W1=W1, W2=W2,
-                L1=lam(+1, CNPA), L2=lam(-1, CNPA),
-                L15=lam(+1, CNPA5), L25=lam(-1, CNPA5))
+    # Cartão C266: período de nutação dividido por 20 (passo de integração sugerido).
+    DELT = 6.28 / (W1 * 20.0)
+    # Cartão C256: DISP = ((CNAT-CX0)*TH*(W1-W2)*3.635)/(CMA*WGT*DIA*VEL), com TH = Iy em
+    # lb·in². A referência 71 do relatório (Whyte 1970), que explicaria a grandeza, não
+    # está disponível; a fórmula é reproduzida como está no código.
+    DISP = (CNA - CX) * p.IY * (W1 - W2) * 3.635 / (CMA * p.WGT * p.DIA * V)
+
+    out = dict(MACH=MACH, GYRO=sg, SBAR=sd, RECIP=recip, SBAR5=sd5,
+               RECIP5=recip5, SPIN=P, W1=W1, W2=W2,
+               L1=lam(+1, CNPA), L2=lam(-1, CNPA),
+               L15=lam(+1, CNPA5), L25=lam(-1, CNPA5), DELT=DELT, DISP=DISP)
+    # Cartões C249 e C287: com s_g < 1,001 o programa só imprime MACH e STAB (o projétil
+    # é giroscopicamente instável e o resto da análise não faz sentido).
+    instavel = np.asarray(sg) < 1.001
+    for nome in out:
+        if nome not in ("MACH", "GYRO"):
+            out[nome] = np.where(instavel, np.nan, out[nome])
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -337,10 +374,13 @@ def tabela(p: Projetil, k: CoefAjuste | None = None) -> dict:
     return t
 
 
+# Ordem e nomes das colunas impressas pelo programa (cartões C282 e C290).
 COLUNAS_AERO = [("CX", 3), ("CX2", 3), ("CNA", 3), ("CMA", 3), ("CPN", 3), ("CYPA", 3),
-                ("CNPA", 3), ("CPF1", 3), ("CPF5", 3), ("CNPA5", 3), ("CMQ", 3), ("CLP", 3)]
+                ("CNPA", 3), ("CNPA3", 3), ("CNPA5P", 3), ("CPF1", 3), ("CPF5", 3),
+                ("CNPA5", 3), ("CMQ", 3), ("CLP", 3)]
 COLUNAS_ESTAB = [("GYRO", 3), ("SBAR", 3), ("RECIP", 3), ("SBAR5", 3), ("RECIP5", 3),
-                 ("SPIN", 1), ("W1", 2), ("W2", 2), ("L1", 6), ("L2", 6), ("L15", 6), ("L25", 6)]
+                 ("SPIN", 1), ("W1", 2), ("W2", 2), ("L1", 6), ("L2", 6), ("L15", 6), ("L25", 6),
+                 ("DELT", 4), ("DISP", 3)]
 
 
 def formatar(t: dict, titulo: str = "") -> str:

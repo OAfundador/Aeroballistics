@@ -234,3 +234,24 @@ Com XA e XD reconstruídos, o XC era o último bloco com lacunas. Decisões (`py
 Com isso o XC não tem mais NaN e o programa produz as 24 colunas do M437 a partir da geometria. **Mas o CPN do M437 deixou de ser teste em quase todos os Mach**, porque foi usado para decidir o XC: só Mach 0,01, 0,9, 0,95, 1,0 e 1,1 continuam independentes (`test_modelo_completo.py`, conjunto CIRCULARES).
 
 **Para validar de verdade o bloco de boattail do CPN**, falta uma terceira tabela com boattail. A do 155 mm M101 (p. 59) foi tentada: é a mais carregada de tinta de todas, e a identidade CMα = (VCG − CPN)·CNα só fecha linha a linha com um VCG que oscila entre 2,956 e 2,965. Ela pede leitura célula a célula; fica como próximo passo, junto com o 105 mm XM380E5 (p. 50).
+
+## T12 — A p. 86: CNPA3, CNPA5, DELT, DISP e a regra de instabilidade
+
+Linhas das fórmulas lidas em zoom e acrescentadas a `original/listing_p84-86.f`. Com elas, o programa produz **todas as colunas que o original imprime**.
+
+**CNPA3 e CNPA5 (cartões C278-C281) — um defeito do original.**
+
+    XMAG1 = CNPAA5 − CNPA              (momento de Magnus a 5° menos o a 1°)
+    XMAG2 = CNPAA5 − CNPA + 0.3
+    CNPA5 = (XMAG2 − 9.0·XMAG1)/0.0072
+    CNPA3 = (XMAG1 − CNPA5·.0001)/0.01
+
+As constantes são as de um polinômio f(δ) = C1 + C3·δ² + C5·δ⁴ avaliado em δ = 0,1 e 0,3. Mas o XMAG2 não usa o valor a 2°: o CNPAA2 é calculado (cartões C224-C227) e nunca usado. O XMAG2 é o XMAG1 mais uma constante. Consequência: as duas colunas impressas carregam **um único grau de liberdade** e obedecem a **CNPA3 + 0,1·CNPA5 = 3,75** para qualquer projétil. As 17 linhas do M437 confirmam a identidade — por exemplo 4,481 − 0,7311 = 3,7499 e 16,113 − 12,3633 = 3,7497 —, e o modelo reproduz as duas colunas nas 16 linhas legíveis. O "•" da segunda linha, ambíguo no scan, é um "+": a leitura como "·" erra por 7 % a 400 %. O fator de 1,34 que a hipótese do polinômio em sen α não explicava (item 7 de AVALIACAO_FASE8.md) vem daqui.
+
+**DELT (C266)** = 6,28/(20·W1): o período de nutação dividido por 20. Fecha nos 17 Mach do M437. A nota antiga "não bate em Mach 0,01" (item A2) era leitura: o impresso é 0,7049, não 0,7649 (par 6/0).
+
+**DISP (C256)** = (CNα − CX)·Iy·(W1 − W2)·3,635/(CMα·peso·diâmetro·V), com Iy em lb·in². Fecha em ±1 no último dígito nas 16 linhas legíveis do M437. A grandeza física continua sem explicação: depende da referência 71 (Whyte 1970), que não temos. Reproduz-se a fórmula como está no código.
+
+**Taxas de amortecimento (C258-C261).** O código usa −CNAT·(1 − τ) com τ = 1/σ na raiz 1, o que confirma no próprio código o sinal que as tabelas indicavam (item E1).
+
+**Regra de instabilidade (C249, C287).** Se s_g < 1,001, o programa pula a análise dinâmica e imprime só MACH e STAB. O modelo segue a regra: as demais colunas de estabilidade saem vazias nesse caso.

@@ -21,7 +21,7 @@ MACH = [round(float(m), 2) for m in s.MACH_GRID]
 # XC12 em 0,6 e 1,05; XC1 em 0,8; XC15 em 1,2 e 2,0 (M437 + 5"/38) e de 1,35 a 5 (só M437).
 # Nesses Mach o CPN do M437 e tudo que depende do CMα não podem validar nada.
 _CIRC_CPN = (0.6, 0.8, 1.05, 1.2, 1.35, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0)
-_DEPENDE_CMA = ("CPN", "CMA", "GYRO", "W1", "W2", "L1", "L2", "L15", "L25")
+_DEPENDE_CMA = ("CPN", "CMA", "GYRO", "W1", "W2", "L1", "L2", "L15", "L25", "DELT", "DISP")
 CIRCULARES = {(c, m) for c in _DEPENDE_CMA for m in _CIRC_CPN}
 
 # (coluna, Mach) -> motivo. Células fora da tolerância que NÃO são circulares.
@@ -42,13 +42,19 @@ PENDENTES = {
     ("CX2", 2.5): "XD2 em Mach 2,5 duvidoso",
     ("SBAR", 1.1): "herda o Cmq de Mach 1,1", ("SBAR5", 1.1): "herda o Cmq de Mach 1,1",
     ("SBAR", 1.75): "no limite do arredondamento",
+    # CNPA3 e CNPA5P: células resolvidas pela identidade CNPA3 + 0,1·CNPA5P = 3,75 (circulares
+    # para a fórmula) ficam de fora; DELT e DISP em Mach 0,01 e 0,6 foram resolvidas pela
+    # própria fórmula (pares 6/0 e 6/8).
 }
+CIRCULARES |= {("CNPA5P", 0.95), ("DELT", 0.01), ("DELT", 0.6)}
 # O CX2 subtrai o CNα reconstruído, então herda o erro dele (até 0,0022); tolerância maior.
 # O RECIP = 1/(s_d(2−s_d)) amplifica ~100x o erro de s_d quando s_d ~ −0,07 (Mach 0,01 e 0,6).
 TOL = {"CMA": 0.004, "CX2": 0.0045, "SPIN": 0.15, "W1": 0.05, "W2": 0.05, "RECIP": 0.08,
-       "RECIP5": 0.003, **{c: 1.5e-6 for c in ("L1", "L2", "L15", "L25")}}
+       "RECIP5": 0.003, **{c: 1.5e-6 for c in ("L1", "L2", "L15", "L25")},
+       "CNPA3": 0.0015, "CNPA5P": 0.004, "DELT": 0.00015, "DISP": 0.0015}
 COLUNAS = ["CX", "CX2", "CNA", "CPN", "CMA", "CYPA", "CNPA", "CPF1", "CPF5", "CNPA5", "CMQ", "CLP",
-           "GYRO", "SBAR", "RECIP", "SBAR5", "RECIP5", "SPIN", "W1", "W2", "L1", "L2", "L15", "L25"]
+           "GYRO", "SBAR", "RECIP", "SBAR5", "RECIP5", "SPIN", "W1", "W2", "L1", "L2", "L15", "L25",
+           "CNPA3", "CNPA5P", "DELT", "DISP"]
 
 
 @pytest.mark.parametrize("col", COLUNAS)
@@ -57,6 +63,8 @@ def test_coluna_reproduz_a_tabela(col):
     for j, M in enumerate(MACH):
         if (col, M) in PENDENTES or (col, M) in CIRCULARES:
             continue
+        if not np.isfinite(TAB[col][j]):
+            continue                       # célula ilegível na transcrição
         d = T[col][j] - TAB[col][j]
         if not (np.isfinite(d) and abs(d) <= TOL.get(col, 0.0015)):
             ruins.append((M, round(float(T[col][j]), 4), float(TAB[col][j])))
