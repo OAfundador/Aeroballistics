@@ -10,3 +10,7 @@ __pycache__/
 
 # Área de rascunho das tarefas A-F (o que é aproveitável é movido para o lugar certo)
 trabalho/
+
+# Documentos internos das sessões de trabalho (ficam só na pasta local)
+docs/CONTEXTO_CLAUDE_CODE.md
+docs/AVALIACAO_FASE8.md

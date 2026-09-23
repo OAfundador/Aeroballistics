@@ -86,13 +86,17 @@ Cada valor lido no scan é classificado como **verificado** (leitura clara, ou c
 | `python/` | O programa (`spin73.py`), os blocos `DATA` (`dados_spin73.py` e `reconstrucao_*/`) e os testes |
 | `python/experimental/` | Recalibração com dados de voo livre (BRL MR 1833, 7,62 NATO; compêndio de Hitchcock, BRL 620) — **separada** da reconstrução |
 | `original/` | Transcrição literal do listing Fortran (parcial: pp. 84–86) |
-| `docs/` | Notas de transcrição, contexto do projeto, avaliações |
+| `docs/` | Notas de transcrição: cada leitura do scan, com a evidência que a decidiu |
 | `ferramentas/` | Leitura do scan: recortes girados e com zoom; extração de páginas de PDF escaneado |
 | `fontes/` | O scan do relatório (não versionado; ver `fontes/LEIAME.md`) |
 
 ## Recalibração
 
 A reconstrução reproduz o SPIN-73 como ele era, erros incluídos. Contra dados de voo livre da família 7,62 NATO, o modelo de 1973 superestima o Magnus (+0,3 a +0,5) e o amortecimento Cmq (2,5 vezes no transônico, 10 % no supersônico). Ajustes a dados experimentais ficam em `python/experimental/` e nunca alteram o programa reconstruído.
+
+## Licença
+
+Código sob a licença MIT (ver [LICENSE](LICENSE)). O relatório original é de domínio público (Distribution A).
 
 ## Fonte
 
