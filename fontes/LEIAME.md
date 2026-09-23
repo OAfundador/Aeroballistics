@@ -10,6 +10,6 @@
   - `DTIC_AD0454925.pdf` — Karpov et al., 155 mm M101 (BRL MR 1582, 1964)
   - `DTIC_ADA235620.pdf` — Whyte, 155 mm M483A1 (BRL-CR-659, 1991)
   - `DTIC_ADA219106.pdf` — McCoy, .50 M33/M8/M20 (BRL-MR-3810, 1990)
-  - `DTIC_ADA162133.pdf` — McCoy, 5,56 mm NATO (BRL, out. 1985), ainda não usado
+  - `DTIC_ADA162133.pdf` — McCoy, 5,56 mm NATO (BRL-MR-3476, out. 1985)
 
 Nenhum desses arquivos é versionado (ver `.gitignore`): são grandes e estão disponíveis na DTIC.

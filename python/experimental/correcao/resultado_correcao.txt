@@ -1,0 +1,45 @@
+Correção empírica do SPIN-73 — validação cruzada deixando um grupo de fora (aninhada)
+Erro = RMS por grupo, média entre grupos; relativo ao SPIN-73 (%) para CX0, CNα, CMα, Cmq;
+absoluto para Magnus (pd/2V) e CPN (cal). 'corrigido' = predição para o grupo deixado de
+fora, com atributo e coeficientes ajustados só nos outros cinco.
+
+CX0   subsônico    grupos 6  SPIN-73   19.54%   corrigido   15.35%    melhora em 4/6   ACEITA
+CX0   transônico   grupos 6  SPIN-73   12.69%   corrigido   10.50%    melhora em 4/6   ACEITA
+CX0   supersônico  grupos 6  SPIN-73    7.45%   corrigido    5.95%    melhora em 4/6   ACEITA
+CNA   subsônico    grupos 6  SPIN-73   15.08%   corrigido   10.21%    melhora em 4/6   ACEITA
+CNA   transônico   grupos 6  SPIN-73    9.29%   corrigido    7.21%    melhora em 5/6   ACEITA
+CNA   supersônico  grupos 6  SPIN-73    8.70%   corrigido    8.70%    melhora em 0/6   rejeitada
+CMA   subsônico    grupos 6  SPIN-73   12.62%   corrigido   16.35%    melhora em 0/6   rejeitada
+CMA   transônico   grupos 6  SPIN-73   12.71%   corrigido   13.80%    melhora em 0/6   rejeitada
+CMA   supersônico  grupos 6  SPIN-73   10.74%   corrigido   10.74%    melhora em 0/6   rejeitada
+CMQ   subsônico    grupos 5  SPIN-73  126.79%   corrigido  167.61%    melhora em 0/5   rejeitada
+CMQ   transônico   grupos 6  SPIN-73   86.97%   corrigido   75.24%    melhora em 4/6   rejeitada
+CMQ   supersônico  grupos 6  SPIN-73   22.77%   corrigido   23.02%    melhora em 1/6   rejeitada
+CNPA  subsônico    grupos 4  SPIN-73    0.54    corrigido    0.54     melhora em 0/4   rejeitada
+CNPA  transônico   grupos 6  SPIN-73    1.07    corrigido    0.99     melhora em 3/6   rejeitada
+CNPA  supersônico  grupos 6  SPIN-73    0.42    corrigido    0.50     melhora em 0/6   rejeitada
+CPN   subsônico    grupos 5  SPIN-73    0.36cal corrigido    0.37cal  melhora em 3/5   (correção direta, não usada)
+CPN   transônico   grupos 6  SPIN-73    0.32cal corrigido    0.36cal  melhora em 0/6   (correção direta, não usada)
+CPN   supersônico  grupos 6  SPIN-73    0.17cal corrigido    0.17cal  melhora em 0/6   (correção direta, não usada)
+
+CPN derivado (VCG − CMα/CNα, com as correções aceitas refeitas sem o grupo de fora):
+CPN   subsônico    grupos 5  SPIN-73   0.359cal corrigido   0.299cal  melhora em 2/5
+CPN   transônico   grupos 6  SPIN-73   0.320cal corrigido   0.276cal  melhora em 5/6
+CPN   supersônico  grupos 6  SPIN-73   0.172cal corrigido   0.172cal  melhora em 0/6
+
+Modelo final (todos os grupos), aplicado por aplicar.tabela_corrigida():
+  CX0   subsônico    atrito de parede, L_ref = 0.102 m
+  CX0   transônico   atrito de parede, L_ref = 0.330 m
+  CX0   supersônico  atrito de parede, L_ref = 0.401 m
+  CNA   subsônico    rel: a = +0.1495, b = -0.1469 · log d
+  CNA   transônico   rel: a = +0.0582
+  CNA   supersônico  sem correção
+  CMA   subsônico    sem correção
+  CMA   transônico   sem correção
+  CMA   supersônico  sem correção
+  CMQ   subsônico    sem correção
+  CMQ   transônico   sem correção
+  CMQ   supersônico  sem correção
+  CNPA  subsônico    sem correção
+  CNPA  transônico   sem correção
+  CNPA  supersônico  sem correção

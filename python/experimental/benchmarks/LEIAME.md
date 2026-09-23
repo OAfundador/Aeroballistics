@@ -11,6 +11,7 @@ python experimental/benchmarks/comparar.py
 | `m101_karpov1964.csv` | Karpov et al., BRL MR 1582 (1964), DTIC AD0454925 | 155 mm M101, escala real, 64 rodadas | moderna: qd/V, pd/V → ×2 |
 | `m483a1_whyte1991.csv` | Whyte, BRL-CR-659 (1991), DTIC ADA235620 | 155 mm M483A1, 65 tiros em 19 grupos | **a mesma do SPIN-73** (qd/2V, pd/2V) |
 | `m33_mccoy1990.csv` | McCoy, BRL-MR-3810 (1990), DTIC ADA219106 | .50 Ball M33, 16 rodadas | moderna; **CLα** em vez de CNα; CPN medido da base |
+| `nato556_mccoy1985.csv` | McCoy, BRL-MR-3476 (1985), DTIC ADA162133 | 5,56 NATO SS-109, M855, L110, M856, 35 rodadas | idem |
 
 As conversões estão em `python/convencoes.py`; cada CSV traz no cabeçalho as definições da própria fonte e as células duvidosas.
 
@@ -41,6 +42,8 @@ O erro provável do próprio SPIN-73, segundo a Tabela 1 do relatório (p. 28), 
 
 Em nenhum dos três casos a reconstrução se afasta do que o SPIN-73 de 1973 imprimiria. No M101, com a mesma entrada da p. 59, ela reproduz a tabela do relatório. Os desvios acima são do modelo original.
 
-## Candidatos baixados e ainda não usados
+## 5,56 mm NATO (`nato556_mccoy1985.csv`)
 
-`fontes/DTIC_ADA162133.pdf` (McCoy 1985, 5,56 mm NATO): projéteis de 9 a 11 calibres, fora da faixa de ajuste do SPIN-73 (3,8 a 5,5 cal, fora os ANSR).
+McCoy, BRL-MR-3476 (1985), DTIC ADA162133: SS-109, M855 e os traçantes L110 e M856, com 35 rodadas. A convenção é a mesma do .50: CLα, pd/V, qd/V, CPN a partir da base. Os comprimentos, 4,1 a 5,2 calibres, estão **dentro** da faixa do SPIN-73.
+
+No supersônico, o SPIN-73 fica 4 a 7 % abaixo no CD e acerta o CMα a 1–10 %. No subsônico, subestima o CD em até 33 % (M855), no mesmo sentido da falta de escala (número de Reynolds) que aparece em todas as armas portáteis. A correção disso está em `../correcao/`.

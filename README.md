@@ -107,6 +107,8 @@ A reconstrução reproduz o SPIN-73 como ele era, erros incluídos. Contra dados
 
 **Benchmarks de voo livre** (`python/experimental/benchmarks/`): 155 mm M101 (Karpov 1964), 155 mm M483A1 (Whyte 1991) e .50 M33 (McCoy 1990), com as convenções de cada fonte convertidas. No supersônico, o SPIN-73 acerta CMα, CNα, CX0 e Cmq a menos de 8 % nos dois 155 mm, mas subestima o CMα da .50 em 21 %. No subsônico, o CX0 erra de −14 % a +25 % conforme a forma.
 
+**Correção empírica** (`python/experimental/correcao/`): com os benchmarks mais os 5,56 e 7,62 NATO (seis grupos, 810 valores medidos), o SPIN-73 é corrigido naquilo que não tem, a escala do projétil (número de Reynolds). Uma correção só entra se reduzir o erro em projéteis que o ajuste não viu (validação cruzada deixando um grupo de fora). Entram o CX0 em todos os regimes (erro supersônico de 7,5 % para 6,0 %, subsônico de 19,5 % para 15,4 %) e o CNα no sub e no transônico. O CMα, o Cmq e o Magnus não melhoram com nenhuma forma simples e ficam como no SPIN-73.
+
 ## Licença
 
 Código sob a licença MIT (ver [LICENSE](LICENSE)). O relatório original é de domínio público (Distribution A).

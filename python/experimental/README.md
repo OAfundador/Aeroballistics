@@ -130,3 +130,7 @@ O CMα do modelo não pôde ser comparado diretamente: nesses Mach (1,8 a 2,6), 
 ### Próximas fatias
 
 Cada seção de calibre custa cerca de três páginas (esboços, características físicas, estabilidade e amortecimento). Prioridade: seções com **boattails** de dados consistentes, que é o que o calibre 0.30 deixou em aberto.
+
+## Correção empírica com voo livre (`correcao/`)
+
+Seis grupos de projéteis (7,62 e 5,56 NATO, .50, 155 mm M101 e M483A1), 810 valores medidos na convenção do SPIN-73. A correção só usa o que o SPIN-73 não tem, a escala (número de Reynolds), e só entra o que a validação cruzada deixando um grupo de fora aceita. Resultado: CX0 corrigido em todos os regimes (supersônico 7,5 % → 6,0 %, subsônico 19,5 % → 15,4 %) e CNα no sub e no transônico. CMα, Cmq e Magnus não se deixam corrigir com esses dados. Detalhes em `correcao/LEIAME.md`.

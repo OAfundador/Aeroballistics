@@ -1,0 +1,212 @@
+{
+ "CX0": {
+  "subsônico": {
+   "tipo": "rel",
+   "atributo": "reynolds",
+   "coef": [
+    0.10207847284895002,
+    0.0,
+    "reynolds"
+   ],
+   "validacao": {
+    "spin73": 0.1954,
+    "corrigido": 0.1535,
+    "grupos": 6,
+    "grupos_que_melhoram": 4,
+    "aceita": true
+   }
+  },
+  "transônico": {
+   "tipo": "rel",
+   "atributo": "reynolds",
+   "coef": [
+    0.33008452590794746,
+    0.0,
+    "reynolds"
+   ],
+   "validacao": {
+    "spin73": 0.1269,
+    "corrigido": 0.105,
+    "grupos": 6,
+    "grupos_que_melhoram": 4,
+    "aceita": true
+   }
+  },
+  "supersônico": {
+   "tipo": "rel",
+   "atributo": "reynolds",
+   "coef": [
+    0.40139657795381456,
+    0.0,
+    "reynolds"
+   ],
+   "validacao": {
+    "spin73": 0.0745,
+    "corrigido": 0.0595,
+    "grupos": 6,
+    "grupos_que_melhoram": 4,
+    "aceita": true
+   }
+  }
+ },
+ "CNA": {
+  "subsônico": {
+   "tipo": "rel",
+   "atributo": "log d",
+   "coef": [
+    0.14945956874090294,
+    -0.14690581541576542,
+    "log d"
+   ],
+   "validacao": {
+    "spin73": 0.1508,
+    "corrigido": 0.1021,
+    "grupos": 6,
+    "grupos_que_melhoram": 4,
+    "aceita": true
+   }
+  },
+  "transônico": {
+   "tipo": "rel",
+   "atributo": "nenhum",
+   "coef": [
+    0.058235025561108635,
+    0.0,
+    "nenhum"
+   ],
+   "validacao": {
+    "spin73": 0.0929,
+    "corrigido": 0.0721,
+    "grupos": 6,
+    "grupos_que_melhoram": 5,
+    "aceita": true
+   }
+  },
+  "supersônico": {
+   "tipo": "rel",
+   "atributo": null,
+   "coef": null,
+   "validacao": {
+    "spin73": 0.087,
+    "corrigido": 0.087,
+    "grupos": 6,
+    "grupos_que_melhoram": 0,
+    "aceita": false
+   }
+  }
+ },
+ "CMA": {
+  "subsônico": {
+   "tipo": "rel",
+   "atributo": null,
+   "coef": null,
+   "validacao": {
+    "spin73": 0.1262,
+    "corrigido": 0.1635,
+    "grupos": 6,
+    "grupos_que_melhoram": 0,
+    "aceita": false
+   }
+  },
+  "transônico": {
+   "tipo": "rel",
+   "atributo": null,
+   "coef": null,
+   "validacao": {
+    "spin73": 0.1271,
+    "corrigido": 0.138,
+    "grupos": 6,
+    "grupos_que_melhoram": 0,
+    "aceita": false
+   }
+  },
+  "supersônico": {
+   "tipo": "rel",
+   "atributo": null,
+   "coef": null,
+   "validacao": {
+    "spin73": 0.1074,
+    "corrigido": 0.1074,
+    "grupos": 6,
+    "grupos_que_melhoram": 0,
+    "aceita": false
+   }
+  }
+ },
+ "CMQ": {
+  "subsônico": {
+   "tipo": "rel",
+   "atributo": null,
+   "coef": null,
+   "validacao": {
+    "spin73": 1.2679,
+    "corrigido": 1.6761,
+    "grupos": 5,
+    "grupos_que_melhoram": 0,
+    "aceita": false
+   }
+  },
+  "transônico": {
+   "tipo": "rel",
+   "atributo": null,
+   "coef": null,
+   "validacao": {
+    "spin73": 0.8697,
+    "corrigido": 0.7524,
+    "grupos": 6,
+    "grupos_que_melhoram": 4,
+    "aceita": false
+   }
+  },
+  "supersônico": {
+   "tipo": "rel",
+   "atributo": null,
+   "coef": null,
+   "validacao": {
+    "spin73": 0.2277,
+    "corrigido": 0.2302,
+    "grupos": 6,
+    "grupos_que_melhoram": 1,
+    "aceita": false
+   }
+  }
+ },
+ "CNPA": {
+  "subsônico": {
+   "tipo": "abs",
+   "atributo": null,
+   "coef": null,
+   "validacao": {
+    "spin73": 0.5356,
+    "corrigido": 0.5356,
+    "grupos": 4,
+    "grupos_que_melhoram": 0,
+    "aceita": false
+   }
+  },
+  "transônico": {
+   "tipo": "abs",
+   "atributo": null,
+   "coef": null,
+   "validacao": {
+    "spin73": 1.0724,
+    "corrigido": 0.9877,
+    "grupos": 6,
+    "grupos_que_melhoram": 3,
+    "aceita": false
+   }
+  },
+  "supersônico": {
+   "tipo": "abs",
+   "atributo": null,
+   "coef": null,
+   "validacao": {
+    "spin73": 0.4227,
+    "corrigido": 0.4966,
+    "grupos": 6,
+    "grupos_que_melhoram": 0,
+    "aceita": false
+   }
+  }
+ }
+}

@@ -36,7 +36,7 @@ def ler(caminho):
     rows = list(csv.DictReader(linhas))
     for r in rows:
         for c in list(r):
-            if c != "RD":
+            if c not in ("RD", "PROJETIL"):
                 r[c] = float(r[c]) if r[c].strip() else np.nan
         for (rd, col) in duv:
             if r["RD"] == rd and col in r:
@@ -112,7 +112,28 @@ def m33():
     return comparar(".50 Ball M33 — McCoy 1990 (BRL-MR-3810)", rows, p, conv)
 
 
+NATO556 = {  # geometria das Figs. 2-3 e Tabela 1 de McCoy 1985 (CG da base -> do nariz)
+    "SS-109": dict(VL=4.07, VN=2.00, VB=0.45, VCG=4.07 - 1.52, OR=8.4),
+    "M855": dict(VL=4.05, VN=1.90, VB=0.40, VCG=4.05 - 1.54, OR=7.9),
+    "L110": dict(VL=5.13, VN=2.14, VB=0.26, VCG=5.13 - 2.52, OR=8.4),
+    "M856": dict(VL=5.18, VN=2.00, VB=0.37, VCG=5.18 - 2.57, OR=9.7),
+}
+
+
+def nato556():
+    todas = ler(os.path.join(AQUI, "nato556_mccoy1985.csv"))
+    out = []
+    for nome, g in NATO556.items():
+        p = s.Projetil(DM=0.12, BD=1.00, nome=nome, **g)
+        rows = [r for r in todas if r["PROJETIL"] == nome]
+        conv = {"CD": ("CD", 1.0), "CMA": ("CMA", 1.0), "CLA": ("CLA", 1.0),
+                "CMQ": ("CMQ", 2.0), "CMPA": ("CMPA", 2.0), "CPN": ("CPN_BASE", 1.0)}
+        out.append(comparar(f"5,56 NATO {nome} — McCoy 1985 (BRL-MR-3476)", rows, p, conv))
+    return out
+
+
 if __name__ == "__main__":
     m101()
     m483a1()
     m33()
+    nato556()
