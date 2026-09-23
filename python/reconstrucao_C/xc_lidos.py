@@ -70,6 +70,12 @@ CORRECOES = {
     # 175 mm M437 (peso 0,623) e 5"/38 (peso 0,154) pedem Delta = 0,9598 e 0,9616, e com
     # -1,684 os resíduos caem para +0,0008 e -0,0001. Ver NOTAS_TRANSCRICAO.md, seção T6.
     (12, 6): (-2.646, -1.684),
+    # Mach 0,8: único candidato compatível com as duas tabelas (NOTAS, T6.1); a troca é o par
+    # 6/8 e zera os dois resíduos ao mesmo tempo (M437 +0,036 -> −0,002; 5"/38 +0,024 -> 0,000).
+    (1, 2): (1.66, 1.68),
+    # Mach 0,6: igual ao valor de Mach 0,01, como em XC2..XC11. Melhora as duas tabelas
+    # (M437 +0,016 -> −0,004; 5"/38 +0,006 -> +0,001); o resíduo do M437 segue em aberto.
+    (12, 1): (-3.670, -3.650),
 }
 
 # Células cuja leitura visual ficou duvidosa (linha XC 1-based, índice de Mach 0-based).
@@ -96,7 +102,16 @@ AUSENTES = {15: list(range(8, 17))}  # XC15: cartão de continuação não impre
 # células duvidosas, e de 2,5 a 5,0 o CNα impresso do 5"/38 é o que está sob suspeita
 # (desvio de +0,014, seção T5 das notas). Ver NOTAS_TRANSCRICAO.md, seção T6.2.
 RECUPERADOS = {(15, 8): 1.4366, (15, 12): 0.2079}
-for (_linha, _j), _v in RECUPERADOS.items():
+
+# Demais células do cartão ausente: decididas SÓ pelo M437 (com XC12 como lido) e conferidas
+# no 5"/38, que fica a 0,004-0,009 no CPN (Mach 1,35/1,5/1,75/4/5). Em Mach 2,5 o 5"/38 erra
+# 0,17: há outra célula mal lida nesse Mach e o valor é INCERTO. Em Mach 3 o CPN do 5"/38 é
+# ilegível e não há conferência. Validar o CPN do M437 nesses Mach seria circular.
+DECIDIDOS_M437 = {(15, 9): 2.0769, (15, 10): 1.0895, (15, 11): 0.5500, (15, 13): -2.4743,
+                  (15, 14): -0.9152, (15, 15): -0.9211, (15, 16): -0.9190}
+INCERTOS = {(15, 13): "5\"/38 erra 0,17 em Mach 2,5", (15, 14): "sem conferência"}
+
+for (_linha, _j), _v in {**RECUPERADOS, **DECIDIDOS_M437}.items():
     XC[_linha - 1, _j] = _v
 
 XC_LIDO = XC.copy()

@@ -20,7 +20,7 @@ import spin73 as s                                        # noqa: E402
 from cpn_spin73 import cpn_cma                            # noqa: E402
 from dados_cna import T as T_CNA                          # noqa: E402
 from dados_cpn import CPN_538, POR_IDENTIDADE             # noqa: E402
-from xc_lidos import AUSENTES, CORRECOES, RECUPERADOS     # noqa: E402
+from xc_lidos import AUSENTES, CORRECOES, DECIDIDOS_M437, RECUPERADOS  # noqa: E402
 
 TAB437 = s.ler_tabela(os.path.join(AQUI, "..", "m437_tabela.csv"))
 G437 = (s.M437.VL, s.M437.VN, s.M437.VB, s.M437.OR, s.M437.DM, s.M437.VCG)
@@ -35,14 +35,14 @@ VER_538 = {3, 5, 7}
 
 PENDENTES = {
     0: 'XC12 ou a leitura do CPN do 5"/38 em Mach 0,01 (0,769 x 0,779): M437 fecha, 5"/38 erra +0,011',
-    1: "XC12 em Mach 0,6 (linha desbotada): sem candidato único nas duas tabelas",
-    2: "XC12 ou XC1 em Mach 0,8 (linha desbotada): sem candidato único",
+    1: "XC12 em Mach 0,6 decidido pelas duas tabelas (igual ao de Mach 0,01): circular",
+    2: "XC1 em Mach 0,8 decidido pelas duas tabelas (1,66 -> 1,68, par 6/8): circular",
     4: '5"/38: linha de Mach 0,95 ilegível na coluna CPN (o M437 fecha)',
     5: 'Mach 1,0: só o M437 erra (+0,008); o 5"/38 fecha. Algum coeficiente com peso alto '
        "só no boattail de 1,00 cal, ou a célula impressa do M437",
     6: "Mach 1,05: usado para decidir XC12 (circular por construção)",
-    **{j: ("Mach recuperado pelas duas tabelas (XC15 decidido pelo modelo): circular"
-           if (15, j) in RECUPERADOS else "XC15 sem cartão de continuação no listing")
+    **{j: ("XC15 recuperado pelas duas tabelas: circular" if (15, j) in RECUPERADOS
+           else "XC15 decidido pelo M437 (conferido no 5\"/38 a 0,004-0,009): circular")
        for j in AUSENTES[15]},
 }
 

@@ -218,3 +218,19 @@ O CX = 0,105 do M437 em Mach 0,01 e 0,6, que tinha sido decidido pelo s_d impres
 XA13..XA15 (ogiva maior que 3 calibres) estão lidos mas **não testados**: nenhuma tabela transcrita tem VN > 3. O candidato é o 175 mm SRC (p. 68, VN = 5,5).
 
 **O programa completo.** Com o XA, `spin73.tabela()` roda da geometria até a análise de estabilidade. No M437 fecham 17 de 17: CX, CYPA, CNPA, CPF1, CNPA5, CLP, SPIN e RECIP5. As falhas restantes (CPN, CMα e, por consequência, s_g, ω e λ) estão todas nos Mach em que o XC não está completo: o XC12 desbotado e o cartão ausente do XC15.
+
+## T11 — XC completo: decisões finais e o que ficou incerto
+
+Com XA e XD reconstruídos, o XC era o último bloco com lacunas. Decisões (`python/reconstrucao_C/xc_lidos.py`):
+
+| Célula | Leitura | Decisão | Evidência | Confiança |
+|---|---|---|---|---|
+| XC1, Mach 0,8 | 1,66 | **1,68** | único candidato compatível com as duas tabelas; par 6/8; zera os dois resíduos (M437 +0,036 → −0,002; 5"/38 +0,024 → 0,000) | alta |
+| XC12, Mach 0,6 | −3,670 | −3,650 | igual ao de Mach 0,01, como em XC2..XC11; melhora as duas tabelas | média (M437 fica a −0,004) |
+| XC15, Mach 1,35 / 1,5 / 1,75 / 4 / 5 | cartão ausente | pelo M437 | conferido no 5"/38 a 0,004–0,009 no CPN | média |
+| XC15, Mach 3 | cartão ausente | pelo M437 | sem conferência (CPN do 5"/38 ilegível) | baixa |
+| XC15, Mach 2,5 | cartão ausente | pelo M437 | **o 5"/38 erra 0,17**: há outra célula mal lida nesse Mach | incerta |
+
+Com isso o XC não tem mais NaN e o programa produz as 24 colunas do M437 a partir da geometria. **Mas o CPN do M437 deixou de ser teste em quase todos os Mach**, porque foi usado para decidir o XC: só Mach 0,01, 0,9, 0,95, 1,0 e 1,1 continuam independentes (`test_modelo_completo.py`, conjunto CIRCULARES).
+
+**Para validar de verdade o bloco de boattail do CPN**, falta uma terceira tabela com boattail. A do 155 mm M101 (p. 59) foi tentada: é a mais carregada de tinta de todas, e a identidade CMα = (VCG − CPN)·CNα só fecha linha a linha com um VCG que oscila entre 2,956 e 2,965. Ela pede leitura célula a célula; fica como próximo passo, junto com o 105 mm XM380E5 (p. 50).
