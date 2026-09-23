@@ -233,6 +233,8 @@ Com XA e XD reconstruídos, o XC era o último bloco com lacunas. Decisões (`py
 
 Com isso o XC não tem mais NaN e o programa produz as 24 colunas do M437 a partir da geometria. **Mas o CPN do M437 deixou de ser teste em quase todos os Mach**, porque foi usado para decidir o XC: só Mach 0,01, 0,9, 0,95, 1,0 e 1,1 continuam independentes (`test_modelo_completo.py`, conjunto CIRCULARES).
 
+*(Atualizado na seção T13: a terceira tabela, XM380E5, resolveu Mach 2,5 — o erro era do XC1 — e Mach 1,0, 1,35 e 1,5.)*
+
 **Para validar de verdade o bloco de boattail do CPN**, falta uma terceira tabela com boattail. A do 155 mm M101 (p. 59) foi tentada: é a mais carregada de tinta de todas, e a identidade CMα = (VCG − CPN)·CNα só fecha linha a linha com um VCG que oscila entre 2,956 e 2,965. Ela pede leitura célula a célula; fica como próximo passo, junto com o 105 mm XM380E5 (p. 50).
 
 ## T12 — A p. 86: CNPA3, CNPA5, DELT, DISP e a regra de instabilidade
@@ -255,3 +257,32 @@ As constantes são as de um polinômio f(δ) = C1 + C3·δ² + C5·δ⁴ avaliad
 **Taxas de amortecimento (C258-C261).** O código usa −CNAT·(1 − τ) com τ = 1/σ na raiz 1, o que confirma no próprio código o sinal que as tabelas indicavam (item E1).
 
 **Regra de instabilidade (C249, C287).** Se s_g < 1,001, o programa pula a análise dinâmica e imprime só MACH e STAB. O modelo segue a regra: as demais colunas de estabilidade saem vazias nesse caso.
+
+## T13 — Terceira tabela com boattail: 105 mm XM380E5 (p. 50)
+
+**Leitura.** A p. 50 é das mais nítidas do relatório. As 15 colunas foram transcritas por inteiro (`python/tabelas/p50_105mm_xm380e5.csv`), sem usar o modelo para decidir dígitos. Nove células foram resolvidas por identidades entre colunas **impressas** — CMα = (VCG − CPN)·CNα, CNPA = CYPA·(VCG − CPF1), CNPA5 = CYPA·(VCG − CPF5) e CNPA3 + 0,1·CNPA5P = 3,75 — e ficam fora das contagens. Sete ficaram ilegíveis. O cabeçalho confirma VN = 2,900: a leitura antiga (2,400) vinha do scan de baixa resolução.
+
+**Nenhum DATA foi decidido por esta tabela**: ela é teste em todas as células. Com o programa inteiro, partindo só da entrada impressa, 222 células independentes: **92 % indistinguíveis do original, 98 % no critério.** Magnus, Cmq e Clp fecham em todas as células legíveis.
+
+**O que ela resolveu.** Onde havia duas tabelas para duas incógnitas, agora há três: sobra um grau de liberdade para achar qual célula está errada.
+
+| Célula | Lido | Decidido | Decidido por | Conferência independente |
+|---|---|---|---|---|
+| XC1, Mach 2,5 | 1,90 | **1,99** | M437 (1,9899), com XC15 constante de 2,5 a 5 | XM380E5: −0,080 → +0,0001 no CPN; 5"/38: −0,168 → −0,008 |
+| XC15, Mach 2,5 a 5 | cartão ausente | **−0,9184** (constante) | M437 em Mach 3, 4, 5 (−0,9152 / −0,9211 / −0,9190) | XM380E5 ≤ 0,0005 nos quatro Mach (peso pequeno no XC15) |
+| XC12, Mach 1,35 | −,8054 | **−,8154** | M437 + 5"/38 (−0,8157) | XM380E5: 0,0000 |
+| XC12, Mach 1,5 | −,6033 | **−,6173** | M437 + 5"/38 (−0,6192) | XM380E5: −0,0009 |
+| XC15, Mach 1,35 / 1,5 | cartão ausente | 2,0052 / 0,9839 | M437 + 5"/38, com o XC12 corrigido | XM380E5 pede 2,0107 em 1,35 (as três concordam) |
+| XC14, Mach 1,0 | −,7672 | **−,7872** | M437 (−0,7867); par 6/8 | nenhuma: 5"/38 e XM380E5 têm CXLL ≈ −0,06 |
+| XF7, Mach 1,1 a 2,5 | cartão ausente | −0,715 e −0,73 | 5"/38 | M437 e XM380E5: −0,7151 / −0,7150 em Mach 1,1 |
+| XD2, Mach 2,5 | ,6? | **,5** | 5"/38 (0,509) | XM380E5, mesmo peso: 0,500 |
+
+**XC1 em Mach 2,5.** O "0,17 cal de erro no 5"/38" (T11) não era do XC15, e sim do XC1. O glifo do listing é ambíguo entre 0 e 9. A decisão seguiu a ordem que evita circularidade. Primeiro, o XC15 de 2,5 a 5 é constante, como os quatro últimos valores das linhas XC12, XC13, XC14 e XC16 no listing, e o M437 o fixa em Mach 3, 4 e 5. Depois, o M437 em Mach 2,5 fixa o XC1. O XM380E5, que tem peso alto no XC1 e não entrou em nenhuma das duas decisões, passa a fechar em Mach 2,5. A linha do XC1 fica 1,79 1,88 1,99 2,03 2,00 1,97.
+
+**Mais um cartão ausente: o XF7.** Na p. 81, depois do primeiro cartão do DATA XF7 (7 valores), vêm **duas cópias do terceiro cartão** ("−.73, −.73, −.73 /"). O segundo cartão (Mach 1,1 a 2,5) não foi impresso. É o mesmo defeito do XC15 e do XE5, o terceiro caso no listing. O −0,73 usado até agora nesses Mach era suposição. A coluna CMQ do 5"/38 pede −0,7146 em Mach 1,1 e −0,729 a −0,731 de 1,2 a 2,5. O M437 e o XM380E5, fora da decisão, pedem −0,7151 e −0,7150. **Era esse o "DATA XF mal lido em Mach 1,1"**, que deixava o Cmq do M437 0,038 fora. Na tabela do 155 mm M101, a célula de Mach 1,1 lida como −14,861 é provavelmente −14,661 (par 6/8): o modelo dá −14,662.
+
+**Continua em aberto.**
+- Mach 0,6: o CPN calculado fica acima do impresso nas três tabelas com boattail (M437 +0,004; XM380E5 +0,002; 5"/38 −0,001). Vários pares de coeficientes fecham as três ao mesmo tempo, e nenhum é uma troca limpa de glifo. Em Mach 0,8, o mesmo acontece só no M437 (+0,002).
+- 5"/38 de Mach 2,5 a 5: o CPN fica 0,006 a 0,009 abaixo, e o CNα impresso 0,014 abaixo do reconstruído. O desvio é sistemático e aparece só nessa geometria, com as duas outras fechando: o mais provável é um coeficiente de XB/XC com peso alto só no 5"/38, ou a própria transcrição dessas linhas.
+- 5"/38 em Mach 1,75: pede XC15 = 0,629, contra 0,550 do M437.
+- CX2 do M437 em Mach 1,5, 1,75 e 2,5 (−0,007 a −0,030): o 5"/38 e o XM380E5 fecham, o que aponta para a transcrição dessas células do M437 ou para um termo que só pesa com boattail de 1 cal.

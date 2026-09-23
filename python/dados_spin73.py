@@ -10,14 +10,15 @@ Situação de cada bloco (ver docs/NOTAS_TRANSCRICAO.md):
                                    XA13..XA15 lidos mas sem tabela que os teste (VN > 3)
   XB1..XB10  força normal CNα      XB1..XB9 lidos (6 correções decididas); XB10 não
                                    aparece no código transcrito até agora
-  XC1..XC17  centro de pressão     lidos; cartão de XC15 ausente no listing, com
-                                   Mach 1,2 e 2,0 recuperados pelas tabelas; XC12
-                                   em Mach 1,05 decidido pelo modelo
-  XD1..XD4   CX2                   lidos; 3 células decididas pelas tabelas
+  XC1..XC17  centro de pressão     lidos; cartão de XC15 ausente no listing, recuperado
+                                   pelas tabelas; 8 células decididas pelas tabelas
+                                   (três tabelas com boattail: M437, 5"/38, XM380E5)
+  XD1..XD4   CX2                   lidos; 4 células decididas pelas tabelas
   XE1..XE4   Magnus                lidos (iguais aos identificados pelas tabelas)
   XE5        Magnus, corpo longo   cartão final lido (Mach 2 a 5, confere com as tabelas);
                                    o primeiro cartão não foi impresso -> vem das tabelas
-  XF1..XF9   Cmq                   lidos
+  XF1..XF9   Cmq                   lidos; 2º cartão do XF7 ausente no listing (Mach 1,1
+                                   a 2,5), recuperado pelo 5"/38
   XG1        Clp                   lido
 """
 import os

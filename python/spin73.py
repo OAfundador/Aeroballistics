@@ -425,10 +425,10 @@ def ler_tabela(caminho: str) -> dict:
 def avisos(p: Projetil) -> list[str]:
     """Limitações da reconstrução que afetam ESTE projétil (docs/NOTAS_TRANSCRICAO.md)."""
     a = [
-        "CPN e CMα em Mach 2,5: o cartão XC15 não foi impresso no relatório e foi "
-        "recuperado pelo 175 mm M437; o 5\"/38 discorda em 0,17 cal (T11).",
-        "CPN e CMα em Mach 3: XC15 recuperado pelo M437, sem conferência independente (T11).",
-        "Cmq em Mach 1,1: algum DATA XF está mal lido (o M437 difere 0,038).",
+        "CPN e CMα de Mach 1,2 a 5: o cartão XC15 não foi impresso no relatório e foi "
+        "recuperado pelas tabelas; o XM380E5 confere em todos esses Mach, mas o 5\"/38 fica "
+        "0,004 a 0,009 cal fora em 1,75 e de 2,5 a 5 (T11, T13).",
+        "CPN e CMα em Mach 0,6: resíduo de 0,002 a 0,004 cal em aberto (T13).",
     ]
     if p.VN > 3.0:
         a.append("Ogiva > 3 cal: o CX usa XA13..XA15 e o CPN usa XC17, lidos mas sem "

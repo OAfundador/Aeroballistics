@@ -12,7 +12,8 @@ DEFEITO DA IMPRESSÃO (achado desta tarefa): as linhas y=1867 e y=1900 da págin
 são a MESMA imagem (correlação de pixels 0,90 contra 0,65 da linha vizinha, que tem o
 mesmo prefixo de texto) e ambas trazem o rótulo "XC16". O cartão de continuação de XC15
 foi substituído por uma segunda cópia do primeiro cartão de XC16. Logo XC15[8:17]
-(Mach 1,2 a 5,0) NÃO existe no listing impresso: fica como np.nan aqui.
+(Mach 1,2 a 5,0) NÃO existe no listing impresso: vem das tabelas (RECUPERADOS e
+DECIDIDOS_M437, abaixo).
 
 '?' nos comentários = dígito duvidoso.
 """
@@ -76,17 +77,34 @@ CORRECOES = {
     # Mach 0,6: igual ao valor de Mach 0,01, como em XC2..XC11. Melhora as duas tabelas
     # (M437 +0,016 -> −0,004; 5"/38 +0,006 -> +0,001); o resíduo do M437 segue em aberto.
     (12, 1): (-3.670, -3.650),
+    # --- Terceira tabela com boattail: 105 mm XM380E5 (p. 50). Ver NOTAS, seção T13. ---
+    # Mach 2,5: com o XC15 de 2,5 a 5 constante (abaixo), o M437 sozinho pede XC1 = 1,9899.
+    # O glifo do listing é ambíguo entre 0 e 9 e a linha fica 1,88 1,99 2,03 2,00 1,97.
+    # Conferência independente: o CPN do XM380E5 em Mach 2,5 passa de −0,080 a +0,0001, e o
+    # do 5"/38, de −0,168 a −0,008 (o mesmo desvio que ele tem em Mach 4 e 5).
+    (1, 13): (1.90, 1.99),
+    # Mach 1,35 e 1,5: o 3º dígito está apagado (0 ou 1) e o 4º é ambíguo (3 ou 7). As
+    # tabelas M437 e 5"/38 pedem −0,8157 e −0,6192; os únicos valores compatíveis com o glifo
+    # são −,8154 e −,6173. O XM380E5, que não entrou na decisão, fecha em 0,0000 e −0,0009.
+    (12, 9): (-.8054, -.8154),
+    (12, 10): (-.6033, -.6173),
+    # Mach 1,0: o M437 sozinho pede −0,7867. Com −,7872 (par 6/8), o XC14 repete em Mach 1,0
+    # o valor de Mach 0,95, como faz em pares em toda a linha (−,9731 −,9731 −,6906 −,6906
+    # −,5391 −,5391). O 5"/38 e o XM380E5 quase não pesam aqui (CXLL ≈ −0,06): sem conferência.
+    (14, 5): (-.7672, -.7872),
 }
 
 # Células cuja leitura visual ficou duvidosa (linha XC 1-based, índice de Mach 0-based).
 DUVIDOSAS = {
+    (1, 13): "1.9? (0 ou 9)",
     (6, 6): "0.0001? (glifo central apagado)",
     (12, 1): "-3.670? (linha desbotada; 1o valor -3.650 e 2o poderiam ser iguais)",
     (12, 5): "-2.936?",
     (12, 6): "-2.646?",
     (12, 8): "-1.162?",
-    (12, 9): "-.8054?",
-    (12, 10): "-.6033?",
+    (12, 9): "-.8?54? (3o dígito apagado)",
+    (12, 10): "-.6??3 (3o e 4o dígitos apagados)",
+    (14, 5): "-.7?72 (6 ou 8)",
     (16, 6): "11.766 / 11.768 (as duas cópias do cartão discordam)",
 }
 
@@ -98,18 +116,23 @@ AUSENTES = {15: list(range(8, 17))}  # XC15: cartão de continuação não impre
 # valor LIDO no listing, o sistema está consistente e o XC15 obtido é confiável:
 #   Mach 1,2 : XC12 resolvido -1,1630 contra -1,1620 lido  -> XC15 = 1,437
 #   Mach 2,0 : XC12 resolvido -0,2266 contra -0,2274 lido  -> XC15 = 0,208
-# Nos demais Mach a solução não fecha: em 1,35/1,5/1,75 o próprio XC12 está entre as
-# células duvidosas, e de 2,5 a 5,0 o CNα impresso do 5"/38 é o que está sob suspeita
-# (desvio de +0,014, seção T5 das notas). Ver NOTAS_TRANSCRICAO.md, seção T6.2.
-RECUPERADOS = {(15, 8): 1.4366, (15, 12): 0.2079}
+#   Mach 1,35: com XC12 corrigido para −,8154 (CORRECOES), M437 e 5"/38 pedem 2,0061 e
+#              2,0035 -> 2,0052 (mínimos quadrados); o XM380E5 pede 2,0107 (peso pequeno)
+#   Mach 1,5 : com XC12 = −,6173, M437 e 5"/38 pedem 0,9904 e 0,9717 -> 0,9839
+# Ver NOTAS_TRANSCRICAO.md, seções T6.2 e T13.
+RECUPERADOS = {(15, 8): 1.4366, (15, 9): 2.0052, (15, 10): 0.9839, (15, 12): 0.2079}
 
-# Demais células do cartão ausente: decididas SÓ pelo M437 (com XC12 como lido) e conferidas
-# no 5"/38, que fica a 0,004-0,009 no CPN (Mach 1,35/1,5/1,75/4/5). Em Mach 2,5 o 5"/38 erra
-# 0,17: há outra célula mal lida nesse Mach e o valor é INCERTO. Em Mach 3 o CPN do 5"/38 é
-# ilegível e não há conferência. Validar o CPN do M437 nesses Mach seria circular.
-DECIDIDOS_M437 = {(15, 9): 2.0769, (15, 10): 1.0895, (15, 11): 0.5500, (15, 13): -2.4743,
-                  (15, 14): -0.9152, (15, 15): -0.9211, (15, 16): -0.9190}
-INCERTOS = {(15, 13): "5\"/38 erra 0,17 em Mach 2,5", (15, 14): "sem conferência"}
+# Mach 1,75: decidido SÓ pelo M437 (0,5500). O 5"/38 pediria 0,629 (resíduo −0,004 no
+# CPN), com o XC12 lido sem dúvida (−,3949): fica em aberto. O XM380E5 fecha (+0,0003).
+#
+# Mach 2,5 a 5: nas linhas XC12, XC13, XC14 e XC16 os quatro últimos valores do listing são
+# iguais; o XC15 segue o mesmo padrão. O M437 pede −0,9152, −0,9211 e −0,9190 em Mach 3, 4 e
+# 5, iguais dentro da resolução da impressão (±0,008): vale a média, −0,9184. Em Mach 2,5
+# ele pede −0,9167 depois de corrigido o XC1 (CORRECOES). O XM380E5 fecha nos quatro Mach
+# (resíduo ≤ 0,0005), mas pesa pouco no XC15 (CCRT ≈ 0). O 5"/38 fica 0,006 a 0,009 abaixo
+# em 2,5, 4 e 5: desvio sistemático dele, o mesmo do CNα (seção T5).
+DECIDIDOS_M437 = {(15, 11): 0.5500, **{(15, j): -0.9184 for j in (13, 14, 15, 16)}}
+INCERTOS = {(15, 11): "o 5\"/38 pede 0,629 e o M437, 0,550"}
 
 for (_linha, _j), _v in {**RECUPERADOS, **DECIDIDOS_M437}.items():
     XC[_linha - 1, _j] = _v

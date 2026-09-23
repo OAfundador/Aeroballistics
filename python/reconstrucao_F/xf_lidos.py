@@ -14,8 +14,19 @@ XF = np.array([
  [-3.3,-3.3,-3.3,-3.2,-3.18,-3.16,-3.13,-3.10,-3.00,-2.50,-1.59,-1.59,-1.59,-1.59,-1.59,-1.59,-1.59],
  [-1.3]*7 + [-1.28,-1.26,-1.26,-1.26,-1.26,-1.26,-1.26,-1.26,-1.26,-1.26],
  [0.]*17,
- [-.7]*7 + [-.73]*10,                                                              # continuação com layout incomum
+ [-.7]*7 + [-.715] + [-.73]*9,                                                     # 2o cartão ausente: ver AUSENTES
  [1.09,1.09,1.09,.8,.6,.3,-.002,-.23,-.47,-1.15,-1.83,-1.83,-1.83,-1.83,-1.83,-1.83,-1.83],
  [0.]*9 + [1.0,2.0,4.0,6.0,8.0,8.0,6.0,3.0],                                       # F9: não documentado; nº de zeros inferido (17 no total)
 ])
+
+# DEFEITO DA IMPRESSÃO no XF7 (o mesmo do XC15 e do XE5): depois do 1º cartão (7 valores,
+# Mach 0,01 a 1,05) vêm DUAS cópias do 3º cartão, "-.73, -.73, -.73 /". O 2º cartão (7
+# valores, Mach 1,1 a 2,5) não foi impresso. Os 3 últimos (Mach 3 a 5) são os impressos.
+# Recuperados pela coluna CMQ do 5"/38 (peso do XF7 = −5,093·(VCG−3)·VB = +0,52), que pede
+# −0,7146 em Mach 1,1 e −0,729 a −0,731 de 1,2 a 2,5. O M437 (peso −2,55) e o XM380E5
+# (−1,02), que não entraram na decisão, pedem −0,7151 / −0,7150 e −0,7300 / −0,7298.
+# Era o "XF mal lido em Mach 1,1" que deixava o Cmq do M437 0,038 fora (NOTAS, seção T13).
+AUSENTES = {7: list(range(7, 14))}
+RECUPERADOS = {(7, 7): -.715, **{(7, j): -.73 for j in range(8, 14)}}
+
 XG1 = np.array([-.0364,-.0364,-.0346,-.0292,-.0254,-.0240,-.0238,-.0236,-.0234,-.0232,-.0230,-.0225,-.0220,-.0210,-.0200,-.0195,-.0190])

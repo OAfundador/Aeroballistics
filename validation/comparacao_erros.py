@@ -27,7 +27,9 @@ if hasattr(sys.stdout, "reconfigure"):
 
 import spin73 as s                                          # noqa: E402
 import magnus_clp as mc                                     # noqa: E402
+import tabelas_impressas as ti                              # noqa: E402
 import test_modelo_completo as tm                           # noqa: E402
+import test_tabelas_impressas as tt                         # noqa: E402
 from dados_cna import T as T_CNA                            # noqa: E402
 from dados_cx import CX_538                                 # noqa: E402
 from dados_cx2 import CX2_538, DECIDIDAS as CX2_DEC_538     # noqa: E402
@@ -59,7 +61,7 @@ for col in tm.COLUNAS:
 # 2. CNα em 10 tabelas: as 6 correções de XB foram decididas por elas
 circ_xb = {j for (_, j) in XB_CORR}
 for pag, (nome, VL, VN, VB, OR, cna) in T_CNA.items():
-    if pag == 65:
+    if pag == 65 or pag in tt.TABELAS:        # essas entram inteiras abaixo
         continue
     p = s.Projetil(VL=VL, VN=VN, VB=VB, VCG=VL / 2, OR=OR)
     modelo = [s.normal_e_momento(p, K, j)["CNA"] for j in range(17)]
@@ -85,20 +87,33 @@ t538 = s.tabela(p538)
 registra('5"/38 NAVY (p. 53)', "CX", t538["CX"], CX_538, {0, 1})
 registra('5"/38 NAVY (p. 53)', "CX2", t538["CX2"], CX2_538,
          {j for (_, j) in XD_DEC} | set(CX2_DEC_538))
-circ_cpn_538 = {1, 2, 6, 8, 12}          # XC decidido com o 5"/38 + M437 nesses Mach
+circ_cpn_538 = {1, 2, 6, 8, 9, 10, 12}    # XC decidido com o 5"/38 + M437 nesses Mach
 registra('5"/38 NAVY (p. 53)', "CPN", t538["CPN"], CPN_538, circ_cpn_538)
 registra('5"/38 NAVY (p. 53)', "CMA", t538["CMA"], CMA_538, circ_cpn_538)
 
 # 5. Cmq em mais três tabelas (reconstrucao_F/test_cmq.py). O VCG do M101 foi decidido
 #    pela coluna CMQ: circular inteiro. A coluna do 9 cal foi lida com 1 casa.
+#    O 2º cartão do XF7 foi recuperado pelo 5"/38: circular nele de Mach 1,1 a 2,5.
 import test_cmq as tc                                       # noqa: E402
 for nome, (VL, VCG, VB, col) in tc.T.items():
-    if nome == "M437":
+    if nome in ("M437", "XM380E5"):
         continue
     p = s.Projetil(VL=VL, VN=2.0, VB=VB, VCG=VCG)
-    circ = set(range(17)) if nome == "M101" else set()
+    circ = set(range(17)) if nome == "M101" else {j for (n, j) in tc.CIRCULARES if n == nome}
     registra(f"Cmq {nome}", "CMQ", [s.cmq(p, K, j) for j in range(17)], col, circ,
              casas=1 if nome == "9cal" else 3)
+
+
+# 6. Tabelas inteiras de python/tabelas/ (hoje: 105 mm XM380E5, p. 50), com a entrada
+#    impressa. Células resolvidas por identidade entre colunas impressas ficam de fora.
+for pag, tb in tt.TABELAS.items():
+    t_ = s.tabela(tb.projetil())
+    for col, v in tb.colunas.items():
+        if col == "MACH":
+            continue
+        imp = [np.nan if (col, M) in tb.identidade else v[j] for j, M in enumerate(MACH)]
+        circ = {j for j, M in enumerate(MACH) if (col, M) in tt.CIRCULARES[pag]}
+        registra(f"{tb.nome} (p. {pag})", col, t_[col], imp, circ)
 
 
 # ------------------------------------------------------------------ resumo
@@ -120,7 +135,11 @@ print(f"Células comparadas: {len(linhas)}  (independentes: {len(ind)}, "
       f"circulares: {len(linhas) - len(ind)})")
 print(f"Nas independentes: {100 * np.mean(u <= 0.5):.0f} % indistinguíveis do original (±0,5 unidade), "
       f"{100 * np.mean(u <= 1.5):.0f} % no critério do projeto (±1,5), "
-      f"mediana {np.median(u):.2f} unidade\n")
+      f"mediana {np.median(u):.2f} unidade")
+# A coluna CNA do 90 mm M71 (p. 44) vem de uma página sabidamente degradada.
+u71 = np.array([unidades(l) for l in ind if "M71" not in l[0]])
+print(f"Sem o 90 mm M71: {len(u71)} células, {100 * np.mean(u71 <= 0.5):.0f} % indistinguíveis, "
+      f"{100 * np.mean(u71 <= 1.5):.0f} % no critério, mediana {np.median(u71):.2f} unidade\n")
 
 print(f"{'coluna':8s} {'tabelas':>7s} {'células':>7s} {'<=0,5':>6s} {'<=1,5':>6s} {'mediana':>8s} "
       f"{'máx (un.)':>10s}  pior célula")

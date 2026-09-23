@@ -18,9 +18,10 @@ T = s.tabela(s.M437)
 MACH = [round(float(m), 2) for m in s.MACH_GRID]
 
 # Mach em que algum DATA do CPN foi DECIDIDO usando esta mesma tabela (xc_lidos.py):
-# XC12 em 0,6 e 1,05; XC1 em 0,8; XC15 em 1,2 e 2,0 (M437 + 5"/38) e de 1,35 a 5 (só M437).
-# Nesses Mach o CPN do M437 e tudo que depende do CMα não podem validar nada.
-_CIRC_CPN = (0.6, 0.8, 1.05, 1.2, 1.35, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0)
+# XC12 em 0,6 e 1,05; XC1 em 0,8 e 2,5; XC14 em 1,0; XC15 em 1,2 a 2,0 (M437 + 5"/38, ou
+# só M437 em 1,75) e de 2,5 a 5 (só M437). Nesses Mach o CPN do M437 e tudo que depende
+# do CMα não podem validar nada.
+_CIRC_CPN = (0.6, 0.8, 1.0, 1.05, 1.2, 1.35, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0)
 _DEPENDE_CMA = ("CPN", "CMA", "GYRO", "W1", "W2", "L1", "L2", "L15", "L25", "DELT", "DISP")
 CIRCULARES = {(c, m) for c in _DEPENDE_CMA for m in _CIRC_CPN}
 
@@ -29,18 +30,14 @@ PENDENTES = {
     ("CNA", 0.8): "CNα reconstruído 0,0018 acima (reconstrucao_B, PENDENTES)",
     ("CNA", 1.05): "CNα reconstruído 0,0022 acima (reconstrucao_B, PENDENTES)",
     ("CPF5", 1.1): "célula impressa ambígua 4,23? (NOTAS, T2)",
-    ("CMQ", 1.1): "algum XF mal lido em Mach 1,1 (reconstrucao_F, PENDENTE_M11)",
     ("CPN", 0.95): "o CNα reconstruído (0,001 abaixo) entra ~3x no CPN; com o CNα impresso "
                    "fecha em +0,0007 (reconstrucao_C/test_cpn.py)",
-    ("CPN", 1.0): "só o M437 erra (+0,008); o 5\"/38 fecha (NOTAS, T6.1)",
-    ("CMA", 1.0): "segue o CPN",
-    ("GYRO", 1.0): "segue o CMα",
     ("CX2", 0.8): "célula impressa ambígua (2,6?3); o DATA XD pede 2,805 (NOTAS, T9)",
     ("CX2", 1.1): "célula impressa ilegível; o DATA XD dá 5,002 (NOTAS, T9)",
     ("CX2", 1.5): "resíduo de ~0,007 em aberto no M437 (o 5\"/38 fecha)",
     ("CX2", 1.75): "resíduo de ~0,009 em aberto no M437 (o 5\"/38 fecha)",
-    ("CX2", 2.5): "XD2 em Mach 2,5 duvidoso",
-    ("SBAR", 1.1): "herda o Cmq de Mach 1,1", ("SBAR5", 1.1): "herda o Cmq de Mach 1,1",
+    ("CX2", 2.5): "resíduo de −0,030 no M437; o XD2 decidido pelo 5\"/38 fecha o XM380E5 "
+                  "(mesmo peso), e o M437 quase não pesa no XD2 (reconstrucao_D)",
     ("SBAR", 1.75): "no limite do arredondamento",
     # CNPA3 e CNPA5P: células resolvidas pela identidade CNPA3 + 0,1·CNPA5P = 3,75 (circulares
     # para a fórmula) ficam de fora; DELT e DISP em Mach 0,01 e 0,6 foram resolvidas pela

@@ -25,6 +25,7 @@ O XE5 (termo de corpo longo do Magnus) está em `dados_spin73.py`.
 ## Tabelas de 1973 transcritas
 
 - `m437_tabela.csv` — a tabela completa do 175 mm M437 (p. 65).
+- `tabelas/` — tabelas completas, uma por arquivo, com a entrada impressa e as células decididas por identidade ou ilegíveis (hoje: 105 mm XM380E5, p. 50). Leitura com `tabelas_impressas.py`; teste em `test_tabelas_impressas.py`.
 - `reconstrucao_B/dados_cna.py` — a coluna CNA de 10 tabelas.
 - `reconstrucao_*/dados_*.py` — colunas do 5"/38 (p. 53) usadas como segunda geometria.
 - `geometria_decidida.csv`, `cabecalhos_tabelas.csv` — a geometria das 14 tabelas.

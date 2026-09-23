@@ -9,7 +9,7 @@ pagina,projetil,VL,VN,VB,VCG,DM,BD,OR,BOOM,confianca,obs
 41,20MM 10 CAL CONE-CYL,10.00?,2.83?,0.000,?.747,0.00?,1.000,1000.000,0.000,C,OR=1000: ogiva cônica
 44,90MM M71,?.700,2.300,0.?00,2.980,0.133,1.024,6.900,0.000,C,cabeçalho idêntico ao da p.47
 47,105MM M1,?.700,2.300,0.?00,2.980,0.133,1.024,6.900,0.000,C,cabeçalho idêntico ao da p.44 -- conferir se o corpo também é
-50,105MM XM380E5,5.?80,2.400,0.590,3.340,0.130,1.023,18.600,0.000,C,
+50,105MM XM380E5,5.580,2.900,0.590,3.340,0.130,1.023,18.600,0.000,B,relido em zoom (tabela completa em tabelas/p50_105mm_xm380e5.csv)
 53,5/38 NAVY,4.590,2.150,0.350,2.710,0.100,1.040,5.300,0.000,A,VL lido 4.593; 4.590 decidido por CYPA/CPF
 56,5/54 NAVY,5.?60,?.63?,?.52?,3.2??,?,?,?,?,C,cabeçalho muito degradado
 59,155MM M101/107,4.510,2.450,0.450,2.980,0.098,1.026,10.750,0.000,A,VL/VN/VB lidos 4.910/2.490/0.490; decididos por CYPA/CPF1/CPF5

@@ -18,7 +18,7 @@ XD = np.array([
  # XD1: nítido; sobe de 0,5 em 0,5 até Mach 1,2 e desce no mesmo passo
  [4.5, 4.5, 5., 5.5, 6., 6.5, 7., 7.5, 8., 7.5, 7., 6.5, 6., 5.5, 5., 4.5, 4.],
  # XD2: 1o cartão nítido (p. 80); 2o cartão desbotado (p. 81)
- [.25, .25, .25, .25, .25, .3, .35, .4, .5, .5, .5, .5, .5, .6, .45, .4, .35],
+ [.25, .25, .25, .25, .25, .3, .35, .4, .5, .5, .5, .5, .5, .5, .45, .4, .35],
  # XD3: desbotado nos três primeiros valores
  [.3, .3, .4, .5, .6, .7, .8, .9, 1., 1., 1., 1., 1., .8, .7, .6, .5],
  # XD4: sequência regular, de 0,1 em 0,1
@@ -30,10 +30,9 @@ DECIDIDOS = {
     (3, 2): (".?", .4, "5\"/38 (peso 0,47) pede +0,0996; completa a sequência .3 .3 .4 .5 .6"),
     (2, 9): ("ilegível", .5, "duas tabelas: 0,501"),
     (2, 12): (".6?", .5, "duas tabelas: 0,501 (XD3 = 0,998)"),
+    (2, 13): (".6?", .5, "5\"/38 (peso 0,59) pede 0,509; a linha fica ,5 ,5 ,5 ,5 ,5 ,5 ,45 ,4 ,35. "
+                         "O XM380E5 (mesmo peso, fora da decisão) pede 0,500 (NOTAS, T13)"),
 }
 
-# Ainda duvidosos
-DUVIDOSOS = {
-    (2, 13): ".6? — só o M437 é confiável em Mach 2,5 (o CNA do 5\"/38 é suspeito ali) "
-             "e ele deixa resíduo de +0,020",
-}
+# Ainda duvidosos: nenhum. O M437 (peso 0,10) segue com resíduo de −0,030 em Mach 2,5.
+DUVIDOSOS = {}

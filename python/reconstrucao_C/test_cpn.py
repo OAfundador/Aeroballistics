@@ -1,10 +1,11 @@
-"""CPN e CMα reconstruídos contra duas tabelas impressas do SPIN-73.
+"""CPN e CMα reconstruídos contra três tabelas impressas do SPIN-73 com boattail.
 
-175 mm M437 (p. 65, boattail 1,00 cal) e 5"/38 NAVY (p. 53, boattail 0,35 cal). As duas
-geometrias dão pesos bem diferentes aos coeficientes de boattail (C12..C16), então uma
-leitura errada em C1..C11 não pode se disfarçar de erro em C12..C16, nem o contrário.
+175 mm M437 (p. 65, boattail 1,00 cal), 5"/38 NAVY (p. 53, 0,35 cal) e 105 mm XM380E5
+(p. 50, 0,59 cal). As geometrias dão pesos bem diferentes aos coeficientes de boattail
+(C12..C16), então uma leitura errada em C1..C11 não pode se disfarçar de erro em
+C12..C16, nem o contrário. O XM380E5 não decidiu nenhum DATA: é teste em todos os Mach.
 
-Usa o CNα IMPRESSO das duas tabelas (ver cpn_spin73.cpn_cma): sem isso, o erro do CNα
+Usa o CNα IMPRESSO de cada tabela (ver cpn_spin73.cpn_cma): sem isso, o erro do CNα
 reconstruído entra no resíduo do CPN multiplicado por ~3.
 """
 import os
@@ -17,71 +18,89 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 sys.path[:0] = [AQUI, os.path.join(AQUI, ".."), os.path.join(AQUI, "..", "reconstrucao_B")]
 
 import spin73 as s                                        # noqa: E402
+import tabelas_impressas as ti                            # noqa: E402
 from cpn_spin73 import cpn_cma                            # noqa: E402
 from dados_cna import T as T_CNA                          # noqa: E402
 from dados_cpn import CPN_538, POR_IDENTIDADE             # noqa: E402
-from xc_lidos import AUSENTES, CORRECOES, DECIDIDOS_M437, RECUPERADOS  # noqa: E402
+from xc_lidos import CORRECOES, DECIDIDOS_M437, RECUPERADOS  # noqa: E402
 
 TAB437 = s.ler_tabela(os.path.join(AQUI, "..", "m437_tabela.csv"))
-G437 = (s.M437.VL, s.M437.VN, s.M437.VB, s.M437.OR, s.M437.DM, s.M437.VCG)
-G538 = (4.59, 2.15, 0.35, 5.3, 0.100, 2.710)
-CNA437 = TAB437["CNA"]
-CNA538 = np.array(T_CNA[53][5], float)
+TAB380 = ti.carregar(50).colunas
+GEO = {  # (VL, VN, VB, OR, DM, VCG), CNα impresso, CPN impresso
+    "M437": ((5.51, 2.91, 1.00, 25.0, 0.079, 3.50), TAB437["CNA"], TAB437["CPN"]),
+    "5/38": ((4.59, 2.15, 0.35, 5.3, 0.100, 2.71), np.array(T_CNA[53][5], float),
+             np.array([POR_IDENTIDADE.get(j, CPN_538[j]) for j in range(17)])),
+    "XM380E5": ((5.58, 2.90, 0.59, 18.6, 0.130, 3.34), TAB380["CNA"], TAB380["CPN"]),
+}
 
-# Mach em que a conta fecha, por tabela. Mach 1,05 (índice 6) fica fora das duas: foi ele
-# que decidiu o valor de XC12, então validá-lo aqui seria circular.
-VER_437 = {0, 3, 4, 7}
-VER_538 = {3, 5, 7}
+# Mach em que algum XC foi decidido com a própria tabela (xc_lidos.py).
+_POR = {"M437": set(), "5/38": set()}
+for (_l, _j) in CORRECOES:
+    _POR["M437"].add(_j)
+    if (_l, _j) in {(12, 6), (1, 2), (12, 1), (12, 9), (12, 10)}:   # decididas com as duas
+        _POR["5/38"].add(_j)
+for (_l, _j) in RECUPERADOS:
+    _POR["M437"].add(_j); _POR["5/38"].add(_j)
+for (_l, _j) in DECIDIDOS_M437:
+    _POR["M437"].add(_j)
+CIRCULARES = {"M437": _POR["M437"], "5/38": _POR["5/38"], "XM380E5": set()}
 
 PENDENTES = {
-    0: 'XC12 ou a leitura do CPN do 5"/38 em Mach 0,01 (0,769 x 0,779): M437 fecha, 5"/38 erra +0,011',
-    1: "XC12 em Mach 0,6 decidido pelas duas tabelas (igual ao de Mach 0,01): circular",
-    2: "XC1 em Mach 0,8 decidido pelas duas tabelas (1,66 -> 1,68, par 6/8): circular",
-    4: '5"/38: linha de Mach 0,95 ilegível na coluna CPN (o M437 fecha)',
-    5: 'Mach 1,0: só o M437 erra (+0,008); o 5"/38 fecha. Algum coeficiente com peso alto '
-       "só no boattail de 1,00 cal, ou a célula impressa do M437",
-    6: "Mach 1,05: usado para decidir XC12 (circular por construção)",
-    **{j: ("XC15 recuperado pelas duas tabelas: circular" if (15, j) in RECUPERADOS
-           else "XC15 decidido pelo M437 (conferido no 5\"/38 a 0,004-0,009): circular")
-       for j in AUSENTES[15]},
+    "M437": {},
+    "5/38": {
+        11: "Mach 1,75: pede XC15 = 0,629 e o M437, 0,550, com o XC12 lido sem dúvida",
+        **{j: "Mach 2,5 a 5: 0,006 a 0,009 abaixo, sistemático; o CNα impresso também "
+              "fica 0,014 abaixo do reconstruído nesses Mach (NOTAS, T5)" for j in (13, 14, 15, 16)},
+    },
+    "XM380E5": {
+        1: "Mach 0,6: +0,0019 (o M437 tem +0,0044, circular); nenhum coeficiente isolado "
+           "explica as três tabelas (NOTAS, T13)",
+    },
 }
 
 
-def _cpn(geo, cna, j):
+def _cpn(nome, j):
+    geo, cna, _ = GEO[nome]
     return cpn_cma(*geo, j, cna_impresso=cna[j])[0]
 
 
-@pytest.mark.parametrize("j", sorted(VER_437))
-def test_m437(j):
-    assert abs(_cpn(G437, CNA437, j) - TAB437["CPN"][j]) <= 0.0015
+CASOS = [(n, j) for n in GEO for j in range(17)
+         if np.isfinite(GEO[n][2][j]) and j not in CIRCULARES[n] and j not in PENDENTES[n]]
 
 
-@pytest.mark.parametrize("j", sorted(VER_538))
-def test_5_38(j):
-    ref = CPN_538[j] if np.isfinite(CPN_538[j]) else POR_IDENTIDADE[j]
-    assert abs(_cpn(G538, CNA538, j) - ref) <= 0.0015
+@pytest.mark.parametrize("nome,j", CASOS)
+def test_cpn(nome, j):
+    assert abs(_cpn(nome, j) - GEO[nome][2][j]) <= 0.0015
+
+
+@pytest.mark.parametrize("nome", ["5/38", "XM380E5"])
+def test_pendencias_ainda_pendentes(nome):
+    resolvidas = [j for j in PENDENTES[nome] if abs(_cpn(nome, j) - GEO[nome][2][j]) <= 0.0015]
+    assert not resolvidas, (nome, resolvidas)
+
+
+def test_xm380e5_e_teste_em_todo_mach():
+    """A terceira tabela não decidiu nada: fica independente em 16 dos 17 Mach."""
+    assert sum(1 for n, _ in CASOS if n == "XM380E5") == 16
 
 
 def test_cma_do_m437():
     """CMα = (VCG − CPN)·CNα: fecha onde o CPN fecha, com o arredondamento de 3 casas."""
-    for j in sorted(VER_437):
-        cma = cpn_cma(*G437, j, cna_impresso=CNA437[j])[1]
+    geo, cna, _ = GEO["M437"]
+    for j in (n_j[1] for n_j in CASOS if n_j[0] == "M437"):
+        cma = cpn_cma(*geo, j, cna_impresso=cna[j])[1]
         assert abs(cma - TAB437["CMA"][j]) <= 0.004, (j, cma, TAB437["CMA"][j])
 
 
-def test_xc12_decidido_fora_da_validacao():
-    """O valor decidido em Mach 1,05 não pode ser 'validado' pelas tabelas que o decidiram."""
-    assert (12, 6) in CORRECOES
-    assert 6 in PENDENTES and 6 not in VER_437 and 6 not in VER_538
+def test_decisoes_fora_da_validacao():
+    """Um valor decidido por uma tabela não pode ser 'validado' por ela."""
+    assert 6 in CIRCULARES["M437"] and 6 in CIRCULARES["5/38"]      # XC12 em Mach 1,05
+    assert 13 in CIRCULARES["M437"] and 13 not in CIRCULARES["5/38"]  # XC1 em Mach 2,5
+    assert 5 in CIRCULARES["M437"]                                    # XC14 em Mach 1,0
 
 
 def test_xc15_recuperado_reproduz_as_duas_tabelas():
-    """Onde o XC15 foi recuperado, as duas tabelas fecham (é o que define o valor)."""
+    """Onde o XC15 foi recuperado pelo M437 e pelo 5"/38, as duas fecham."""
     for (_, j) in RECUPERADOS:
-        assert abs(_cpn(G437, CNA437, j) - TAB437["CPN"][j]) <= 0.0015, j
-        assert abs(_cpn(G538, CNA538, j) - CPN_538[j]) <= 0.0015, j
-
-
-def test_todo_mach_esta_classificado():
-    for j in range(17):
-        assert j in VER_437 or j in VER_538 or j in PENDENTES, j
+        for nome in ("M437", "5/38"):
+            assert abs(_cpn(nome, j) - GEO[nome][2][j]) <= 0.0015, (nome, j)

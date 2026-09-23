@@ -1,4 +1,4 @@
-"""CX2 reconstruído (DATA XD) contra duas tabelas: 175 mm M437 e 5"/38.
+"""CX2 reconstruído (DATA XD) contra três tabelas: 175 mm M437, 5"/38 e 105 mm XM380E5.
 
 Usa o CNα IMPRESSO de cada tabela, porque a equação subtrai o CNα: assim o teste isola
 o XD do erro do CNα reconstruído.
@@ -13,6 +13,7 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 sys.path[:0] = [AQUI, os.path.join(AQUI, ".."), os.path.join(AQUI, "..", "reconstrucao_B")]
 
 import spin73 as s                                             # noqa: E402
+import tabelas_impressas as ti                                 # noqa: E402
 from dados_cna import T as T_CNA                               # noqa: E402
 from dados_cx2 import CNA_SUSPEITO, CX2_538, DECIDIDAS, ILEGIVEIS   # noqa: E402
 from xd_lidos import DECIDIDOS, XD                             # noqa: E402
@@ -29,8 +30,8 @@ def cx2(VL, VN, VB, OR, cna, j):
 # M437: células que não conferem, com o motivo
 M437_FORA = {2: "scan ambíguo 2,6?3; o DATA pede 2,805 (par 6/8)",
              7: "scan ilegível; o DATA dá 5,002",
-             13: "XD2 em Mach 2,5 duvidoso (resíduo +0,020)"}
-# Mach em que alguma célula do XD foi decidida pela própria tabela
+             13: "resíduo de −0,030 em aberto; o M437 quase não pesa no XD2 (CXCL = 0,10)"}
+# Mach em que alguma célula do XD foi decidida pelo 5"/38 ou pelo M437
 CIRCULARES = {j for (_, j) in DECIDIDOS}
 
 
@@ -53,3 +54,14 @@ def test_releitura_do_m437_em_1_05():
     """A transcrição antiga dizia 4,567; o scan relido diz 4,507, e o DATA dá o mesmo."""
     assert TAB["CX2"][6] == pytest.approx(4.507)
     assert abs(cx2(5.51, 2.91, 1.0, 25.0, TAB["CNA"][6], 6) - 4.507) < 0.0015
+
+
+# XM380E5 (p. 50): nenhum XD foi decidido por ele. O XD2 de Mach 2,5 foi decidido pelo 5"/38,
+# que tem o mesmo CXCL (0,59): esta é a conferência independente dele.
+TB380 = ti.carregar(50).colunas
+
+
+@pytest.mark.parametrize("j", [j for j in range(17) if np.isfinite(TB380["CX2"][j])])
+def test_xm380e5(j):
+    calc = cx2(5.58, 2.90, 0.59, 18.6, TB380["CNA"][j], j)
+    assert abs(calc - TB380["CX2"][j]) <= 0.0015, (j, calc, TB380["CX2"][j])

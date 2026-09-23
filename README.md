@@ -14,15 +14,15 @@ O código-fonte original só existe como listing Fortran impresso num relatório
 | Força axial de guinada | CX2 | 12 de 17 (2 células ilegíveis no scan; 3 com resíduo de 0,007 a 0,02) |
 | Força normal | CNA | 15 de 17 |
 | Magnus | CYPA, CNPA, CPF1, CPF5, CNPA5, CNPA3, CNPA5P | 16 ou 17 de 17 |
-| Amortecimentos | CMQ, CLP | 16 e 17 de 17 |
-| Centro de pressão | CPN, CMA | teste independente em só 5 Mach (ver abaixo) |
+| Amortecimentos | CMQ, CLP | 17 de 17 |
+| Centro de pressão | CPN, CMA | teste independente em só 4 Mach no M437; ver a terceira tabela abaixo |
 | Estabilidade | GYRO, SBAR, RECIP, SPIN, W1, W2, λ, DELT, DISP | 15 a 17 de 17; as que dependem do CMα só são independentes nos mesmos 5 Mach |
 
-O centro de pressão fecha em 13 de 17 Mach, mas em 12 deles o resultado é **circular**: o listing impresso perdeu um cartão de `DATA` (a continuação do XC15), e a própria tabela do M437 foi usada para recuperá-lo. Nesses Mach, ela não pode mais servir de teste. A conferência independente é feita com uma segunda tabela, a do 5"/38 (ver `python/reconstrucao_C/`).
+O centro de pressão do M437 fecha em 14 de 17 Mach, mas em 13 deles o resultado é **circular**: o listing impresso perdeu um cartão de `DATA` (a continuação do XC15), e a própria tabela do M437 foi usada para recuperá-lo. Nesses Mach, ela não pode mais servir de teste. A conferência independente vem de mais duas tabelas com boattail: o 5"/38 (p. 53) e o **105 mm XM380E5 (p. 50), transcrito por inteiro e que não decidiu nenhum `DATA`**. O programa reproduz 16 dos 17 Mach do CPN dele, e 98 % de todas as suas células (ver `python/tabelas/`).
 
-Tolerância: ±0,0015 nas colunas de 3 casas (o arredondamento da impressão); ±1 no último dígito nas demais. `python -m pytest -q python` roda 161 testes.
+Tolerância: ±0,0015 nas colunas de 3 casas (o arredondamento da impressão); ±1 no último dígito nas demais. `python -m pytest -q python` roda 196 testes.
 
-**Tamanho do erro** em todas as tabelas de 1973 transcritas (1030 células): 85 % indistinguíveis do original, erro mediano de 0,24 unidade na última casa impressa. Detalhe por coluna em [validation/LEIAME.md](validation/LEIAME.md).
+**Tamanho do erro** em todas as tabelas de 1973 transcritas (1235 células, 985 independentes): 88 % indistinguíveis do original, 94 % no critério, erro mediano de 0,26 unidade na última casa impressa. Detalhe por coluna em [validation/LEIAME.md](validation/LEIAME.md).
 
 ## Uso rápido
 
@@ -65,7 +65,7 @@ Onde o texto do relatório e o código divergem, vale o código — foi ele que 
 - **A13, A14 e A15** no arrasto: o termo de ogiva longa tem três trechos (quebras em 3,48 e 3,97 calibres); o texto só descreve o primeiro.
 - **Descarte do boattail** no centro de pressão quando o momento do boattail sai positivo.
 - **CNPA3 e CNPA5**: os "coeficientes do polinômio de Magnus" não usam o valor calculado a 2°; o programa soma uma constante fixa e as duas colunas obedecem a CNPA3 + 0,1·CNPA5 = 3,75 para qualquer projétil. Defeito do original, reproduzido.
-- **Dois cartões `DATA` faltando no listing impresso** (continuação do XC15 e primeiro cartão do XE5), cada um substituído por uma cópia de um cartão vizinho. Foram recuperados pelas tabelas de saída.
+- **Três cartões `DATA` faltando no listing impresso** (continuação do XC15, primeiro cartão do XE5 e segundo cartão do XF7), cada um substituído por uma cópia de um cartão vizinho. Foram recuperados pelas tabelas de saída. O do XF7 explicava o Cmq de Mach 1,1 que não fechava.
 
 Detalhes, com a evidência de cada leitura, em [docs/NOTAS_TRANSCRICAO.md](docs/NOTAS_TRANSCRICAO.md).
 
@@ -73,9 +73,8 @@ Detalhes, com a evidência de cada leitura, em [docs/NOTAS_TRANSCRICAO.md](docs/
 
 O programa imprime avisos específicos para cada geometria (`s.avisos(p)`). Os principais:
 
-- **Centro de pressão em Mach 2,5 e 3**: o cartão do XC15 não foi impresso no relatório e foi recuperado de uma única tabela. Em Mach 2,5 uma segunda tabela discorda em 0,17 calibre; em Mach 3 não há conferência independente. As colunas de estabilidade herdam essa incerteza, porque dependem do CMα.
+- **Centro de pressão de Mach 1,2 a 5**: o cartão do XC15 não foi impresso e foi recuperado pelas tabelas. O XM380E5 confere em todos esses Mach, mas o 5"/38 fica 0,004 a 0,009 calibre fora em Mach 1,75 e de 2,5 a 5. Em Mach 0,6 resta um resíduo de 0,002 a 0,004 calibre. As colunas de estabilidade herdam essas incertezas, porque dependem do CMα.
 - **Ogiva maior que 3 calibres, boattail maior que 1 calibre**: ramos do código lidos, mas sem nenhuma tabela de 1973 que os valide.
-- **Cmq em Mach 1,1**: há um valor mal lido em algum `DATA` XF.
 
 ## Como cada número foi validado
 
@@ -86,6 +85,7 @@ Cada valor lido no scan é classificado como **verificado** (leitura clara, ou c
 | Diretório | Conteúdo |
 |---|---|
 | `python/` | O programa (`spin73.py`), os blocos `DATA` (`dados_spin73.py` e `reconstrucao_*/`) e os testes |
+| `python/tabelas/` | Tabelas de saída de 1973 transcritas por inteiro, com a entrada impressa |
 | `python/experimental/` | Recalibração com dados de voo livre (BRL MR 1833, 7,62 NATO; compêndio de Hitchcock, BRL 620) — **separada** da reconstrução |
 | `original/` | Transcrição literal do listing Fortran (parcial: pp. 84–86) |
 | `validation/` | Comparação do erro contra todas as tabelas de 1973 transcritas |
