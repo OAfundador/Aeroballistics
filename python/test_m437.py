@@ -90,8 +90,9 @@ def test_spin(est):
 
 
 def test_gyro(est):
-    # Resíduo sistemático de ~0,15 % (item A1 das NOTAS); tolerância cobre isso.
-    _comparar("GYRO", est["GYRO"], atol=0.0015, rtol=0.003, entradas=ENTRADAS_EST)
+    # Com a constante 1352,4 do cartão C241 o viés de −0,17 % desaparece (item A1 das
+    # NOTAS, resolvido): fica só o arredondamento da impressão.
+    _comparar("GYRO", est["GYRO"], atol=0.0015, entradas=ENTRADAS_EST)
 
 
 @pytest.mark.parametrize("col", ["SBAR", "SBAR5"])
@@ -132,9 +133,9 @@ def test_sem_data_retorna_nan():
 def test_identidades_estruturais():
     """Com coeficientes sintéticos, as relações algébricas do texto valem."""
     rng = np.random.default_rng(0)
-    k = s.CoefAjuste(a=rng.normal(size=(13, 17)), B=rng.normal(size=(9, 17)) + 3,
+    k = s.CoefAjuste(a=rng.normal(size=(15, 17)), B=rng.normal(size=(10, 17)) + 3,
                      C=rng.normal(size=(17, 17)), D=rng.normal(size=(4, 17)),
-                     E=rng.normal(size=(4, 17)) - 1, F=rng.normal(size=(8, 17)),
+                     E=rng.normal(size=(5, 17)) - 1, F=rng.normal(size=(9, 17)),
                      G=rng.normal(size=(1, 17)))
     c = s.coeficientes(P, k)
     assert np.allclose(c["CMA"], (P.VCG - c["CPN"]) * c["CNA"])

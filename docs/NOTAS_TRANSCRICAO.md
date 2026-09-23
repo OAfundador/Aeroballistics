@@ -60,7 +60,7 @@ E3 (Magnus a 2°) não aparece diretamente nas tabelas. Deve ser recuperável da
 
 ## A — Em aberto
 
-**A1.** O fator giroscópico sg calculado fica sistematicamente ~0,17 % abaixo do impresso. É um viés constante em todas as linhas, não ruído. O ρ implícito é ≈ 0.002372 slug/ft³, contra 0.002376 da fórmula do listing (linha 92). Hipóteses: outra constante de conversão (g, 144), outro valor de ρ usado no cálculo de sg, ou algum dígito de Ix. As frequências W1/W2 herdam o resíduo via σ. Os testes usam tolerância de 0,3 %.
+**A1 (resolvido, ver T8).** O fator giroscópico sg calculado ficava sistematicamente ~0,17 % abaixo do impresso. É um viés constante em todas as linhas, não ruído. O ρ implícito é ≈ 0.002372 slug/ft³, contra 0.002376 da fórmula do listing (linha 92). Hipóteses: outra constante de conversão (g, 144), outro valor de ρ usado no cálculo de sg, ou algum dígito de Ix. As frequências W1/W2 herdam o resíduo via σ. Os testes usam tolerância de 0,3 %.
 
 **A2.** DELT e DISP não foram implementados. DELT parece ser 2π/(20·W1) (bate em Mach ≥ 0.6, mas não em 0.01). DISP depende da referência 71 (Whyte 1970), que não temos.
 
@@ -161,3 +161,16 @@ Os dois valores confiáveis entraram em `xc_lidos.RECUPERADOS` e são aplicados 
 ## T6.3 — Tabela sem boattail confirma o bloco C1..C11
 
 No 20 mm 5 cal ANSR (p. 32) o boattail é zero, o que zera C12..C16 e deixa o CPN dependendo só de C1..C11. A página está muito carregada de tinta e não permite leitura de 3 casas, mas em todos os Mach legíveis o CPN calculado fica dentro da incerteza da leitura (±0,02): 1,459 contra 1,45 lido em Mach 0,6; 1,419 contra 1,43 em 0,8; 1,449 contra 1,44 em 1,1. Não há erro grosseiro em C1..C11 — o que resta dos resíduos vem do bloco de boattail, como a linha XC12 desbotada já indicava.
+
+## T8 — O que o código (pp. 84-85) resolveu
+
+Transcrição parcial em `original/listing_p84-86.f`. O listing não traz número de cartão nas colunas 73-80 em quase todas as linhas; a numeração usada aqui (Cnnn) é a sequência de statements do compilador, impressa à esquerda.
+
+- **A1, viés de s_g — resolvido.** O cartão C241 calcula `STAB = 1352.4*XY*TT/(IR*RHO*FC*CMA)`. Com Ix, Iy em lb·in² e comprimentos em polegadas, isso é s_g = 1352,4·Ix²/(ρ·Iy·CMα·passo²·d³). A fórmula física com g = 32,174 dá 1349,8 no lugar de 1352,4: a diferença, +0,19 %, era o viés. Com a constante do código, o GYRO do M437 fecha em todas as linhas (erro máximo 0,0009, viés médio 0,017 %).
+- **E5, limiar do boattail — confirmado no código.** `IF(J.GE.5)` no cartão C189, com J a partir de 1: o expoente supersônico vale desde Mach 0,95.
+- **A13, A14, A15 — onde entram.** O DXN do CX tem três trechos, com quebras em VN = 3,48 e 3,97: (VN − 3)·A13; 0,48·A13 + (VN − 3,48)·A14; 0,48·A13 + 0,49·A14 + (VN − 3,97)·A15. Os coeficientes 0,48 e 0,49 são exatamente as larguras dos trechos anteriores, o que torna o DXN contínuo. O texto do relatório só documenta o primeiro trecho.
+- **Termo de corpo longo do Magnus = XE5.** Cartões C216-C222: se VL > 6, `DCPF = (VL−6)*XE5(J)` soma-se ao CPF depois do colchete. Os valores de K identificados pelas tabelas (seção T3) são o XE5. Para VB = 0, somar ao CPF ou dentro do colchete dá o mesmo resultado — por isso a identificação pelas tabelas ANSR funcionou —, mas com boattail as duas formas diferem.
+- **Regra do boattail no CPN, ausente do texto.** Cartões C209-C210: se o momento do boattail (AMOMBT) sair positivo, o programa faz CNAT = CNAB e AMOMBT = 0, descartando toda a contribuição do boattail.
+- **Cmq (C232-C238) e Clp (C239)** confirmam as formas já usadas; o Clp divide por SFNG, que no texto é 5,51.
+
+Dúvida de transcrição: o cartão C205 foi lido `IF(CART.GT.0.0) CNPT=0.0`. A leitura mais provável é `IF(CNBT.GT.0.0) CNBT=0.0` (zerar a força normal do boattail se ela sair positiva), mas os nomes não conferem com nenhuma variável do trecho; não foi implementado até a releitura.
