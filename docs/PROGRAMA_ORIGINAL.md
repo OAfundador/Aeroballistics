@@ -5,7 +5,7 @@ programa calcula, com que constantes, de onde veio a leitura, o que não foi pos
 onde está implementado nesta reconstrução. **Não é o código original**, que está no relatório
 (DTIC AD0915628, listing nas pp. 79–86) e não é reproduzido neste repositório.
 
-Gerado de `python/spin73/programa.py` (`python -m spin73.programa --doc`); a evidência de cada
+Gerado de `src/spin73/programa.py` (`python -m spin73.programa --doc`); a evidência de cada
 leitura está em [NOTAS_TRANSCRICAO.md](NOTAS_TRANSCRICAO.md).
 
 Notação: VL, VN, VB, VCG, OR, DM, BD, BOOM, DIA, IX, IY, WGT, TWIST, DGUN e TEMP são as

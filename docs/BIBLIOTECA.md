@@ -8,7 +8,7 @@ Na raiz do repositório:
 pip install -e .
 ```
 
-`-e` instala no modo editável: o seu código passa a enxergar o pacote `spin73` que está em `python/spin73/`, e qualquer mudança no repositório vale na hora, sem reinstalar. A única dependência é o numpy.
+`-e` instala no modo editável: o seu código passa a enxergar o pacote `spin73` que está em `src/spin73/`, e qualquer mudança no repositório vale na hora, sem reinstalar. A única dependência é o numpy.
 
 ## Num simulador 6DOF
 
@@ -48,7 +48,7 @@ A aerodinâmica é calculada **uma vez**, no construtor, nos 17 Mach do programa
 | `CNPA`, `CNPA5` (pd/2V) | `Cmpa`, `Cmpa_5graus` (pd/V) | momento de Magnus a 1° e 5° (secante) |
 | `CPF1`, `CPF5` | `CPmagnus_nariz` | centro de pressão do Magnus, calibres do nariz |
 
-Os momentos são em torno do CG que está no `Projetil` (`VCG`, em calibres a partir do nariz). Detalhes das conversões em `python/spin73/convencoes.py`.
+Os momentos são em torno do CG que está no `Projetil` (`VCG`, em calibres a partir do nariz). Detalhes das conversões em `src/spin73/convencoes.py`.
 
 ### Entradas em outras unidades
 
@@ -88,7 +88,7 @@ print(spin73.massa.estimar(p, "solido", massa_g=4.05, d_mm=5.69))   # o que foi 
 | `"bala"` | fórmulas empíricas de Hitchcock (BRL 620) para balas .30 e .50 | balas, com a massa |
 | `"granada"` | as mesmas, para granadas explosivas | granadas ocas, com a massa |
 
-Contra 20 projéteis com valores medidos, com a massa medida dada: em balas, o CG fica a ±0,12 calibre e a inércia axial de −5 % a +3 % (`solido`). Em granadas, o `granada` fica de −11 % a +3 %; o `solido` subestima em 20 a 27 %, porque a massa da granada está na parede. Traçantes erram o CG em 0,2 a 0,45 calibre. Detalhes em `python/experimental/massa/LEIAME.md`.
+Contra 20 projéteis com valores medidos, com a massa medida dada: em balas, o CG fica a ±0,12 calibre e a inércia axial de −5 % a +3 % (`solido`). Em granadas, o `granada` fica de −11 % a +3 %; o `solido` subestima em 20 a 27 %, porque a massa da granada está na parede. Traçantes erram o CG em 0,2 a 0,45 calibre. Detalhes em [MASSA.md](MASSA.md).
 
 ## Escolher o modelo
 
@@ -147,8 +147,8 @@ A correção não precisa cuidar das colunas derivadas. Depois de todas as corre
 | `spin73.correcoes` | correções dos coeficientes e a interface para escrever novas | adição: muda saídas, só se pedidas |
 | `spin73.cli` | linha de comando | diz no cabeçalho se a saída é canônica ou tem adições |
 
-As correções são **ajustadas** em `python/experimental/correcao/`, com validação cruzada deixando um grupo de projéteis de fora (ver o LEIAME de lá). O ajuste grava `spin73/correcoes/voo_livre.json`, que a biblioteca só lê. Para refazer o ajuste depois de acrescentar dados:
+As correções são **ajustadas** em `scripts/voo_livre/correcao/`, com validação cruzada deixando um grupo de projéteis de fora (ver [voo_livre/CORRECAO.md](voo_livre/CORRECAO.md)). O ajuste grava `src/spin73/correcoes/voo_livre.json`, que a biblioteca só lê. Para refazer o ajuste depois de acrescentar dados:
 
 ```
-python python/experimental/correcao/ajuste.py
+python scripts/voo_livre/correcao/ajuste.py
 ```

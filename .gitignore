@@ -2,11 +2,14 @@
 fontes/jp2/
 fontes/cache/
 
-# Recortes de trabalho gerados por ferramentas/recorte.py
+# Recortes de trabalho gerados por scripts/leitura/recorte.py
 **/recortes/
 
 __pycache__/
 .pytest_cache/
+
+# Resultados gerados pelos scripts (python scripts/...): regeráveis
+output/
 
 # Área de rascunho das tarefas A-F (o que é aproveitável é movido para o lugar certo)
 trabalho/

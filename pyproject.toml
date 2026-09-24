@@ -4,27 +4,49 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "spin73"
-version = "0.4.0"
-description = "SPIN-73 reconstruído: coeficientes aerodinâmicos de projéteis estabilizados por rotação (Picatinny TR 4588, 1973)"
+version = "0.5.0"
+description = "SPIN-73 reconstruído: coeficientes aerodinâmicos de projéteis estabilizados por rotação a partir da geometria (Picatinny TR 4588, 1973)"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
-authors = [{ name = "Luiz Guilherme de P. Sanches" }]
+authors = [{ name = "Luiz Guilherme de Padua Sanches" }]
 requires-python = ">=3.10"
 dependencies = ["numpy>=1.24"]
+keywords = [
+    "ballistics",
+    "exterior-ballistics",
+    "aerodynamics",
+    "aerodynamic-coefficients",
+    "spin-stabilized",
+    "6-dof",
+    "spin-73",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Physics",
+]
 
 [project.optional-dependencies]
 teste = ["pytest>=7"]
+leitura = ["pillow>=9"]          # só scripts/leitura/ (páginas do scan e dos PDFs)
+dev = ["pytest>=7", "pillow>=9"]
+
+[project.urls]
+Repository = "https://github.com/OAfundador/aeroballistics"
 
 [project.scripts]
 spin73 = "spin73.cli:_executar"
 
-[tool.setuptools]
-package-dir = { "" = "python" }
-
 [tool.setuptools.packages.find]
-where = ["python"]
+where = ["src"]
 include = ["spin73*"]
 
 [tool.setuptools.package-data]
 spin73 = ["correcoes/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

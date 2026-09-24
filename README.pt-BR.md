@@ -36,7 +36,7 @@ Na raiz do repositório (Python 3.10 ou mais novo; a única dependência é o nu
 pip install -e .
 ```
 
-Sem instalar, dá para rodar de dentro de `python/` com `python -m spin73`.
+Sem instalar, os [exemplos](examples/) rodam direto de um clone, e `python -m spin73` funciona de dentro de `src/`.
 
 ### Linha de comando
 
@@ -58,10 +58,10 @@ O mesmo em unidades métricas, estimando o CG e as inércias que faltam (adiçã
 spin73 --VL 4.05 --VN 1.90 --VB 0.40 --OR 7.9 --d-mm 5.69 --massa-g 4.05 --passo-pol 7 --estimar-massa
 ```
 
-Ou num arquivo `CHAVE = valor` (modelos em [python/exemplos/](python/exemplos/)):
+Ou num arquivo `CHAVE = valor` (modelos em [examples/entradas/](examples/entradas/)):
 
 ```bash
-spin73 --entrada python/exemplos/m855_metrico.txt
+spin73 --entrada examples/entradas/m855_metrico.txt
 ```
 
 A primeira linha da saída diz o modo: `Modo: canônico (SPIN-73 de 1973)` ou a lista das adições usadas. `spin73 --help` mostra todas as opções.
@@ -76,7 +76,7 @@ aero = spin73.Aerodinamica(p, convencao="moderna")   # canônico, na convenção
 c = aero(mach)             # c.CD0, c.CDd2, c.CNa, c.Cma, c.Cmq_Cmad, c.Clp, c.Cmpa ... (escalar ou array)
 ```
 
-A aerodinâmica é calculada uma vez, na construção; cada chamada só interpola em Mach. Guia completo, com as adições opcionais e como escrever uma correção nova: [docs/BIBLIOTECA.md](docs/BIBLIOTECA.md).
+A aerodinâmica é calculada uma vez, na construção; cada chamada só interpola em Mach. Guia completo, com as adições opcionais e como escrever uma correção nova: [docs/BIBLIOTECA.md](docs/BIBLIOTECA.md). Exemplos executáveis, inclusive os sete coeficientes da formulação de McCoy que um integrador 6DOF lê, em [examples/](examples/).
 
 ## 2. Entradas e saídas
 
@@ -112,16 +112,16 @@ Cada entrada tem uma forma em unidades métricas (`D_MM`, `MASSA_G`, `IX_GCM2`, 
 | Aerodinâmica (sempre) | `CX` arrasto a guinada zero · `CX2` termo de guinada · `CNA` força normal · `CMA` momento de arfagem em torno do CG · `CPN` centro de pressão (calibres do nariz) · `CYPA` força de Magnus · `CNPA`, `CNPA5` momento de Magnus a 1° e 5° · `CPF1`, `CPF5` centro do Magnus · `CNPA3`, `CNPA5P` polinômio de Magnus · `CMQ` amortecimento em arfagem · `CLP` amortecimento de rolamento |
 | Estabilidade (com massa e raia) | `GYRO` (s_g) · `SBAR`, `SBAR5` (s_d) · `RECIP`, `RECIP5` · `SPIN` · `W1`, `W2` (frequências) · `L1`, `L2`, `L15`, `L25` (amortecimentos) · `DELT` · `DISP` |
 
-**Convenção do relatório** (pp. 7–8), estilo NACA/BRL clássico: taxas adimensionais em **pd/2V e qd/2V**, derivadas por sen ᾱ, posições em calibres a partir do nariz, momentos em torno do CG. Fontes modernas (McCoy, PRODAS, CFD) usam pd/V e qd/V, e o valor delas é a **metade** do SPIN-73 para Cmq, Clp e Magnus. O arrasto de guinada é CX2 + CNα, não o CX2. `convencao="moderna"` faz as conversões (`python/spin73/convencoes.py`).
+**Convenção do relatório** (pp. 7–8), estilo NACA/BRL clássico: taxas adimensionais em **pd/2V e qd/2V**, derivadas por sen ᾱ, posições em calibres a partir do nariz, momentos em torno do CG. Fontes modernas (McCoy, PRODAS, CFD) usam pd/V e qd/V, e o valor delas é a **metade** do SPIN-73 para Cmq, Clp e Magnus. O arrasto de guinada é CX2 + CNα, não o CX2. `convencao="moderna"` faz as conversões (`src/spin73/convencoes.py`).
 
 ## 3. O conceito da reprodução canônica
 
 A meta é reproduzir **o que o programa de 1973 imprimia**, erros e defeitos incluídos, e não melhorá-lo. Tudo o que muda resultados fica fora do núcleo, como adição opcional.
 
 - **Três fontes dentro do relatório.** O texto dá as equações; o listing dá os blocos `DATA` com as constantes empíricas; o código mostra o que o programa fazia de fato. **Onde o texto e o código divergem, vale o código** — foi ele que gerou as tabelas.
-- **Cada valor lido tem uma classe.** *Verificado*: leitura clara, ou confirmada por uma identidade independente. *Decidido pelo modelo*: escolhido porque reproduz as tabelas. *Pendente*: em aberto. A classe e a evidência de cada célula estão nos módulos `python/spin73/dados/x?_lidos.py`.
+- **Cada valor lido tem uma classe.** *Verificado*: leitura clara, ou confirmada por uma identidade independente. *Decidido pelo modelo*: escolhido porque reproduz as tabelas. *Pendente*: em aberto. A classe e a evidência de cada célula estão nos módulos `src/spin73/dados/x?_lidos.py`.
 - **A impressão matricial confunde dígitos** (6/8, 1/3, 2/7, 4/9, 0/6, 5/9). Toda leitura ambígua foi decidida por uma identidade que não dependia dela. Nas tabelas de saída, as identidades são entre colunas **impressas**: CMα = (VCG − CPN)·CNα, CNPA = CYPA·(VCG − CPF1), CNPA5 = CYPA·(VCG − CPF5) e CNPA3 + 0,1·CNPA5P = 3,75.
-- **Sem circularidade.** Um valor decidido usando uma tabela nunca é usado para validar essa mesma tabela. `python/circularidade.py` marca, célula a célula, o que ficou circular, e essas células saem da estatística.
+- **Sem circularidade.** Um valor decidido usando uma tabela nunca é usado para validar essa mesma tabela. `scripts/reconstrucao/circularidade.py` marca, célula a célula, o que ficou circular, e essas células saem da estatística.
 - **Tolerância.** O erro é medido em unidades da última casa impressa. Até ±0,5 unidade, o resultado é indistinguível do original (ele arredondava nessa casa); o critério do projeto é ±1,5 unidade (±0,0015 nas colunas de 3 casas).
 
 ## 4. Verificações e resultados
@@ -142,7 +142,7 @@ O centro de pressão do M437 fecha em 14 de 17 Mach, mas em 13 deles o resultado
 
 ### Todos os casos do relatório
 
-As 13 tabelas de saída (pp. 29 a 68) estão transcritas em `python/tabelas/`, e o programa roda com a entrada impressa de cada uma. São 2718 células legíveis: 1612 independentes, 779 circulares e 327 desambiguadas só por identidade.
+As 13 tabelas de saída (pp. 29 a 68) estão transcritas em `data/tabelas_1973/`, e o programa roda com a entrada impressa de cada uma. São 2718 células legíveis: 1612 independentes, 779 circulares e 327 desambiguadas só por identidade.
 
 | p. | Caso | Independentes | ≤ 0,5 un. | ≤ 1,5 un. | Observação |
 |---|---|---|---|---|---|
@@ -160,16 +160,16 @@ As 13 tabelas de saída (pp. 29 a 68) estão transcritas em `python/tabelas/`, e
 | 65 | 175 mm M437 | 317 | 89 % | 95 % | o único com estabilidade |
 | 68 | 175 mm SRC | 43 | 77 % | 95 % | ogiva de 5,5 cal: único teste de XA13–XA15 e XC17 |
 
-Por coluna, sem o M1: Magnus, Cmq e Clp de 97 a 100 % dentro de ±0,5 unidade; CX 87 %; CNα 77 %; CPN 79 %; CMα 52 % (82 % no critério — ele acumula os erros do CNα e do CPN). Detalhe célula a célula em [validation/LEIAME.md](validation/LEIAME.md).
+Por coluna, sem o M1: Magnus, Cmq e Clp de 97 a 100 % dentro de ±0,5 unidade; CX 87 %; CNα 77 %; CPN 79 %; CMα 52 % (82 % no critério — ele acumula os erros do CNα e do CPN). Detalhes em [docs/VERIFICACAO.md](docs/VERIFICACAO.md); os arquivos célula a célula são gravados em `output/verificacao/`.
 
 ### Como rodar as verificações
 
 A última linha confere as 12 transcrições de tabela sem usar o modelo, só pelas identidades entre colunas impressas; hoje, nenhuma violação.
 
 ```bash
-python -m pytest -q python                  # 272 testes (e 3 pulados: colunas não transcritas)
-python validation/comparacao_erros.py       # todos os casos, célula a célula
-python python/tabelas/verificar_identidades.py 29 32 35 38 41 44 50 53 56 59 62 68
+python -m pytest -q                                   # 278 testes (e 3 pulados: colunas não transcritas)
+python scripts/reconstrucao/comparacao_erros.py       # todos os casos, célula a célula
+python scripts/reconstrucao/verificar_identidades.py 29 32 35 38 41 44 50 53 56 59 62 68
 ```
 
 ## 5. Documentos base e de onde lemos
@@ -180,15 +180,15 @@ Whyte, R. H. *SPIN-73, an Updated Version of the SPINNER Computer Program*. Tech
 
 | Parte | Páginas | Onde está aqui |
 |---|---|---|
-| Nomenclatura e convenções | 7–8 | `python/spin73/convencoes.py` |
-| Texto com as equações de cada coeficiente e da estabilidade | até a p. 18 | `python/spin73/nucleo.py` (divergências na seção 7) |
-| Tabela 1: erro provável do SPIN-73 contra experimento | 28 | citada em `python/experimental/benchmarks/` |
-| 13 tabelas de saída | 29–68 | `python/tabelas/` (leituras brutas em `leituras/`) |
+| Nomenclatura e convenções | 7–8 | `src/spin73/convencoes.py` |
+| Texto com as equações de cada coeficiente e da estabilidade | até a p. 18 | `src/spin73/nucleo.py` (divergências na seção 7) |
+| Tabela 1: erro provável do SPIN-73 contra experimento | 28 | citada em [docs/voo_livre/BENCHMARKS.md](docs/voo_livre/BENCHMARKS.md) |
+| 13 tabelas de saída | 29–68 | `data/tabelas_1973/` (leituras brutas em `leituras/`) |
 | Apêndice B: o cartão de entrada | 76–77 | `spin73.Projetil` |
-| `DIMENSION` e os blocos `DATA` XA … XG | 79–81 | `python/spin73/dados/` |
-| O código | 84–86 lidas | descrito bloco a bloco, com as nossas palavras e a nossa notação, em `python/spin73/programa.py` e [docs/PROGRAMA_ORIGINAL.md](docs/PROGRAMA_ORIGINAL.md) (o listing em si não é reproduzido) |
+| `DIMENSION` e os blocos `DATA` XA … XG | 79–81 | `src/spin73/dados/` |
+| O código | 84–86 lidas | descrito bloco a bloco, com as nossas palavras e a nossa notação, em `src/spin73/programa.py` e [docs/PROGRAMA_ORIGINAL.md](docs/PROGRAMA_ORIGINAL.md) (o listing em si não é reproduzido) |
 
-**De onde a leitura veio.** Do scan em alta resolução da DTIC (96 páginas JP2 de cerca de 2600 × 3400 px; não versionado, ver [fontes/LEIAME.md](fontes/LEIAME.md)). Várias leituras antigas, feitas num scan de resolução menor, foram corrigidas nele (por exemplo, a ogiva do XM380E5: 2,400 → 2,900). As ferramentas estão em `ferramentas/`: `recorte.py` (recortes girados, com zoom e autocontraste), `pagina_pdf.py` (páginas CCITT de PDFs escaneados) e `pdf_paginas.py` com `jbig2.py` (PDFs "MRC" da DTIC, em que o texto fica numa máscara JBIG2; o decodificador é Python puro).
+**De onde a leitura veio.** Do scan em alta resolução da DTIC (96 páginas JP2 de cerca de 2600 × 3400 px; não versionado, ver [fontes/LEIAME.md](fontes/LEIAME.md)). Várias leituras antigas, feitas num scan de resolução menor, foram corrigidas nele (por exemplo, a ogiva do XM380E5: 2,400 → 2,900). As ferramentas estão em `scripts/leitura/`: `recorte.py` (recortes girados, com zoom e autocontraste), `pagina_pdf.py` (páginas CCITT de PDFs escaneados) e `pdf_paginas.py` com `jbig2.py` (PDFs "MRC" da DTIC, em que o texto fica numa máscara JBIG2; o decodificador é Python puro).
 
 ### Documentos de apoio (todos com liberação pública)
 
@@ -205,7 +205,7 @@ Whyte, R. H. *SPIN-73, an Updated Version of the SPINNER Computer Program*. Tech
 | **Três cartões `DATA`**: a continuação do XC15 (centro de pressão, Mach 1,2 a 5), o primeiro cartão do XE5 (Magnus de corpo longo) e o segundo do XF7 (Cmq, Mach 1,1 a 2,5) | não foram impressos: em cada caso, a impressão repete um cartão vizinho no lugar | recuperados pelas tabelas de saída, marcados *decididos pelo modelo* e fora da validação |
 | Células desbotadas ou ambíguas dos `DATA` | a linha do XC12, por exemplo, está desbotada | decididas pelas tabelas, com a evidência registrada: 4 no XA, 7 no XB, 7 no XC, 4 no XD |
 | **Uma tabela de saída inteira** | as pp. 44 e 47 do scan são a mesma impressão (mesmo título, cabeçalho e artefatos): falta a tabela de uma delas (90 mm M71 ou 105 mm M1) | o caso "M1" fica registrado, fora da conclusão |
-| Dígitos de cabeçalho | ilegíveis ou ambíguos em 10 dos 13 casos (a entrada decidida de cada um está em `validation/resumo_por_caso.csv`) | cada um decidido por uma coluna, que fica circular naquele caso |
+| Dígitos de cabeçalho | ilegíveis ou ambíguos em 10 dos 13 casos (cada entrada decidida é justificada no cabeçalho do CSV da tabela, e `comparacao_erros.py` as lista em `output/verificacao/resumo_por_caso.csv`) | cada um decidido por uma coluna, que fica circular naquele caso |
 | Páginas muito degradadas | 5"/54 (p. 56), M101 (p. 59), 20 mm 5 cal (p. 32) | poucas células independentes nelas |
 | Código da p. 83 | ainda não transcrito; tem o ramo do boattail maior que 0,65 cal | segue o texto do relatório; a saída avisa quando esse ramo é usado |
 | Referência 71 (Whyte 1970) | não disponível | a coluna `DISP` é reproduzida pela fórmula do código, sem interpretação física |
@@ -247,31 +247,42 @@ Nenhuma é aplicada sem ser pedida, e nenhuma altera o canônico.
 | Correção de voo livre | arrasto ajustado ao tamanho do projétil (número de Reynolds), mais duas peças no limite da validação | coeficientes | `correcoes="voo_livre"` ou `"voo_livre:CX0"`, `--correcao` |
 | Correções suas | qualquer objeto com `aplicar(tabela, projetil, contexto)` | coeficientes | [docs/BIBLIOTECA.md](docs/BIBLIOTECA.md) |
 
-**Estimativa de massa, validada contra 20 projéteis com valores medidos** (a massa medida dada): em balas, o CG fica a ±0,12 calibre e a inércia axial de −5 % a +3 %. Em granadas, as fórmulas de Hitchcock ficam de −11 % a +3 %; o sólido homogêneo subestima em 20 a 27 %, porque a massa da granada fica na parede. Detalhes em [python/experimental/massa/LEIAME.md](python/experimental/massa/LEIAME.md).
+**Estimativa de massa, validada contra 20 projéteis com valores medidos** (a massa medida dada): em balas, o CG fica a ±0,12 calibre e a inércia axial de −5 % a +3 %. Em granadas, as fórmulas de Hitchcock ficam de −11 % a +3 %; o sólido homogêneo subestima em 20 a 27 %, porque a massa da granada fica na parede. Detalhes em [docs/MASSA.md](docs/MASSA.md).
 
 ## 10. O SPIN-73 contra medições de voo livre
 
 A seção 4 responde se a reconstrução reproduz o SPIN-73. Esta responde **se o SPIN-73 acerta a realidade**. "Voo livre" é o ensaio em que o projétil é disparado de verdade numa pista instrumentada, e os coeficientes saem do movimento medido. Aqui não se atira nada: as medições são dos relatórios publicados, transcritas rodada a rodada.
 
-- **Benchmarks** ([python/experimental/benchmarks/](python/experimental/benchmarks/LEIAME.md)): 155 mm M101 e M483A1, .50 M33, 5,56 NATO, 7,62 match, 30 mm XM788/XM788E1/XM789, 175 mm T203 (modelo de 90 mm) e 152 mm XM617 (cone-cilindro). No supersônico, o SPIN-73 acerta CMα, CNα e CX0 a poucos por cento nos projéteis de artilharia e no cone-cilindro, mas subestima o CMα das balas de boattail longo (.50: 21 %; 7,62 match: 9 a 14 %). No subsônico, o CX0 erra de −33 % a +25 % conforme a forma e o tamanho.
-- **Correção empírica** ([python/experimental/correcao/](python/experimental/correcao/LEIAME.md)): dez grupos de projéteis e 1391 valores medidos. Uma correção só entra se reduzir o erro em projéteis que o ajuste não viu (validação cruzada deixando um grupo de fora). O arrasto é a peça firme: o erro supersônico cai de 6,6 % para 4,8 % e o subsônico de 19,3 % para 15,1 %, melhorando 7 de 9 ou 10 grupos. O CMα e o Magnus não melhoram com nenhuma forma simples e ficam como no SPIN-73.
-- **Recalibração com a 7,62 NATO** (BRL MR 1833) e o compêndio de Hitchcock: [python/experimental/README.md](python/experimental/README.md).
+- **Benchmarks** ([docs/voo_livre/BENCHMARKS.md](docs/voo_livre/BENCHMARKS.md)): 155 mm M101 e M483A1, .50 M33, 5,56 NATO, 7,62 match, 30 mm XM788/XM788E1/XM789, 175 mm T203 (modelo de 90 mm) e 152 mm XM617 (cone-cilindro). No supersônico, o SPIN-73 acerta CMα, CNα e CX0 a poucos por cento nos projéteis de artilharia e no cone-cilindro, mas subestima o CMα das balas de boattail longo (.50: 21 %; 7,62 match: 9 a 14 %). No subsônico, o CX0 erra de −33 % a +25 % conforme a forma e o tamanho.
+- **Correção empírica** ([docs/voo_livre/CORRECAO.md](docs/voo_livre/CORRECAO.md)): dez grupos de projéteis e 1391 valores medidos. Uma correção só entra se reduzir o erro em projéteis que o ajuste não viu (validação cruzada deixando um grupo de fora). O arrasto é a peça firme: o erro supersônico cai de 6,6 % para 4,8 % e o subsônico de 19,3 % para 15,1 %, melhorando 7 de 9 ou 10 grupos. O CMα e o Magnus não melhoram com nenhuma forma simples e ficam como no SPIN-73.
+- **Recalibração com a 7,62 NATO** (BRL MR 1833) e o compêndio de Hitchcock: [docs/voo_livre/RECALIBRACAO_MR1833.md](docs/voo_livre/RECALIBRACAO_MR1833.md).
 
 Nada disso altera o programa reconstruído.
 
 ## 11. Estrutura do repositório
 
-| Diretório | Conteúdo |
-|---|---|
-| `python/spin73/` | **A biblioteca** (tabela de módulos abaixo) |
-| `python/tabelas/` | As 13 tabelas de saída de 1973, com a entrada impressa; leituras brutas com os glifos ambíguos em `leituras/` |
-| `python/reconstrucao_*/` | A reconstrução de cada bloco `DATA`, com os testes e a análise que decidiram cada leitura |
-| `python/exemplos/` | Arquivos de entrada de exemplo |
-| `python/experimental/` | Comparações com medições: `benchmarks/`, `correcao/`, `massa/`, `hitchcock/` e a recalibração com a 7,62 NATO — **separado** da reconstrução |
-| `validation/` | Todos os casos do relatório rodados e comparados, célula a célula |
-| `docs/` | Notas de transcrição (cada leitura, com a evidência), o mapa do programa original bloco a bloco e o guia da biblioteca |
-| `ferramentas/` | Leitura dos scans: recortes, páginas de PDF, decodificador JBIG2 |
-| `fontes/` | Os PDFs e o scan (não versionados; ver `fontes/LEIAME.md`) |
+```
+src/spin73/        a biblioteca (tabela de módulos abaixo)
+tests/             a suíte de testes: python -m pytest
+scripts/
+  reconstrucao/    como cada bloco DATA foi decidido: análises por bloco, leitura e conferência
+                   das tabelas de 1973, circularidade e todos os casos, célula a célula
+  voo_livre/       o SPIN-73 contra medições: benchmarks/, correcao/ (ajusta a correção de voo
+                   livre), mr1833/ (7,62 NATO) e hitchcock/ (BRL 620)
+  massa/           validação da estimativa de massa
+  leitura/         leitura dos scans: recortes, páginas de PDF, decodificador JBIG2
+examples/          exemplos executáveis (examples/README.md) e cartões de entrada em entradas/
+data/
+  tabelas_1973/    as 13 tabelas de saída de 1973, transcritas com a entrada impressa;
+                   leituras brutas com os glifos ambíguos marcados em leituras/
+  voo_livre/       medições de voo livre, rodada a rodada, na convenção de cada fonte
+docs/              notas de transcrição, o programa original bloco a bloco, verificação, guia da
+                   biblioteca, estimativa de massa, voo livre, saídas de referência, arquitetura
+output/            o que os scripts e os exemplos gravam (não versionado)
+fontes/            os PDFs e o scan (não versionados; ver fontes/LEIAME.md)
+```
+
+As comparações com medições (`scripts/voo_livre/`, `data/voo_livre/`) ficam **separadas** da reconstrução. Tudo roda de um clone, sem instalar: os scripts acham o pacote e os dados por `scripts/caminhos.py`, e os exemplos por `examples/_bootstrap.py`. Por que o código está dividido assim, e onde acrescentar coisas: [docs/ARQUITETURA.md](docs/ARQUITETURA.md).
 
 | Módulo | Conteúdo | |
 |---|---|---|
@@ -296,6 +307,6 @@ A saída traz avisos específicos para cada geometria (`spin73.avisos(p)`). Os p
 
 ## 13. Licença e fonte
 
-O código deste repositório está sob a licença MIT (ver [LICENSE](LICENSE)). O relatório original foi escrito pelo Armament Systems Department da General Electric, sob o contrato DAAA21-73-C-0033 do Exército dos EUA, para o Picatinny Arsenal, e foi aprovado para divulgação pública sem restrição (Distribution A) pelo ARDEC em 2010. Este repositório não redistribui o relatório, que está disponível na DTIC. É uma reconstrução independente, para pesquisa, sem vínculo com o Exército dos EUA ou a General Electric nem endosso deles.
+O código deste repositório está sob a licença MIT (ver [LICENSE](LICENSE)). O relatório original foi escrito pelo Armament Systems Department da General Electric, sob o contrato DAAA21-73-C-0033 do Exército dos EUA, para o Picatinny Arsenal, e foi aprovado para divulgação pública sem restrição (Distribution A) pelo ARDEC em 2010. Este repositório não redistribui o relatório, que está disponível na DTIC. É uma reconstrução independente, para pesquisa, sem vínculo com o Exército dos EUA ou a General Electric nem endosso deles. Para citar este software, ver [CITATION.cff](CITATION.cff).
 
 Whyte, R. H. *SPIN-73, an Updated Version of the SPINNER Computer Program*. Technical Report 4588, Picatinny Arsenal, Dover, NJ, novembro de 1973. DTIC AD0915628. Distribution A: approved for public release.
