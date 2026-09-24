@@ -1,6 +1,6 @@
 **English** | [Português](README.pt-BR.md)
 
-# aeroballistics
+# Aeroballistics
 
 Aerodynamic coefficients of spin-stabilized projectiles from their geometry, in Python — inspired by and adapted from **SPIN-73** (R. H. Whyte, *SPIN-73, an Updated Version of the SPINNER Computer Program*, Picatinny Arsenal TR 4588, 1973; DTIC AD0915628, Distribution A — approved for public release).
 
