@@ -50,3 +50,30 @@ def test_cmq_do_spin73_e_mais_forte_que_o_experimento():
 
     grade, k, sk, n, s = c.fator_recalibracao(r.tabela(), "CMQ", c.curva_cmq)
     assert np.all(k + 2 * sk < 1.0), dict(zip(grade.tolist(), k.tolist()))
+
+
+def test_cpn_do_spin73_atras_do_experimento_de_mach_2_em_diante():
+    """Registra o achado: k < 1 no CPN em Mach 2,0 e 2,5 com qualquer dos três raios de
+    ogiva supostos; em 2,5, por mais de dois desvios-padrão (em 2,0, com OR = 8 cal, fica
+    no limite). O CPN do modelo ali depende do XC15 decidido pelas tabelas de 1973."""
+    import comparar_cmq_cp as c
+
+    lin = c.tabela()
+    for OR in (8.0, c.OR_HIP, 12.0):
+        grade, k, sk, n, s = c.fator_recalibracao(lin, "CPN", lambda g: c.curva_cpn(g, OR),
+                                                  grade=np.array([2.0, 2.5]))
+        assert n == 42
+        assert np.all(k < 1.0) and k[1] + 2 * sk[1] < 1.0, (OR, k, sk)
+
+
+def test_cna_do_m80_e_o_cartao_c205():
+    """Registra o viés do CNα no M-80 (+0,21) e que o +0,28 da primeira comparação era a
+    mesma conta sem o cartão C205."""
+    import comparar_cmq_cp as c
+    import comparar_cna as cn
+
+    lin = r.tabela()
+    com = {p: v for p, _, v, _ in c.por_rodada(lin, "CNA", cn.curva_cna)}
+    sem = {p: v for p, _, v, _ in c.por_rodada(lin, "CNA", lambda g: cn.curva_cna(g, c205=False))}
+    assert abs(com["M-80"] - 0.214) < 0.005 and abs(sem["M-80"] - 0.276) < 0.005
+    assert all(abs(com[p]) < 0.12 for p in ("M-59", "M-61", "M-62")), com

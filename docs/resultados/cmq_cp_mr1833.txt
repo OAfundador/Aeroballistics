@@ -29,29 +29,52 @@ M-62    2.00   -13.24±2.66    -16.44    -3.20
 M-62    2.50   -13.18±2.04    -16.44    -3.27
 
 ==============================================================================
-Centro de pressão CPN (calibres do nariz) -- só onde o DATA XC existe
+Centro de pressão CPN (calibres do nariz) -- XC15 de Mach 1,2 a 5 decidido
 ==============================================================================
-pontos de Mach com reconstrução: 0.01, 0.60, 0.80, 0.90, 0.95, 1.00, 1.05, 1.10, 1.20, 2.00
+pontos de Mach com reconstrução: 0.01, 0.60, 0.80, 0.90, 0.95, 1.00, 1.05, 1.10, 1.20, 1.35, 1.50, 1.75, 2.00, 2.50, 3.00, 4.00, 5.00
+
+Células de XC decididas pelo modelo (xc_lidos) que entram no CPN das rodadas
+(Mach 1.13 a 2.85, pontos da grade usados na interpolação):
+  Mach 1.20: XC15 (RECUPERADOS)
+  Mach 1.35: XC12 (CORRECOES), XC15 (RECUPERADOS)
+  Mach 1.50: XC12 (CORRECOES), XC15 (RECUPERADOS)
+  Mach 1.75: XC15 (DECIDIDOS_M437)
+  Mach 2.00: XC15 (RECUPERADOS)
+  Mach 2.50: XC1 (CORRECOES), XC15 (DECIDIDOS_M437)
+  Mach 3.00: XC15 (DECIDIDOS_M437)
 
 proj     n  viés do SPIN-73  dispersão exp
-M-59     2            +0.01           0.02
+M-80    15            +0.22           0.07  <-- viés maior que a dispersão
+M-59    11            +0.16           0.08  <-- viés maior que a dispersão
+M-61     8            +0.14           0.08  <-- viés maior que a dispersão
+M-62     8            -0.07           0.07  <-- viés maior que a dispersão
 
-Contra a curva experimental ajustada (CNα·CPN, momento em torno do nariz),
-nos dois Mach do supersônico em que a reconstrução existe:
+erro puro entre rodadas repetidas: 0.085 (16 pares)
+
+Contra a curva experimental ajustada por MMQ ao CPN medido (constante + CXLL,
+quadráticos em M − 2): n = 42, resíduo rms = 0.084
 proj    Mach          CPN exp  CPN SPIN-73     dif
-M-80    1.20       1.316±0.433        1.363  +0.047
-M-80    2.00       1.394±0.252        1.655  +0.261
-M-59    1.20       1.594±0.296        1.375  -0.219
-M-59    2.00       1.692±0.171        1.691  -0.001
-M-61    1.20       1.605±0.290        1.375  -0.230
-M-61    2.00       1.704±0.168        1.693  -0.011
-M-62    1.20       1.794±0.188        1.324  -0.470
-M-62    2.00       1.915±0.110        1.662  -0.254
+M-80    1.20       1.361±0.173        1.397  +0.036
+M-80    1.50       1.431±0.089        1.566  +0.135
+M-80    2.00       1.490±0.113        1.670  +0.180
+M-80    2.50       1.476±0.087        1.821  +0.345
+M-59    1.20       1.488±0.116        1.385  -0.103
+M-59    1.50       1.570±0.060        1.568  -0.001
+M-59    2.00       1.644±0.076        1.708  +0.064
+M-59    2.50       1.640±0.059        1.879  +0.239
+M-61    1.20       1.493±0.113        1.384  -0.109
+M-61    1.50       1.575±0.059        1.568  -0.007
+M-61    2.00       1.650±0.075        1.710  +0.060
+M-61    2.50       1.646±0.058        1.881  +0.234
+M-62    1.20       1.583±0.073        1.326  -0.257
+M-62    1.50       1.673±0.039        1.499  -0.174
+M-62    2.00       1.758±0.049        1.677  -0.082
+M-62    2.50       1.762±0.038        1.842  +0.080
 
 Sensibilidade ao raio de ogiva suposto (M-80, Mach 2,0):
-  OR =  8.00 cal -> CPN = 1.594
-  OR =  9.74 cal -> CPN = 1.655
-  OR = 12.00 cal -> CPN = 1.707
+  OR =  8.00 cal -> CPN = 1.609
+  OR =  9.74 cal -> CPN = 1.670
+  OR = 12.00 cal -> CPN = 1.723
 
 ==============================================================================
 RECALIBRAÇÃO: fator k(M) em  experimento ≈ k(M) · SPIN-73
@@ -61,6 +84,18 @@ Cmq: n = 42 rodadas, resíduo rms = 1.68
   Mach:          1.20        1.50        2.00        2.50        3.00
   k:        0.40±0.04   0.66±0.03   0.90±0.04   0.90±0.03   0.65±0.07
 
-O centro de pressão não entra na recalibração: a reconstrução só existe em
-Mach 1,2 e 2,0 no supersônico (cartão XC15 não impresso), o que deixa poucas
-rodadas utilizáveis. Ver NOTAS_TRANSCRICAO.md, seção T6.2.
+CPN: n = 42 rodadas, resíduo rms = 0.138
+  Mach:          1.20        1.50        2.00        2.50        3.00
+  k:        1.03±0.03   0.99±0.02   0.92±0.02   0.87±0.02   0.82±0.04
+
+k do CPN com outro raio de ogiva suposto, e sem o M-62 (base arredondada, fora do
+modelo do SPIN-73):
+  Mach:                   1.20        1.50        2.00        2.50        3.00
+  OR =  8.00 cal:    1.10±0.03   1.04±0.02   0.96±0.02   0.90±0.02   0.86±0.04
+  OR = 12.00 cal:    0.98±0.03   0.95±0.02   0.89±0.02   0.84±0.02   0.79±0.04
+  sem o M-62:        1.01±0.02   0.96±0.01   0.89±0.02   0.83±0.01   0.78±0.03
+  sem o M-62: n = 34 rodadas, resíduo rms = 0.087
+
+O k do CPN usa o CPN medido rodada a rodada (VCG − CMα/CNα, só experimento), não o
+CNα do SPIN-73. Acima de Mach 1,1, o CPN do modelo depende das células de XC
+decididas pelas tabelas de 1973, listadas acima; nenhuma saiu do voo livre.

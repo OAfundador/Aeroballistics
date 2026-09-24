@@ -1,0 +1,39 @@
+==============================================================================
+CMα -- SPIN-73 reconstruído contra o calibre 0.30 do Hitchcock (DM = 0.12 suposto)
+==============================================================================
+projétil         Mach    VCG  CPN mod  CMα mod  CMα med  mod/med  leitura
+Ball M1         1.788  2.613    1.663    2.563    3.158    0.812  inconsistente na fonte
+Ball M1         2.409  2.613    1.679    2.686    2.674    1.005  inconsistente na fonte
+Ball M1         2.571  2.613    1.690    2.681    2.445    1.097  inconsistente na fonte
+Ball M2         2.313  2.295    1.753    1.555    1.299    1.197  verificada
+A.P. M2         2.471  2.590    1.808    2.279    3.463    0.658  incerteza de temperatura
+Tracer M1       2.271  2.450    1.766    1.958    1.859    1.054  verificada (K_M aparente)
+Frangible M22   1.231  2.310    1.374    2.235    2.266    0.986  verificada
+
+Células de XC decididas pelo modelo (xc_lidos) que entram em cada linha:
+  Ball M1        1.788: XC15 em 1.75 (DECIDIDOS_M437)
+                        XC15 em 2.00 (RECUPERADOS)
+  Ball M1        2.409: XC15 em 2.00 (RECUPERADOS)
+                        XC1 em 2.50 (CORRECOES)
+                        XC15 em 2.50 (DECIDIDOS_M437)
+  Ball M1        2.571: XC1 em 2.50 (CORRECOES)
+                        XC15 em 2.50 (DECIDIDOS_M437)
+                        XC15 em 3.00 (DECIDIDOS_M437)
+  Ball M2        2.313: XC1 em 2.50 (CORRECOES)
+  A.P. M2        2.471: XC1 em 2.50 (CORRECOES)
+  Tracer M1      2.271: XC1 em 2.50 (CORRECOES)
+  Frangible M22  1.231: nenhuma
+
+Sensibilidade: mod/med com outro DM suposto e sem as CORRECOES do XC:
+  projétil         Mach  DM 0,05  DM 0,20  XC lido
+  Ball M1         1.788   0.775   0.853   0.812
+  Ball M1         2.409   0.959   1.057   1.085
+  Ball M1         2.571   1.046   1.154   1.189
+  Ball M2         2.313   1.104   1.304   1.324
+  A.P. M2         2.471   0.622   0.699   0.730
+  Tracer M1       2.271   0.988   1.128   1.130
+  Frangible M22   1.231   0.940   1.039   0.986
+
+Variantes de geometria:
+  A.P. M2, afinamento da base como boattail (VB = 0,31): CMα = 2.366, mod/med = 0.683
+  Tracer M1, CG do projétil cheio (VCG = 2.653): CMα = 2.541, mod/med = 1.367

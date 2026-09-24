@@ -160,3 +160,17 @@ def test_formula_do_hitchcock_perto_do_cp_medido():
     cpn_medido = vcg - cma_do_fator_de_estabilidade(nome, S, V) / cna_spin(nome, V / A_SOM)
     h = cv.h_hitchcock(0, 0, g["cilindro"], g["VN"], g["OR"])
     assert abs(cv.do_nariz(g["VL"], h) - cpn_medido) < 0.10
+
+
+def test_cma_registra_desacordo():
+    """CMα do modelo / (8/π)·K_M, com DM = 0,12 suposto: Frangible M22 −1 % (Mach 1,23, sem
+    célula de XC decidida), Tracer M1 +5 % (K_M aparente, CG médio), Ball M2 +20 %, A.P. M2
+    −34 %. Entre Mach 2 e 3 o CPN usa o XC1 de Mach 2,5 decidido pelas tabelas de 1973."""
+    import comparar_cma_cal030 as ca
+
+    r = {nome: ca.modelo(g, vcg, M)[1] / med for nome, M, g, vcg, med in ca.linhas()
+         if nome != "Ball M1"}
+    assert abs(r["Frangible M22"] - 1) < 0.03, r
+    assert 1.0 < r["Tracer M1"] < 1.1, r
+    assert 1.15 < r["Ball M2"] < 1.25, r
+    assert 0.6 < r["A.P. M2"] < 0.7, r

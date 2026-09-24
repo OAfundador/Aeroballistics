@@ -37,8 +37,8 @@ GEOMETRIA = {
     "Ball M2": dict(VL=3.75, VN=2.43, VB=0.0, OR=7.00, cilindro=1.32, obs="base reta"),
     "A.P. M2": dict(VL=4.57, VN=2.45, VB=0.0, OR=7.00, cilindro=2.12,
                     obs="afinamento de 0,31 cal na base, com ângulo marcado mas ilegível; "
-                        "tratado como base reta. Sem efeito nas comparações atuais: o A.P. M2 "
-                        "só tem K_M, e o CMα do SPIN-73 não existe em Mach 2,47 (XC15 ausente)"),
+                        "tratado como base reta. O A.P. M2 só tem K_M; comparar_cma_cal030.py "
+                        "repete a comparação do CMα com VB = 0,31"),
     "Tracer M1": dict(VL=4.75, VN=2.45, VB=0.0, OR=7.00, cilindro=2.30, obs="base reta"),
     "Frangible T44": dict(VL=3.94, VN=2.32, VB=0.0, OR=7.91, cilindro=1.62,
                           obs="p. 19, zoom baixo, a reconferir; a nota da p. 18 diz que a M22 "

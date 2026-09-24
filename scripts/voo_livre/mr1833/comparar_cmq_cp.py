@@ -16,9 +16,16 @@ HIPÓTESES, como em `comparar_magnus.py`:
   - o raio de ogiva da família 7,62 é incerto (figura indica "30R" ≈ 9,74 cal). Ele entra no
     CPN por CCRT = VN²/OR − 0,48, então a sensibilidade a essa hipótese é reportada.
 
-O centro de pressão só é comparável onde a reconstrução existe: o cartão de continuação de
-XC15 não foi impresso no relatório (NOTAS_TRANSCRICAO.md, T6), e no supersônico isso deixa
-apenas Mach 1,2 e 2,0, recuperados pelas tabelas. O Cmq está completo nos 17 pontos.
+O Cmq e o CPN existem nos 17 pontos. O cartão de continuação de XC15 não foi impresso no
+relatório (NOTAS_TRANSCRICAO.md, T6), e as nove células de Mach 1,2 a 5,0 foram DECIDIDAS
+PELO MODELO a partir das tabelas de 1973 (xc_lidos: RECUPERADOS e DECIDIDOS_M437), como
+algumas correções de leitura na mesma faixa (CORRECOES). Nenhuma saiu do voo livre, então a
+comparação não é circular, mas o CPN do modelo acima de Mach 1,1 depende delas: a saída
+lista as que entram na faixa das rodadas.
+
+O CPN experimental é o de cada rodada, VCG − CMα/CNα, só com valores medidos; a curva
+ajustada e o fator k(M) do CPN não usam o CNα do SPIN-73 (o CNα do modelo tem viés próprio,
+ver `comparar_cna.py`).
 """
 import sys
 from pathlib import Path
@@ -30,13 +37,21 @@ import caminhos                                    # noqa: E402,F401  (também p
 
 import recalibrar_mr1833 as r                      # noqa: E402
 from cmq_spin73 import cmq as cmq_spin             # noqa: E402
-from cpn_spin73 import cpn_cma                     # noqa: E402
+from cpn_spin73 import cpn_cma, decididas          # noqa: E402
 
 MACH = np.array([0.01, 0.6, 0.8, 0.9, 0.95, 1.0, 1.05, 1.1, 1.2,
                  1.35, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0])
 PROJETEIS = ["M-80", "M-59", "M-61", "M-62"]
 OR_HIP = 9.74            # raio de ogiva suposto (calibres)
 DM = 0.195
+
+
+def tabela():
+    """As rodadas de `recalibrar_mr1833.tabela()` com o CPN medido, VCG − CMα/CNα."""
+    lin = r.tabela()
+    for l in lin:
+        l["CPN"] = l["MNARIZ"] / l["CNA"] if np.isfinite(l["MNARIZ"]) and l["CNA"] else np.nan
+    return lin
 
 
 def curva_cmq(g):
@@ -68,9 +83,11 @@ def por_rodada(linhas, coluna, curva):
     return out
 
 
-def contra_ajuste(linhas, coluna, curva, machs):
-    """Modelo contra a curva experimental ajustada (MMQ), nos pontos da grade pedidos."""
-    regs, projs, _ = r.MODELOS[coluna]
+def contra_ajuste(linhas, coluna, curva, machs, modelo=None):
+    """Modelo contra a curva experimental ajustada (MMQ), nos pontos da grade pedidos.
+
+    `modelo` escolhe o modelo reduzido de `r.MODELOS` (padrão: o da própria coluna)."""
+    regs, projs, _ = r.MODELOS[modelo or coluna]
     fit = r.mmq(linhas, coluna, regs, projs)
     ev = r.avaliar(fit, machs)
     linhas_out = []
@@ -118,7 +135,7 @@ def fator_recalibracao(linhas, coluna, curva, grade=np.array([1.2, 1.5, 2.0, 2.5
 
 
 if __name__ == "__main__":
-    lin = r.tabela()
+    lin = tabela()
 
     print("=" * 78)
     print("Cmq  (q·d/2V) -- modelo completo: XF1..XF9 lidos, termo de corpo longo F9")
@@ -135,27 +152,36 @@ if __name__ == "__main__":
         print(f"{p:6s} {M:5.2f} {exp:8.2f}±{err:<4.2f} {mod:9.2f} {mod - exp:+8.2f}")
 
     print("\n" + "=" * 78)
-    print("Centro de pressão CPN (calibres do nariz) -- só onde o DATA XC existe")
+    print("Centro de pressão CPN (calibres do nariz) -- XC15 de Mach 1,2 a 5 decidido")
     print("=" * 78)
     disponivel = [f"{m:.2f}" for m, v in zip(MACH, curva_cpn(r.GEO["M-80"])) if np.isfinite(v)]
     print("pontos de Mach com reconstrução:", ", ".join(disponivel))
+    rodadas ={p: [l["M"] for l in lin if l["proj"] == p and l["M"] >= r.MMIN and np.isfinite(l["CPN"])]
+               for p in PROJETEIS}
+    cel = sorted({c for p in PROJETEIS for c in decididas(rodadas[p], r.GEO[p]["VB"])},
+                 key=lambda t: (t[1], t[0]))
+    todas = [m for ms in rodadas.values() for m in ms]
+    print("\nCélulas de XC decididas pelo modelo (xc_lidos) que entram no CPN das rodadas")
+    print(f"(Mach {min(todas):.2f} a {max(todas):.2f}, pontos da grade usados na interpolação):")
+    for j in sorted({j for _, j, _ in cel}):
+        print(f"  Mach {MACH[j]:4.2f}: " + ", ".join(f"XC{l} ({reg})" for l, jj, reg in cel if jj == j))
+
     print(f"\n{'proj':6s} {'n':>3s} {'viés do SPIN-73':>16s} {'dispersão exp':>14s}")
-    cpn_exp = []
-    for l in lin:
-        l["CPN"] = l["MNARIZ"] / l["CNA"] if np.isfinite(l["MNARIZ"]) and l["CNA"] else np.nan
     for p, n, vies, sd in por_rodada(lin, "CPN", curva_cpn):
         marca = "  <-- viés maior que a dispersão" if abs(vies) > sd else ""
         print(f"{p:6s} {n:3d} {vies:+16.2f} {sd:14.2f}{marca}")
+    ep, npar = r.erro_puro(lin, "CPN", PROJETEIS)
+    print(f"\nerro puro entre rodadas repetidas: {ep:.3f} ({npar} pares)")
 
-    print("\nContra a curva experimental ajustada (CNα·CPN, momento em torno do nariz),")
-    print("nos dois Mach do supersônico em que a reconstrução existe:")
+    # a curva experimental é ajustada ao CPN medido, com o modelo reduzido do CNα·CPN
+    MODELO_CPN = "MNARIZ"
+    fit = r.mmq(lin, "CPN", *r.MODELOS[MODELO_CPN][:2])
+    print("\nContra a curva experimental ajustada por MMQ ao CPN medido (constante + CXLL,")
+    print(f"quadráticos em M − 2): n = {len(fit['L'])}, resíduo rms = {fit['s']:.3f}")
     print(f"{'proj':6s} {'Mach':>5s} {'CPN exp':>16s} {'CPN SPIN-73':>12s} {'dif':>7s}")
-    import cna_spin73 as cb                                 # noqa: E402
-    for p, M, exp, err, _mod in contra_ajuste(lin, "MNARIZ", curva_cpn, np.array([1.2, 2.0])):
-        g = r.GEO[p]
-        cna = cb.cna(g["VL"], g["VN"], g["VB"], OR_HIP, M)
-        cpn_mod = np.interp(M, MACH, curva_cpn(g))
-        print(f"{p:6s} {M:5.2f} {exp / cna:11.3f}±{err / cna:<4.3f} {cpn_mod:12.3f} {cpn_mod - exp / cna:+7.3f}")
+    for p, M, exp, err, mod in contra_ajuste(lin, "CPN", curva_cpn, np.array([1.2, 1.5, 2.0, 2.5]),
+                                             modelo=MODELO_CPN):
+        print(f"{p:6s} {M:5.2f} {exp:11.3f}±{err:<4.3f} {mod:12.3f} {mod - exp:+7.3f}")
 
     print("\nSensibilidade ao raio de ogiva suposto (M-80, Mach 2,0):")
     for orr in (8.0, 9.74, 12.0):
@@ -165,13 +191,24 @@ if __name__ == "__main__":
     print("\n" + "=" * 78)
     print("RECALIBRAÇÃO: fator k(M) em  experimento ≈ k(M) · SPIN-73")
     print("=" * 78)
-    for coluna, curva, nome in (("CMQ", curva_cmq, "Cmq"), ("MNARIZ", curva_cpn, "CNα·CPN")):
-        if coluna == "MNARIZ":
-            continue                        # sem pontos suficientes: ver nota no fim
+    for coluna, curva, nome, fmt in (("CMQ", curva_cmq, "Cmq", ".2f"), ("CPN", curva_cpn, "CPN", ".3f")):
         grade, k, sk, n, s = fator_recalibracao(lin, coluna, curva)
-        print(f"\n{nome}: n = {n} rodadas, resíduo rms = {s:.2f}")
+        print(f"\n{nome}: n = {n} rodadas, resíduo rms = {s:{fmt}}")
         print("  Mach:  " + "".join(f"{m:>12.2f}" for m in grade))
         print("  k:     " + "".join(f"{a:7.2f}±{b:<4.2f}" for a, b in zip(k, sk)))
-    print("\nO centro de pressão não entra na recalibração: a reconstrução só existe em")
-    print("Mach 1,2 e 2,0 no supersônico (cartão XC15 não impresso), o que deixa poucas")
-    print("rodadas utilizáveis. Ver NOTAS_TRANSCRICAO.md, seção T6.2.")
+
+    sem_m62 = [l for l in lin if l["proj"] != "M-62"]
+    variantes = (("OR =  8.00 cal", lin, lambda g: curva_cpn(g, 8.0)),
+                 ("OR = 12.00 cal", lin, lambda g: curva_cpn(g, 12.0)),
+                 ("sem o M-62", sem_m62, curva_cpn))
+    print("\nk do CPN com outro raio de ogiva suposto, e sem o M-62 (base arredondada, fora do")
+    print("modelo do SPIN-73):")
+    print(f"  {'Mach:':16s}" + "".join(f"{m:>12.2f}" for m in grade))
+    for rotulo, L, curva in variantes:
+        grade, k, sk, n, s = fator_recalibracao(L, "CPN", curva)
+        print(f"  {rotulo + ':':16s}" + "".join(f"{a:7.2f}±{b:<4.2f}" for a, b in zip(k, sk)))
+    print(f"  sem o M-62: n = {n} rodadas, resíduo rms = {s:.3f}")
+
+    print("\nO k do CPN usa o CPN medido rodada a rodada (VCG − CMα/CNα, só experimento), não o")
+    print("CNα do SPIN-73. Acima de Mach 1,1, o CPN do modelo depende das células de XC")
+    print("decididas pelas tabelas de 1973, listadas acima; nenhuma saiu do voo livre.")

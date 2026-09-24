@@ -98,3 +98,14 @@ def test_xc15_recuperado_reproduz_as_duas_tabelas():
     for (_, j) in RECUPERADOS:
         for nome in ("M437", "5/38"):
             assert abs(_cpn(nome, j) - GEO[nome][2][j]) <= 0.0015, (nome, j)
+
+
+def test_decididas_so_o_boattail_pesa_o_xc15():
+    """A lista de células decididas que entram no CPN segue a interpolação em Mach e ignora
+    o bloco de boattail (XC12..XC16) quando VB = 0."""
+    from cpn_spin73 import decididas
+    assert decididas(1.1, 0.5) == []                        # ponto da grade sem decisão
+    assert decididas(1.2, 0.0) == []                        # XC15 sem peso na base reta
+    assert decididas(1.2, 0.5) == [(15, 8, "RECUPERADOS")]
+    assert decididas(2.3, 0.0) == [(1, 13, "CORRECOES")]    # entre 2,0 e 2,5
+    assert {l for l, _, _ in decididas(2.3, 0.5)} == {1, 15}

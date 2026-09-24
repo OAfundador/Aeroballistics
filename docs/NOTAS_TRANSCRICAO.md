@@ -98,7 +98,7 @@ Conclusão: com os dados atuais, B não está reconstruído. As causas possívei
 - O 5"/38 fica +0,014 constante de Mach 2,5 a 5. Suspeita: leitura do CNA (2,953 / 2,929 / 2,829 / 2,729).
 - A linha de Mach 2,0 nos ANSR e algumas células isoladas estão listadas em `test_cna.py` (`PENDENTES`).
 
-**Primeira comparação com experimento (7,62 NATO, MR 1833, M ≥ 1,1).** O CNα reconstruído concorda com M-59 (+0,01), M-61 (−0,01) e M-62 (−0,08); a dispersão experimental é de 0,2–0,3. No M-80, o mais curto, o SPIN-73 superestima em +0,28: ele prevê CNα maior para o projétil mais curto, e o experimento mostra o contrário. O resultado não depende do raio de ogiva, que é incerto nessa família. É um alvo claro para a recalibração do termo de comprimento (B3/B6) em corpos curtos.
+**Comparação com experimento (7,62 NATO, MR 1833, M ≥ 1,1; `scripts/voo_livre/mr1833/comparar_cna.py`, saída em `docs/resultados/cna_mr1833.txt`).** O CNα reconstruído concorda com M-59 (−0,03), M-61 (−0,06) e M-62 (−0,12); a dispersão experimental é de 0,17–0,31. No M-80, o mais curto, o SPIN-73 superestima em +0,21 (15 rodadas; erro puro/√n = 0,07): o modelo dá praticamente o mesmo CNα aos quatro, e o experimento cresce com o comprimento. O resultado não depende do raio de ogiva, que é incerto nessa família. A primeira versão desta comparação dava +0,28 no M-80 (+0,01, −0,01 e −0,08 nos outros); ela é anterior ao cartão C205 (T15), e o script reproduz esses valores sem o cartão. É um alvo claro para a recalibração do termo de comprimento (B3/B6) em corpos curtos.
 
 ## T6 — DATA XC e o centro de pressão (tarefa A, com validação numérica)
 

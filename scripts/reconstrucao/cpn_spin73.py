@@ -21,7 +21,12 @@ import numpy as np
 
 from ajustar_B import regressores
 from spin73.dados.xb_lidos import XB
-from spin73.dados.xc_lidos import XC, MACH
+from spin73.dados.xc_lidos import XC, MACH, CORRECOES, DECIDIDOS_M437, RECUPERADOS
+
+# Registro de cada célula de XC decidida pelo modelo, lido das estruturas de xc_lidos.
+_DECIDIDAS = {**{k: "RECUPERADOS" for k in RECUPERADOS},
+              **{k: "DECIDIDOS_M437" for k in DECIDIDOS_M437},
+              **{k: "CORRECOES" for k in CORRECOES}}
 
 
 def termos_geometria(VL, VN, VB, OR, DM, M):
@@ -64,6 +69,21 @@ def cpn_cma(VL, VN, VB, OR, DM, VCG, j, XB=XB, XC=XC, cna_impresso=None):
                           + C[15] * g["VBX"] * g["CCRT"] * g["CVNN"])
     CPN = (AMOMSQ + AMOMBT) / CNAT
     return CPN, (VCG - CPN) * CNAT
+
+
+def decididas(machs, VB):
+    """Células de XC decididas pelo modelo que entram no CPN nos Mach pedidos.
+
+    Conta os pontos da grade usados na interpolação linear de cada Mach. O bloco de
+    boattail (XC12 a XC16) só pesa com VB > 0. Devolve [(linha XC, índice de Mach, registro
+    em xc_lidos)], em ordem de Mach.
+    """
+    js = set()
+    for m in np.atleast_1d(machs):
+        j = min(int(np.searchsorted(MACH, m)), len(MACH) - 1)
+        js |= {j} if np.isclose(MACH[j], m) or j == 0 else {j - 1, j}
+    return sorted(((l, j, reg) for (l, j), reg in _DECIDIDAS.items()
+                   if j in js and (not 12 <= l <= 16 or VB > 0.0)), key=lambda t: (t[1], t[0]))
 
 
 def implicado(coef, VL, VN, VB, OR, DM, VCG, j, CPN_impresso):
