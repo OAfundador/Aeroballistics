@@ -10,18 +10,18 @@ conhecidas (NOTAS_TRANSCRICAO.md, itens E2 e E3): "CYNN" é CVNN e "VBTI" é VBT
     CPN    = (AMOMSQ + AMOMBT) / CNAT          CMA = (VCG - CPN) * CNAT
 
 CNAB é a força normal do corpo sem o boattail (B1..B6) e CNAT a total (B1..B9); nenhuma
-das duas é impressa separadamente, então ambas vêm do CNα reconstruído (cna_spin73.py).
+das duas é impressa separadamente, então ambas vêm do CNα adaptado (cna_spin73.py).
 
 Validação (test_cpn.py): no 175 mm M437 a conta reproduz o CPN e o CMA impressos dentro
 de 0,0007 em Mach 0,01, 0,90 e 1,10 -- os três pontos em que todos os doze coeficientes
-estão lidos sem dúvida. Os demais dependem das pendências listadas em spin73/dados/xc_lidos.py
+estão lidos sem dúvida. Os demais dependem das pendências listadas em aeroballistics/dados/xc_lidos.py
 (linha XC12 desbotada e o cartão ausente de XC15). Ver NOTAS_TRANSCRICAO.md, seção T6.
 """
 import numpy as np
 
 from ajustar_B import regressores
-from spin73.dados.xb_lidos import XB
-from spin73.dados.xc_lidos import XC, MACH, CORRECOES, DECIDIDOS_M437, RECUPERADOS
+from aeroballistics.dados.xb_lidos import XB
+from aeroballistics.dados.xc_lidos import XC, MACH, CORRECOES, DECIDIDOS_M437, RECUPERADOS
 
 # Registro de cada célula de XC decidida pelo modelo, lido das estruturas de xc_lidos.
 _DECIDIDAS = {**{k: "RECUPERADOS" for k in RECUPERADOS},
@@ -46,7 +46,7 @@ def termos_geometria(VL, VN, VB, OR, DM, M):
 def cpn_cma(VL, VN, VB, OR, DM, VCG, j, XB=XB, XC=XC, cna_impresso=None):
     """CPN e CMα no ponto j da grade de Mach. Devolve NaN onde o DATA falta.
 
-    `cna_impresso` substitui o CNα reconstruído pelo valor impresso na tabela, e o
+    `cna_impresso` substitui o CNα adaptado pelo valor impresso na tabela, e o
     CNAB passa a ser CNα_impresso − CNBT. Isso tira do resíduo do CPN o erro do CNα
     (que chega a 0,002 e, propagado, vale até 0,005 no CPN) e deve ser usado sempre
     que a coluna CNA da tabela estiver transcrita.

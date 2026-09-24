@@ -7,9 +7,9 @@ import pytest
 import ajuste as aj
 import aplicar
 import dados
-from spin73.correcoes import reynolds as rn
-from spin73.correcoes.voo_livre import ARQUIVO
-import spin73 as s
+from aeroballistics.correcoes import reynolds as rn
+from aeroballistics.correcoes.voo_livre import ARQUIVO
+import aeroballistics as s
 
 
 @pytest.fixture(scope="module")

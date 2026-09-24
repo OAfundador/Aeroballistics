@@ -24,7 +24,7 @@ from dataclasses import dataclass, field
 import numpy as np
 
 import caminhos
-import spin73 as s
+import aeroballistics as s
 
 DIR = str(caminhos.TABELAS_1973)
 

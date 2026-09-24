@@ -1,9 +1,9 @@
-"""SPIN-73 reconstruído contra dados de voo livre de outras fontes (benchmarks).
+"""SPIN-73 adaptado contra dados de voo livre de outras fontes (benchmarks).
 
 Cada benchmark é um CSV com as convenções DA FONTE no cabeçalho. Aqui os dados são levados
-à normalização do SPIN-73 (spin73/convencoes.py) e o programa roda no Mach de cada rodada
+à normalização do SPIN-73 (aeroballistics/convencoes.py) e o programa roda no Mach de cada rodada
 (interpolação linear na grade de 17 pontos). Isto mede o SPIN-73 contra a realidade, não a
-reconstrução contra o SPIN-73 (isso está em docs/VERIFICACAO.md).
+adaptação contra o SPIN-73 (isso está em docs/VERIFICACAO.md).
 
     python scripts/voo_livre/benchmarks/comparar.py
 """
@@ -16,7 +16,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 import caminhos                                       # noqa: E402
 
-import spin73 as s                                    # noqa: E402
+import aeroballistics as s                                    # noqa: E402
 
 DADOS = caminhos.VOO_LIVRE
 

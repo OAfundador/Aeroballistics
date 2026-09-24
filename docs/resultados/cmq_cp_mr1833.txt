@@ -31,7 +31,7 @@ M-62    2.50   -13.18±2.04    -16.44    -3.27
 ==============================================================================
 Centro de pressão CPN (calibres do nariz) -- XC15 de Mach 1,2 a 5 decidido
 ==============================================================================
-pontos de Mach com reconstrução: 0.01, 0.60, 0.80, 0.90, 0.95, 1.00, 1.05, 1.10, 1.20, 1.35, 1.50, 1.75, 2.00, 2.50, 3.00, 4.00, 5.00
+pontos de Mach com adaptação: 0.01, 0.60, 0.80, 0.90, 0.95, 1.00, 1.05, 1.10, 1.20, 1.35, 1.50, 1.75, 2.00, 2.50, 3.00, 4.00, 5.00
 
 Células de XC decididas pelo modelo (xc_lidos) que entram no CPN das rodadas
 (Mach 1.13 a 2.85, pontos da grade usados na interpolação):

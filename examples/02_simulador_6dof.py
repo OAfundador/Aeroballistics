@@ -3,7 +3,7 @@
     python examples/02_simulador_6dof.py
     python examples/02_simulador_6dof.py --csv       # grava também output/exemplos/m855_sete.csv
 
-``spin73.Aerodinamica`` calcula a aerodinâmica uma vez, no construtor, na grade de 17 Mach do
+``aeroballistics.Aerodinamica`` calcula a aerodinâmica uma vez, no construtor, na grade de 17 Mach do
 programa; cada chamada só interpola em Mach, então ela pode ficar dentro do laço de integração.
 
 Com ``convencao="moderna"`` as taxas são adimensionalizadas por pd/V e qd/V, como em McCoy
@@ -20,7 +20,7 @@ relatório, que usa pd/2V. Os sete coeficientes que as equações de McCoy leem 
     CMQ  = Cmq + Cmα̇            amortecimento em arfagem
 
 Sinais: CMα > 0 tomba, como em McCoy. O sinal do Magnus muda de uma fonte para outra;
-confira a definição do seu simulador (src/spin73/convencoes.py, item 7).
+confira a definição do seu simulador (src/aeroballistics/convencoes.py, item 7).
 
 A tabela plana do --csv (Mach e as sete colunas) não tem a dependência em α: nela, CD é o CD0
 e CNP é a inclinação a 1°. Onde o simulador aceitar funções de (Mach, α), use ``cd`` e ``cnp``.
@@ -36,17 +36,17 @@ from _bootstrap import SAIDA, preparar
 
 preparar()
 
-import spin73  # noqa: E402
+import aeroballistics  # noqa: E402
 
 # 5,56 mm M855 (McCoy, BRL-MR-3476, 1985, Fig. 3 e Tabela 1): geometria em calibres, CG a
 # 1,54 cal da base, diâmetro 5,69 mm. Meplat não cotado: fica o padrão do programa (0,12).
-M855 = spin73.Projetil(VL=4.05, VN=1.90, VB=0.40, VCG=4.05 - 1.54, OR=7.9, BD=1.00,
+M855 = aeroballistics.Projetil(VL=4.05, VN=1.90, VB=0.40, VCG=4.05 - 1.54, OR=7.9, BD=1.00,
                        DIA=5.69 / 25.4, nome="5,56 mm M855")
 
 SETE = ("CD", "CLA", "CYP", "CNP", "CLP", "CMA", "CMQ")
 
 
-def sete(aero: spin73.Aerodinamica, mach, alfa_rad=0.0) -> dict:
+def sete(aero: aeroballistics.Aerodinamica, mach, alfa_rad=0.0) -> dict:
     """Os sete coeficientes no(s) Mach pedido(s), no ângulo de ataque total α (radianos)."""
     c = aero(mach)
     return {
@@ -66,7 +66,7 @@ def main() -> None:
                     help="grava a tabela plana (Mach + sete colunas) em output/exemplos/m855_sete.csv")
     args = ap.parse_args()
 
-    aero = spin73.Aerodinamica(M855, convencao="moderna")    # o canônico, só na convenção de McCoy
+    aero = aeroballistics.Aerodinamica(M855, convencao="moderna")    # o canônico, só na convenção de McCoy
     print(aero.descrever())
     print("coeficientes disponíveis:", ", ".join(aero.nomes))
 
@@ -95,7 +95,7 @@ def main() -> None:
     if args.csv:
         SAIDA.mkdir(parents=True, exist_ok=True)
         arquivo = SAIDA / "m855_sete.csv"
-        grade = spin73.MACH_GRID
+        grade = aeroballistics.MACH_GRID
         k = sete(aero, grade, 0.0)
         k["CNP"] = aero.coeficiente("Cmpa", grade)             # inclinação a 1°
         with open(arquivo, "w", newline="", encoding="utf-8") as f:

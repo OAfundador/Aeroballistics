@@ -4,7 +4,7 @@
 
 O cartão do SPIN-73 pede calibres, polegadas, libras e lb·in², e recebe o CG e as inércias
 como entrada. Aqui o 5,56 mm M855 entra em mm e gramas, sem CG nem inércias
-(examples/entradas/m855_metrico.txt), e ``spin73.massa`` os estima pela geometria e pela
+(examples/entradas/m855_metrico.txt), e ``aeroballistics.massa`` os estima pela geometria e pela
 massa. O M855 tem CG e inércias medidos (McCoy, BRL-MR-3476, 1985, Tabela 1), então dá para
 ver quanto a estimativa erra e o quanto isso muda o fator de estabilidade giroscópica.
 
@@ -16,8 +16,8 @@ from _bootstrap import ENTRADAS, preparar
 
 preparar()
 
-import spin73  # noqa: E402
-from spin73 import massa, unidades  # noqa: E402
+import aeroballistics  # noqa: E402
+from aeroballistics import massa, unidades  # noqa: E402
 
 # Medido (McCoy 1985, Tabela 1): CG a partir da BASE em calibres; inércias em g·cm².
 MEDIDO = dict(CG_BASE=1.54, IX_GCM2=0.1426, IY_GCM2=1.150)
@@ -43,7 +43,7 @@ def main() -> None:
     estimado = massa.completar(p, "solido", ang_bt=ang_bt)
     medido = unidades.projetil(nome="M855 (medido)", VL=p.VL, VN=p.VN, VB=p.VB, OR=p.OR, DM=p.DM,
                                BD=p.BD, D_MM=5.69, MASSA_G=4.05, PASSO_POL=7, TEMP_C=15, **MEDIDO)
-    t_est, t_med = spin73.tabela(estimado), spin73.tabela(medido)
+    t_est, t_med = aeroballistics.tabela(estimado), aeroballistics.tabela(medido)
     print("\nFator de estabilidade giroscópica s_g (GYRO):")
     print(f"  {'Mach':>5s} {'medido':>8s} {'estimado':>9s}")
     for j, M in enumerate(t_med["MACH"]):

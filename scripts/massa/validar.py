@@ -1,4 +1,4 @@
-"""Estimativa de CG e inércias (spin73.massa) contra valores MEDIDOS e publicados.
+"""Estimativa de CG e inércias (aeroballistics.massa) contra valores MEDIDOS e publicados.
 
 A massa medida entra como dado (é o que quase sempre se sabe); o que se testa é a DISTRIBUIÇÃO
 dela: CG, Ix e Iy. Para cada projétil: o método "solido" (sólido homogêneo com o contorno do
@@ -12,7 +12,7 @@ Fontes (geometria em calibres, dos esboços; massa e inércias das tabelas físi
   .50 M33      McCoy, BRL-MR-3810 (1990), Tabela 1 e Fig. 4      (data/voo_livre/m33_mccoy1990.csv)
   cal .30      Hitchcock, BRL 620, pp. 16 e 18 impressas          (scripts/voo_livre/hitchcock/dados_cal030.py)
   30 mm        McCoy, ARBRL-MR-03019 (1980), Fig. 1; ARBRL-TR-03432 (1982), Tabela I
-  M437         cartão de entrada do próprio SPIN-73 (p. 65)       (spin73.M437)
+  M437         cartão de entrada do próprio SPIN-73 (p. 65)       (aeroballistics.M437)
   T203 90 mm   Karpov et al., BRL MR 956 (1955), Figs. 1          (data/voo_livre/t203_karpov1955.csv)
   XM617        Brandon, BRL MR 1998 (1969), Fig. 3                (data/voo_livre/xm617_brandon1969.csv)
   M101         Karpov et al., BRL MR 1582 (1964), Tabela I        (data/voo_livre/m101_karpov1964.csv)
@@ -26,8 +26,8 @@ import caminhos                                        # noqa: E402,F401
 
 import numpy as np                                     # noqa: E402
 
-import spin73 as s                                     # noqa: E402
-from spin73 import massa                               # noqa: E402
+import aeroballistics as s                                     # noqa: E402
+from aeroballistics import massa                               # noqa: E402
 
 G_LB = 453.59237
 LBIN2_GCM2 = G_LB * 2.54 ** 2

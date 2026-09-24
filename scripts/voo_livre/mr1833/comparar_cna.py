@@ -1,5 +1,5 @@
 """
-CNα do SPIN-73 reconstruído contra o voo livre do BRL MR 1833 (7,62 NATO).
+CNα do SPIN-73 adaptado contra o voo livre do BRL MR 1833 (7,62 NATO).
 
 Viés por projétil, rodada a rodada (M ≥ 1,1), como em `comparar_cmq_cp.py`: média de
 (modelo − experimento), com a curva do modelo nos 17 pontos da grade e interpolação linear
@@ -26,12 +26,12 @@ import recalibrar_mr1833 as r                      # noqa: E402
 from ajustar_B import regressores                  # noqa: E402
 from cna_spin73 import cna_j                       # noqa: E402
 from comparar_cmq_cp import MACH, OR_HIP, PROJETEIS, contra_ajuste, por_rodada  # noqa: E402
-from spin73.dados.xb_lidos import XB               # noqa: E402
+from aeroballistics.dados.xb_lidos import XB               # noqa: E402
 
 
 def curva_cna(g, OR=OR_HIP, c205=True):
     """CNα do SPIN-73 nos 17 pontos. `c205=False` desliga o cartão C205 (a parcela do
-    boattail volta a poder ser positiva), como na reconstrução anterior a ele."""
+    boattail volta a poder ser positiva), como na adaptação anterior a ele."""
     if c205:
         return np.array([cna_j(g["VL"], g["VN"], g["VB"], OR, j) for j in range(17)])
     return np.array([np.array(regressores(g["VL"], g["VN"], g["VB"], OR, M)) @ XB[:, j]
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     ep, npar = r.erro_puro(lin, "CNA", PROJETEIS)
 
     print("=" * 78)
-    print(f"CNα (1/rad) -- SPIN-73 reconstruído contra o MR 1833, M ≥ {r.MMIN}, OR = {OR_HIP} cal")
+    print(f"CNα (1/rad) -- SPIN-73 adaptado contra o MR 1833, M ≥ {r.MMIN}, OR = {OR_HIP} cal")
     print("=" * 78)
     print(f"{'proj':6s} {'n':>3s} {'viés do SPIN-73':>16s} {'dispersão exp':>14s} {'erro puro/√n':>13s}")
     for p, n, vies, sd in por_rodada(lin, "CNA", curva_cna):

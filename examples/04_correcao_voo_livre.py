@@ -17,17 +17,17 @@ from _bootstrap import preparar
 
 preparar()
 
-import spin73  # noqa: E402
-from spin73.correcoes.voo_livre import VooLivre  # noqa: E402
+import aeroballistics  # noqa: E402
+from aeroballistics.correcoes.voo_livre import VooLivre  # noqa: E402
 
-M855 = spin73.Projetil(VL=4.05, VN=1.90, VB=0.40, VCG=4.05 - 1.54, OR=7.9, BD=1.00,
+M855 = aeroballistics.Projetil(VL=4.05, VN=1.90, VB=0.40, VCG=4.05 - 1.54, OR=7.9, BD=1.00,
                        DIA=5.69 / 25.4, nome="5,56 mm M855")
 
 
 def main() -> None:
-    canonico = spin73.Aerodinamica(M855)
-    so_cx0 = spin73.Aerodinamica(M855, correcoes="voo_livre:CX0")
-    tudo = spin73.Aerodinamica(M855, correcoes="voo_livre")
+    canonico = aeroballistics.Aerodinamica(M855)
+    so_cx0 = aeroballistics.Aerodinamica(M855, correcoes="voo_livre:CX0")
+    tudo = aeroballistics.Aerodinamica(M855, correcoes="voo_livre")
     print(tudo.descrever())
 
     print(f"\n{'Mach':>5s} {'CX0 1973':>9s} {'voo_livre:CX0':>14s} {'dif.':>7s}   "

@@ -1,7 +1,7 @@
-"""CNa do SPIN-73 reconstruído: estrutura do texto (p. 14) + DATA XB1..XB9 lidos (com correções
+"""CNa do SPIN-73 adaptado: estrutura do texto (p. 14) + DATA XB1..XB9 lidos (com correções
 decididas pelo modelo) + limiar dos expoentes do boattail em Mach 0.95 (confirmado pelas tabelas)."""
 import numpy as np
-from spin73.dados.xb_lidos import XB
+from aeroballistics.dados.xb_lidos import XB
 from dados_cna import MACH
 from ajustar_B import regressores
 

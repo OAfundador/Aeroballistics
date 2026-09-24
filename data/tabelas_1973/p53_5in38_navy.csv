@@ -1,7 +1,7 @@
 # 5"/38 NAVY -- tabela de saída do SPIN-73 (Whyte 1973), p. 53 (JP2 0056).
 # Leitura com classes de glifo (A = 6 ou 8; [xy] = x ou y; ? = ilegível); ver resolver_glifos.py.
 # As colunas CX, CX2, CNA, CMA, CPN, CYPA, CPF1, CPF5, CMQ e CLP já estavam transcritas em
-# reconstrucao_*/ e magnus_clp.py; aqui entram com as células ambíguas como classes, e as
+# adaptacao_*/ e magnus_clp.py; aqui entram com as células ambíguas como classes, e as
 # colunas CNPA, CNPA3, CNPA5P e CNPA5 foram lidas agora. Três leituras antigas violavam as
 # identidades e viraram classes: CPF1 0,9 (2.747), CMA 1,05 (3.749) e CMA 4,0 (3.060).
 #

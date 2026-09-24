@@ -1,5 +1,5 @@
 """
-Cmq e centro de pressão do SPIN-73 reconstruído contra o voo livre do BRL MR 1833 (7,62 NATO).
+Cmq e centro de pressão do SPIN-73 adaptado contra o voo livre do BRL MR 1833 (7,62 NATO).
 
 Fecha a comparação que já existia para Magnus (`comparar_magnus.py`) e para CNα (grupo 762
 em `../correcao/dados.py`):
@@ -155,7 +155,7 @@ if __name__ == "__main__":
     print("Centro de pressão CPN (calibres do nariz) -- XC15 de Mach 1,2 a 5 decidido")
     print("=" * 78)
     disponivel = [f"{m:.2f}" for m, v in zip(MACH, curva_cpn(r.GEO["M-80"])) if np.isfinite(v)]
-    print("pontos de Mach com reconstrução:", ", ".join(disponivel))
+    print("pontos de Mach com adaptação:", ", ".join(disponivel))
     rodadas ={p: [l["M"] for l in lin if l["proj"] == p and l["M"] >= r.MMIN and np.isfinite(l["CPN"])]
                for p in PROJETEIS}
     cel = sorted({c for p in PROJETEIS for c in decididas(rodadas[p], r.GEO[p]["VB"])},

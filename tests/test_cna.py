@@ -1,4 +1,4 @@
-"""CNa reconstruído (DATA XB lidos) contra as colunas CNA de 10 tabelas do SPIN-73.
+"""CNa adaptado (DATA XB lidos) contra as colunas CNA de 10 tabelas do SPIN-73.
 
 Excluídas: a tabela da p. 44 (90 mm M71, transcrição mais degradada; resíduo em quase todo Mach)
 e as células listadas em PENDENTES, que ainda precisam de releitura (tabela ou DATA).
@@ -6,7 +6,7 @@ e as células listadas em PENDENTES, que ainda precisam de releitura (tabela ou 
 import numpy as np
 from dados_cna import MACH, T
 from ajustar_B import regressores
-from spin73.dados.xb_lidos import XB, CORRECOES
+from aeroballistics.dados.xb_lidos import XB, CORRECOES
 from cna_spin73 import cna_j
 
 # (32, 2.0): impresso 2.?54, par 6/8 (com 2.864 fecharia). (38, 2.0) decidiu o XB3 de Mach

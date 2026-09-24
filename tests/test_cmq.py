@@ -1,7 +1,7 @@
 """Cmq (DATA XF), Clp (XG) e o Magnus (XE) contra as tabelas impressas."""
 import numpy as np
 from cmq_spin73 import cmq
-from spin73.dados.xf_lidos import RECUPERADOS as XF_RECUPERADOS, XE, XG1
+from aeroballistics.dados.xf_lidos import RECUPERADOS as XF_RECUPERADOS, XE, XG1
 import magnus_clp as mc
 import tabelas_impressas as ti
 

@@ -15,12 +15,12 @@ numericamente contra o calibre 0.30 Ball M2 (ver test_cal030.py):
   - K_M: o CMα implicado pelo fator de estabilidade S medido (3,42), calculado com a
     fórmula de s_g do SPIN-73 e os momentos de inércia do próprio relatório, dá 1,286,
     contra 1,299 de (8/π)·0,51. Diferença de 1 %, dentro do arredondamento dos dados.
-    Isso valida a conversão E a fórmula de estabilidade reconstruída, contra uma fonte
+    Isso valida a conversão E a fórmula de estabilidade adaptada, contra uma fonte
     independente e anterior ao SPIN-73.
-  - K_H: o Cmq reconstruído nessa geometria em Mach 2,49 é −12,90, contra −13,24 de
+  - K_H: o Cmq adaptado nessa geometria em Mach 2,49 é −12,90, contra −13,24 de
     −(16/π)·2,6. O fator 2 entre q·d/V e q·d/2V é necessário; sem ele sobraria um fator
     de 1,95.
-  - K_L: (8/π)·0,98 = 2,496 e o CNα reconstruído é 2,918, o que implica CX = 0,42; o
+  - K_L: (8/π)·0,98 = 2,496 e o CNα adaptado é 2,918, o que implica CX = 0,42; o
     gráfico de arrasto da p. 19 do relatório dá K_D ≈ 0,15 em Mach 2,5, ou seja CX ≈ 0,38.
     Compatível dentro da leitura do gráfico.
 

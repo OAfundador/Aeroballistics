@@ -1,15 +1,15 @@
 """SPIN-73 com a correção de voo livre -- atalho para a biblioteca.
 
-A aplicação da correção agora vive na biblioteca (spin73.correcoes.VooLivre), para poder ser
+A aplicação da correção agora vive na biblioteca (aeroballistics.correcoes.VooLivre), para poder ser
 usada de um simulador; aqui ficam o ajuste e a validação (ajuste.py), que gravam o
-resultado em src/spin73/correcoes/voo_livre.json.
+resultado em src/aeroballistics/correcoes/voo_livre.json.
 
     import aplicar
     t = aplicar.tabela_corrigida(p, d_mm=5.69)
 
 é o mesmo que
 
-    spin73.Aerodinamica(p, correcoes="voo_livre", d_mm=5.69).tabela
+    aeroballistics.Aerodinamica(p, correcoes="voo_livre", d_mm=5.69).tabela
 """
 import sys
 from pathlib import Path
@@ -17,8 +17,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 import caminhos                                         # noqa: E402,F401
 
-import spin73 as s                                      # noqa: E402
-from spin73.correcoes.voo_livre import ARQUIVO          # noqa: E402,F401
+import aeroballistics as s                                      # noqa: E402
+from aeroballistics.correcoes.voo_livre import ARQUIVO          # noqa: E402,F401
 
 
 def tabela_corrigida(p: s.Projetil, d_mm: float | None = None, modelo=None) -> dict:

@@ -1,6 +1,6 @@
 # Benchmarks: o SPIN-73 contra voo livre
 
-Aqui a pergunta é **"o SPIN-73 acerta a realidade?"**, não "a reconstrução reproduz o SPIN-73?" (esta está em [../VERIFICACAO.md](../VERIFICACAO.md)). Em todos os casos, a reconstrução roda com a geometria da fonte, e o resultado é comparado com as medições de túnel balístico (spark range), rodada a rodada, depois de convertidas para a convenção do SPIN-73.
+Aqui a pergunta é **"o SPIN-73 acerta a realidade?"**, não "a adaptação reproduz o SPIN-73?" (esta está em [../VERIFICACAO.md](../VERIFICACAO.md)). Em todos os casos, a adaptação roda com a geometria da fonte, e o resultado é comparado com as medições de túnel balístico (spark range), rodada a rodada, depois de convertidas para a convenção do SPIN-73.
 
 ```
 python scripts/voo_livre/benchmarks/comparar.py
@@ -18,7 +18,7 @@ python scripts/voo_livre/benchmarks/comparar.py
 | `t203_karpov1955.csv` | Karpov et al., BRL MR 956 (1955), DTIC AD0086528 | 175 mm T203, modelos de 90 mm com boattail e de base reta, 35 rodadas | **notação K** do BRL, como impressa |
 | `xm617_brandon1969.csv` | Brandon, BRL MR 1998 (1969), DTIC AD0857512 | 152 mm XM617, cone-cilindro, escala real, 14 rodadas | moderna, com **CNα** (não CLα); CPN da base |
 
-Os CSV estão em `data/voo_livre/`, e as conversões em `src/spin73/convencoes.py`. Cada CSV traz no cabeçalho as definições da própria fonte e as células duvidosas.
+Os CSV estão em `data/voo_livre/`, e as conversões em `src/aeroballistics/convencoes.py`. Cada CSV traz no cabeçalho as definições da própria fonte e as células duvidosas.
 
 ## Resultado: razão SPIN-73 / medido (médias por faixa de Mach)
 
@@ -45,7 +45,7 @@ O erro provável do próprio SPIN-73, segundo a Tabela 1 do relatório (p. 28), 
 - **Subsônico:** o CX0 do SPIN-73 erra de −14 % a +25 % conforme a forma. No M483A1, os +20 % não dependem do raio de ogiva adotado (0,182 a 0,193 para OR de 3,6 a 12).
 - **Cmq subsônico e Magnus:** a dispersão das próprias medições é do tamanho do valor. O relatório do M101 mostra que o amortecimento subsônico muda de sinal entre modelo em escala e escala real. Não servem para calibrar nada.
 
-Em nenhum dos três casos a reconstrução se afasta do que o SPIN-73 de 1973 imprimiria. No M101, com a mesma entrada da p. 59, ela reproduz a tabela do relatório. Os desvios acima são do modelo original.
+Em nenhum dos três casos a adaptação se afasta do que o SPIN-73 de 1973 imprimiria. No M101, com a mesma entrada da p. 59, ela reproduz a tabela do relatório. Os desvios acima são do modelo original.
 
 ## 5,56 mm NATO (`nato556_mccoy1985.csv`)
 

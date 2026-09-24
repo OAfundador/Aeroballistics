@@ -1,4 +1,4 @@
-"""Calibre 0.30 do Hitchcock (1947) contra a reconstrução do SPIN-73 (1973).
+"""Calibre 0.30 do Hitchcock (1947) contra a adaptação do SPIN-73 (1973).
 
 Três níveis de validação, do mais forte ao mais fraco:
   1. Identidades internas do próprio relatório (independem do SPIN-73): a geometria de
@@ -13,9 +13,9 @@ import math
 import numpy as np
 import pytest
 
-import spin73 as s
+import aeroballistics as s
 from ajustar_B import regressores
-from spin73.dados.xb_lidos import XB
+from aeroballistics.dados.xb_lidos import XB
 from cmq_spin73 import cmq
 import conversoes as cv
 from dados_cal030 import (A_SOM, AMORTECIMENTO, B_BALL_M1_HIPOTESE, ESTABILIDADE,

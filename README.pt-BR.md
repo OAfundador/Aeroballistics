@@ -1,10 +1,10 @@
 [English](README.md) | **Português**
 
-# SPIN-73 reconstruído
+# aeroballistics
 
-Reconstrução, em Python, do programa **SPIN-73** (R. H. Whyte, *SPIN-73, an Updated Version of the SPINNER Computer Program*, Picatinny Arsenal TR 4588, 1973; DTIC AD0915628, Distribution A — aprovado para divulgação pública).
+Coeficientes aerodinâmicos de projéteis estabilizados por rotação a partir da geometria, em Python — inspirado e adaptado do programa **SPIN-73** (R. H. Whyte, *SPIN-73, an Updated Version of the SPINNER Computer Program*, Picatinny Arsenal TR 4588, 1973; DTIC AD0915628, Distribution A — aprovado para divulgação pública).
 
-O SPIN-73 estima os coeficientes aerodinâmicos de um projétil estabilizado por rotação só a partir da geometria, em 17 números de Mach (0,01 a 5), e faz a análise de estabilidade. O código original só existe como listing Fortran impresso num relatório escaneado. Aqui ele foi reconstruído lendo o scan — as equações, os blocos `DATA` com as constantes empíricas e o próprio código — e conferido contra as 13 tabelas de saída que o programa imprimiu em 1973.
+O SPIN-73 estima os coeficientes aerodinâmicos de um projétil estabilizado por rotação só a partir da geometria, em 17 números de Mach (0,01 a 5), e faz a análise de estabilidade. O código original só existe como listing Fortran impresso num relatório escaneado. Aqui ele foi adaptado lendo o scan — as equações, os blocos `DATA` com as constantes empíricas e o próprio código — e conferido contra as 13 tabelas de saída que o programa imprimiu em 1973.
 
 **Resultado:** nas células que não participaram de nenhuma decisão de leitura, 89 % ficam indistinguíveis do original e 95 % dentro de ±1,5 unidade da última casa impressa (91 % e 97 % sem o caso M1, cuja página aparece duplicada no scan e cuja geometria não fecha).
 
@@ -12,11 +12,11 @@ O SPIN-73 estima os coeficientes aerodinâmicos de um projétil estabilizado por
 
 1. [Como usar](#1-como-usar)
 2. [Entradas e saídas](#2-entradas-e-saídas)
-3. [O conceito da reprodução canônica](#3-o-conceito-da-reprodução-canônica)
+3. [O núcleo canônico](#3-o-núcleo-canônico)
 4. [Verificações e resultados](#4-verificações-e-resultados)
 5. [Documentos base e de onde lemos](#5-documentos-base-e-de-onde-lemos)
 6. [O que não conseguimos ler](#6-o-que-não-conseguimos-ler)
-7. [O que a reconstrução revelou](#7-o-que-a-reconstrução-revelou)
+7. [O que a adaptação revelou](#7-o-que-a-adaptação-revelou)
 8. [O que fizemos de diferente](#8-o-que-fizemos-de-diferente)
 9. [Adições opcionais](#9-adições-opcionais)
 10. [O SPIN-73 contra medições de voo livre](#10-o-spin-73-contra-medições-de-voo-livre)
@@ -36,43 +36,43 @@ Na raiz do repositório (Python 3.10 ou mais novo; a única dependência é o nu
 pip install -e .
 ```
 
-Sem instalar, os [exemplos](examples/) rodam direto de um clone, e `python -m spin73` funciona de dentro de `src/`.
+Sem instalar, os [exemplos](examples/) rodam direto de um clone, e `python -m aeroballistics` funciona de dentro de `src/`.
 
 ### Linha de comando
 
 O caso de validação do relatório (175 mm M437):
 
 ```bash
-spin73 --exemplo
+aeroballistics --exemplo
 ```
 
 Um projétil seu, com o cartão do SPIN-73 (comprimentos em calibres, diâmetro em polegadas, inércias em lb·in², peso em lb, passo em calibres por volta):
 
 ```bash
-spin73 --VL 5.0 --VN 2.0 --VB 0.4 --VCG 3.0 --OR 8 --DIA 1.0 --IX 0.5 --IY 4.0 --WGT 0.5 --TWIST 25 --csv saida.csv
+aeroballistics --VL 5.0 --VN 2.0 --VB 0.4 --VCG 3.0 --OR 8 --DIA 1.0 --IX 0.5 --IY 4.0 --WGT 0.5 --TWIST 25 --csv saida.csv
 ```
 
 O mesmo em unidades métricas, estimando o CG e as inércias que faltam (adição opcional):
 
 ```bash
-spin73 --VL 4.05 --VN 1.90 --VB 0.40 --OR 7.9 --d-mm 5.69 --massa-g 4.05 --passo-pol 7 --estimar-massa
+aeroballistics --VL 4.05 --VN 1.90 --VB 0.40 --OR 7.9 --d-mm 5.69 --massa-g 4.05 --passo-pol 7 --estimar-massa
 ```
 
 Ou num arquivo `CHAVE = valor` (modelos em [examples/entradas/](examples/entradas/)):
 
 ```bash
-spin73 --entrada examples/entradas/m855_metrico.txt
+aeroballistics --entrada examples/entradas/m855_metrico.txt
 ```
 
-A primeira linha da saída diz o modo: `Modo: canônico (SPIN-73 de 1973)` ou a lista das adições usadas. `spin73 --help` mostra todas as opções.
+A primeira linha da saída diz o modo: `Modo: canônico (SPIN-73 de 1973)` ou a lista das adições usadas. `aeroballistics --help` mostra todas as opções.
 
 ### Como biblioteca (por exemplo, num 6DOF)
 
 ```python
-import spin73
+import aeroballistics
 
-p = spin73.Projetil(VL=4.05, VN=1.90, VB=0.40, VCG=2.51, OR=7.9, DIA=0.224)
-aero = spin73.Aerodinamica(p, convencao="moderna")   # canônico, na convenção moderna
+p = aeroballistics.Projetil(VL=4.05, VN=1.90, VB=0.40, VCG=2.51, OR=7.9, DIA=0.224)
+aero = aeroballistics.Aerodinamica(p, convencao="moderna")   # canônico, na convenção moderna
 c = aero(mach)             # c.CD0, c.CDd2, c.CNa, c.Cma, c.Cmq_Cmad, c.Clp, c.Cmpa ... (escalar ou array)
 ```
 
@@ -112,16 +112,16 @@ Cada entrada tem uma forma em unidades métricas (`D_MM`, `MASSA_G`, `IX_GCM2`, 
 | Aerodinâmica (sempre) | `CX` arrasto a guinada zero · `CX2` termo de guinada · `CNA` força normal · `CMA` momento de arfagem em torno do CG · `CPN` centro de pressão (calibres do nariz) · `CYPA` força de Magnus · `CNPA`, `CNPA5` momento de Magnus a 1° e 5° · `CPF1`, `CPF5` centro do Magnus · `CNPA3`, `CNPA5P` polinômio de Magnus · `CMQ` amortecimento em arfagem · `CLP` amortecimento de rolamento |
 | Estabilidade (com massa e raia) | `GYRO` (s_g) · `SBAR`, `SBAR5` (s_d) · `RECIP`, `RECIP5` · `SPIN` · `W1`, `W2` (frequências) · `L1`, `L2`, `L15`, `L25` (amortecimentos) · `DELT` · `DISP` |
 
-**Convenção do relatório** (pp. 7–8), estilo NACA/BRL clássico: taxas adimensionais em **pd/2V e qd/2V**, derivadas por sen ᾱ, posições em calibres a partir do nariz, momentos em torno do CG. Fontes modernas (McCoy, PRODAS, CFD) usam pd/V e qd/V, e o valor delas é a **metade** do SPIN-73 para Cmq, Clp e Magnus. O arrasto de guinada é CX2 + CNα, não o CX2. `convencao="moderna"` faz as conversões (`src/spin73/convencoes.py`).
+**Convenção do relatório** (pp. 7–8), estilo NACA/BRL clássico: taxas adimensionais em **pd/2V e qd/2V**, derivadas por sen ᾱ, posições em calibres a partir do nariz, momentos em torno do CG. Fontes modernas (McCoy, PRODAS, CFD) usam pd/V e qd/V, e o valor delas é a **metade** do SPIN-73 para Cmq, Clp e Magnus. O arrasto de guinada é CX2 + CNα, não o CX2. `convencao="moderna"` faz as conversões (`src/aeroballistics/convencoes.py`).
 
-## 3. O conceito da reprodução canônica
+## 3. O núcleo canônico
 
-A meta é reproduzir **o que o programa de 1973 imprimia**, erros e defeitos incluídos, e não melhorá-lo. Tudo o que muda resultados fica fora do núcleo, como adição opcional.
+O núcleo segue **o que o programa de 1973 imprimia**, erros e defeitos incluídos, em vez de melhorá-lo. Tudo o que muda resultados fica fora do núcleo, como adição opcional.
 
 - **Três fontes dentro do relatório.** O texto dá as equações; o listing dá os blocos `DATA` com as constantes empíricas; o código mostra o que o programa fazia de fato. **Onde o texto e o código divergem, vale o código** — foi ele que gerou as tabelas.
-- **Cada valor lido tem uma classe.** *Verificado*: leitura clara, ou confirmada por uma identidade independente. *Decidido pelo modelo*: escolhido porque reproduz as tabelas. *Pendente*: em aberto. A classe e a evidência de cada célula estão nos módulos `src/spin73/dados/x?_lidos.py`.
+- **Cada valor lido tem uma classe.** *Verificado*: leitura clara, ou confirmada por uma identidade independente. *Decidido pelo modelo*: escolhido porque reproduz as tabelas. *Pendente*: em aberto. A classe e a evidência de cada célula estão nos módulos `src/aeroballistics/dados/x?_lidos.py`.
 - **A impressão matricial confunde dígitos** (6/8, 1/3, 2/7, 4/9, 0/6, 5/9). Toda leitura ambígua foi decidida por uma identidade que não dependia dela. Nas tabelas de saída, as identidades são entre colunas **impressas**: CMα = (VCG − CPN)·CNα, CNPA = CYPA·(VCG − CPF1), CNPA5 = CYPA·(VCG − CPF5) e CNPA3 + 0,1·CNPA5P = 3,75.
-- **Sem circularidade.** Um valor decidido usando uma tabela nunca é usado para validar essa mesma tabela. `scripts/reconstrucao/circularidade.py` marca, célula a célula, o que ficou circular, e essas células saem da estatística.
+- **Sem circularidade.** Um valor decidido usando uma tabela nunca é usado para validar essa mesma tabela. `scripts/adaptacao/circularidade.py` marca, célula a célula, o que ficou circular, e essas células saem da estatística.
 - **Tolerância.** O erro é medido em unidades da última casa impressa. Até ±0,5 unidade, o resultado é indistinguível do original (ele arredondava nessa casa); o critério do projeto é ±1,5 unidade (±0,0015 nas colunas de 3 casas).
 
 ## 4. Verificações e resultados
@@ -168,8 +168,8 @@ A última linha confere as 12 transcrições de tabela sem usar o modelo, só pe
 
 ```bash
 python -m pytest -q                                   # 278 testes (e 3 pulados: colunas não transcritas)
-python scripts/reconstrucao/comparacao_erros.py       # todos os casos, célula a célula
-python scripts/reconstrucao/verificar_identidades.py 29 32 35 38 41 44 50 53 56 59 62 68
+python scripts/adaptacao/comparacao_erros.py          # todos os casos, célula a célula
+python scripts/adaptacao/verificar_identidades.py 29 32 35 38 41 44 50 53 56 59 62 68
 ```
 
 ## 5. Documentos base e de onde lemos
@@ -180,13 +180,13 @@ Whyte, R. H. *SPIN-73, an Updated Version of the SPINNER Computer Program*. Tech
 
 | Parte | Páginas | Onde está aqui |
 |---|---|---|
-| Nomenclatura e convenções | 7–8 | `src/spin73/convencoes.py` |
-| Texto com as equações de cada coeficiente e da estabilidade | até a p. 18 | `src/spin73/nucleo.py` (divergências na seção 7) |
+| Nomenclatura e convenções | 7–8 | `src/aeroballistics/convencoes.py` |
+| Texto com as equações de cada coeficiente e da estabilidade | até a p. 18 | `src/aeroballistics/nucleo.py` (divergências na seção 7) |
 | Tabela 1: erro provável do SPIN-73 contra experimento | 28 | citada em [docs/voo_livre/BENCHMARKS.md](docs/voo_livre/BENCHMARKS.md) |
 | 13 tabelas de saída | 29–68 | `data/tabelas_1973/` (leituras brutas em `leituras/`) |
-| Apêndice B: o cartão de entrada | 76–77 | `spin73.Projetil` |
-| `DIMENSION` e os blocos `DATA` XA … XG | 79–81 | `src/spin73/dados/` |
-| O código | 84–86 lidas | descrito bloco a bloco, com as nossas palavras e a nossa notação, em `src/spin73/programa.py` e [docs/PROGRAMA_ORIGINAL.md](docs/PROGRAMA_ORIGINAL.md) (o listing em si não é reproduzido) |
+| Apêndice B: o cartão de entrada | 76–77 | `aeroballistics.Projetil` |
+| `DIMENSION` e os blocos `DATA` XA … XG | 79–81 | `src/aeroballistics/dados/` |
+| O código | 84–86 lidas | descrito bloco a bloco, com as nossas palavras e a nossa notação, em `src/aeroballistics/programa.py` e [docs/PROGRAMA_ORIGINAL.md](docs/PROGRAMA_ORIGINAL.md) (o listing em si não é reproduzido) |
 
 **De onde a leitura veio.** Do scan em alta resolução da DTIC (96 páginas JP2 de cerca de 2600 × 3400 px; não versionado, ver [fontes/LEIAME.md](fontes/LEIAME.md)). Várias leituras antigas, feitas num scan de resolução menor, foram corrigidas nele (por exemplo, a ogiva do XM380E5: 2,400 → 2,900). As ferramentas estão em `scripts/leitura/`: `recorte.py` (recortes girados, com zoom e autocontraste), `pagina_pdf.py` (páginas CCITT de PDFs escaneados) e `pdf_paginas.py` com `jbig2.py` (PDFs "MRC" da DTIC, em que o texto fica numa máscara JBIG2; o decodificador é Python puro).
 
@@ -213,7 +213,7 @@ Whyte, R. H. *SPIN-73, an Updated Version of the SPINNER Computer Program*. Tech
 
 **Resíduos em aberto:** CPN em Mach 0,6 (0,002 a 0,004 cal), CPN do M101 em Mach 1,2 (0,007 cal), centro do Magnus do 175 mm SRC (+0,005) e CX2 do M437 em Mach 1,5, 1,75 e 2,5. Todas as leituras, com a evidência de cada uma, estão em [docs/NOTAS_TRANSCRICAO.md](docs/NOTAS_TRANSCRICAO.md).
 
-## 7. O que a reconstrução revelou
+## 7. O que a adaptação revelou
 
 Divergências entre o texto e o código, e termos que o texto não documenta:
 
@@ -242,8 +242,8 @@ Nenhuma é aplicada sem ser pedida, e nenhuma altera o canônico.
 | Adição | O que faz | Muda | Como pedir |
 |---|---|---|---|
 | Convenção moderna | pd/V, qd/V, CLα, CDδ² | só a apresentação (conversão exata) | `convencao="moderna"` |
-| Unidades métricas | mm, g, g·cm², °C, CG a partir da base | só a entrada (conversão exata) | `spin73.unidades`, `--d-mm`, `--massa-g`... |
-| Estimativa de massa | CG, massa e inércias que faltam no cartão, por sólido de revolução homogêneo ou pelas fórmulas de Hitchcock (BRL 620) | entradas que faltavam | `spin73.massa`, `--estimar-massa` |
+| Unidades métricas | mm, g, g·cm², °C, CG a partir da base | só a entrada (conversão exata) | `aeroballistics.unidades`, `--d-mm`, `--massa-g`... |
+| Estimativa de massa | CG, massa e inércias que faltam no cartão, por sólido de revolução homogêneo ou pelas fórmulas de Hitchcock (BRL 620) | entradas que faltavam | `aeroballistics.massa`, `--estimar-massa` |
 | Correção de voo livre | arrasto ajustado ao tamanho do projétil (número de Reynolds), mais duas peças no limite da validação | coeficientes | `correcoes="voo_livre"` ou `"voo_livre:CX0"`, `--correcao` |
 | Correções suas | qualquer objeto com `aplicar(tabela, projetil, contexto)` | coeficientes | [docs/BIBLIOTECA.md](docs/BIBLIOTECA.md) |
 
@@ -251,21 +251,21 @@ Nenhuma é aplicada sem ser pedida, e nenhuma altera o canônico.
 
 ## 10. O SPIN-73 contra medições de voo livre
 
-A seção 4 responde se a reconstrução reproduz o SPIN-73. Esta responde **se o SPIN-73 acerta a realidade**. "Voo livre" é o ensaio em que o projétil é disparado de verdade numa pista instrumentada, e os coeficientes saem do movimento medido. Aqui não se atira nada: as medições são dos relatórios publicados, transcritas rodada a rodada.
+A seção 4 responde se a adaptação reproduz o SPIN-73. Esta responde **se o SPIN-73 acerta a realidade**. "Voo livre" é o ensaio em que o projétil é disparado de verdade numa pista instrumentada, e os coeficientes saem do movimento medido. Aqui não se atira nada: as medições são dos relatórios publicados, transcritas rodada a rodada.
 
 - **Benchmarks** ([docs/voo_livre/BENCHMARKS.md](docs/voo_livre/BENCHMARKS.md)): 155 mm M101 e M483A1, .50 M33, 5,56 NATO, 7,62 match, 30 mm XM788/XM788E1/XM789, 175 mm T203 (modelo de 90 mm) e 152 mm XM617 (cone-cilindro). No supersônico, o SPIN-73 acerta CMα, CNα e CX0 a poucos por cento nos projéteis de artilharia e no cone-cilindro, mas subestima o CMα das balas de boattail longo (.50: 21 %; 7,62 match: 9 a 14 %). No subsônico, o CX0 erra de −33 % a +25 % conforme a forma e o tamanho.
 - **Correção empírica** ([docs/voo_livre/CORRECAO.md](docs/voo_livre/CORRECAO.md)): dez grupos de projéteis e 1391 valores medidos. Uma correção só entra se reduzir o erro em projéteis que o ajuste não viu (validação cruzada deixando um grupo de fora). O arrasto é a peça firme: o erro supersônico cai de 6,6 % para 4,8 % e o subsônico de 19,3 % para 15,1 %, melhorando 7 de 9 ou 10 grupos. O CMα e o Magnus não melhoram com nenhuma forma simples e ficam como no SPIN-73.
 - **Recalibração com a 7,62 NATO** (BRL MR 1833) e o compêndio de Hitchcock: [docs/voo_livre/RECALIBRACAO_MR1833.md](docs/voo_livre/RECALIBRACAO_MR1833.md).
 
-Nada disso altera o programa reconstruído.
+Nada disso altera o programa adaptado.
 
 ## 11. Estrutura do repositório
 
 ```
-src/spin73/        a biblioteca (tabela de módulos abaixo)
+src/aeroballistics/ a biblioteca (tabela de módulos abaixo)
 tests/             a suíte de testes: python -m pytest
 scripts/
-  reconstrucao/    como cada bloco DATA foi decidido: análises por bloco, leitura e conferência
+  adaptacao/       como cada bloco DATA foi decidido: análises por bloco, leitura e conferência
                    das tabelas de 1973, circularidade e todos os casos, célula a célula
   voo_livre/       o SPIN-73 contra medições: benchmarks/, correcao/ (ajusta a correção de voo
                    livre), mr1833/ (7,62 NATO) e hitchcock/ (BRL 620)
@@ -282,23 +282,23 @@ output/            o que os scripts e os exemplos gravam (não versionado)
 fontes/            os PDFs e o scan (não versionados; ver fontes/LEIAME.md)
 ```
 
-As comparações com medições (`scripts/voo_livre/`, `data/voo_livre/`) ficam **separadas** da reconstrução. Tudo roda de um clone, sem instalar: os scripts acham o pacote e os dados por `scripts/caminhos.py`, e os exemplos por `examples/_bootstrap.py`. Por que o código está dividido assim, e onde acrescentar coisas: [docs/ARQUITETURA.md](docs/ARQUITETURA.md).
+As comparações com medições (`scripts/voo_livre/`, `data/voo_livre/`) ficam **separadas** da adaptação. Tudo roda de um clone, sem instalar: os scripts acham o pacote e os dados por `scripts/caminhos.py`, e os exemplos por `examples/_bootstrap.py`. Por que o código está dividido assim, e onde acrescentar coisas: [docs/ARQUITETURA.md](docs/ARQUITETURA.md).
 
 | Módulo | Conteúdo | |
 |---|---|---|
-| `spin73.nucleo` | equações, `tabela()`, `estabilidade()`, o cartão `Projetil` | canônico |
-| `spin73.dados` | blocos `DATA` XA…XG, com a proveniência de cada valor | canônico |
-| `spin73.aero` | `Aerodinamica`: coeficientes em qualquer Mach, para simuladores | canônico sem opções |
-| `spin73.programa` | o programa original como objetos: fórmulas, regras, fontes, lacunas e implementação de cada bloco (`spin73 --programa`) | documentação |
-| `spin73.convencoes` | convenção do relatório ↔ moderna | adição |
-| `spin73.unidades` | entradas em unidades métricas | adição |
-| `spin73.massa` | estimativa de CG, massa e inércias | adição |
-| `spin73.correcoes` | correções da saída e a interface para escrever novas | adição |
-| `spin73.cli` | linha de comando | — |
+| `aeroballistics.nucleo` | equações, `tabela()`, `estabilidade()`, o cartão `Projetil` | canônico |
+| `aeroballistics.dados` | blocos `DATA` XA…XG, com a proveniência de cada valor | canônico |
+| `aeroballistics.aero` | `Aerodinamica`: coeficientes em qualquer Mach, para simuladores | canônico sem opções |
+| `aeroballistics.programa` | o programa original como objetos: fórmulas, regras, fontes, lacunas e implementação de cada bloco (`aeroballistics --programa`) | documentação |
+| `aeroballistics.convencoes` | convenção do relatório ↔ moderna | adição |
+| `aeroballistics.unidades` | entradas em unidades métricas | adição |
+| `aeroballistics.massa` | estimativa de CG, massa e inércias | adição |
+| `aeroballistics.correcoes` | correções da saída e a interface para escrever novas | adição |
+| `aeroballistics.cli` | linha de comando | — |
 
 ## 12. Limitações
 
-A saída traz avisos específicos para cada geometria (`spin73.avisos(p)`). Os principais:
+A saída traz avisos específicos para cada geometria (`aeroballistics.avisos(p)`). Os principais:
 
 - **Centro de pressão de Mach 1,2 a 5**: depende do cartão do XC15, recuperado pelas tabelas. Três tabelas com boattail conferem (M437, 5"/38 e XM380E5, com até 0,0025 calibre de resíduo); o M101 ainda fica 0,007 calibre fora em Mach 1,2. As colunas de estabilidade herdam essas incertezas, porque dependem do CMα.
 - **Boattail maior que 1 calibre**: ramo do código lido, mas sem nenhuma tabela de 1973 que o valide. O ramo de ogiva maior que 3 calibres tem uma só tabela (175 mm SRC).
@@ -307,6 +307,6 @@ A saída traz avisos específicos para cada geometria (`spin73.avisos(p)`). Os p
 
 ## 13. Licença e fonte
 
-O código deste repositório está sob a licença MIT (ver [LICENSE](LICENSE)). O relatório original foi escrito pelo Armament Systems Department da General Electric, sob o contrato DAAA21-73-C-0033 do Exército dos EUA, para o Picatinny Arsenal, e foi aprovado para divulgação pública sem restrição (Distribution A) pelo ARDEC em 2010. Este repositório não redistribui o relatório, que está disponível na DTIC. É uma reconstrução independente, para pesquisa, sem vínculo com o Exército dos EUA ou a General Electric nem endosso deles. Para citar este software, ver [CITATION.cff](CITATION.cff).
+O código deste repositório está sob a licença MIT (ver [LICENSE](LICENSE)). O relatório original foi escrito pelo Armament Systems Department da General Electric, sob o contrato DAAA21-73-C-0033 do Exército dos EUA, para o Picatinny Arsenal, e foi aprovado para divulgação pública sem restrição (Distribution A) pelo ARDEC em 2010. Este repositório não redistribui o relatório, que está disponível na DTIC. É uma adaptação independente, para pesquisa, sem vínculo com o Exército dos EUA ou a General Electric nem endosso deles. Para citar este software, ver [CITATION.cff](CITATION.cff).
 
 Whyte, R. H. *SPIN-73, an Updated Version of the SPINNER Computer Program*. Technical Report 4588, Picatinny Arsenal, Dover, NJ, novembro de 1973. DTIC AD0915628. Distribution A: approved for public release.

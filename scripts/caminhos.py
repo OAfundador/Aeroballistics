@@ -3,7 +3,7 @@
 Importar este módulo põe no ``sys.path`` o pacote (``src/``) e as pastas de scripts cujos
 módulos se importam uns aos outros; assim os scripts rodam de um clone sem instalação::
 
-    python scripts/reconstrucao/comparacao_erros.py
+    python scripts/adaptacao/comparacao_erros.py
 
 Cada script só precisa achar esta pasta antes (``Path(__file__).parents[...]``).
 """
@@ -24,7 +24,7 @@ EXEMPLOS = RAIZ / "examples"
 SAIDA = RAIZ / "output"                          # resultados gerados (fora do Git)
 FONTES = RAIZ / "fontes"                         # PDFs e scan (fora do Git)
 
-PASTAS = [SRC, SCRIPTS / "reconstrucao", SCRIPTS / "voo_livre" / "benchmarks",
+PASTAS = [SRC, SCRIPTS / "adaptacao", SCRIPTS / "voo_livre" / "benchmarks",
           SCRIPTS / "voo_livre" / "correcao", SCRIPTS / "voo_livre" / "hitchcock",
           SCRIPTS / "voo_livre" / "mr1833", SCRIPTS / "massa", SCRIPTS / "leitura", TESTES]
 

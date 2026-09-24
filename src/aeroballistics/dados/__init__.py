@@ -1,7 +1,7 @@
-"""Blocos DATA do SPIN-73, reunidos num só lugar (spin73.dados).
+"""Blocos DATA do SPIN-73, reunidos num só lugar (aeroballistics.dados).
 
 Cada array tem forma (n, 17): linha i = coeficiente i+1, coluna j = MACH[j]. Os valores
-vêm dos módulos de reconstrução, que guardam a leitura, as correções decididas e a
+vêm dos módulos de adaptação, que guardam a leitura, as correções decididas e a
 evidência de cada uma. Aqui só se monta o conjunto que o programa usa.
 
 Situação de cada bloco (ver docs/NOTAS_TRANSCRICAO.md):

@@ -145,7 +145,7 @@ MODELOS = {
 
 
 def ajuste_magnus(linhas):
-    """Magnus na forma do SPIN-73, com E1 fixo no valor reconstruído.
+    """Magnus na forma do SPIN-73, com E1 fixo no valor adaptado.
     Cnpa = VCG*CYPA + CNPAN, CNPAN = -E1*VL*(E + 0.55*CXCL + 0.8*CVN) + VB*VL/4.7,
     linear em E. Ajusta-se um E efetivo (na guinada média das rodadas) quadrático em M."""
     L = [l for l in linhas if l["M"] >= MMIN and np.isfinite(l["CNPA"])]
@@ -185,7 +185,7 @@ if __name__ == "__main__":
 
     fit = ajuste_magnus(lin)
     ev = avaliar(fit, GRADE)["E"]
-    print("\n" + "=" * 78 + "\nMAGNUS: E efetivo recalibrado (E1 fixo no valor reconstruído)")
+    print("\n" + "=" * 78 + "\nMAGNUS: E efetivo recalibrado (E1 fixo no valor adaptado)")
     print(f"  n = {len(fit['L'])}, resíduo rms em Cnpa = {fit['s']:.3f}")
     print("  Mach:        " + "".join(f"{m:>12.2f}" for m in GRADE))
     print("  E recalibr.  " + "".join(f"{a:7.2f}±{b:<4.2f}" for a, b in zip(*ev)))

@@ -1,7 +1,7 @@
 """Quais células de cada tabela impressa ajudaram a DECIDIR algum DATA ou alguma entrada.
 
 Essas células não validam nada naquela tabela: mostram só que a decisão é coerente. O
-registro vem das próprias decisões (spin73.dados.xa_lidos ... xf_lidos, dados_cna.py e as
+registro vem das próprias decisões (aeroballistics.dados.xa_lidos ... xf_lidos, dados_cna.py e as
 linhas "decidir:" dos CSVs), para não haver lista paralela que fique desatualizada.
 
     circulares(pagina, tabela=None) -> {(coluna, Mach): motivo}
@@ -12,14 +12,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import caminhos                                               # noqa: E402,F401
 
-import spin73 as s                                            # noqa: E402
+import aeroballistics as s                                            # noqa: E402
 from dados_cna import T as _T_CNA                             # noqa: E402
-from spin73.dados.xa_lidos import DECIDIDOS as _XA_DEC        # noqa: E402
-from spin73.dados.xb_lidos import CORRECOES as _XB_CORR, DECIDIDO_POR as _XB_POR  # noqa: E402
-from spin73.dados.xc_lidos import (CORRECOES as _XC_CORR, DECIDIDOS_M437,  # noqa: E402
+from aeroballistics.dados.xa_lidos import DECIDIDOS as _XA_DEC        # noqa: E402
+from aeroballistics.dados.xb_lidos import CORRECOES as _XB_CORR, DECIDIDO_POR as _XB_POR  # noqa: E402
+from aeroballistics.dados.xc_lidos import (CORRECOES as _XC_CORR, DECIDIDOS_M437,  # noqa: E402
                                    RECUPERADOS as _XC_REC)
-from spin73.dados.xd_lidos import DECIDIDOS as _XD_DEC        # noqa: E402
-from spin73.dados.xf_lidos import RECUPERADOS as _XF_REC      # noqa: E402
+from aeroballistics.dados.xd_lidos import DECIDIDOS as _XD_DEC        # noqa: E402
+from aeroballistics.dados.xf_lidos import RECUPERADOS as _XF_REC      # noqa: E402
 
 MACH = [round(float(m), 2) for m in s.MACH_GRID]
 

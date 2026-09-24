@@ -54,7 +54,7 @@ NOMES_IMPRESSOS = {"CNPA5P": "CNPA5 (quíntico, por sen⁵ᾱ)", "CNPA5": "CNPA-
 
 
 def para_moderno(t: dict, VL: float | None = None) -> dict:
-    """Colunas do SPIN-73 (dicionário de `spin73.tabela`) na normalização moderna
+    """Colunas do SPIN-73 (dicionário de `aeroballistics.tabela`) na normalização moderna
     (pd/V, qd/V; CDδ², CLα). Posições em calibres; do nariz e, se VL for dado, da base."""
     g = {k: np.asarray(v, float) for k, v in t.items()}
     out = dict(

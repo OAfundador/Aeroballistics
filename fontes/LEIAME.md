@@ -3,7 +3,7 @@
 - `jp2/` — scan em alta resolução do relatório (DTIC AD0915628, Distribution A): 96 páginas JP2 de ~2600×3400 px, `DTIC_AD0915628_0000.jp2` a `_0095.jp2`. Índice do arquivo = página impressa + 3. Extraído de `DTIC_AD0915628_jp2.zip`.
 - `cache/` — páginas já giradas e com autocontraste, geradas por `scripts/leitura/recorte.py`. Pode ser apagado.
 
-- `BRL620_Hitchcock.pdf` — Hitchcock, *Aerodynamic Data for Spinning Projectiles*, BRL Report 620 (AD-800 469), usado em `scripts/voo_livre/hitchcock/` e nas fórmulas de inércia de `spin73.massa` (p. 9). Páginas extraídas com `scripts/leitura/pagina_pdf.py`.
+- `BRL620_Hitchcock.pdf` — Hitchcock, *Aerodynamic Data for Spinning Projectiles*, BRL Report 620 (AD-800 469), usado em `scripts/voo_livre/hitchcock/` e nas fórmulas de inércia de `aeroballistics.massa` (p. 9). Páginas extraídas com `scripts/leitura/pagina_pdf.py`.
 - `MR1833_Piddington.pdf` — BRL MR 1833 (AD815788), família 7,62 NATO, usado em `scripts/voo_livre/mr1833/`.
 
 - Benchmarks de voo livre (archive.org, DTIC, todos com liberação pública), transcritos em `data/voo_livre/`:

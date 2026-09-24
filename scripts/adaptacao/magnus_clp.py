@@ -1,6 +1,6 @@
 """
 Identificação dos coeficientes E1, E2, E4 (Magnus) e G1 (Clp) a partir das
-tabelas de saída do SPIN-73 -- primeira etapa da reconstrução por tabelas.
+tabelas de saída do SPIN-73 -- primeira etapa da adaptação por tabelas.
 
 Por que começar aqui: essas equações dependem só de VL, VN, VB e VCG, e os
 coeficientes aparecem um por vez. Com UM projétil (175 mm M437) cada

@@ -1,4 +1,4 @@
-Estimativa de CG e inércias (spin73.massa) contra valores MEDIDOS e publicados.
+Estimativa de CG e inércias (aeroballistics.massa) contra valores MEDIDOS e publicados.
 
 Razão estimado/medido (a massa medida é dada). CG a partir da base, cal.
 s_g ∝ Ix²/Iy: a última coluna é o erro que a estimativa leva ao fator giroscópico.

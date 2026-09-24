@@ -1,4 +1,4 @@
-"""CX reconstruído (DATA XA) contra duas tabelas: 175 mm M437 e 5"/38.
+"""CX adaptado (DATA XA) contra duas tabelas: 175 mm M437 e 5"/38.
 
 As duas geometrias dão ao XA2 pesos de sinal oposto (VNX − 2,5 = +0,41 e −0,35) e ao
 XA7 pesos muito diferentes (boattail 1,00 e 0,35 cal), o que separa os coeficientes.
@@ -7,9 +7,9 @@ Mach 0,01 e 0,6 ficam fora: foram eles que decidiram XA1 e XA2 nesses pontos.
 import pytest
 
 import caminhos
-import spin73 as s
+import aeroballistics as s
 from dados_cx import CX_538
-from spin73.dados.xa_lidos import DECIDIDOS, XA
+from aeroballistics.dados.xa_lidos import DECIDIDOS, XA
 
 TAB = s.ler_tabela(caminhos.TABELAS_1973 / "m437_tabela.csv")
 K = s.CoefAjuste(a=XA)

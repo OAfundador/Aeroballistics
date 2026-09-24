@@ -1,4 +1,4 @@
-"""Linha de comando: python -m spin73 (ou o comando `spin73`, depois de instalado).
+"""Linha de comando: python -m aeroballistics (ou o comando `aeroballistics`, depois de instalado).
 
 Sem opções de adição, a saída é a CANÔNICA: o SPIN-73 de 1973 com o cartão dado. As adições
 (--estimar-massa, --correcao) são opcionais e aparecem no cabeçalho quando usadas.
@@ -43,8 +43,8 @@ def _destino(chave: str) -> str:
 def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(
-        prog="spin73",
-        description="SPIN-73 reconstruído: coeficientes aerodinâmicos e estabilidade de um "
+        prog="aeroballistics",
+        description="aeroballistics, adaptado do SPIN-73: coeficientes aerodinâmicos e estabilidade de um "
                     "projétil estabilizado por rotação, a partir da geometria. Sem opções de "
                     "adição, a saída é a do programa de 1973 (canônica).")
     ap.add_argument("--entrada", help="arquivo 'CHAVE = valor' (aceita as chaves do cartão, as "
@@ -72,7 +72,7 @@ def main(argv=None):
                         "'voo_livre:CX0' para só um coeficiente)")
     ap.add_argument("--csv", help="grava todas as colunas neste arquivo CSV")
     ap.add_argument("--programa", action="store_true",
-                    help="mostra o programa original bloco a bloco (spin73.programa) e sai")
+                    help="mostra o programa original bloco a bloco (aeroballistics.programa) e sai")
     a = ap.parse_args(argv)
     if a.programa:
         from .programa import SPIN73
@@ -133,7 +133,7 @@ def main(argv=None):
         ap.error(str(e))
     adicoes += [f"correção {c.nome}" for c in aero.correcoes]
     t = aero.tabela
-    titulo = f"SPIN-73 reconstruído -- {p.nome or 'projétil'}"
+    titulo = f"aeroballistics (adaptado do SPIN-73) -- {p.nome or 'projétil'}"
     modo = "canônico (SPIN-73 de 1973)" if not adicoes else \
         "canônico + adições opcionais: " + "; ".join(adicoes)
     print(titulo)
@@ -146,7 +146,7 @@ def main(argv=None):
     print()
     print(formatar(t))
     print()
-    print("AVISOS (limitações da reconstrução para esta geometria):")
+    print("AVISOS (limitações da adaptação para esta geometria):")
     for x in avisos(p):
         print("  - " + x)
     if a.csv:

@@ -1,8 +1,8 @@
 """
-CMα do SPIN-73 reconstruído contra o calibre 0.30 do Hitchcock (BRL 620, p. 20 impressa).
+CMα do SPIN-73 adaptado contra o calibre 0.30 do Hitchcock (BRL 620, p. 20 impressa).
 
 Medido: CMα = (8/π)·K_M (conversoes.py; a conversão foi verificada no Ball M2, test_cal030.py).
-Modelo: CMα = (VCG − CPN)·CNα da reconstrução (cpn_spin73.py), nos 17 pontos da grade e
+Modelo: CMα = (VCG − CPN)·CNα da adaptação (cpn_spin73.py), nos 17 pontos da grade e
 interpolado linearmente em Mach. Mach: o impresso na tabela quando existe; senão V / A_SOM.
 
 HIPÓTESES:
@@ -34,7 +34,7 @@ import caminhos                                    # noqa: E402,F401  (também p
 import conversoes as cv                            # noqa: E402
 from cpn_spin73 import cpn_cma, decididas          # noqa: E402
 from dados_cal030 import A_SOM, ESTABILIDADE, FISICAS, GEOMETRIA  # noqa: E402
-from spin73.dados.xc_lidos import MACH, XC, XC_LIDO  # noqa: E402
+from aeroballistics.dados.xc_lidos import MACH, XC, XC_LIDO  # noqa: E402
 
 DM = 0.12
 CONTORNO = {"Frangible M22": "Ball M2"}              # nota da p. 18
@@ -67,7 +67,7 @@ def modelo(g, VCG, M, DM=DM, VB=None, XC=XC):
 if __name__ == "__main__":
     L = linhas()
     print("=" * 78)
-    print(f"CMα -- SPIN-73 reconstruído contra o calibre 0.30 do Hitchcock (DM = {DM} suposto)")
+    print(f"CMα -- SPIN-73 adaptado contra o calibre 0.30 do Hitchcock (DM = {DM} suposto)")
     print("=" * 78)
     print(f"{'projétil':14s} {'Mach':>6s} {'VCG':>6s} {'CPN mod':>8s} {'CMα mod':>8s} {'CMα med':>8s}"
           f" {'mod/med':>8s}  leitura")

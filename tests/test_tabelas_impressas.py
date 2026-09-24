@@ -11,14 +11,14 @@ import numpy as np
 import pytest
 
 import circularidade
-import spin73 as s
+import aeroballistics as s
 import tabelas_impressas as ti
 
 MACH = [round(float(m), 2) for m in s.MACH_GRID]
 TABELAS = {tb.pagina: tb for tb in ti.todas()}
 
 # Mesmas tolerâncias do teste do M437: ±1,5 unidade na última casa; o CMα e o CX2 herdam
-# o erro do CNα reconstruído (até 0,002), ampliado.
+# o erro do CNα adaptado (até 0,002), ampliado.
 TOL = {"CMA": 0.004, "CX2": 0.0045}
 
 CIRCULARES = {pag: circularidade.circulares(pag, tb) for pag, tb in TABELAS.items()}
@@ -26,7 +26,7 @@ CIRCULARES = {pag: circularidade.circulares(pag, tb) for pag, tb in TABELAS.item
 PENDENTES = {
     29: {},
     32: {},
-    35: {("CNA", 0.95): "CNα reconstruído 0,0019 acima (test_cna.py, PENDENTES)"},
+    35: {("CNA", 0.95): "CNα adaptado 0,0019 acima (test_cna.py, PENDENTES)"},
     38: {},
     41: {("CMA", 3.0): "0,0044: no limite (CMα impresso fecha a identidade com CPN e CNα impressos)"},
     53: {
@@ -39,16 +39,16 @@ PENDENTES = {
     # sistemáticos). Nenhuma mudança isolada de OR, DM, BD, VN ou VB fecha as cinco colunas.
     44: {(c, M): "a geometria do cabeçalho não reproduz CX, CX2, CNα, CPN e CMα (NOTAS, T14)"
          for c in ("CX", "CX2", "CNA", "CPN", "CMA") for M in MACH if (c, M) != ("CX", 0.01)},
-    56: {("CNA", 1.0): "CNα reconstruído 0,0016 abaixo"},
-    59: {("CNA", 0.95): "CNα reconstruído 0,004 abaixo (test_cna.py, PENDENTES)",
-         **{("CMA", M): "CMα do M101 0,009 a 0,018 acima: segue o CNα e o CPN reconstruídos"
+    56: {("CNA", 1.0): "CNα adaptado 0,0016 abaixo"},
+    59: {("CNA", 0.95): "CNα adaptado 0,004 abaixo (test_cna.py, PENDENTES)",
+         **{("CMA", M): "CMα do M101 0,009 a 0,018 acima: segue o CNα e o CPN adaptados"
             for M in (1.0, 1.05, 1.5, 2.0)},
          ("CPN", 1.2): "CPN do M101 0,007 abaixo (boattail de 0,45 cal; NOTAS, T14)"},
-    62: {("CNA", 0.95): "CNα reconstruído 0,0018 abaixo"},
-    68: {("CNA", 1.05): "CNα reconstruído 0,0016 acima",
+    62: {("CNA", 0.95): "CNα adaptado 0,0018 abaixo"},
+    68: {("CNA", 1.05): "CNα adaptado 0,0016 acima",
          ("CPN", 1.5): "CPN 0,0025 acima (XC17, ogiva > 3 cal)"},
     50: {
-        ("CNA", 0.95): "CNα reconstruído 0,0017 abaixo (como no M437 em 0,8 e 1,05)",
+        ("CNA", 0.95): "CNα adaptado 0,0017 abaixo (como no M437 em 0,8 e 1,05)",
         ("CPN", 0.6): "o resíduo subsônico de Mach 0,6 (+0,0018; o M437 tem +0,004): "
                       "nenhum coeficiente isolado explica as três tabelas (NOTAS, T13); "
                       "o CMα fica dentro da tolerância dele",

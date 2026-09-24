@@ -1,8 +1,8 @@
 """Conversões de convenção: ida e volta, e coerência com as já validadas em scripts/voo_livre/hitchcock/."""
 import numpy as np
 
-import spin73 as s
-from spin73 import convencoes as cv
+import aeroballistics as s
+from aeroballistics import convencoes as cv
 
 
 def test_ida_e_volta():

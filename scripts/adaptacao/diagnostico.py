@@ -5,7 +5,7 @@ import caminhos  # noqa: E402,F401
 import numpy as np, itertools
 from dados_cna import MACH, T
 from ajustar_B import regressores
-from spin73.dados.xb_lidos import XB
+from aeroballistics.dados.xb_lidos import XB
 np.set_printoptions(precision=4, suppress=True, linewidth=180)
 P=list(T)
 def resid(XB):

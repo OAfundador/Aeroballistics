@@ -8,18 +8,18 @@ Na raiz do repositório:
 pip install -e .
 ```
 
-`-e` instala no modo editável: o seu código passa a enxergar o pacote `spin73` que está em `src/spin73/`, e qualquer mudança no repositório vale na hora, sem reinstalar. A única dependência é o numpy.
+`-e` instala no modo editável: o seu código passa a enxergar o pacote `aeroballistics` que está em `src/aeroballistics/`, e qualquer mudança no repositório vale na hora, sem reinstalar. A única dependência é o numpy.
 
 ## Num simulador 6DOF
 
 ```python
 import numpy as np
-import spin73
+import aeroballistics
 
-p = spin73.Projetil(VL=4.05, VN=1.90, VB=0.40, VCG=2.51, OR=7.9, DM=0.12,
+p = aeroballistics.Projetil(VL=4.05, VN=1.90, VB=0.40, VCG=2.51, OR=7.9, DM=0.12,
                     DIA=0.224, nome="M855")          # calibres; DIA em polegadas
 
-aero = spin73.Aerodinamica(p,
+aero = aeroballistics.Aerodinamica(p,
                            correcoes="voo_livre",    # ou None para o SPIN-73 de 1973
                            convencao="moderna")      # ou "spin73"
 
@@ -48,14 +48,14 @@ A aerodinâmica é calculada **uma vez**, no construtor, nos 17 Mach do programa
 | `CNPA`, `CNPA5` (pd/2V) | `Cmpa`, `Cmpa_5graus` (pd/V) | momento de Magnus a 1° e 5° (secante) |
 | `CPF1`, `CPF5` | `CPmagnus_nariz` | centro de pressão do Magnus, calibres do nariz |
 
-Os momentos são em torno do CG que está no `Projetil` (`VCG`, em calibres a partir do nariz). Detalhes das conversões em `src/spin73/convencoes.py`.
+Os momentos são em torno do CG que está no `Projetil` (`VCG`, em calibres a partir do nariz). Detalhes das conversões em `src/aeroballistics/convencoes.py`.
 
 ### Entradas em outras unidades
 
-O `Projetil` é o cartão do SPIN-73: calibres, polegadas, libras, lb·in² e °F. `spin73.unidades` monta o mesmo cartão a partir de unidades métricas (conversão exata, nada mais):
+O `Projetil` é o cartão do SPIN-73: calibres, polegadas, libras, lb·in² e °F. `aeroballistics.unidades` monta o mesmo cartão a partir de unidades métricas (conversão exata, nada mais):
 
 ```python
-p = spin73.unidades.projetil(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12,
+p = aeroballistics.unidades.projetil(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12,
                              D_MM=5.69, MASSA_G=4.05, IX_GCM2=0.1426, IY_GCM2=1.150,
                              PASSO_POL=7, TEMP_C=15, CG_BASE=1.54)
 ```
@@ -70,16 +70,16 @@ p = spin73.unidades.projetil(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12,
 | `CG_BASE` | CG a partir da **base**, calibres | `VCG` = VL − CG_BASE |
 | `DGUN_MM` | mm | `DGUN` |
 
-As mesmas chaves valem no arquivo de entrada da linha de comando (`spin73 --entrada`), e cada uma tem uma opção (`--d-mm`, `--massa-g`, `--cg-base`...).
+As mesmas chaves valem no arquivo de entrada da linha de comando (`aeroballistics --entrada`), e cada uma tem uma opção (`--d-mm`, `--massa-g`, `--cg-base`...).
 
 ### Quando faltam CG, massa ou inércias
 
-`spin73.massa` estima o que o cartão não tem, a partir da geometria. Nunca troca um valor informado.
+`aeroballistics.massa` estima o que o cartão não tem, a partir da geometria. Nunca troca um valor informado.
 
 ```python
-p = spin73.Projetil(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12)      # sem VCG, peso, inércias
-p = spin73.massa.completar(p, "solido", massa_g=4.05, d_mm=5.69)     # preenche VCG, WGT, IX, IY
-print(spin73.massa.estimar(p, "solido", massa_g=4.05, d_mm=5.69))   # o que foi estimado
+p = aeroballistics.Projetil(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12)      # sem VCG, peso, inércias
+p = aeroballistics.massa.completar(p, "solido", massa_g=4.05, d_mm=5.69)     # preenche VCG, WGT, IX, IY
+print(aeroballistics.massa.estimar(p, "solido", massa_g=4.05, d_mm=5.69))   # o que foi estimado
 ```
 
 | Método | O que é | Quando usar |
@@ -106,10 +106,10 @@ Nem toda peça da correção de voo livre é igualmente firme. `correcoes.VooLiv
 
 ## Escrever uma correção nova
 
-Uma correção é qualquer objeto com `nome` e `aplicar(t, p, ctx)`. `t` é a tabela na convenção do SPIN-73: um array de 17 valores por coluna, nas colunas de `spin73.tabela`. `ctx.d_mm` é o diâmetro real, quando existir.
+Uma correção é qualquer objeto com `nome` e `aplicar(t, p, ctx)`. `t` é a tabela na convenção do SPIN-73: um array de 17 valores por coluna, nas colunas de `aeroballistics.tabela`. `ctx.d_mm` é o diâmetro real, quando existir.
 
 ```python
-from spin73 import correcoes
+from aeroballistics import correcoes
 
 class MagnusMenor(correcoes.Correcao):
     nome = "magnus_menor"
@@ -123,7 +123,7 @@ class MagnusMenor(correcoes.Correcao):
         return out
 
 correcoes.registrar("magnus_menor", MagnusMenor)     # opcional: chamar pelo nome
-aero = spin73.Aerodinamica(p, ["voo_livre", "magnus_menor"])
+aero = aeroballistics.Aerodinamica(p, ["voo_livre", "magnus_menor"])
 ```
 
 A correção não precisa cuidar das colunas derivadas. Depois de todas as correções, a biblioteca recalcula:
@@ -137,17 +137,17 @@ A correção não precisa cuidar das colunas derivadas. Depois de todas as corre
 
 | Módulo | Conteúdo | Canônico ou adição |
 |---|---|---|
-| `spin73.nucleo` | equações, `tabela()`, `estabilidade()`, o cartão `Projetil` | **canônico**: é o programa |
-| `spin73.dados` | blocos `DATA` XA..XG, com a proveniência de cada valor | **canônico**: é o programa |
-| `spin73.aero` | `Aerodinamica`, a interface para simuladores | sem opções, canônico |
-| `spin73.programa` | o programa original como objetos (`SPIN73.de_coluna("CMA")`, `bloco.calcular(p)`) | documentação |
-| `spin73.convencoes` | saída na convenção moderna | adição: conversão exata |
-| `spin73.unidades` | entrada em unidades métricas | adição: conversão exata |
-| `spin73.massa` | estimativa de CG, massa e inércias | adição: muda entradas que faltavam |
-| `spin73.correcoes` | correções dos coeficientes e a interface para escrever novas | adição: muda saídas, só se pedidas |
-| `spin73.cli` | linha de comando | diz no cabeçalho se a saída é canônica ou tem adições |
+| `aeroballistics.nucleo` | equações, `tabela()`, `estabilidade()`, o cartão `Projetil` | **canônico**: é o programa |
+| `aeroballistics.dados` | blocos `DATA` XA..XG, com a proveniência de cada valor | **canônico**: é o programa |
+| `aeroballistics.aero` | `Aerodinamica`, a interface para simuladores | sem opções, canônico |
+| `aeroballistics.programa` | o programa original como objetos (`SPIN73.de_coluna("CMA")`, `bloco.calcular(p)`) | documentação |
+| `aeroballistics.convencoes` | saída na convenção moderna | adição: conversão exata |
+| `aeroballistics.unidades` | entrada em unidades métricas | adição: conversão exata |
+| `aeroballistics.massa` | estimativa de CG, massa e inércias | adição: muda entradas que faltavam |
+| `aeroballistics.correcoes` | correções dos coeficientes e a interface para escrever novas | adição: muda saídas, só se pedidas |
+| `aeroballistics.cli` | linha de comando | diz no cabeçalho se a saída é canônica ou tem adições |
 
-As correções são **ajustadas** em `scripts/voo_livre/correcao/`, com validação cruzada deixando um grupo de projéteis de fora (ver [voo_livre/CORRECAO.md](voo_livre/CORRECAO.md)). O ajuste grava `src/spin73/correcoes/voo_livre.json`, que a biblioteca só lê. Para refazer o ajuste depois de acrescentar dados:
+As correções são **ajustadas** em `scripts/voo_livre/correcao/`, com validação cruzada deixando um grupo de projéteis de fora (ver [voo_livre/CORRECAO.md](voo_livre/CORRECAO.md)). O ajuste grava `src/aeroballistics/correcoes/voo_livre.json`, que a biblioteca só lê. Para refazer o ajuste depois de acrescentar dados:
 
 ```
 python scripts/voo_livre/correcao/ajuste.py

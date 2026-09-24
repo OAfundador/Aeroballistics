@@ -38,7 +38,7 @@ CMQ   modelo: g_const(M)*const + g_CLL(M)*CLL
   CLL        -4.392±2.270 -5.412±1.521 -6.286±1.167 -7.418±1.304 -8.144±1.492 -8.380±1.135 -6.993±3.177
 
 ==============================================================================
-MAGNUS: E efetivo recalibrado (E1 fixo no valor reconstruído)
+MAGNUS: E efetivo recalibrado (E1 fixo no valor adaptado)
   n = 42, resíduo rms em Cnpa = 0.196
   Mach:                1.20        1.35        1.50        1.75        2.00        2.50        3.00
   E recalibr.     2.20±0.11   2.28±0.08   2.35±0.07   2.45±0.07   2.52±0.08   2.61±0.07   2.60±0.16

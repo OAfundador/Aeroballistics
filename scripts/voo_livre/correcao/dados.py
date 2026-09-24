@@ -1,9 +1,9 @@
 """Base comum de dados de voo livre, na convenção do SPIN-73, para a correção empírica.
 
 Junta as fontes de túnel balístico já transcritas e converte cada coeficiente para a
-normalização do SPIN-73 (spin73/convencoes.py): pd/2V e qd/2V, CNα (não CLα), CPN em
+normalização do SPIN-73 (aeroballistics/convencoes.py): pd/2V e qd/2V, CNα (não CLα), CPN em
 calibres do NARIZ, CX0 a guinada zero. Cada linha traz também o valor do SPIN-73
-reconstruído no mesmo Mach, com a geometria da fonte.
+adaptado no mesmo Mach, com a geometria da fonte.
 
 Grupos (a unidade da validação cruzada: projéteis quase iguais ficam juntos, para que um
 não "valide" o outro):
@@ -29,7 +29,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 import caminhos                                         # noqa: E402
 
-import spin73 as s                                      # noqa: E402
+import aeroballistics as s                                      # noqa: E402
 
 DADOS = caminhos.VOO_LIVRE
 

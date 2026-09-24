@@ -28,7 +28,7 @@ CPN   subsônico    grupos 8  SPIN-73   0.281cal corrigido   0.259cal  melhora e
 CPN   transônico   grupos 9  SPIN-73   0.271cal corrigido   0.271cal  melhora em 0/9
 CPN   supersônico  grupos 9  SPIN-73   0.144cal corrigido   0.144cal  melhora em 0/9
 
-Modelo final (todos os grupos), aplicado por spin73.Aerodinamica(..., correcoes='voo_livre'):
+Modelo final (todos os grupos), aplicado por aeroballistics.Aerodinamica(..., correcoes='voo_livre'):
   CX0   subsônico    atrito de parede, L_ref = 0.196 m
   CX0   transônico   atrito de parede, L_ref = 0.676 m
   CX0   supersônico  atrito de parede, L_ref = 0.822 m

@@ -1,17 +1,17 @@
-"""Adições opcionais de entrada: estimativa de massa (spin73.massa) e unidades (spin73.unidades)."""
+"""Adições opcionais de entrada: estimativa de massa (aeroballistics.massa) e unidades (aeroballistics.unidades)."""
 import math
 
 import numpy as np
 import pytest
 
-import spin73
-from spin73 import massa, unidades
+import aeroballistics
+from aeroballistics import massa, unidades
 
 
 def test_integrais_batem_com_cone_cilindro_analitico():
     """Cone de ponta aguda + cilindro: fórmulas fechadas de volume, CG e inércias."""
     VN, Lc, R = 2.0, 1.5, 0.5
-    p = spin73.Projetil(VL=VN + Lc, VN=VN, VB=0.0, OR=1000.0, DM=0.0)
+    p = aeroballistics.Projetil(VL=VN + Lc, VN=VN, VB=0.0, OR=1000.0, DM=0.0)
     I, _ = massa.integrais(p)
     v1, v2 = math.pi * R * R * VN / 3, math.pi * R * R * Lc
     x1, x2 = 0.75 * VN, VN + Lc / 2
@@ -26,7 +26,7 @@ def test_integrais_batem_com_cone_cilindro_analitico():
 
 def test_ogiva_tangente_passa_pelo_ombro_sem_quina():
     """Com OR = VN² + 0,25 (tangente, sem meplat), o arco chega ao ombro com raio 0,5."""
-    p = spin73.Projetil(VL=5.0, VN=2.0, VB=0.0, OR=2.0 ** 2 + 0.25, DM=0.0)
+    p = aeroballistics.Projetil(VL=5.0, VN=2.0, VB=0.0, OR=2.0 ** 2 + 0.25, DM=0.0)
     trechos, obs = massa.contorno(p)
     a, b, f = trechos[0]
     r = f(np.array([0.0, 1.0, 1.999, 2.0]))
@@ -36,7 +36,7 @@ def test_ogiva_tangente_passa_pelo_ombro_sem_quina():
 
 
 def test_formulas_de_hitchcock():
-    p = spin73.Projetil(VL=4.0, VN=2.0, VB=0.4, OR=8.0)
+    p = aeroballistics.Projetil(VL=4.0, VN=2.0, VB=0.4, OR=8.0)
     pm = massa.estimar(p, "bala", massa_g=10.0, d_mm=7.82)
     m, d, L = 0.010, 7.82e-3, 4.0 * 7.82e-3
     assert pm.cg_base == pytest.approx(0.400 * 4.0)
@@ -49,7 +49,7 @@ def test_formulas_de_hitchcock():
 
 
 def test_completar_nao_troca_o_que_foi_dado():
-    p = spin73.Projetil(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12, DIA=0.224, WGT=4.05 / 453.59237,
+    p = aeroballistics.Projetil(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12, DIA=0.224, WGT=4.05 / 453.59237,
                         IX=1.0)                               # IX dado (mesmo absurdo) fica
     q = massa.completar(p, "solido")
     assert q.IX == 1.0 and q.WGT == p.WGT
@@ -58,7 +58,7 @@ def test_completar_nao_troca_o_que_foi_dado():
 
 
 def test_so_o_cg_sem_diametro_e_massa_pela_densidade():
-    p = spin73.Projetil(VL=4.05, VN=1.90, VB=0.40, OR=7.9)
+    p = aeroballistics.Projetil(VL=4.05, VN=1.90, VB=0.40, OR=7.9)
     pm = massa.estimar(p)
     assert pm.massa_kg is None and 2.0 < pm.cg_nariz < 3.0
     q = massa.completar(p)                                    # só o VCG
@@ -70,7 +70,7 @@ def test_so_o_cg_sem_diametro_e_massa_pela_densidade():
 
 
 def test_validacao_guarda_as_faixas_documentadas():
-    """As faixas de erro escritas em spin73/massa.py saem de scripts/massa/validar.py."""
+    """As faixas de erro escritas em aeroballistics/massa.py saem de scripts/massa/validar.py."""
     import validar
     res = validar.avaliar()
     balas = [r for r in res if r["tipo"] == "bala"]
@@ -100,13 +100,13 @@ def test_unidades_convertem_para_o_cartao():
 
 
 def test_sem_vcg_o_canonico_pede_o_cg():
-    p = spin73.Projetil(VL=4.05, VN=1.90, VB=0.40)
+    p = aeroballistics.Projetil(VL=4.05, VN=1.90, VB=0.40)
     with pytest.raises(ValueError, match="VCG"):
-        spin73.tabela(p)
+        aeroballistics.tabela(p)
 
 
 def _cli(args, capsys):
-    spin73.cli.main(args)
+    aeroballistics.cli.main(args)
     return capsys.readouterr().out
 
 
@@ -127,5 +127,5 @@ def test_cli_canonico_e_com_adicoes(capsys, tmp_path):
 
 def test_cli_sem_vcg_sem_estimativa_e_erro(capsys):
     with pytest.raises(SystemExit):
-        spin73.cli.main(["--VL", "4.05", "--VN", "1.90", "--VB", "0.40"])
+        aeroballistics.cli.main(["--VL", "4.05", "--VN", "1.90", "--VB", "0.40"])
     assert "--estimar-massa" in capsys.readouterr().err

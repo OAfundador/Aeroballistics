@@ -1,17 +1,17 @@
-"""CX2 reconstruído (DATA XD) contra três tabelas: 175 mm M437, 5"/38 e 105 mm XM380E5.
+"""CX2 adaptado (DATA XD) contra três tabelas: 175 mm M437, 5"/38 e 105 mm XM380E5.
 
 Usa o CNα IMPRESSO de cada tabela, porque a equação subtrai o CNα: assim o teste isola
-o XD do erro do CNα reconstruído.
+o XD do erro do CNα adaptado.
 """
 import numpy as np
 import pytest
 
 import caminhos
-import spin73 as s
+import aeroballistics as s
 import tabelas_impressas as ti
 from dados_cna import T as T_CNA
 from dados_cx2 import CNA_SUSPEITO, CX2_538, DECIDIDAS, ILEGIVEIS
-from spin73.dados.xd_lidos import DECIDIDOS, XD
+from aeroballistics.dados.xd_lidos import DECIDIDOS, XD
 
 TAB = s.ler_tabela(caminhos.TABELAS_1973 / "m437_tabela.csv")
 

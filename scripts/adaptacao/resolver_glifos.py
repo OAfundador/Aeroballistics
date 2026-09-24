@@ -15,7 +15,7 @@ e todas as combinações de leitura são testadas. Uma célula ambígua que sai 
 valor em todas as combinações consistentes fica resolvida, e é marcada "identidade" (fora
 das contagens de validação). Nenhum DATA e nenhum resultado do modelo entram aqui.
 
-    python scripts/reconstrucao/resolver_glifos.py 41   -> data/tabelas_1973/p41_*.csv
+    python scripts/adaptacao/resolver_glifos.py 41   -> data/tabelas_1973/p41_*.csv
 """
 import itertools
 import os

@@ -3,9 +3,9 @@ requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "spin73"
-version = "0.5.0"
-description = "SPIN-73 reconstruído: coeficientes aerodinâmicos de projéteis estabilizados por rotação a partir da geometria (Picatinny TR 4588, 1973)"
+name = "aeroballistics"
+version = "0.6.0"
+description = "Coeficientes aerodinâmicos de projéteis estabilizados por rotação a partir da geometria, inspirado e adaptado do SPIN-73 (Picatinny TR 4588, 1973)"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -39,14 +39,14 @@ dev = ["pytest>=7", "pillow>=9"]
 Repository = "https://github.com/OAfundador/aeroballistics"
 
 [project.scripts]
-spin73 = "spin73.cli:_executar"
+aeroballistics = "aeroballistics.cli:_executar"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["spin73*"]
+include = ["aeroballistics*"]
 
 [tool.setuptools.package-data]
-spin73 = ["correcoes/*.json"]
+aeroballistics = ["correcoes/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

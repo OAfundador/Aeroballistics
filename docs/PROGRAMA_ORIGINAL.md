@@ -2,10 +2,10 @@
 
 Descrição do SPIN-73 de 1973 com as nossas palavras e a nossa notação: o que cada trecho do
 programa calcula, com que constantes, de onde veio a leitura, o que não foi possível ler e
-onde está implementado nesta reconstrução. **Não é o código original**, que está no relatório
+onde está implementado nesta adaptação. **Não é o código original**, que está no relatório
 (DTIC AD0915628, listing nas pp. 79–86) e não é reproduzido neste repositório.
 
-Gerado de `src/spin73/programa.py` (`python -m spin73.programa --doc`); a evidência de cada
+Gerado de `src/aeroballistics/programa.py` (`python -m aeroballistics.programa --doc`); a evidência de cada
 leitura está em [NOTAS_TRANSCRICAO.md](NOTAS_TRANSCRICAO.md).
 
 Notação: VL, VN, VB, VCG, OR, DM, BD, BOOM, DIA, IX, IY, WGT, TWIST, DGUN e TEMP são as
@@ -24,7 +24,7 @@ Lê o cartão (geometria em calibres; diâmetro, inércias e peso em unidades in
 | Statements do listing | — |
 | Páginas | 76–77 (cartão); listing (atmosfera) |
 | Fonte da leitura | Apêndice B e código |
-| Implementação | `spin73.nucleo.densidade_ar` |
+| Implementação | `aeroballistics.nucleo.densidade_ar` |
 
 Fórmulas:
 
@@ -47,7 +47,7 @@ Um polinômio nas variáveis de forma, mais três correções por trecho: ogiva 
 | Statements do listing | C164–C174 |
 | Páginas | 83–84 |
 | Fonte da leitura | código (a partir de C164) e texto |
-| Implementação | `spin73.nucleo.cx` |
+| Implementação | `aeroballistics.nucleo.cx` |
 
 Fórmulas:
 
@@ -76,7 +76,7 @@ Soma a força normal e o momento do corpo (ogiva e cilindro) com os do boattail;
 | Statements do listing | C175–C212 |
 | Páginas | 84–85 |
 | Fonte da leitura | código |
-| Implementação | `spin73.nucleo.normal_e_momento` |
+| Implementação | `aeroballistics.nucleo.normal_e_momento` |
 
 Fórmulas:
 
@@ -110,7 +110,7 @@ O termo que, somado ao CNα, dá o arrasto de guinada por sen² da guinada.
 | Statements do listing | C213 |
 | Páginas | 85 |
 | Fonte da leitura | código |
-| Implementação | `spin73.nucleo.cx2` |
+| Implementação | `aeroballistics.nucleo.cx2` |
 
 Fórmulas:
 
@@ -131,7 +131,7 @@ A força de Magnus e, para três ângulos de ataque (1°, 2° e 5°), o centro d
 | Statements do listing | C214–C231 |
 | Páginas | 85 |
 | Fonte da leitura | código |
-| Implementação | `spin73.nucleo.magnus` |
+| Implementação | `aeroballistics.nucleo.magnus` |
 
 Fórmulas:
 
@@ -159,7 +159,7 @@ Duas colunas impressas que deveriam ajustar um polinômio ao momento de Magnus e
 | Statements do listing | C278–C281 |
 | Páginas | 86 |
 | Fonte da leitura | código |
-| Implementação | `spin73.nucleo.coef_polinomio_magnus` |
+| Implementação | `aeroballistics.nucleo.coef_polinomio_magnus` |
 
 Fórmulas:
 
@@ -183,7 +183,7 @@ Cmq + Cmα̇ na convenção qd/2V.
 | Statements do listing | C232–C238 |
 | Páginas | 85 |
 | Fonte da leitura | código |
-| Implementação | `spin73.nucleo.cmq` |
+| Implementação | `aeroballistics.nucleo.cmq` |
 
 Fórmulas:
 
@@ -210,7 +210,7 @@ Clp na convenção pd/2V, proporcional ao comprimento.
 | Statements do listing | C239 |
 | Páginas | 85 |
 | Fonte da leitura | código |
-| Implementação | `spin73.nucleo.clp` |
+| Implementação | `aeroballistics.nucleo.clp` |
 
 Fórmulas:
 
@@ -231,7 +231,7 @@ Com diâmetro, massa, inércias e passo de raia: a rotação, os fatores de esta
 | Statements do listing | C240–C266 |
 | Páginas | 85–86 |
 | Fonte da leitura | código e texto (pp. 17–18) |
-| Implementação | `spin73.nucleo.estabilidade` |
+| Implementação | `aeroballistics.nucleo.estabilidade` |
 
 Fórmulas:
 
@@ -267,4 +267,4 @@ Para cada Mach, uma linha com os 14 coeficientes aerodinâmicos e, com massa e r
 | Statements do listing | C282–C294 |
 | Páginas | 86 |
 | Fonte da leitura | código |
-| Implementação | `spin73.nucleo.formatar` |
+| Implementação | `aeroballistics.nucleo.formatar` |

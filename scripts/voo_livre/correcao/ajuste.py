@@ -30,7 +30,7 @@ ESCOLHA do atributo também é feita sem o grupo de fora (validação cruzada an
 o erro de predição medido é o de um projétil que o ajuste nunca viu. Cada grupo pesa o
 mesmo no ajuste e na métrica, para que as 45 rodadas do M101 não dominem as 16 da .50.
 
-    python scripts/voo_livre/correcao/ajuste.py   -> tabela de resultados + src/spin73/correcoes/voo_livre.json
+    python scripts/voo_livre/correcao/ajuste.py   -> tabela de resultados + src/aeroballistics/correcoes/voo_livre.json
 """
 import json
 import sys
@@ -42,8 +42,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 import caminhos                                         # noqa: E402,F401
 
 import dados                                            # noqa: E402
-from spin73.correcoes import reynolds as rn             # noqa: E402
-from spin73.correcoes.voo_livre import ARQUIVO as ARQUIVO_JSON   # noqa: E402
+from aeroballistics.correcoes import reynolds as rn             # noqa: E402
+from aeroballistics.correcoes.voo_livre import ARQUIVO as ARQUIVO_JSON   # noqa: E402
 
 REGIMES = [("subsônico", 0.0, 0.9), ("transônico", 0.9, 1.25), ("supersônico", 1.25, 9.0)]
 GRUPOS = ["762", "556b", "556t", "50", "m101", "m483", "762m", "30", "t203", "xm617"]
@@ -198,7 +198,7 @@ def ajuste_final(ls, validacao=None):
             pior = max((ec / eb for eb, ec, _ in det.values() if eb > 0), default=float("nan"))
             final[c][reg] = dict(tipo=tipo, atributo=atr,
                                  coef=list(ajustar(L, tipo, atr)) if atr else None,
-                                 validacao=dict(spin73=round(base, 4), corrigido=round(corr, 4),
+                                 validacao=dict(aeroballistics=round(base, 4), corrigido=round(corr, 4),
                                                 grupos=n, grupos_que_melhoram=melhora, aceita=ok,
                                                 pior_razao=round(pior, 3)))
     return final
@@ -302,10 +302,10 @@ def main():
     for reg, (b, cc, n, det) in cpn_derivado(ls, final).items():
         print(f"CPN   {reg:12s} grupos {n}  SPIN-73 {b:7.3f}cal corrigido {cc:7.3f}cal  melhora em "
               f"{sum(1 for eb, ec in det.values() if ec < eb)}/{n}")
-    # o resultado vai para a biblioteca, que o aplica (spin73.correcoes.VooLivre)
+    # o resultado vai para a biblioteca, que o aplica (aeroballistics.correcoes.VooLivre)
     with open(ARQUIVO_JSON, "w", encoding="utf-8") as f:
         json.dump(final, f, ensure_ascii=False, indent=1)
-    print("\nModelo final (todos os grupos), aplicado por spin73.Aerodinamica(..., correcoes='voo_livre'):")
+    print("\nModelo final (todos os grupos), aplicado por aeroballistics.Aerodinamica(..., correcoes='voo_livre'):")
     for c, regs in final.items():
         for reg, d in regs.items():
             if d["coef"]:

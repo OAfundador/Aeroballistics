@@ -24,7 +24,7 @@ MACH = np.array([0.01, 0.6, 0.8, 0.9, 0.95, 1.0, 1.05, 1.1, 1.2,
 
 _n = np.nan
 
-# XC1..XC5: leitura anterior (scripts/reconstrucao/xc_parcial.py), reconferida aqui
+# XC1..XC5: leitura anterior (scripts/adaptacao/xc_parcial.py), reconferida aqui
 # nos dígitos marcados como duvidosos (ver NOTAS_A.md).
 XC = np.array([
  # XC1  (11+6) -- 2o, 9o, 14o, 15o eram duvidosos na leitura anterior

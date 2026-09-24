@@ -1,6 +1,6 @@
 """Entradas em outras unidades (ADIÇÃO OPCIONAL: só conversão exata, não muda nenhum cálculo).
 
-O cartão do SPIN-73 (spin73.Projetil) usa calibres, polegadas, libras, lb·in² e °F. Aqui ele
+O cartão do SPIN-73 (aeroballistics.Projetil) usa calibres, polegadas, libras, lb·in² e °F. Aqui ele
 pode ser montado também com as chaves abaixo, que viram as do cartão:
 
     D_MM        diâmetro, mm                     -> DIA  (polegadas)
@@ -13,7 +13,7 @@ pode ser montado também com as chaves abaixo, que viram as do cartão:
     CG_BASE     CG a partir da BASE, calibres    -> VCG = VL − CG_BASE
     DGUN_MM     diâmetro do tubo, mm             -> DGUN (polegadas)
 
-E as opções da estimativa de massa (spin73.massa), que não são do cartão:
+E as opções da estimativa de massa (aeroballistics.massa), que não são do cartão:
 
     ESTIMAR_MASSA  solido | bala | granada       DENSIDADE  kg/m³      MATERIAL  aco, chumbo...
     ANG_BT         ângulo do boattail, graus     DB         diâmetro da base, calibres
@@ -91,7 +91,7 @@ def projetil(**campos) -> Projetil:
     """Projetil a partir de chaves do cartão e/ou das alternativas acima."""
     canon, opc = separar(campos)
     if opc:
-        raise ValueError(f"{', '.join(opc)} são opções de spin73.massa, não do cartão")
+        raise ValueError(f"{', '.join(opc)} são opções de aeroballistics.massa, não do cartão")
     return Projetil(**canon)
 
 
@@ -111,7 +111,7 @@ def ler_campos(caminho: str) -> dict:
 
 
 def ler_entrada(caminho: str) -> tuple[Projetil, dict]:
-    """Como spin73.ler_entrada, mas aceita também as alternativas e as opções de massa.
+    """Como aeroballistics.ler_entrada, mas aceita também as alternativas e as opções de massa.
     Devolve (Projetil, opções da estimativa de massa)."""
     canon, opc = separar(ler_campos(caminho))
     return Projetil(**canon), opc

@@ -8,7 +8,7 @@
 Nenhuma usa DATA: uma linha que viola uma delas tem um dígito mal lido (ou uma entrada
 VCG errada). A tolerância é a do arredondamento das colunas envolvidas.
 
-    python scripts/reconstrucao/verificar_identidades.py 35
+    python scripts/adaptacao/verificar_identidades.py 35
 """
 import sys
 from pathlib import Path

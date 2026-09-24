@@ -33,7 +33,7 @@ O que o contorno não tem: cinta, canelura, cavidade, ponta arredondada, base ar
 como tronco de cone). O ângulo do boattail não é entrada do SPIN-73: o padrão é 8° (o mesmo da
 correção de atrito); informe `ang_bt` ou o diâmetro da base `db` se souber.
 
-    from spin73 import massa
+    from aeroballistics import massa
     pm = massa.estimar(p, massa_g=4.0, d_mm=5.69)        # PropriedadesMassa
     p2 = massa.completar(p, massa_g=4.0)                  # Projetil com o que faltava preenchido
 """

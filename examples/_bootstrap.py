@@ -1,4 +1,4 @@
-"""Deixa o pacote ``spin73`` importável sem instalar o repositório.
+"""Deixa o pacote ``aeroballistics`` importável sem instalar o repositório.
 
 Os exemplos rodam direto de um clone (``python examples/01_caso_m437.py``), então cada um
 importa este módulo primeiro. Com o pacote instalado (``pip install -e .``), o caminho

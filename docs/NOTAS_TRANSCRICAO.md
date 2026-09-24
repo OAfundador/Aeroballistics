@@ -76,13 +76,13 @@ E3 (Magnus a 2°) não aparece diretamente nas tabelas. Deve ser recuperável da
 
 **Página duplicada.** As pp. 44 (90 mm M71) e 47 (105 mm M1) têm corpos idênticos, com os mesmos artefatos de impressão. A tabela do 105 mm M1 não está no scan.
 
-## T4 — Tentativa de reconstruir B1..B9 (CNα), em `scripts/reconstrucao/cna_spin73.py`
+## T4 — Tentativa de recuperar B1..B9 (CNα), em `scripts/adaptacao/cna_spin73.py`
 
 Com 10 tabelas de OR conhecido, o sistema tem 10 equações para 9 incógnitas por Mach. O ajuste atinge resíduo máximo de ~0,004, oito vezes o arredondamento da impressão (0,0005). Em Mach 0,95 o resíduo chega a 0,03. A matriz é mal condicionada: o menor valor singular é 0,1 % do maior. Os B obtidos não são redondos e não são confiáveis. Fixar B8 e B9 com os valores lidos no DATA XB8/XB9 (p. 80) PIORA o ajuste, então essa associação não está confirmada.
 
-Conclusão: com os dados atuais, B não está reconstruído. As causas possíveis, sem ordem de probabilidade: erros de leitura no CNA, termos ausentes do texto (o texto define CDMM, CBBD e DNX na seção de CNα, mas não os usa em CNAB) ou o limiar sub/supersônico dos expoentes do boattail (E5).
+Conclusão: com os dados atuais, B não está recuperado. As causas possíveis, sem ordem de probabilidade: erros de leitura no CNA, termos ausentes do texto (o texto define CDMM, CBBD e DNX na seção de CNα, mas não os usa em CNAB) ou o limiar sub/supersônico dos expoentes do boattail (E5).
 
-## T5 — CNα reconstruído a partir dos blocos DATA (sessão noturna)
+## T5 — CNα calculado a partir dos blocos DATA (sessão noturna)
 
 **Estrutura do programa (DIMENSION, p. 79).** O listing declara XA1..XA15, XB1..XB10, XC1..XC17, XE1..XE4, XF1..XF9 e XG1. O texto do relatório só descreve a1..a13, B1..B9 e F1..F8. Existem, portanto, pelo menos A14, A15, B10 e F9 que o texto não documenta, o que é coerente com o termo de corpo longo do Magnus (T3). A grade de Mach está em `DATA XMACH`: 0,01, 0,6, 0,8, 0,9, 0,95, 1,0, 1,05, 1,1, 1,2, 1,35, 1,5, 1,75, 2, 2,5, 3, 4, 5. Confirmado.
 
@@ -90,7 +90,7 @@ Conclusão: com os dados atuais, B não está reconstruído. As causas possívei
 
 **Limiar do expoente do boattail:** o programa já usa o expoente supersônico em Mach 0,95. Com o limiar em 1,0, as quatro tabelas com boattail erravam −0,15 nessa linha; com 0,95 o erro some. Isso resolve o item E5.
 
-**Resultado:** com os XB lidos, 65 % das 170 células (10 tabelas × 17 Mach) ficam dentro do arredondamento (±0,0015). Seis correções de leitura sobem esse número para 78 % (91 % dentro de ±0,005). Cada correção é um único número que zera o resíduo de 7 ou mais tabelas ao mesmo tempo e corresponde a um par de glifos confundível (lista em `src/spin73/dados/xb_lidos.py`, `CORRECOES`). Nenhuma foi reconferida na imagem.
+**Resultado:** com os XB lidos, 65 % das 170 células (10 tabelas × 17 Mach) ficam dentro do arredondamento (±0,0015). Seis correções de leitura sobem esse número para 78 % (91 % dentro de ±0,005). Cada correção é um único número que zera o resíduo de 7 ou mais tabelas ao mesmo tempo e corresponde a um par de glifos confundível (lista em `src/aeroballistics/dados/xb_lidos.py`, `CORRECOES`). Nenhuma foi reconferida na imagem.
 
 **O que sobra:**
 
@@ -98,11 +98,11 @@ Conclusão: com os dados atuais, B não está reconstruído. As causas possívei
 - O 5"/38 fica +0,014 constante de Mach 2,5 a 5. Suspeita: leitura do CNA (2,953 / 2,929 / 2,829 / 2,729).
 - A linha de Mach 2,0 nos ANSR e algumas células isoladas estão listadas em `test_cna.py` (`PENDENTES`).
 
-**Comparação com experimento (7,62 NATO, MR 1833, M ≥ 1,1; `scripts/voo_livre/mr1833/comparar_cna.py`, saída em `docs/resultados/cna_mr1833.txt`).** O CNα reconstruído concorda com M-59 (−0,03), M-61 (−0,06) e M-62 (−0,12); a dispersão experimental é de 0,17–0,31. No M-80, o mais curto, o SPIN-73 superestima em +0,21 (15 rodadas; erro puro/√n = 0,07): o modelo dá praticamente o mesmo CNα aos quatro, e o experimento cresce com o comprimento. O resultado não depende do raio de ogiva, que é incerto nessa família. A primeira versão desta comparação dava +0,28 no M-80 (+0,01, −0,01 e −0,08 nos outros); ela é anterior ao cartão C205 (T15), e o script reproduz esses valores sem o cartão. É um alvo claro para a recalibração do termo de comprimento (B3/B6) em corpos curtos.
+**Comparação com experimento (7,62 NATO, MR 1833, M ≥ 1,1; `scripts/voo_livre/mr1833/comparar_cna.py`, saída em `docs/resultados/cna_mr1833.txt`).** O CNα adaptado concorda com M-59 (−0,03), M-61 (−0,06) e M-62 (−0,12); a dispersão experimental é de 0,17–0,31. No M-80, o mais curto, o SPIN-73 superestima em +0,21 (15 rodadas; erro puro/√n = 0,07): o modelo dá praticamente o mesmo CNα aos quatro, e o experimento cresce com o comprimento. O resultado não depende do raio de ogiva, que é incerto nessa família. A primeira versão desta comparação dava +0,28 no M-80 (+0,01, −0,01 e −0,08 nos outros); ela é anterior ao cartão C205 (T15), e o script reproduz esses valores sem o cartão. É um alvo claro para a recalibração do termo de comprimento (B3/B6) em corpos curtos.
 
 ## T6 — DATA XC e o centro de pressão (tarefa A, com validação numérica)
 
-**Leitura.** XC1..XC17 lidos na p. 80 (`src/spin73/dados/xc_lidos.py`). A grade de caracteres do listing na página girada é x(coluna) = 1158 + (coluna − 6)·19,2 px. Divisão dos statements: XC1 em 11+6, XC2..XC16 em 8+9, XC17 em 10+7.
+**Leitura.** XC1..XC17 lidos na p. 80 (`src/aeroballistics/dados/xc_lidos.py`). A grade de caracteres do listing na página girada é x(coluna) = 1158 + (coluna − 6)·19,2 px. Divisão dos statements: XC1 em 11+6, XC2..XC16 em 8+9, XC17 em 10+7.
 
 **Defeito da impressão (achado).** As linhas y = 1867 e y = 1900 da p. 80 girada são a mesma imagem (correlação de pixels 0,90, contra 0,65 de uma linha vizinha com o mesmo prefixo) e ambas trazem o rótulo XC16: o cartão de continuação de XC15 foi substituído por uma segunda cópia do primeiro cartão de XC16. Ou seja, **XC15 de Mach 1,2 a 5,0 não existe no listing impresso**. As duas cópias ainda discordam num dígito (11.766 e 11.768 no 7º valor de XC16), o que mostra que a diferença é de impressão, não de conteúdo.
 
@@ -129,9 +129,9 @@ Contagem de CNα dentro de ±0,0015, sem a p. 44 (153 células): XB atual 133, X
 
 ## T6.1 — XC testado numa segunda tabela, e a célula XC12 em Mach 1,05
 
-Para separar um erro de leitura em C1..C11 de um erro em C12..C16, transcrevi as colunas CMA e CPN do **5"/38 NAVY (p. 53)**, que tem boattail de 0,35 cal contra 1,00 cal do M437 — os pesos dos dois blocos mudam muito entre os dois. Os dados estão em `scripts/reconstrucao/dados_cpn.py`; a leitura foi conferida célula a célula pela identidade CMA = (VCG − CPN)·CNα com o CNα impresso, que resolveu duas delas (CPN de Mach 0,01 e CMA de Mach 0,90, este último um par 4/8).
+Para separar um erro de leitura em C1..C11 de um erro em C12..C16, transcrevi as colunas CMA e CPN do **5"/38 NAVY (p. 53)**, que tem boattail de 0,35 cal contra 1,00 cal do M437 — os pesos dos dois blocos mudam muito entre os dois. Os dados estão em `scripts/adaptacao/dados_cpn.py`; a leitura foi conferida célula a célula pela identidade CMA = (VCG − CPN)·CNα com o CNα impresso, que resolveu duas delas (CPN de Mach 0,01 e CMA de Mach 0,90, este último um par 4/8).
 
-**Usar o CNα impresso em vez do reconstruído.** O erro do CNα reconstruído (até 0,002) entra no CPN multiplicado por cerca de 3. Com o CNα impresso, o resíduo do CPN em Mach 0,95 do M437 cai de −0,0029 para +0,0007, ou seja, dentro do arredondamento. `cpn_spin73.cpn_cma` aceita `cna_impresso` justamente para isso.
+**Usar o CNα impresso em vez do adaptado.** O erro do CNα adaptado (até 0,002) entra no CPN multiplicado por cerca de 3. Com o CNα impresso, o resíduo do CPN em Mach 0,95 do M437 cai de −0,0029 para +0,0007, ou seja, dentro do arredondamento. `cpn_spin73.cpn_cma` aceita `cna_impresso` justamente para isso.
 
 **Resultado.** Com o CNα impresso, a conta fecha dentro de ±0,0015 em Mach 0,90, 0,95 e 1,10 no M437 e em 0,90, 1,00 e 1,10 no 5"/38 — duas geometrias diferentes, os mesmos dezessete coeficientes. Isso valida a estrutura da equação e a leitura de XC nesses pontos.
 
@@ -164,7 +164,7 @@ No 20 mm 5 cal ANSR (p. 32) o boattail é zero, o que zera C12..C16 e deixa o CP
 
 ## T8 — O que o código (pp. 84-85) resolveu
 
-O que as pp. 84–86 do listing calculam está descrito, com as nossas palavras e a nossa notação, em `src/spin73/programa.py` (e em [PROGRAMA_ORIGINAL.md](PROGRAMA_ORIGINAL.md)); o listing em si não é reproduzido neste repositório. Ele não traz número de cartão nas colunas 73-80 em quase todas as linhas; a numeração usada aqui (Cnnn) é a sequência de statements do compilador, impressa à esquerda.
+O que as pp. 84–86 do listing calculam está descrito, com as nossas palavras e a nossa notação, em `src/aeroballistics/programa.py` (e em [PROGRAMA_ORIGINAL.md](PROGRAMA_ORIGINAL.md)); o listing em si não é reproduzido neste repositório. Ele não traz número de cartão nas colunas 73-80 em quase todas as linhas; a numeração usada aqui (Cnnn) é a sequência de statements do compilador, impressa à esquerda.
 
 - **A1, viés de s_g — resolvido.** O cartão C241 calcula, com Ix, Iy em lb·in² e comprimentos em polegadas, s_g = 1352,4·Ix²/(ρ·Iy·CMα·passo²·d³). A fórmula física com g = 32,174 dá 1349,8 no lugar de 1352,4: a diferença, +0,19 %, era o viés. Com a constante do código, o GYRO do M437 fecha em todas as linhas (erro máximo 0,0009, viés médio 0,017 %).
 - **E5, limiar do boattail — confirmado no código.** O cartão C189 troca para o expoente supersônico a partir do 5º ponto da grade de Mach: ele vale desde Mach 0,95.
@@ -177,9 +177,9 @@ Dúvida de transcrição: o cartão C205 é uma condição cujos nomes de variá
 
 ## T9 — DATA XD (CX2) e o cartão final do XE5
 
-**Leitura.** XD1 e o primeiro cartão de XD2 no pé da p. 80, nítidos; o resto na p. 81, desbotado. Os statements aqui são de três cartões (7 + 7 + 3 valores). XD1 sobe de 0,5 em 0,5 até Mach 1,2 e desce no mesmo passo; XD4 vai de −1 a 0 de 0,1 em 0,1. Dados em `src/spin73/dados/xd_lidos.py`.
+**Leitura.** XD1 e o primeiro cartão de XD2 no pé da p. 80, nítidos; o resto na p. 81, desbotado. Os statements aqui são de três cartões (7 + 7 + 3 valores). XD1 sobe de 0,5 em 0,5 até Mach 1,2 e desce no mesmo passo; XD4 vai de −1 a 0 de 0,1 em 0,1. Dados em `src/aeroballistics/dados/xd_lidos.py`.
 
-**Validação com duas tabelas.** Na equação CX2 = XD1 + XD2·CXCL + XD3·CRAT + XD4·VB − CNα, o 175 mm M437 dá pesos 0,10 e −0,06 a XD2 e XD3; o 5"/38, 0,59 e 0,47. Fixando XD1 e XD4, cada Mach dá duas equações para XD2 e XD3, e a solução devolve os valores lidos em 0,01 / 0,6 / 0,9 / 1,0 / 1,05 / 1,35 / 2,0. Usou-se o CNα IMPRESSO de cada tabela, para isolar o XD do erro do CNα reconstruído.
+**Validação com duas tabelas.** Na equação CX2 = XD1 + XD2·CXCL + XD3·CRAT + XD4·VB − CNα, o 175 mm M437 dá pesos 0,10 e −0,06 a XD2 e XD3; o 5"/38, 0,59 e 0,47. Fixando XD1 e XD4, cada Mach dá duas equações para XD2 e XD3, e a solução devolve os valores lidos em 0,01 / 0,6 / 0,9 / 1,0 / 1,05 / 1,35 / 2,0. Usou-se o CNα IMPRESSO de cada tabela, para isolar o XD do erro do CNα adaptado.
 
 | Célula | Leitura | Decisão | Evidência |
 |---|---|---|---|
@@ -202,7 +202,7 @@ Em aberto: resíduo de 0,007 a 0,009 no M437 em Mach 1,5 e 1,75, onde o 5"/38 fe
 
 ## T10 — DATA XA (CX) e o programa completo
 
-**Leitura** (p. 79, `src/spin73/dados/xa_lidos.py`). XA1..XA10 em statements de 2 linhas; XA11 e XA12 em 3 cartões (7 + 7 + 3); XA13..XA15 em 2 linhas (10 + 7). A contagem até 17 decide o número de zeros iniciais de XA4 (6), XA9 (3), XA13 (3), XA14 (5) e XA15 (3). XA1 tem forma de curva de arrasto (0,20 subsônico, pico de 0,41 em Mach 1,05, 0,18 em Mach 5).
+**Leitura** (p. 79, `src/aeroballistics/dados/xa_lidos.py`). XA1..XA10 em statements de 2 linhas; XA11 e XA12 em 3 cartões (7 + 7 + 3); XA13..XA15 em 2 linhas (10 + 7). A contagem até 17 decide o número de zeros iniciais de XA4 (6), XA9 (3), XA13 (3), XA14 (5) e XA15 (3). XA1 tem forma de curva de arrasto (0,20 subsônico, pico de 0,41 em Mach 1,05, 0,18 em Mach 5).
 
 **Validação com duas tabelas.** O 175 mm M437 e o 5"/38 dão ao XA2 pesos de sinal oposto (VNX − 2,5 = +0,41 e −0,35) e ao XA7 pesos bem diferentes (boattail de 1,00 e 0,35 cal). Com a leitura final, **o CX fecha em 17 de 17 Mach nas duas tabelas** (erro máximo 0,0011 e 0,0013). A coluna CX do 5"/38 foi transcrita nesta sessão (`dados_cx.py`).
 
@@ -217,11 +217,11 @@ O CX = 0,105 do M437 em Mach 0,01 e 0,6, que tinha sido decidido pelo s_d impres
 
 XA13..XA15 (ogiva maior que 3 calibres) estão lidos mas **não testados**: nenhuma tabela transcrita tem VN > 3. O candidato é o 175 mm SRC (p. 68, VN = 5,5).
 
-**O programa completo.** Com o XA, `spin73.tabela()` roda da geometria até a análise de estabilidade. No M437 fecham 17 de 17: CX, CYPA, CNPA, CPF1, CNPA5, CLP, SPIN e RECIP5. As falhas restantes (CPN, CMα e, por consequência, s_g, ω e λ) estão todas nos Mach em que o XC não está completo: o XC12 desbotado e o cartão ausente do XC15.
+**O programa completo.** Com o XA, `aeroballistics.tabela()` roda da geometria até a análise de estabilidade. No M437 fecham 17 de 17: CX, CYPA, CNPA, CPF1, CNPA5, CLP, SPIN e RECIP5. As falhas restantes (CPN, CMα e, por consequência, s_g, ω e λ) estão todas nos Mach em que o XC não está completo: o XC12 desbotado e o cartão ausente do XC15.
 
 ## T11 — XC completo: decisões finais e o que ficou incerto
 
-Com XA e XD reconstruídos, o XC era o último bloco com lacunas. Decisões (`src/spin73/dados/xc_lidos.py`):
+Com XA e XD recuperados, o XC era o último bloco com lacunas. Decisões (`src/aeroballistics/dados/xc_lidos.py`):
 
 | Célula | Leitura | Decisão | Evidência | Confiança |
 |---|---|---|---|---|
@@ -239,7 +239,7 @@ Com isso o XC não tem mais NaN e o programa produz as 24 colunas do M437 a part
 
 ## T12 — A p. 86: CNPA3, CNPA5, DELT, DISP e a regra de instabilidade
 
-Linhas das fórmulas lidas em zoom (resumidas em `src/spin73/programa.py`). Com elas, o programa produz **todas as colunas que o original imprime**.
+Linhas das fórmulas lidas em zoom (resumidas em `src/aeroballistics/programa.py`). Com elas, o programa produz **todas as colunas que o original imprime**.
 
 **CNPA3 e CNPA5 (cartões C278-C281) — um defeito do original.**
 
@@ -288,11 +288,11 @@ As constantes são as de um polinômio f(δ) = C1 + C3·δ² + C5·δ⁴ avaliad
 
 ## T14 — Todas as tabelas do relatório transcritas
 
-Cada tabela de saída (pp. 29 a 68) está em `data/tabelas_1973/`, com o cabeçalho de entrada. A comparação com o programa, caso a caso, é feita por `scripts/reconstrucao/comparacao_erros.py` (ver [VERIFICACAO.md](VERIFICACAO.md)).
+Cada tabela de saída (pp. 29 a 68) está em `data/tabelas_1973/`, com o cabeçalho de entrada. A comparação com o programa, caso a caso, é feita por `scripts/adaptacao/comparacao_erros.py` (ver [VERIFICACAO.md](VERIFICACAO.md)).
 
 **Método de leitura.** Na impressão matricial, 6 e 8 saem quase iguais, assim como os pares 1/3, 2/7, 4/9, 5/9 e 0/6. A leitura bruta (`data/tabelas_1973/leituras/`) marca cada glifo ambíguo como uma classe: `A` = 6 ou 8, `[27]` = 2 ou 7, `?` = ilegível. Depois, `resolver_glifos.py` testa todas as combinações contra as identidades entre colunas **impressas**: CMα = (VCG − CPN)·CNα, CNPA = CYPA·(VCG − CPF1), CNPA5 = CYPA·(VCG − CPF5) e CNPA3 + 0,1·CNPA5P = 3,75. Uma célula que sai com o mesmo valor em todas as combinações consistentes fica resolvida, marcada "identidade" e fora das estatísticas. O que continua ambíguo fica vazio. Nenhum `DATA` e nenhum resultado do modelo entram nessa etapa. `verificar_identidades.py` confere as tabelas prontas: as 12 passam sem violação.
 
-**Entradas ilegíveis.** Um dígito ilegível do cabeçalho é decidido por uma coluna só, dentro da faixa que o glifo permite, e essa coluna fica circular no caso (`scripts/reconstrucao/circularidade.py`). Leituras antigas do cabeçalho corrigidas nesta etapa:
+**Entradas ilegíveis.** Um dígito ilegível do cabeçalho é decidido por uma coluna só, dentro da faixa que o glifo permite, e essa coluna fica circular no caso (`scripts/adaptacao/circularidade.py`). Leituras antigas do cabeçalho corrigidas nesta etapa:
 
 | Tabela | Entrada | Antes | Agora | Evidência |
 |---|---|---|---|---|
@@ -316,7 +316,7 @@ Cada tabela de saída (pp. 29 a 68) está em `data/tabelas_1973/`, com o cabeça
 
 ## T15 — Auditoria contra as convenções do relatório; o cartão C205
 
-**Convenções (Nomenclatura, pp. 7-8; Apêndice B, pp. 76-77).** Estilo NACA/BRL clássico: q̄ = ½ρV², A = πd²/4, referência d. CMα e o Magnus em torno do CG; CPN, CPF1 e CPF5 em calibres do nariz; derivadas por sen ᾱ; Magnus, Cmq e Clp com **pd/2V e qd/2V** (as fontes modernas usam pd/V e qd/V, e dão a metade). O arrasto de guinada é CX2 + CNα (p. 15). Tudo isso está em `src/spin73/convencoes.py`, com testes.
+**Convenções (Nomenclatura, pp. 7-8; Apêndice B, pp. 76-77).** Estilo NACA/BRL clássico: q̄ = ½ρV², A = πd²/4, referência d. CMα e o Magnus em torno do CG; CPN, CPF1 e CPF5 em calibres do nariz; derivadas por sen ᾱ; Magnus, Cmq e Clp com **pd/2V e qd/2V** (as fontes modernas usam pd/V e qd/V, e dão a metade). O arrasto de guinada é CX2 + CNα (p. 15). Tudo isso está em `src/aeroballistics/convencoes.py`, com testes.
 
 **O cartão C205 estava sem implementar.** A linha tinha ficado como dúvida de transcrição (T8), porque os nomes de variável, como impressos, não existiam no trecho. Nesta impressão o B sai como A ou P: a linha de cima traz "XA7" onde o código é XB7. Relidos assim, os nomes são os da força normal do boattail, e a condição diz que ela não pode somar (se sair positiva, vale zero). Ela só age quando a ogiva é curta (CVNN < 0) no supersônico, que é exatamente o 5"/38 de Mach 1,75 a 5:
 
@@ -327,7 +327,7 @@ Cada tabela de saída (pp. 29 a 68) está em `data/tabelas_1973/`, com o cabeça
 
 Com a regra, o XC15 de Mach 1,75, decidido só pelo M437, passa a ser confirmado também pelo 5"/38 (antes ele parecia pedir 0,629).
 
-**Outras diferenças entre o programa original e esta reconstrução**, sem efeito nas tabelas, agora documentadas em `convencoes.py`:
+**Outras diferenças entre o programa original e esta adaptação**, sem efeito nas tabelas, agora documentadas em `convencoes.py`:
 
 - Campos em branco no cartão: no original, DM vazio vale 0, BD vazio vale 1,00, OR vazio vale ogiva secante e **TEMP vazio vale 0 °F**. As tabelas sem propriedades de massa imprimem densidade 0,00270, que é a de 0 °F. O `Projetil` usa por omissão DM = 0,12 e BD = 1,02 (os valores de NAUTO = 1, "dimensões automáticas") e TEMP = 59 °F. Para reproduzir um cartão em branco, basta passar zero.
 - Nomes: o programa imprime "CNPA5" para o coeficiente quíntico e "CNPA-5" para a inclinação secante a 5°; aqui são CNPA5P e CNPA5.

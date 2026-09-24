@@ -1,17 +1,17 @@
 # Correção empírica do SPIN-73 com voo livre
 
-O SPIN-73 reconstruído reproduz o programa de 1973, erros incluídos. Aqui ele é corrigido com medições de túnel balístico, **sem alterar o programa**: a correção parte da tabela do SPIN-73 e ajusta o que os dados mostram que dá para ajustar.
+O SPIN-73 adaptado reproduz o programa de 1973, erros incluídos. Aqui ele é corrigido com medições de túnel balístico, **sem alterar o programa**: a correção parte da tabela do SPIN-73 e ajusta o que os dados mostram que dá para ajustar.
 
 ```
-python scripts/voo_livre/correcao/ajuste.py   # valida, ajusta e grava src/spin73/correcoes/voo_livre.json
+python scripts/voo_livre/correcao/ajuste.py   # valida, ajusta e grava src/aeroballistics/correcoes/voo_livre.json
 ```
 
 O ajuste fica em `scripts/voo_livre/correcao/`; a aplicação está na biblioteca, como correção opcional (desligada por padrão):
 
 ```python
-import spin73
-aero = spin73.Aerodinamica(p, "voo_livre", d_mm=5.69)        # tudo o que foi aceito
-aero = spin73.Aerodinamica(p, "voo_livre:CX0", d_mm=5.69)    # só o arrasto (a peça robusta)
+import aeroballistics
+aero = aeroballistics.Aerodinamica(p, "voo_livre", d_mm=5.69)        # tudo o que foi aceito
+aero = aeroballistics.Aerodinamica(p, "voo_livre:CX0", d_mm=5.69)    # só o arrasto (a peça robusta)
 ```
 
 `aplicar.py` continua existindo como atalho (`aplicar.tabela_corrigida(p, d_mm)`).

@@ -1,8 +1,8 @@
-"""Correções opcionais sobre o SPIN-73 reconstruído (spin73.correcoes).
+"""Correções opcionais sobre o aeroballistics (aeroballistics.correcoes).
 
 Nada aqui é usado por padrão: sem correção, a biblioteca devolve o programa de 1973.
 
-    from spin73 import correcoes
+    from aeroballistics import correcoes
     correcoes.disponiveis()                  # nomes registrados
     correcoes.resolver("voo_livre")          # -> [VooLivre()]
     correcoes.resolver("voo_livre:CX0")      # só o atrito

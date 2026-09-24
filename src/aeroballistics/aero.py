@@ -1,10 +1,10 @@
 """Interface para simuladores (6DOF): coeficientes em qualquer Mach.
 
-    import spin73
-    p = spin73.Projetil(VL=4.05, VN=1.90, VB=0.40, VCG=2.51, OR=7.9, DIA=0.224)
-    aero = spin73.Aerodinamica(p)                               # o SPIN-73 de 1973
-    aero = spin73.Aerodinamica(p, correcoes="voo_livre")        # com a correção de voo livre
-    aero = spin73.Aerodinamica(p, convencao="moderna")          # pd/V, qd/V, CLα, CDδ²
+    import aeroballistics
+    p = aeroballistics.Projetil(VL=4.05, VN=1.90, VB=0.40, VCG=2.51, OR=7.9, DIA=0.224)
+    aero = aeroballistics.Aerodinamica(p)                               # o SPIN-73 de 1973
+    aero = aeroballistics.Aerodinamica(p, correcoes="voo_livre")        # com a correção de voo livre
+    aero = aeroballistics.Aerodinamica(p, convencao="moderna")          # pd/V, qd/V, CLα, CDδ²
 
     c = aero(2.3)            # Coeficientes: c.CX0, c["CNA"], ...  (floats)
     c = aero(mach_array)     # o mesmo, com arrays (vetorizado)
@@ -14,7 +14,7 @@ Toda a aerodinâmica é calculada uma vez, na grade de 17 Mach do programa, no c
 chamada só interpola (linear em Mach, como o próprio SPIN-73 é tabelado), então pode ser
 usada dentro do laço de integração.
 
-Convenções (ver spin73/convencoes.py):
+Convenções (ver aeroballistics/convencoes.py):
   "spin73"   a do relatório: pd/2V e qd/2V, CX2 por sen²α, derivadas por sen α, CPN e CPF
              em calibres do nariz, momentos em torno do CG.
   "moderna"  pd/V e qd/V (Cmq, Clp e Magnus valem a METADE), CDδ² = CX2 + CNα, CLα = CNα − CX0.
@@ -62,12 +62,12 @@ class Aerodinamica:
 
     Parâmetros
     ----------
-    projetil     spin73.Projetil (geometria em calibres; DIA em polegadas, se houver)
+    projetil     aeroballistics.Projetil (geometria em calibres; DIA em polegadas, se houver)
     correcoes    None (padrão: o SPIN-73 puro), um nome registrado ("voo_livre",
                  "voo_livre:CX0"), um objeto de correção ou uma lista deles
     d_mm         diâmetro real em mm; se omitido, sai de projetil.DIA. Só é exigido por
                  correções que dependem de escala.
-    dados        spin73.CoefAjuste alternativo (outros blocos DATA); padrão: os do listing
+    dados        aeroballistics.CoefAjuste alternativo (outros blocos DATA); padrão: os do listing
     convencao    "spin73" ou "moderna"
     fora_da_faixa  "limitar", "nan" ou "erro"
     """
@@ -140,7 +140,7 @@ class Aerodinamica:
     # ------------------------------------------------------------------ descrição
     def descrever(self) -> str:
         p = self.projetil
-        linhas = [f"SPIN-73 reconstruído — {p.nome or 'projétil'} (VL {p.VL}, VN {p.VN}, VB {p.VB}, "
+        linhas = [f"aeroballistics (adaptado do SPIN-73) — {p.nome or 'projétil'} (VL {p.VL}, VN {p.VN}, VB {p.VB}, "
                   f"VCG {p.VCG} cal)", f"convenção: {self.convencao}"]
         if self.correcoes:
             for c in self.correcoes:

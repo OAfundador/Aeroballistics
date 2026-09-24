@@ -1,5 +1,5 @@
 """
-Todos os casos do relatório: o programa reconstruído roda com a entrada impressa de cada
+Todos os casos do relatório: o programa adaptado roda com a entrada impressa de cada
 tabela de 1973 e cada saída legível é comparada com a impressa.
 
 Casos: o 175 mm M437 (m437_tabela.csv, com estabilidade) e as demais tabelas completas,
@@ -15,7 +15,7 @@ Ficam fora das estatísticas (mas no CSV de cada caso, com o motivo):
   - identidade: célula ambígua no scan, desambiguada por identidade entre colunas impressas
     (no M437, as três células que a transcrição marcou como ambíguas).
 
-    python scripts/reconstrucao/comparacao_erros.py
+    python scripts/adaptacao/comparacao_erros.py
       -> output/verificacao/casos/pNN_*.csv         cada caso, célula a célula
       -> output/verificacao/resumo_por_caso.csv     uma linha por caso
       -> output/verificacao/resumo_erros.csv        uma linha por coluna
@@ -34,7 +34,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import caminhos                                             # noqa: E402
 
 import circularidade                                        # noqa: E402
-import spin73 as s                                          # noqa: E402
+import aeroballistics as s                                          # noqa: E402
 import tabelas_impressas as ti                              # noqa: E402
 import test_modelo_completo as tm                           # noqa: E402
 

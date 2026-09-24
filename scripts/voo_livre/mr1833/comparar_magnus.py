@@ -1,4 +1,4 @@
-"""Magnus reconstruído do SPIN-73 (E1, E2, E4) contra o experimento do BRL MR 1833.
+"""Magnus adaptado do SPIN-73 (E1, E2, E4) contra o experimento do BRL MR 1833.
 
 Conversão de normalização: o SPIN-73 usa p*d/(2V); o MR 1833 usa p*d/V.
 Logo Cnpa(SPIN) = 2 * Cmpa(MR 1833). Convenção de sinal assumida igual (BRL/Murphy).

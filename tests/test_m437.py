@@ -11,7 +11,7 @@ import numpy as np
 import pytest
 
 import caminhos
-import spin73 as s
+import aeroballistics as s
 
 TAB = s.ler_tabela(caminhos.TABELAS_1973 / "m437_tabela.csv")
 P = s.M437

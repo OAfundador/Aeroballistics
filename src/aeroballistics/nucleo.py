@@ -1,5 +1,5 @@
 """
-SPIN-73 -- reconstrução didática
+SPIN-73 -- adaptação didática
 =================================
 
 Fonte: R. H. Whyte, "SPIN-73, an Updated Version of the SPINNER Computer Program",
@@ -12,13 +12,13 @@ Onde o código Fortran foi lido (pp. 84-86 do listing), as equações seguem o C
 o que gerou as tabelas de 1973; onde não foi, seguem o texto do relatório (pp. 13-18). Cada
 divergência entre os dois está marcada no ponto em que ocorre e registrada em
 docs/NOTAS_TRANSCRICAO.md. O mapa do programa original, bloco a bloco e com as nossas
-palavras, está em spin73/programa.py (e docs/PROGRAMA_ORIGINAL.md).
+palavras, está em aeroballistics/programa.py (e docs/PROGRAMA_ORIGINAL.md).
 
 Este é o núcleo: o programa de 1973, sem correções. A interface para simuladores
-(Aerodinamica, convenções, correções opcionais) está em spin73/aero.py.
+(Aerodinamica, convenções, correções opcionais) está em aeroballistics/aero.py.
 
 Uso:
-    import spin73 as s
+    import aeroballistics as s
     t = s.tabela(s.M437)                  # dicionário com todas as colunas
     print(s.formatar(t))                  # tabela no formato do relatório
 
@@ -62,7 +62,7 @@ class Projetil:
     VN: float          # comprimento da ogiva, calibres
     VB: float          # comprimento do boattail, calibres
     VCG: float | None = None  # CG a partir do nariz, calibres (obrigatório no cálculo; se
-                              # faltar, spin73.massa.completar pode estimá-lo -- opcional)
+                              # faltar, aeroballistics.massa.completar pode estimá-lo -- opcional)
     DIA: float = 0.0   # diâmetro, in (0 = sem análise de estabilidade)
     IX: float = 0.0    # momento axial de inércia, lb·in²
     IY: float = 0.0    # momento transversal de inércia, lb·in²
@@ -119,7 +119,7 @@ class CoefAjuste:
 
     @classmethod
     def do_listing(cls) -> "CoefAjuste":
-        """Os DATA reconstruídos (ver spin73/dados/ para a situação de cada bloco)."""
+        """Os DATA recuperados (ver aeroballistics/dados/ para a situação de cada bloco)."""
         from . import dados as d
         return cls(a=d.XA.copy(), B=d.XB.copy(), C=d.XC.copy(), D=d.XD.copy(),
                    E=d.XE.copy(), F=d.XF.copy(), G=d.XG.copy())
@@ -284,7 +284,7 @@ def coeficientes(p: Projetil, k: CoefAjuste) -> dict:
     """Todas as colunas aerodinâmicas nos 17 pontos de Mach (NaN onde falta DATA)."""
     if p.VCG is None:
         raise ValueError("VCG (CG a partir do nariz, calibres) não informado. Informe-o, ou "
-                         "estime-o com spin73.massa.completar(p) (adição opcional; "
+                         "estime-o com aeroballistics.massa.completar(p) (adição opcional; "
                          "--estimar-massa na linha de comando).")
     nomes = ("CX", "CX2", "CNA", "CMA", "CPN", "CYPA", "CNPA", "CPF1", "CPF2", "CNPA2",
              "CPF5", "CNPA5", "CNPA3", "CNPA5P", "CMQ", "CLP")
@@ -384,7 +384,7 @@ def estabilidade(p: Projetil, MACH, CX, CNA, CMA, CNPA, CNPA5, CMQ, CLP,
 def tabela(p: Projetil, k: CoefAjuste | None = None) -> dict:
     """Todas as colunas que o SPIN-73 imprime, para um projétil.
 
-    As colunas cujo DATA ainda não foi reconstruído saem NaN (ver spin73/dados/);
+    As colunas cujo DATA ainda não foi recuperado saem NaN (ver aeroballistics/dados/);
     a análise de estabilidade depende do CX e sai NaN enquanto o XA não for lido.
     """
     k = CoefAjuste.do_listing() if k is None else k
@@ -442,10 +442,10 @@ def ler_tabela(caminho: str) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Avisos: onde a reconstrução é menos confiável para uma dada geometria
+# Avisos: onde a adaptação é menos confiável para uma dada geometria
 # ---------------------------------------------------------------------------
 def avisos(p: Projetil) -> list[str]:
-    """Limitações da reconstrução que afetam ESTE projétil (docs/NOTAS_TRANSCRICAO.md)."""
+    """Limitações da adaptação que afetam ESTE projétil (docs/NOTAS_TRANSCRICAO.md)."""
     a = [
         "CPN e CMα de Mach 1,2 a 5: o cartão XC15 não foi impresso no relatório e foi "
         "recuperado pelas tabelas (M437, 5\"/38 e XM380E5 conferem, com até 0,0025 cal de "

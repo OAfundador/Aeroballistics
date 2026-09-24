@@ -1,7 +1,7 @@
 """O programa inteiro, partindo SÓ da geometria, contra a tabela impressa do 175 mm M437.
 
 Diferente de test_m437.py, que recalcula a estabilidade a partir dos coeficientes
-impressos, aqui todos os coeficientes saem dos blocos DATA reconstruídos. Cada célula
+impressos, aqui todos os coeficientes saem dos blocos DATA recuperados. Cada célula
 que ainda não fecha está listada com o motivo; quando uma pendência for resolvida, o
 teste acusa e ela deve sair da lista.
 """
@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 
 import caminhos
-import spin73 as s
+import aeroballistics as s
 
 TAB = s.ler_tabela(caminhos.TABELAS_1973 / "m437_tabela.csv")
 T = s.tabela(s.M437)
@@ -25,10 +25,10 @@ CIRCULARES = {(c, m) for c in _DEPENDE_CMA for m in _CIRC_CPN}
 
 # (coluna, Mach) -> motivo. Células fora da tolerância que NÃO são circulares.
 PENDENTES = {
-    ("CNA", 0.8): "CNα reconstruído 0,0018 acima (test_cna.py, PENDENTES)",
-    ("CNA", 1.05): "CNα reconstruído 0,0022 acima (test_cna.py, PENDENTES)",
+    ("CNA", 0.8): "CNα adaptado 0,0018 acima (test_cna.py, PENDENTES)",
+    ("CNA", 1.05): "CNα adaptado 0,0022 acima (test_cna.py, PENDENTES)",
     ("CPF5", 1.1): "célula impressa ambígua 4,23? (NOTAS, T2)",
-    ("CPN", 0.95): "o CNα reconstruído (0,001 abaixo) entra ~3x no CPN; com o CNα impresso "
+    ("CPN", 0.95): "o CNα adaptado (0,001 abaixo) entra ~3x no CPN; com o CNα impresso "
                    "fecha em +0,0007 (test_cpn.py)",
     ("CX2", 0.8): "célula impressa ambígua (2,6?3); o DATA XD pede 2,805 (NOTAS, T9)",
     ("CX2", 1.1): "célula impressa ilegível; o DATA XD dá 5,002 (NOTAS, T9)",
@@ -42,7 +42,7 @@ PENDENTES = {
     # própria fórmula (pares 6/0 e 6/8).
 }
 CIRCULARES |= {("CNPA5P", 0.95), ("DELT", 0.01), ("DELT", 0.6)}
-# O CX2 subtrai o CNα reconstruído, então herda o erro dele (até 0,0022); tolerância maior.
+# O CX2 subtrai o CNα adaptado, então herda o erro dele (até 0,0022); tolerância maior.
 # O RECIP = 1/(s_d(2−s_d)) amplifica ~100x o erro de s_d quando s_d ~ −0,07 (Mach 0,01 e 0,6).
 TOL = {"CMA": 0.004, "CX2": 0.0045, "SPIN": 0.15, "W1": 0.05, "W2": 0.05, "RECIP": 0.08,
        "RECIP5": 0.003, **{c: 1.5e-6 for c in ("L1", "L2", "L15", "L25")},
@@ -78,7 +78,7 @@ def test_pendencias_ainda_pendentes():
 
 
 def test_todas_as_colunas_saem_preenchidas():
-    """Com todos os blocos DATA reconstruídos, nenhuma coluna sai NaN."""
+    """Com todos os blocos DATA recuperados, nenhuma coluna sai NaN."""
     for col in COLUNAS:
         assert np.all(np.isfinite(T[col])), col
 

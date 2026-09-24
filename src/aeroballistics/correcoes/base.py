@@ -11,7 +11,7 @@ MACH_GRID) e devolve uma tabela nova. Correções se encadeiam na ordem dada; ao
 correção precise saber das outras.
 
 Para criar uma correção nova, herde de Correcao (ou só implemente os dois membros acima) e,
-se quiser chamá-la por nome, registre-a em spin73.correcoes.registrar().
+se quiser chamá-la por nome, registre-a em aeroballistics.correcoes.registrar().
 """
 from __future__ import annotations
 

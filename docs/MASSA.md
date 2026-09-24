@@ -1,6 +1,6 @@
 # Estimativa de massa: validação
 
-O SPIN-73 recebe o CG, o peso e as inércias como entrada. `spin73.massa` é uma **adição opcional** que os estima quando faltam. `scripts/massa/validar.py` mede quanto a estimativa erra, contra projéteis com massa, CG e inércias medidos e publicados.
+O SPIN-73 recebe o CG, o peso e as inércias como entrada. `aeroballistics.massa` é uma **adição opcional** que os estima quando faltam. `scripts/massa/validar.py` mede quanto a estimativa erra, contra projéteis com massa, CG e inércias medidos e publicados.
 
 ```
 python scripts/massa/validar.py      # tabela completa; cópia em docs/resultados/massa.txt

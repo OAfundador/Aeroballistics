@@ -4,7 +4,7 @@ import csv
 import numpy as np
 
 import caminhos
-import spin73 as s
+import aeroballistics as s
 
 
 def test_arquivo_de_entrada_igual_ao_exemplo():

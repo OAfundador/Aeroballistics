@@ -3,11 +3,11 @@
     python examples/05_programa_original.py              # o bloco do CMα
     python examples/05_programa_original.py CMQ GYRO     # os blocos dessas colunas
 
-``spin73.programa.SPIN73`` descreve o programa original bloco a bloco, com as nossas palavras
+``aeroballistics.programa.SPIN73`` descreve o programa original bloco a bloco, com as nossas palavras
 e a nossa notação: fórmulas, regras, blocos DATA usados, statements do listing em que a
 leitura se baseou, o que não foi possível ler e a função que implementa cada bloco aqui. O
 listing não é reproduzido; ele está no relatório (DTIC AD0915628). O programa inteiro, em
-Markdown, está em docs/PROGRAMA_ORIGINAL.md (``spin73 --programa`` imprime o mesmo em texto).
+Markdown, está em docs/PROGRAMA_ORIGINAL.md (``aeroballistics --programa`` imprime o mesmo em texto).
 """
 from __future__ import annotations
 
@@ -19,8 +19,8 @@ from _bootstrap import preparar
 
 preparar()
 
-import spin73  # noqa: E402
-from spin73.programa import SPIN73  # noqa: E402
+import aeroballistics  # noqa: E402
+from aeroballistics.programa import SPIN73  # noqa: E402
 
 
 def main() -> None:
@@ -36,7 +36,7 @@ def main() -> None:
         b = SPIN73.de_coluna(coluna)
         print("\n" + "-" * 90)
         print(b)
-        valores = b.calcular(spin73.M437)            # pelo programa inteiro, para o 175 mm M437
+        valores = b.calcular(aeroballistics.M437)            # pelo programa inteiro, para o 175 mm M437
         print(f"\n  {coluna} do M437 nos 17 Mach:", np.round(valores[coluna], 4))
 
 
