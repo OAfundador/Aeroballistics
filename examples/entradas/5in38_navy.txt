@@ -1,0 +1,12 @@
+# 5"/38 NAVY -- cartão da Tabela 10 do relatório (p. 53), sem propriedades de massa.
+# VL: o scan deixa entre 4,580 e 4,600; o cabeçalho lê 4,593, e o Cmq o fixa em 0,001
+# (data/tabelas_1973/p53_5in38_navy.csv, linha "decidir").
+nome  = 5/38 NAVY
+VL    = 4.593      # comprimento total, calibres
+VN    = 2.150      # ogiva, calibres
+VB    = 0.350      # boattail, calibres
+VCG   = 2.710      # CG a partir do nariz, calibres
+DM    = 0.100      # meplat, calibres
+BD    = 1.040      # cinta, calibres
+OR    = 5.300      # raio da ogiva, calibres
+BOOM  = 0.0

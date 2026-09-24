@@ -25,9 +25,13 @@ aero = aeroballistics.Aerodinamica(p,
 
 # dentro do laço de integração
 c = aero(mach)                 # escalar ou array
-CD = c.CD0 + c.CDd2 * np.sin(alfa) ** 2
+CD = c.CD0 + c.CDd2 * np.sin(alfa) ** 2  # pequena guinada; a projeção exata está em examples/02
 Cmpa = aero.momento_magnus(mach, alfa)   # Magnus secante, entre 1° e 5°
 ```
+
+Os sete coeficientes da forma vetorial de McCoy, com CD e CLA projetados exatamente dos eixos do
+corpo para os do vento, e a grade (Mach × α) que um simulador lê direto estão em
+[examples/02_simulador_6dof.py](../examples/02_simulador_6dof.py) (`--npz`).
 
 O exemplo usa a correção opcional de voo livre; sem `correcoes`, é o programa de 1973.
 
