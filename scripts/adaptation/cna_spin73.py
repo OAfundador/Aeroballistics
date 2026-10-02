@@ -1,7 +1,7 @@
-"""Reconstructed SPIN-73 CNa: structure from the text (p. 14) + DATA XB1..XB9 as read (with
+"""Adapted SPIN-73 CNa: structure from the text (p. 14) + DATA XB1..XB9 as read (with
 corrections decided by the model) + boattail exponent threshold at Mach 0.95 (confirmed by the tables)."""
 import numpy as np
-from spin73.data.xb_read import XB
+from aeroballistics.data.xb_read import XB
 from data_cna import MACH
 from fit_B import regressors
 

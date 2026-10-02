@@ -1,4 +1,4 @@
-"""Reconstructed CNa (DATA XB as read) against the CNA columns of 10 SPIN-73 tables.
+"""Adapted CNa (DATA XB as read) against the CNA columns of 10 SPIN-73 tables.
 
 Excluded: the table on p. 44 (90 mm M71, the most degraded transcription; residual at almost
 every Mach) and the cells listed in PENDING, which still need rereading (table or DATA).
@@ -6,7 +6,7 @@ every Mach) and the cells listed in PENDING, which still need rereading (table o
 import numpy as np
 from data_cna import MACH, T
 from fit_B import regressors
-from spin73.data.xb_read import XB, CORRECTIONS
+from aeroballistics.data.xb_read import XB, CORRECTIONS
 from cna_spin73 import cna_j
 
 # (32, 2.0): printed 2.?54, pair 6/8 (with 2.864 it would close). (38, 2.0) decided the XB3 of

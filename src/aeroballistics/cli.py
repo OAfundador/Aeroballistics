@@ -1,4 +1,4 @@
-"""Command line: python -m spin73 (or the `spin73` command, once installed).
+"""Command line: python -m aeroballistics (or the `aeroballistics` command, once installed).
 
 With no addition options, the output is the CANONICAL one: the 1973 SPIN-73 with the given
 card. The additions (--estimate-mass, --correction) are optional and show in the header when
@@ -44,8 +44,8 @@ def _target(key: str) -> str:
 def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(
-        prog="spin73",
-        description="Reconstructed SPIN-73: aerodynamic coefficients and stability of a "
+        prog="aeroballistics",
+        description="aeroballistics, adapted from SPIN-73: aerodynamic coefficients and stability of a "
                     "spin-stabilized projectile, from its geometry. With no addition options, "
                     "the output is that of the 1973 program (canonical).")
     ap.add_argument("--input", help="'KEY = value' file (accepts the card keys, the metric "
@@ -73,7 +73,7 @@ def main(argv=None):
                         "'free_flight:CX0' for one coefficient only)")
     ap.add_argument("--csv", help="write every column to this CSV file")
     ap.add_argument("--program", action="store_true",
-                    help="show the original program block by block (spin73.program) and exit")
+                    help="show the original program block by block (aeroballistics.program) and exit")
     a = ap.parse_args(argv)
     if a.program:
         from .program import SPIN73
@@ -134,7 +134,7 @@ def main(argv=None):
         ap.error(str(e))
     additions += [f"correction {c.name}" for c in aero.corrections]
     t = aero.table
-    title = f"Reconstructed SPIN-73 -- {p.name or 'projectile'}"
+    title = f"aeroballistics (adapted from SPIN-73) -- {p.name or 'projectile'}"
     mode = "canonical (1973 SPIN-73)" if not additions else \
         "canonical + optional additions: " + "; ".join(additions)
     print(title)
@@ -147,7 +147,7 @@ def main(argv=None):
     print()
     print(format_table(t))
     print()
-    print("WARNINGS (limitations of the reconstruction for this geometry):")
+    print("WARNINGS (limitations of the adaptation for this geometry):")
     for x in geometry_warnings(p):
         print("  - " + x)
     if a.csv:

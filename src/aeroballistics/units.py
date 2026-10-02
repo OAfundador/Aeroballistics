@@ -1,6 +1,6 @@
 """Inputs in other units (OPTIONAL ADDITION: exact conversion only, changes no computation).
 
-The SPIN-73 card (spin73.Projectile) uses calibers, inches, pounds, lb·in² and °F. Here it can
+The SPIN-73 card (aeroballistics.Projectile) uses calibers, inches, pounds, lb·in² and °F. Here it can
 also be built with the keys below, which become the card's keys:
 
     D_MM        diameter, mm                     -> DIA  (inches)
@@ -13,7 +13,7 @@ also be built with the keys below, which become the card's keys:
     CG_BASE     CG from the BASE, calibers       -> VCG = VL − CG_BASE
     DGUN_MM     bore diameter, mm                -> DGUN (inches)
 
-And the options of the mass estimate (spin73.mass), which are not on the card:
+And the options of the mass estimate (aeroballistics.mass), which are not on the card:
 
     ESTIMATE_MASS  solid | bullet | shell        DENSITY  kg/m³        MATERIAL  steel, lead...
     BT_ANGLE       boattail angle, degrees       DB       base diameter, calibers
@@ -91,7 +91,7 @@ def projectile(**fields_in) -> Projectile:
     """Projectile from card keys and/or the alternatives above."""
     canon, opt = split(fields_in)
     if opt:
-        raise ValueError(f"{', '.join(opt)} are options of spin73.mass, not of the card")
+        raise ValueError(f"{', '.join(opt)} are options of aeroballistics.mass, not of the card")
     return Projectile(**canon)
 
 
@@ -111,7 +111,7 @@ def read_fields(path: str) -> dict:
 
 
 def read_input(path: str) -> tuple[Projectile, dict]:
-    """Like spin73.read_card, but also accepts the alternatives and the mass options.
+    """Like aeroballistics.read_card, but also accepts the alternatives and the mass options.
     Returns (Projectile, mass-estimate options)."""
     canon, opt = split(read_fields(path))
     return Projectile(**canon), opt

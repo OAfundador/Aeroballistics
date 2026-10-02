@@ -54,7 +54,7 @@ PRINTED_NAMES = {"CNPA5P": "CNPA5 (quintic, per sin⁵ᾱ)", "CNPA5": "CNPA-5 (s
 
 
 def to_modern(t: dict, VL: float | None = None) -> dict:
-    """SPIN-73 columns (dictionary from `spin73.table`) in the modern normalization
+    """SPIN-73 columns (dictionary from `aeroballistics.table`) in the modern normalization
     (pd/V, qd/V; CDδ², CLα). Positions in calibers; from the nose and, if VL is given, from
     the base."""
     g = {k: np.asarray(v, float) for k, v in t.items()}

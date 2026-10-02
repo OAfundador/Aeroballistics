@@ -1,4 +1,4 @@
-Estimate of CG and inertias (spin73.mass) against MEASURED, published values.
+Estimate of CG and inertias (aeroballistics.mass) against MEASURED, published values.
 
 Estimated/measured ratio (the measured mass is given). CG from the base, cal.
 s_g ∝ Ix²/Iy: the last column is the error the estimate carries into the gyroscopic factor.

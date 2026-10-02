@@ -76,13 +76,13 @@ E3 (Magnus at 2°) does not appear directly in the tables. It should be recovera
 
 **Duplicated page.** Pages 44 (90 mm M71) and 47 (105 mm M1) have identical bodies, with the same printing artifacts. The 105 mm M1 table is not in the scan.
 
-## T4 — Attempt to reconstruct B1..B9 (CNα), in `scripts/reconstruction/cna_spin73.py`
+## T4 — Attempt to recover B1..B9 (CNα), in `scripts/adaptation/cna_spin73.py`
 
 With 10 tables of known OR, the system has 10 equations for 9 unknowns per Mach. The fit reaches a maximum residual of ~0.004, eight times the printout's rounding (0.0005). At Mach 0.95 the residual reaches 0.03. The matrix is ill-conditioned: the smallest singular value is 0.1 % of the largest. The B values obtained are not round and are not reliable. Fixing B8 and B9 at the values read in DATA XB8/XB9 (p. 80) WORSENS the fit, so that association is not confirmed.
 
-Conclusion: with the current data, B is not reconstructed. Possible causes, in no order of probability: reading errors in CNA, terms missing from the text (the text defines CDMM, CBBD and DNX in the CNα section, but does not use them in CNAB) or the sub/supersonic threshold of the boattail exponents (E5).
+Conclusion: with the current data, B is not recovered. Possible causes, in no order of probability: reading errors in CNA, terms missing from the text (the text defines CDMM, CBBD and DNX in the CNα section, but does not use them in CNAB) or the sub/supersonic threshold of the boattail exponents (E5).
 
-## T5 — CNα reconstructed from the DATA blocks (overnight session)
+## T5 — CNα computed from the DATA blocks (overnight session)
 
 **Program structure (DIMENSION, p. 79).** The listing declares XA1..XA15, XB1..XB10, XC1..XC17, XE1..XE4, XF1..XF9 and XG1. The report's text only describes a1..a13, B1..B9 and F1..F8. So there are at least A14, A15, B10 and F9 that the text does not document, which is consistent with the long-body Magnus term (T3). The Mach grid is in `DATA XMACH`: 0.01, 0.6, 0.8, 0.9, 0.95, 1.0, 1.05, 1.1, 1.2, 1.35, 1.5, 1.75, 2, 2.5, 3, 4, 5. Confirmed.
 
@@ -90,7 +90,7 @@ Conclusion: with the current data, B is not reconstructed. Possible causes, in n
 
 **Boattail exponent threshold:** the program already uses the supersonic exponent at Mach 0.95. With the threshold at 1.0, the four tables with a boattail missed by −0.15 in that row; with 0.95 the error vanishes. This resolves item E5.
 
-**Result:** with the XB values as read, 65 % of the 170 cells (10 tables × 17 Mach) fall within the rounding (±0.0015). Six reading corrections raise that to 78 % (91 % within ±0.005). Each correction is a single number that zeroes the residual of 7 or more tables at the same time and corresponds to a confusable glyph pair (list in `src/spin73/data/xb_read.py`, `CORRECTIONS`). None was rechecked on the image.
+**Result:** with the XB values as read, 65 % of the 170 cells (10 tables × 17 Mach) fall within the rounding (±0.0015). Six reading corrections raise that to 78 % (91 % within ±0.005). Each correction is a single number that zeroes the residual of 7 or more tables at the same time and corresponds to a confusable glyph pair (list in `src/aeroballistics/data/xb_read.py`, `CORRECTIONS`). None was rechecked on the image.
 
 **What is left:**
 
@@ -98,11 +98,11 @@ Conclusion: with the current data, B is not reconstructed. Possible causes, in n
 - The 5"/38 sits +0.014 constant from Mach 2.5 to 5. Suspect: the reading of CNA (2.953 / 2.929 / 2.829 / 2.729).
 - The Mach 2.0 row in the ANSR tables and some isolated cells are listed in `test_cna.py` (`PENDING`).
 
-**Comparison with experiment (7.62 NATO, MR 1833, M ≥ 1.1; `scripts/free_flight/mr1833/compare_cna.py`, output in `docs/results/cna_mr1833.txt`).** The reconstructed CNα agrees with the M-59 (−0.03), M-61 (−0.06) and M-62 (−0.12); the experimental scatter is 0.17–0.31. For the M-80, the shortest, SPIN-73 overestimates by +0.21 (15 rounds; pure error/√n = 0.07): the model gives practically the same CNα to all four, and the experiment grows with length. The result does not depend on the ogive radius, which is uncertain for this family. The first version of this comparison gave +0.28 for the M-80 (+0.01, −0.01 and −0.08 for the others); it predates card C205 (T15), and the script reproduces those values without the card. It is a clear target for recalibrating the length term (B3/B6) on short bodies.
+**Comparison with experiment (7.62 NATO, MR 1833, M ≥ 1.1; `scripts/free_flight/mr1833/compare_cna.py`, output in `docs/results/cna_mr1833.txt`).** The adapted CNα agrees with the M-59 (−0.03), M-61 (−0.06) and M-62 (−0.12); the experimental scatter is 0.17–0.31. For the M-80, the shortest, SPIN-73 overestimates by +0.21 (15 rounds; pure error/√n = 0.07): the model gives practically the same CNα to all four, and the experiment grows with length. The result does not depend on the ogive radius, which is uncertain for this family. The first version of this comparison gave +0.28 for the M-80 (+0.01, −0.01 and −0.08 for the others); it predates card C205 (T15), and the script reproduces those values without the card. It is a clear target for recalibrating the length term (B3/B6) on short bodies.
 
 ## T6 — DATA XC and the center of pressure (task A, with numerical validation)
 
-**Reading.** XC1..XC17 read on p. 80 (`src/spin73/data/xc_read.py`). The character grid of the listing on the rotated page is x(column) = 1158 + (column − 6)·19.2 px. Split of the statements: XC1 into 11+6, XC2..XC16 into 8+9, XC17 into 10+7.
+**Reading.** XC1..XC17 read on p. 80 (`src/aeroballistics/data/xc_read.py`). The character grid of the listing on the rotated page is x(column) = 1158 + (column − 6)·19.2 px. Split of the statements: XC1 into 11+6, XC2..XC16 into 8+9, XC17 into 10+7.
 
 **Printing defect (finding).** Lines y = 1867 and y = 1900 of the rotated p. 80 are the same image (pixel correlation 0.90, against 0.65 for a neighboring line with the same prefix) and both carry the XC16 label: the continuation card of XC15 was replaced by a second copy of the first XC16 card. In other words, **XC15 from Mach 1.2 to 5.0 does not exist in the printed listing**. The two copies still disagree in one digit (11.766 and 11.768 in the 7th value of XC16), which shows the difference is in the printing, not in the content.
 
@@ -129,9 +129,9 @@ Count of CNα within ±0.0015, without p. 44 (153 cells): current XB 133, XB as 
 
 ## T6.1 — XC tested on a second table, and the XC12 cell at Mach 1.05
 
-To separate a reading error in C1..C11 from an error in C12..C16, I transcribed the CMA and CPN columns of the **5"/38 NAVY (p. 53)**, which has a 0.35 cal boattail against the M437's 1.00 cal — the weights of the two blocks change a lot between the two. The data are in `scripts/reconstruction/data_cpn.py`; the reading was checked cell by cell by the identity CMA = (VCG − CPN)·CNα with the printed CNα, which resolved two of them (CPN at Mach 0.01 and CMA at Mach 0.90, the latter a 4/8 pair).
+To separate a reading error in C1..C11 from an error in C12..C16, I transcribed the CMA and CPN columns of the **5"/38 NAVY (p. 53)**, which has a 0.35 cal boattail against the M437's 1.00 cal — the weights of the two blocks change a lot between the two. The data are in `scripts/adaptation/data_cpn.py`; the reading was checked cell by cell by the identity CMA = (VCG − CPN)·CNα with the printed CNα, which resolved two of them (CPN at Mach 0.01 and CMA at Mach 0.90, the latter a 4/8 pair).
 
-**Using the printed CNα instead of the reconstructed one.** The error of the reconstructed CNα (up to 0.002) enters CPN multiplied by about 3. With the printed CNα, the M437's CPN residual at Mach 0.95 falls from −0.0029 to +0.0007, that is, within the rounding. `cpn_spin73.cpn_cma` accepts `printed_cna` precisely for this.
+**Using the printed CNα instead of the adapted one.** The error of the adapted CNα (up to 0.002) enters CPN multiplied by about 3. With the printed CNα, the M437's CPN residual at Mach 0.95 falls from −0.0029 to +0.0007, that is, within the rounding. `cpn_spin73.cpn_cma` accepts `printed_cna` precisely for this.
 
 **Result.** With the printed CNα, the computation closes within ±0.0015 at Mach 0.90, 0.95 and 1.10 for the M437 and at 0.90, 1.00 and 1.10 for the 5"/38 — two different geometries, the same seventeen coefficients. This validates the structure of the equation and the reading of XC at those points.
 
@@ -164,7 +164,7 @@ On the 20 mm 5 cal ANSR (p. 32) the boattail is zero, which zeroes C12..C16 and 
 
 ## T8 — What the code (pp. 84-85) resolved
 
-What pp. 84–86 of the listing compute is described, in our own words and notation, in `src/spin73/program.py` (and in [ORIGINAL_PROGRAM.md](ORIGINAL_PROGRAM.md)); the listing itself is not reproduced in this repository. It carries no card number in columns 73-80 on almost every line; the numbering used here (Cnnn) is the compiler's statement sequence, printed on the left.
+What pp. 84–86 of the listing compute is described, in our own words and notation, in `src/aeroballistics/program.py` (and in [ORIGINAL_PROGRAM.md](ORIGINAL_PROGRAM.md)); the listing itself is not reproduced in this repository. It carries no card number in columns 73-80 on almost every line; the numbering used here (Cnnn) is the compiler's statement sequence, printed on the left.
 
 - **A1, s_g bias — resolved.** Card C241 computes, with Ix, Iy in lb·in² and lengths in inches, s_g = 1352.4·Ix²/(ρ·Iy·CMα·twist²·d³). The physical formula with g = 32.174 gives 1349.8 instead of 1352.4: the difference, +0.19 %, was the bias. With the code's constant, the M437's GYRO closes in every row (maximum error 0.0009, mean bias 0.017 %).
 - **E5, boattail threshold — confirmed in the code.** Card C189 switches to the supersonic exponent from the 5th point of the Mach grid: it applies from Mach 0.95.
@@ -177,9 +177,9 @@ Transcription doubt: card C205 is a condition whose variable names, as printed, 
 
 ## T9 — DATA XD (CX2) and the final XE5 card
 
-**Reading.** XD1 and the first XD2 card at the foot of p. 80, sharp; the rest on p. 81, faded. The statements here are of three cards (7 + 7 + 3 values). XD1 rises in steps of 0.5 up to Mach 1.2 and falls by the same step; XD4 goes from −1 to 0 in steps of 0.1. Data in `src/spin73/data/xd_read.py`.
+**Reading.** XD1 and the first XD2 card at the foot of p. 80, sharp; the rest on p. 81, faded. The statements here are of three cards (7 + 7 + 3 values). XD1 rises in steps of 0.5 up to Mach 1.2 and falls by the same step; XD4 goes from −1 to 0 in steps of 0.1. Data in `src/aeroballistics/data/xd_read.py`.
 
-**Validation with two tables.** In the equation CX2 = XD1 + XD2·CXCL + XD3·CRAT + XD4·VB − CNα, the 175 mm M437 gives weights 0.10 and −0.06 to XD2 and XD3; the 5"/38, 0.59 and 0.47. Fixing XD1 and XD4, each Mach gives two equations for XD2 and XD3, and the solution returns the values read at 0.01 / 0.6 / 0.9 / 1.0 / 1.05 / 1.35 / 2.0. The PRINTED CNα of each table was used, to isolate XD from the error of the reconstructed CNα.
+**Validation with two tables.** In the equation CX2 = XD1 + XD2·CXCL + XD3·CRAT + XD4·VB − CNα, the 175 mm M437 gives weights 0.10 and −0.06 to XD2 and XD3; the 5"/38, 0.59 and 0.47. Fixing XD1 and XD4, each Mach gives two equations for XD2 and XD3, and the solution returns the values read at 0.01 / 0.6 / 0.9 / 1.0 / 1.05 / 1.35 / 2.0. The PRINTED CNα of each table was used, to isolate XD from the error of the adapted CNα.
 
 | Cell | Reading | Decision | Evidence |
 |---|---|---|---|
@@ -202,7 +202,7 @@ Open: residual of 0.007 to 0.009 for the M437 at Mach 1.5 and 1.75, where the 5"
 
 ## T10 — DATA XA (CX) and the complete program
 
-**Reading** (p. 79, `src/spin73/data/xa_read.py`). XA1..XA10 in 2-line statements; XA11 and XA12 in 3 cards (7 + 7 + 3); XA13..XA15 in 2 lines (10 + 7). The count up to 17 decides the number of leading zeros of XA4 (6), XA9 (3), XA13 (3), XA14 (5) and XA15 (3). XA1 has the shape of a drag curve (0.20 subsonic, peak of 0.41 at Mach 1.05, 0.18 at Mach 5).
+**Reading** (p. 79, `src/aeroballistics/data/xa_read.py`). XA1..XA10 in 2-line statements; XA11 and XA12 in 3 cards (7 + 7 + 3); XA13..XA15 in 2 lines (10 + 7). The count up to 17 decides the number of leading zeros of XA4 (6), XA9 (3), XA13 (3), XA14 (5) and XA15 (3). XA1 has the shape of a drag curve (0.20 subsonic, peak of 0.41 at Mach 1.05, 0.18 at Mach 5).
 
 **Validation with two tables.** The 175 mm M437 and the 5"/38 give XA2 weights of opposite sign (VNX − 2.5 = +0.41 and −0.35) and XA7 very different weights (boattails of 1.00 and 0.35 cal). With the final reading, **CX closes at 17 of 17 Mach numbers in both tables** (maximum error 0.0011 and 0.0013). The 5"/38's CX column was transcribed in this session (`data_cx.py`).
 
@@ -217,11 +217,11 @@ The M437's CX = 0.105 at Mach 0.01 and 0.6, which had been decided by the printe
 
 XA13..XA15 (ogive longer than 3 calibers) are read but **not tested**: no transcribed table has VN > 3. The candidate is the 175 mm SRC (p. 68, VN = 5.5).
 
-**The complete program.** With XA, `spin73.table()` runs from the geometry to the stability analysis. For the M437, 17 of 17 close: CX, CYPA, CNPA, CPF1, CNPA5, CLP, SPIN and RECIP5. The remaining failures (CPN, CMα and, as a consequence, s_g, ω and λ) are all at the Mach numbers where XC is not complete: the faded XC12 and the missing XC15 card.
+**The complete program.** With XA, `aeroballistics.table()` runs from the geometry to the stability analysis. For the M437, 17 of 17 close: CX, CYPA, CNPA, CPF1, CNPA5, CLP, SPIN and RECIP5. The remaining failures (CPN, CMα and, as a consequence, s_g, ω and λ) are all at the Mach numbers where XC is not complete: the faded XC12 and the missing XC15 card.
 
 ## T11 — XC complete: final decisions and what stayed uncertain
 
-With XA and XD reconstructed, XC was the last block with gaps. Decisions (`src/spin73/data/xc_read.py`):
+With XA and XD recovered, XC was the last block with gaps. Decisions (`src/aeroballistics/data/xc_read.py`):
 
 | Cell | Reading | Decision | Evidence | Confidence |
 |---|---|---|---|---|
@@ -239,7 +239,7 @@ With this XC has no more NaN and the program produces the M437's 24 columns from
 
 ## T12 — Page 86: CNPA3, CNPA5, DELT, DISP and the instability rule
 
-Formula lines read under zoom (summarized in `src/spin73/program.py`). With them, the program produces **every column the original prints**.
+Formula lines read under zoom (summarized in `src/aeroballistics/program.py`). With them, the program produces **every column the original prints**.
 
 **CNPA3 and CNPA5 (cards C278-C281) — a defect of the original.**
 
@@ -288,11 +288,11 @@ The constants are those of a polynomial f(δ) = C1 + C3·δ² + C5·δ⁴ evalua
 
 ## T14 — Every table in the report transcribed
 
-Each output table (pp. 29 to 68) is in `data/tables_1973/`, with the input header. The comparison with the program, case by case, is done by `scripts/reconstruction/error_comparison.py` (see [VERIFICATION.md](VERIFICATION.md)).
+Each output table (pp. 29 to 68) is in `data/tables_1973/`, with the input header. The comparison with the program, case by case, is done by `scripts/adaptation/error_comparison.py` (see [VERIFICATION.md](VERIFICATION.md)).
 
 **Reading method.** In the dot-matrix printout, 6 and 8 come out almost the same, as do the pairs 1/3, 2/7, 4/9, 5/9 and 0/6. The raw reading (`data/tables_1973/readings/`) marks each ambiguous glyph as a class: `A` = 6 or 8, `[27]` = 2 or 7, `?` = illegible. Then `resolve_glyphs.py` tests every combination against the identities between **printed** columns: CMα = (VCG − CPN)·CNα, CNPA = CYPA·(VCG − CPF1), CNPA5 = CYPA·(VCG − CPF5) and CNPA3 + 0.1·CNPA5P = 3.75. A cell that comes out with the same value in every consistent combination is resolved, marked "identity" and kept out of the statistics. What remains ambiguous is left empty. No `DATA` and no model result enter this step. `check_identities.py` checks the finished tables: all 12 pass with no violation.
 
-**Illegible inputs.** An illegible header digit is decided by a single column, within the range the glyph allows, and that column becomes circular in that case (`scripts/reconstruction/circularity.py`). Old header readings corrected at this stage:
+**Illegible inputs.** An illegible header digit is decided by a single column, within the range the glyph allows, and that column becomes circular in that case (`scripts/adaptation/circularity.py`). Old header readings corrected at this stage:
 
 | Table | Input | Before | Now | Evidence |
 |---|---|---|---|---|
@@ -316,7 +316,7 @@ Each output table (pp. 29 to 68) is in `data/tables_1973/`, with the input heade
 
 ## T15 — Audit against the report's conventions; card C205
 
-**Conventions (Nomenclature, pp. 7-8; Appendix B, pp. 76-77).** Classic NACA/BRL style: q̄ = ½ρV², A = πd²/4, reference d. CMα and Magnus about the CG; CPN, CPF1 and CPF5 in calibers from the nose; derivatives per sin ᾱ; Magnus, Cmq and Clp with **pd/2V and qd/2V** (modern sources use pd/V and qd/V, and give half). The yaw drag is CX2 + CNα (p. 15). All of this is in `src/spin73/conventions.py`, with tests.
+**Conventions (Nomenclature, pp. 7-8; Appendix B, pp. 76-77).** Classic NACA/BRL style: q̄ = ½ρV², A = πd²/4, reference d. CMα and Magnus about the CG; CPN, CPF1 and CPF5 in calibers from the nose; derivatives per sin ᾱ; Magnus, Cmq and Clp with **pd/2V and qd/2V** (modern sources use pd/V and qd/V, and give half). The yaw drag is CX2 + CNα (p. 15). All of this is in `src/aeroballistics/conventions.py`, with tests.
 
 **Card C205 was not implemented.** The line had been left as a transcription doubt (T8), because the variable names, as printed, did not exist in the section. In this printout B comes out as A or P: the line above carries "XA7" where the code is XB7. Reread that way, the names are those of the boattail normal force, and the condition says it cannot add (if it comes out positive, it is zero). It only acts when the ogive is short (CVNN < 0) in the supersonic range, which is exactly the 5"/38 from Mach 1.75 to 5:
 
@@ -327,7 +327,7 @@ Each output table (pp. 29 to 68) is in `data/tables_1973/`, with the input heade
 
 With the rule, the Mach 1.75 XC15, decided by the M437 alone, is now confirmed by the 5"/38 as well (before, it seemed to ask for 0.629).
 
-**Other differences between the original program and this reconstruction**, with no effect on the tables, now documented in `conventions.py`:
+**Other differences between the original program and this adaptation**, with no effect on the tables, now documented in `conventions.py`:
 
 - Blank fields on the card: in the original, a blank DM is 0, a blank BD is 1.00, a blank OR is a secant ogive and **a blank TEMP is 0 °F**. The tables without mass properties print a density of 0.00270, which is that of 0 °F. `Projectile` defaults to DM = 0.12 and BD = 1.02 (the values of NAUTO = 1, "automatic dimensions") and TEMP = 59 °F. To reproduce a blank card, just pass zero.
 - Names: the program prints "CNPA5" for the quintic coefficient and "CNPA-5" for the secant slope at 5°; here they are CNPA5P and CNPA5.

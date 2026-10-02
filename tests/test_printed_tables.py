@@ -11,14 +11,14 @@ import numpy as np
 import pytest
 
 import circularity
-import spin73 as s
+import aeroballistics as s
 import printed_tables as pt
 
 MACH = [round(float(m), 2) for m in s.MACH_GRID]
 TABLES = {tb.page: tb for tb in pt.all_tables()}
 
 # The same tolerances as the M437 test: ±1.5 units in the last place; CMα and CX2 inherit the
-# error of the reconstructed CNα (up to 0.002), amplified.
+# error of the adapted CNα (up to 0.002), amplified.
 TOL = {"CMA": 0.004, "CX2": 0.0045}
 
 CIRCULAR = {page: circularity.circular(page, tb) for page, tb in TABLES.items()}
@@ -26,7 +26,7 @@ CIRCULAR = {page: circularity.circular(page, tb) for page, tb in TABLES.items()}
 PENDING = {
     29: {},
     32: {},
-    35: {("CNA", 0.95): "reconstructed CNα 0.0019 high (test_cna.py, PENDING)"},
+    35: {("CNA", 0.95): "adapted CNα 0.0019 high (test_cna.py, PENDING)"},
     38: {},
     41: {("CMA", 3.0): "0.0044: at the limit (the printed CMα closes the identity with the printed CPN and CNα)"},
     53: {
@@ -39,16 +39,16 @@ PENDING = {
     # systematic). No single change of OR, DM, BD, VN or VB closes the five columns.
     44: {(c, M): "the header geometry does not reproduce CX, CX2, CNα, CPN and CMα (NOTES, T14)"
          for c in ("CX", "CX2", "CNA", "CPN", "CMA") for M in MACH if (c, M) != ("CX", 0.01)},
-    56: {("CNA", 1.0): "reconstructed CNα 0.0016 low"},
-    59: {("CNA", 0.95): "reconstructed CNα 0.004 low (test_cna.py, PENDING)",
-         **{("CMA", M): "M101 CMα 0.009 to 0.018 high: follows the reconstructed CNα and CPN"
+    56: {("CNA", 1.0): "adapted CNα 0.0016 low"},
+    59: {("CNA", 0.95): "adapted CNα 0.004 low (test_cna.py, PENDING)",
+         **{("CMA", M): "M101 CMα 0.009 to 0.018 high: follows the adapted CNα and CPN"
             for M in (1.0, 1.05, 1.5, 2.0)},
          ("CPN", 1.2): "M101 CPN 0.007 low (0.45 cal boattail; NOTES, T14)"},
-    62: {("CNA", 0.95): "reconstructed CNα 0.0018 low"},
-    68: {("CNA", 1.05): "reconstructed CNα 0.0016 high",
+    62: {("CNA", 0.95): "adapted CNα 0.0018 low"},
+    68: {("CNA", 1.05): "adapted CNα 0.0016 high",
          ("CPN", 1.5): "CPN 0.0025 high (XC17, ogive > 3 cal)"},
     50: {
-        ("CNA", 0.95): "reconstructed CNα 0.0017 low (as on the M437 at 0.8 and 1.05)",
+        ("CNA", 0.95): "adapted CNα 0.0017 low (as on the M437 at 0.8 and 1.05)",
         ("CPN", 0.6): "the subsonic residual of Mach 0.6 (+0.0018; the M437 has +0.004): "
                       "no single coefficient explains the three tables (NOTES, T13); "
                       "the CMα stays within its tolerance",

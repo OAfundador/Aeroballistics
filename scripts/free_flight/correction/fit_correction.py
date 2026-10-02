@@ -31,7 +31,8 @@ measured prediction error is that of a projectile the fit has never seen. Each g
 the same in the fit and in the metric, so that the 45 rounds of the M101 do not dominate the
 16 of the .50.
 
-    python scripts/free_flight/correction/fit_correction.py   -> results table + src/spin73/corrections/free_flight.json
+    python scripts/free_flight/correction/fit_correction.py
+        -> results table + src/aeroballistics/corrections/free_flight.json
 """
 import json
 import sys
@@ -43,8 +44,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 import paths                                            # noqa: E402,F401
 
 import flight_data                                      # noqa: E402
-from spin73.corrections import reynolds as rn           # noqa: E402
-from spin73.corrections.free_flight import FILE as JSON_FILE   # noqa: E402
+from aeroballistics.corrections import reynolds as rn           # noqa: E402
+from aeroballistics.corrections.free_flight import FILE as JSON_FILE   # noqa: E402
 
 REGIMES = [("subsonic", 0.0, 0.9), ("transonic", 0.9, 1.25), ("supersonic", 1.25, 9.0)]
 GROUPS = ["762", "556b", "556t", "50", "m101", "m483", "762m", "30", "t203", "xm617"]
@@ -304,10 +305,10 @@ def main():
     for reg, (b, cc, n, det) in derived_cpn(ls, final).items():
         print(f"CPN   {reg:12s} groups {n}  SPIN-73 {b:7.3f}cal corrected {cc:7.3f}cal  improves in "
               f"{sum(1 for eb, ec in det.values() if ec < eb)}/{n}")
-    # the result goes to the library, which applies it (spin73.corrections.FreeFlight)
+    # the result goes to the library, which applies it (aeroballistics.corrections.FreeFlight)
     with open(JSON_FILE, "w", encoding="utf-8") as f:
         json.dump(final, f, ensure_ascii=False, indent=1)
-    print("\nFinal model (all groups), applied by spin73.Aerodynamics(..., corrections='free_flight'):")
+    print("\nFinal model (all groups), applied by aeroballistics.Aerodynamics(..., corrections='free_flight'):")
     for c, regs in final.items():
         for reg, d in regs.items():
             if d["coef"]:

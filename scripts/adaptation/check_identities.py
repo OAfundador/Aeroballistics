@@ -8,7 +8,7 @@
 None of them uses DATA: a line that violates one of them has a misread digit (or a wrong VCG
 input). The tolerance is the rounding of the columns involved.
 
-    python scripts/reconstruction/check_identities.py 35
+    python scripts/adaptation/check_identities.py 35
 """
 import sys
 from pathlib import Path

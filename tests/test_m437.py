@@ -11,7 +11,7 @@ import numpy as np
 import pytest
 
 import paths
-import spin73 as s
+import aeroballistics as s
 
 TAB = s.read_table(paths.TABLES_1973 / "m437_table.csv")
 P = s.M437

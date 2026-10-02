@@ -23,7 +23,7 @@ MACH = np.array([0.01, 0.6, 0.8, 0.9, 0.95, 1.0, 1.05, 1.1, 1.2,
 
 _n = np.nan
 
-# XC1..XC5: earlier reading (scripts/reconstruction/xc_partial.py), rechecked here on the
+# XC1..XC5: earlier reading (scripts/adaptation/xc_partial.py), rechecked here on the
 # digits marked as doubtful (see docs/TRANSCRIPTION_NOTES.md, T6).
 XC = np.array([
  # XC1  (11+6) -- 2nd, 9th, 14th, 15th were doubtful in the earlier reading

@@ -28,7 +28,7 @@ CPN   subsonic     groups 8  SPIN-73   0.281cal corrected   0.259cal  improves i
 CPN   transonic    groups 9  SPIN-73   0.271cal corrected   0.271cal  improves in 0/9
 CPN   supersonic   groups 9  SPIN-73   0.144cal corrected   0.144cal  improves in 0/9
 
-Final model (all groups), applied by spin73.Aerodynamics(..., corrections='free_flight'):
+Final model (all groups), applied by aeroballistics.Aerodynamics(..., corrections='free_flight'):
   CX0   subsonic     skin friction, L_ref = 0.196 m
   CX0   transonic    skin friction, L_ref = 0.676 m
   CX0   supersonic   skin friction, L_ref = 0.822 m

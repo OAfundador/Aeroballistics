@@ -4,7 +4,7 @@ import csv
 import numpy as np
 
 import paths
-import spin73 as s
+import aeroballistics as s
 
 
 def test_input_file_equal_to_the_example():

@@ -1,0 +1,12 @@
+# 5"/38 NAVY -- the card of the report's Table 10 (p. 53), without mass properties.
+# VL: the scan allows 4.580 to 4.600; the header reads 4.593, and the Cmq fixes it within 0.001
+# (data/tables_1973/p53_5in38_navy.csv, "decide" line).
+name  = 5/38 NAVY
+VL    = 4.593      # total length, calibers
+VN    = 2.150      # ogive, calibers
+VB    = 0.350      # boattail, calibers
+VCG   = 2.710      # CG from the nose, calibers
+DM    = 0.100      # meplat, calibers
+BD    = 1.040      # rotating band, calibers
+OR    = 5.300      # ogive radius, calibers
+BOOM  = 0.0

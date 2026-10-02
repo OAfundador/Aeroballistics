@@ -7,9 +7,9 @@ import pytest
 import fit_correction as fc
 import apply_correction
 import flight_data
-from spin73.corrections import reynolds as rn
-from spin73.corrections.free_flight import FILE
-import spin73 as s
+from aeroballistics.corrections import reynolds as rn
+from aeroballistics.corrections.free_flight import FILE
+import aeroballistics as s
 
 
 @pytest.fixture(scope="module")

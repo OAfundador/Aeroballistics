@@ -1,7 +1,7 @@
 # 5"/38 NAVY -- SPIN-73 output table (Whyte 1973), p. 53 (JP2 0056).
 # Reading with glyph classes (A = 6 or 8; [xy] = x or y; ? = illegible); see resolve_glyphs.py.
 # The columns CX, CX2, CNA, CMA, CPN, CYPA, CPF1, CPF5, CMQ and CLP were already transcribed in
-# reconstruction_*/ and magnus_clp.py; here they enter with the ambiguous cells as classes, and the
+# adaptation_*/ and magnus_clp.py; here they enter with the ambiguous cells as classes, and the
 # columns CNPA, CNPA3, CNPA5P and CNPA5 were read now. Three old readings violated the
 # identities and became classes: CPF1 0.9 (2.747), CMA 1.05 (3.749) and CMA 4.0 (3.060).
 #

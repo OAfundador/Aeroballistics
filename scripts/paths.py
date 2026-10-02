@@ -3,7 +3,7 @@
 Importing this module puts on ``sys.path`` the package (``src/``) and the script folders whose
 modules import each other; that way the scripts run from a clone without installation::
 
-    python scripts/reconstruction/error_comparison.py
+    python scripts/adaptation/error_comparison.py
 
 Each script only needs to find this folder first (``Path(__file__).parents[...]``).
 """
@@ -24,7 +24,7 @@ EXAMPLES = ROOT / "examples"
 OUTPUT = ROOT / "output"                        # generated results (outside Git)
 SOURCES = ROOT / "sources"                      # PDFs and the scan (outside Git)
 
-FOLDERS = [SRC, SCRIPTS / "reconstruction", SCRIPTS / "free_flight" / "benchmarks",
+FOLDERS = [SRC, SCRIPTS / "adaptation", SCRIPTS / "free_flight" / "benchmarks",
            SCRIPTS / "free_flight" / "correction", SCRIPTS / "free_flight" / "hitchcock",
            SCRIPTS / "free_flight" / "mr1833", SCRIPTS / "mass", SCRIPTS / "reading", TESTS]
 

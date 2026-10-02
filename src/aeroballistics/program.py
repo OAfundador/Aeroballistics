@@ -7,11 +7,11 @@ reading came (the sequential numbering the compiler printed on the left, "C164".
 could not be read and where it is implemented here. The listing is not reproduced in this
 repository; it is in the report (DTIC AD0915628).
 
-    from spin73.program import SPIN73
+    from aeroballistics.program import SPIN73
     print(SPIN73.describe())            # the whole program
     b = SPIN73.from_column("CMA")       # the block that computes CMα
     print(b)                            # formulas, rules, statements, implementation
-    b.compute(spin73.M437)              # this block's columns for one projectile
+    b.compute(aeroballistics.M437)              # this block's columns for one projectile
 
 Notation: VL, VN, VB, VCG, OR, DM, BD, BOOM, DIA, IX, IY, WGT, TWIST, DGUN, TEMP are the
 card inputs; a1..a15, b1..b9, c1..c17, d1..d4, e1..e5, f1..f9 and g1 are the values of the
@@ -42,7 +42,7 @@ class Block:
     implementation: str = ""        # where it is here, "module.function"
 
     def function(self):
-        """The function that implements the block in this reconstruction."""
+        """The function that implements the block in this adaptation."""
         module, name = self.implementation.rsplit(".", 1)
         return getattr(importlib.import_module(module), name)
 
@@ -141,7 +141,7 @@ SPIN73 = OriginalProgram((
         rules=("on the original card, blank fields mean DM = 0, BD = 1.00 and TEMP = 0 °F; "
                "here the defaults are 0.12, 1.02 and 59 °F (pass zero to reproduce the blank "
                "card)",),
-        implementation="spin73.core.air_density"),
+        implementation="aeroballistics.core.air_density"),
     Block(
         key="drag", title="Axial force at zero yaw (CX)",
         columns=("CX",), data=("XA",), statements=(164, 174), pages="83–84",
@@ -161,7 +161,7 @@ SPIN73 = OriginalProgram((
                "Δ_bt = a10·(VB − 0.65) when VB ≥ 0.65"),
         gaps=("the start of the computation is on p. 83, which was not read: the Δ_bt term "
               "follows the report text, and the output warns when it is used",),
-        implementation="spin73.core.cx"),
+        implementation="aeroballistics.core.cx"),
     Block(
         key="normal", title="Normal force, center of pressure and pitching moment",
         columns=("CNA", "CPN", "CMA"), data=("XB", "XC"), statements=(175, 212),
@@ -190,14 +190,14 @@ SPIN73 = OriginalProgram((
         gaps=("the continuation card of XC15 (Mach 1.2 to 5) was not printed: values "
               "recovered from the output tables",
               "the XC12 line is faded: cells decided by the tables"),
-        implementation="spin73.core.normal_and_moment"),
+        implementation="aeroballistics.core.normal_and_moment"),
     Block(
         key="yaw", title="Yaw term of the axial force (CX2)",
         columns=("CX2",), data=("XD",), statements=(213, 213), pages="85", source="code",
         description="The term that, added to CNα, gives the yaw drag per sin² of the yaw.",
         formulas=("CX2 = d1 + d2·L + d3·R + d4·VB − CNα   (L and R as in the drag)",),
         rules=("the yaw drag is CX2 + CNα, not CX2 (p. 15)",),
-        implementation="spin73.core.cx2"),
+        implementation="aeroballistics.core.cx2"),
     Block(
         key="magnus", title="Magnus force and moment",
         columns=("CYPA", "CNPA", "CPF1", "CPF5", "CNPA5"), data=("XE",),
@@ -213,7 +213,7 @@ SPIN73 = OriginalProgram((
                "and does not enter any printed column"),
         gaps=("the first card of XE5 (Mach 0.01 to 1.75) was not printed: values recovered "
               "from the output tables",),
-        implementation="spin73.core.magnus"),
+        implementation="aeroballistics.core.magnus"),
     Block(
         key="polynomial", title="Magnus \"polynomial coefficients\" (CNPA3, CNPA5P)",
         columns=("CNPA3", "CNPA5P"), statements=(278, 281), pages="86", source="code",
@@ -228,7 +228,7 @@ SPIN73 = OriginalProgram((
                "3.75 (a defect of the original, reproduced)",
                "the program prints \"CNPA5\" for this column and \"CNPA-5\" for the moment at "
                "5°; here they are CNPA5P and CNPA5"),
-        implementation="spin73.core.magnus_polynomial_coefs"),
+        implementation="aeroballistics.core.magnus_polynomial_coefs"),
     Block(
         key="cmq", title="Pitch damping (CMQ)",
         columns=("CMQ",), data=("XF",), statements=(232, 238), pages="85", source="code",
@@ -239,7 +239,7 @@ SPIN73 = OriginalProgram((
         rules=("Δ_lb = f9·(VL − 6) when VL > 6 (long-body term, missing from the text)",),
         gaps=("the second card of XF7 (Mach 1.1 to 2.5) was not printed: values recovered "
               "from the 5\"/38 table",),
-        implementation="spin73.core.cmq"),
+        implementation="aeroballistics.core.cmq"),
     Block(
         key="clp", title="Roll damping (CLP)",
         columns=("CLP",), data=("XG",), statements=(239, 239), pages="85", source="code",
@@ -247,7 +247,7 @@ SPIN73 = OriginalProgram((
         formulas=("CLP = g1·VL/5.51",),
         rules=("the divisor is a program constant that the text gives as 5.51, the length "
                "of the M437",),
-        implementation="spin73.core.clp"),
+        implementation="aeroballistics.core.clp"),
     Block(
         key="stability", title="Stability analysis",
         columns=("GYRO", "SBAR", "RECIP", "SBAR5", "RECIP5", "SPIN", "W1", "W2",
@@ -278,22 +278,22 @@ SPIN73 = OriginalProgram((
                "the tables use the sign above"),
         gaps=("DISP: the formula is the code's; the quantity depends on the report's "
               "reference 71 (Whyte 1970), unavailable",),
-        implementation="spin73.core.stability"),
+        implementation="aeroballistics.core.stability"),
     Block(
         key="output", title="Printout", statements=(282, 294), pages="86", source="code",
         description="For each Mach, one line with the 14 aerodynamic coefficients and, with "
                     "mass and rifling, one line with the 14 stability columns.",
-        implementation="spin73.core.format_table"),
+        implementation="aeroballistics.core.format_table"),
 ))
 
 HEADER = """# The original program, block by block
 
 A description of the 1973 SPIN-73 in our own words and notation: what each piece of the
 program computes, with which constants, where the reading came from, what could not be read
-and where it is implemented in this reconstruction. **It is not the original code**, which is
+and where it is implemented in this adaptation. **It is not the original code**, which is
 in the report (DTIC AD0915628, listing on pp. 79–86) and is not reproduced in this repository.
 
-Generated from `src/spin73/program.py` (`python -m spin73.program --doc`); the evidence for
+Generated from `src/aeroballistics/program.py` (`python -m aeroballistics.program --doc`); the evidence for
 each reading is in [TRANSCRIPTION_NOTES.md](TRANSCRIPTION_NOTES.md).
 
 Notation: VL, VN, VB, VCG, OR, DM, BD, BOOM, DIA, IX, IY, WGT, TWIST, DGUN and TEMP are the

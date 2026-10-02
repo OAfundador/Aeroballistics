@@ -1,7 +1,7 @@
 # Experimental data for the recalibration
 
 Recalibration = the same SPINNER/SPIN-73 equations, with the constants refitted to free-flight data.
-The result is NOT the original SPIN-73 and stays apart from the reconstruction: scripts in
+The result is NOT the original SPIN-73 and stays apart from the adaptation: scripts in
 `scripts/free_flight/` (this page: `mr1833/` and `hitchcock/`), data in `data/free_flight/`.
 
 ## Sources (both Distribution A)
@@ -19,7 +19,7 @@ The result is NOT the original SPIN-73 and stays apart from the reconstruction: 
 | Center of pressure | in. from the base | h (cal. from the base) | calibers from the nose |
 
 ## First result (`compare_magnus.py`)
-The reconstructed SPIN-73 Magnus overestimates that of the 7.62 by +0.3 to +0.5 (p·d/2V units)
+The adapted SPIN-73 Magnus overestimates that of the 7.62 by +0.3 to +0.5 (p·d/2V units)
 in the supersonic range and does not reproduce the sign change below Mach ~1.5. The ordering by
 length (M-80 < M-59 ≈ M-61 < M-62) is the same as in the experiment. Changing the
 normalization factor (×1) or the sign worsens the agreement, so the bias does not come from the conversion.
@@ -38,7 +38,7 @@ needs the variety of shapes in Hitchcock.
 repeated rounds: CD0 0.009/0.009; CNα 0.23/0.27; CNα·CPN 0.55/0.63; Cmq 1.5/1.1.
 There is no detectable lack of fit; the limit is the experimental noise.
 
-**Recalibrated Magnus.** With E1 fixed at the reconstructed value, the effective E of the 7.62 comes out at
+**Recalibrated Magnus.** With E1 fixed at the adapted value, the effective E of the 7.62 comes out at
 2.2–2.6 (±0.1), against 3.0–3.1 in SPIN-73. It is the bias seen in `compare_magnus.py`,
 now quantified in the model's own constant.
 
@@ -65,7 +65,7 @@ Now that XF (Cmq, with the undocumented term F9) and XC (center of pressure) hav
 
 In other words: at Mach 1.2 the model gives a damping 2.5 times larger than measured; at Mach 2 to 2.5 the error falls to 10 %. At Mach 1.2 the experimental curve itself is poorly determined (±4 to 5.5 units), because there are few rounds below 1.3 — the 0.40 factor there should be read with that caveat. The fit is of one scale factor per Mach, quadratic in (M − 2): with four nearly equal projectiles F1..F9 cannot be identified individually (rank 4), but the scale comes out well determined.
 
-**Center of pressure: no round-by-round agreement.** The reconstruction of CPN now exists at all 17 Mach numbers. The continuation card of XC15 was not printed in the report, and the nine missing cells (Mach 1.2 to 5.0) were decided by the model from the 1973 tables, not read (`src/spin73/data/xc_read.py`; `docs/TRANSCRIPTION_NOTES.md`, T6.2 and T13): Mach 1.2, 1.35, 1.5 and 2.0 by the 175 mm M437 and the 5"/38 together (`RECOVERED`); Mach 1.75 and 2.5 to 5.0 by the M437 alone (`DECIDED_M437`; the 105 mm XM380E5, left out of the decision, closes at those Mach numbers, but carries little weight in XC15). In the same range, XC1 at Mach 2.5 (read 1.90, decided 1.99) and XC12 at Mach 1.35 and 1.5 (`CORRECTIONS`) were also decided. None of these values came from free flight, so the comparison is not circular, but the model's CPN above Mach 1.1 depends on them.
+**Center of pressure: no round-by-round agreement.** The adaptation of CPN now exists at all 17 Mach numbers. The continuation card of XC15 was not printed in the report, and the nine missing cells (Mach 1.2 to 5.0) were decided by the model from the 1973 tables, not read (`src/aeroballistics/data/xc_read.py`; `docs/TRANSCRIPTION_NOTES.md`, T6.2 and T13): Mach 1.2, 1.35, 1.5 and 2.0 by the 175 mm M437 and the 5"/38 together (`RECOVERED`); Mach 1.75 and 2.5 to 5.0 by the M437 alone (`DECIDED_M437`; the 105 mm XM380E5, left out of the decision, closes at those Mach numbers, but carries little weight in XC15). In the same range, XC1 at Mach 2.5 (read 1.90, decided 1.99) and XC12 at Mach 1.35 and 1.5 (`CORRECTIONS`) were also decided. None of these values came from free flight, so the comparison is not circular, but the model's CPN above Mach 1.1 depends on them.
 
 The output lists the model-decided XC cells that enter the CPN of the rounds (Mach 1.13 to 2.85): XC15 from Mach 1.2 to 3.0, XC12 at Mach 1.35 and 1.5 and XC1 at Mach 2.5.
 
@@ -114,9 +114,9 @@ The PDF is a scan with an OCR layer that did **not** capture the numbers — onl
 
 The last two are the ones that usually go wrong. They were checked numerically on the caliber .30 Ball M2 (`tests/test_cal030.py`):
 
-- **K_M:** the CMα implied by the measured stability factor (S = 3.42), computed with SPIN-73's s_g formula and the moments of inertia from the report itself, gives **1.286** against **1.299** from (8/π)·0.51 — a 1 % difference. This validates at the same time the conversion and the reconstructed stability formula, against an independent source 25 years older.
-- **K_H:** the reconstructed Cmq at this geometry at Mach 2.49 is **−12.90** against **−13.24** from −(16/π)·2.6 — 3 %. The factor of 2 between q·d/V and q·d/2V is needed; without it almost double would be left over.
-- **K_L:** (8/π)·0.98 = 2.496 with a reconstructed CNα of 2.918 implies CX = 0.42, and the drag plot on the same page gives CX ≈ 0.38.
+- **K_M:** the CMα implied by the measured stability factor (S = 3.42), computed with SPIN-73's s_g formula and the moments of inertia from the report itself, gives **1.286** against **1.299** from (8/π)·0.51 — a 1 % difference. This validates at the same time the conversion and the adapted stability formula, against an independent source 25 years older.
+- **K_H:** the adapted Cmq at this geometry at Mach 2.49 is **−12.90** against **−13.24** from −(16/π)·2.6 — 3 %. The factor of 2 between q·d/V and q·d/2V is needed; without it almost double would be left over.
+- **K_L:** (8/π)·0.98 = 2.496 with an adapted CNα of 2.918 implies CX = 0.42, and the drag plot on the same page gives CX ≈ 0.38.
 
 That is: at Mach 2.5 for this projectile, SPIN-73's Cmq misses by 3 %. It is consistent with what the 7.62 showed (factor 0.90 at Mach 2 to 2.5) and reinforces that the Cmq problem is in the transonic range, not the supersonic one.
 
@@ -159,7 +159,7 @@ The Ball M1 misses in the same direction in all three series. The suspect cell, 
 
 For the two square-base projectiles the model gets Cmq within 3–10 % and CNα consistently with the drag. For the Ball M1, with a boattail, it misses Cmq by 25 % and CNα by about 0.5 — but it is also the projectile whose data are internally inconsistent in the source. **Nothing can be concluded about SPIN-73's boattail terms from a single doubtful point**: boattails from other caliber sections are needed.
 
-**CMα against the experiment** (`compare_cma_cal030.py`, output in `docs/results/cma_cal030.txt`). With XC15 from Mach 1.2 to 5 decided by the 1973 tables, the reconstructed CPN exists over the whole range, and the model's CMα, (VCG − CPN)·CNα, can be compared with (8/π)·K_M. Assumptions: DM = 0.12 (not dimensioned in the sketches; it is the convention of the small-arms sources in `correction/flight_data.py`), printed Mach or V/a with a = 1113 ft/s, the Frangible M22 with the contour of the Ball M2 (note on p. 18) and, for the Tracer M1, the mean CG, with which the report computes the apparent K_M.
+**CMα against the experiment** (`compare_cma_cal030.py`, output in `docs/results/cma_cal030.txt`). With XC15 from Mach 1.2 to 5 decided by the 1973 tables, the adapted CPN exists over the whole range, and the model's CMα, (VCG − CPN)·CNα, can be compared with (8/π)·K_M. Assumptions: DM = 0.12 (not dimensioned in the sketches; it is the convention of the small-arms sources in `correction/flight_data.py`), printed Mach or V/a with a = 1113 ft/s, the Frangible M22 with the contour of the Ball M2 (note on p. 18) and, for the Tracer M1, the mean CG, with which the report computes the apparent K_M.
 
 | Projectile | Mach | CMα model / measured | Reading of the row |
 |---|---|---|---|

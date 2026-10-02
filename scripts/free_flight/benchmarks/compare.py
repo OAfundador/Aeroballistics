@@ -1,9 +1,9 @@
-"""Reconstructed SPIN-73 against free-flight data from other sources (benchmarks).
+"""Adapted SPIN-73 against free-flight data from other sources (benchmarks).
 
 Each benchmark is a CSV with the SOURCE's conventions in the header. Here the data are
-brought to the SPIN-73 normalization (spin73/conventions.py) and the program runs at each
+brought to the SPIN-73 normalization (aeroballistics/conventions.py) and the program runs at each
 round's Mach (linear interpolation on the 17-point grid). This measures SPIN-73 against
-reality, not the reconstruction against SPIN-73 (that is in docs/VERIFICATION.md).
+reality, not the adaptation against SPIN-73 (that is in docs/VERIFICATION.md).
 
     python scripts/free_flight/benchmarks/compare.py
 """
@@ -16,7 +16,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 import paths                                          # noqa: E402
 
-import spin73 as s                                    # noqa: E402
+import aeroballistics as s                                    # noqa: E402
 
 DATA = paths.FREE_FLIGHT
 

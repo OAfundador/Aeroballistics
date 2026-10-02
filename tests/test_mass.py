@@ -1,17 +1,17 @@
-"""Optional input additions: mass estimate (spin73.mass) and units (spin73.units)."""
+"""Optional input additions: mass estimate (aeroballistics.mass) and units (aeroballistics.units)."""
 import math
 
 import numpy as np
 import pytest
 
-import spin73
-from spin73 import mass, units
+import aeroballistics
+from aeroballistics import mass, units
 
 
 def test_integrals_match_the_analytic_cone_cylinder():
     """Sharp cone + cylinder: closed formulas for volume, CG and inertias."""
     VN, Lc, R = 2.0, 1.5, 0.5
-    p = spin73.Projectile(VL=VN + Lc, VN=VN, VB=0.0, OR=1000.0, DM=0.0)
+    p = aeroballistics.Projectile(VL=VN + Lc, VN=VN, VB=0.0, OR=1000.0, DM=0.0)
     I, _ = mass.integrals(p)
     v1, v2 = math.pi * R * R * VN / 3, math.pi * R * R * Lc
     x1, x2 = 0.75 * VN, VN + Lc / 2
@@ -26,7 +26,7 @@ def test_integrals_match_the_analytic_cone_cylinder():
 
 def test_tangent_ogive_reaches_the_shoulder_without_a_corner():
     """With OR = VN² + 0.25 (tangent, no meplat), the arc reaches the shoulder with radius 0.5."""
-    p = spin73.Projectile(VL=5.0, VN=2.0, VB=0.0, OR=2.0 ** 2 + 0.25, DM=0.0)
+    p = aeroballistics.Projectile(VL=5.0, VN=2.0, VB=0.0, OR=2.0 ** 2 + 0.25, DM=0.0)
     pieces, notes = mass.contour(p)
     a, b, f = pieces[0]
     r = f(np.array([0.0, 1.0, 1.999, 2.0]))
@@ -36,7 +36,7 @@ def test_tangent_ogive_reaches_the_shoulder_without_a_corner():
 
 
 def test_hitchcock_formulas():
-    p = spin73.Projectile(VL=4.0, VN=2.0, VB=0.4, OR=8.0)
+    p = aeroballistics.Projectile(VL=4.0, VN=2.0, VB=0.4, OR=8.0)
     pm = mass.estimate(p, "bullet", mass_g=10.0, d_mm=7.82)
     m, d, L = 0.010, 7.82e-3, 4.0 * 7.82e-3
     assert pm.cg_base == pytest.approx(0.400 * 4.0)
@@ -49,7 +49,7 @@ def test_hitchcock_formulas():
 
 
 def test_complete_does_not_replace_what_was_given():
-    p = spin73.Projectile(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12, DIA=0.224, WGT=4.05 / 453.59237,
+    p = aeroballistics.Projectile(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12, DIA=0.224, WGT=4.05 / 453.59237,
                           IX=1.0)                             # given IX (even an absurd one) stays
     q = mass.complete(p, "solid")
     assert q.IX == 1.0 and q.WGT == p.WGT
@@ -58,7 +58,7 @@ def test_complete_does_not_replace_what_was_given():
 
 
 def test_cg_only_without_diameter_and_mass_from_density():
-    p = spin73.Projectile(VL=4.05, VN=1.90, VB=0.40, OR=7.9)
+    p = aeroballistics.Projectile(VL=4.05, VN=1.90, VB=0.40, OR=7.9)
     pm = mass.estimate(p)
     assert pm.mass_kg is None and 2.0 < pm.cg_nose < 3.0
     q = mass.complete(p)                                      # VCG only
@@ -70,7 +70,7 @@ def test_cg_only_without_diameter_and_mass_from_density():
 
 
 def test_validation_keeps_the_documented_ranges():
-    """The error ranges written in spin73/mass.py come from scripts/mass/validate.py."""
+    """The error ranges written in aeroballistics/mass.py come from scripts/mass/validate.py."""
     import validate
     res = validate.evaluate()
     bullets = [r for r in res if r["kind"] == "bullet"]
@@ -100,13 +100,13 @@ def test_units_convert_to_the_card():
 
 
 def test_without_vcg_the_canonical_asks_for_the_cg():
-    p = spin73.Projectile(VL=4.05, VN=1.90, VB=0.40)
+    p = aeroballistics.Projectile(VL=4.05, VN=1.90, VB=0.40)
     with pytest.raises(ValueError, match="VCG"):
-        spin73.table(p)
+        aeroballistics.table(p)
 
 
 def _cli(args, capsys):
-    spin73.cli.main(args)
+    aeroballistics.cli.main(args)
     return capsys.readouterr().out
 
 
@@ -127,5 +127,5 @@ def test_cli_canonical_and_with_additions(capsys, tmp_path):
 
 def test_cli_without_vcg_without_estimate_is_an_error(capsys):
     with pytest.raises(SystemExit):
-        spin73.cli.main(["--VL", "4.05", "--VN", "1.90", "--VB", "0.40"])
+        aeroballistics.cli.main(["--VL", "4.05", "--VN", "1.90", "--VB", "0.40"])
     assert "--estimate-mass" in capsys.readouterr().err

@@ -1,7 +1,7 @@
 """The whole program, starting ONLY from the geometry, against the printed table of the 175 mm M437.
 
 Unlike test_m437.py, which recomputes the stability from the printed coefficients, here every
-coefficient comes from the reconstructed DATA blocks. Each cell that does not close yet is
+coefficient comes from the recovered DATA blocks. Each cell that does not close yet is
 listed with the reason; when a pending item is resolved, the test flags it and it must leave
 the list.
 """
@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 
 import paths
-import spin73 as s
+import aeroballistics as s
 
 TAB = s.read_table(paths.TABLES_1973 / "m437_table.csv")
 T = s.table(s.M437)
@@ -25,10 +25,10 @@ CIRCULAR = {(c, m) for c in _DEPENDS_ON_CMA for m in _CIRC_CPN}
 
 # (column, Mach) -> reason. Cells outside the tolerance that are NOT circular.
 PENDING = {
-    ("CNA", 0.8): "reconstructed CNα 0.0018 high (test_cna.py, PENDING)",
-    ("CNA", 1.05): "reconstructed CNα 0.0022 high (test_cna.py, PENDING)",
+    ("CNA", 0.8): "adapted CNα 0.0018 high (test_cna.py, PENDING)",
+    ("CNA", 1.05): "adapted CNα 0.0022 high (test_cna.py, PENDING)",
     ("CPF5", 1.1): "ambiguous printed cell 4.23? (NOTES, T2)",
-    ("CPN", 0.95): "the reconstructed CNα (0.001 low) enters ~3x into the CPN; with the printed CNα "
+    ("CPN", 0.95): "the adapted CNα (0.001 low) enters ~3x into the CPN; with the printed CNα "
                    "it closes at +0.0007 (test_cpn.py)",
     ("CX2", 0.8): "ambiguous printed cell (2.6?3); the DATA XD asks for 2.805 (NOTES, T9)",
     ("CX2", 1.1): "illegible printed cell; the DATA XD gives 5.002 (NOTES, T9)",
@@ -42,7 +42,7 @@ PENDING = {
     # (pairs 6/0 and 6/8).
 }
 CIRCULAR |= {("CNPA5P", 0.95), ("DELT", 0.01), ("DELT", 0.6)}
-# CX2 subtracts the reconstructed CNα, so it inherits its error (up to 0.0022); larger tolerance.
+# CX2 subtracts the adapted CNα, so it inherits its error (up to 0.0022); larger tolerance.
 # RECIP = 1/(s_d(2−s_d)) amplifies the error of s_d ~100x when s_d ~ −0.07 (Mach 0.01 and 0.6).
 TOL = {"CMA": 0.004, "CX2": 0.0045, "SPIN": 0.15, "W1": 0.05, "W2": 0.05, "RECIP": 0.08,
        "RECIP5": 0.003, **{c: 1.5e-6 for c in ("L1", "L2", "L15", "L25")},
@@ -78,7 +78,7 @@ def test_pending_items_still_pending():
 
 
 def test_every_column_comes_out_filled():
-    """With every DATA block reconstructed, no column comes out NaN."""
+    """With every DATA block recovered, no column comes out NaN."""
     for col in COLUMNS:
         assert np.all(np.isfinite(T[col])), col
 

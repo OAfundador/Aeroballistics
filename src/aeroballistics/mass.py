@@ -35,7 +35,7 @@ What the contour does not have: rotating band, cannelure, cavity, rounded tip, r
 (it enters as a frustum). The boattail angle is not a SPIN-73 input: the default is 8° (the
 same as the friction correction); give `bt_angle` or the base diameter `db` if you know it.
 
-    from spin73 import mass
+    from aeroballistics import mass
     pm = mass.estimate(p, mass_g=4.0, d_mm=5.69)        # MassProperties
     p2 = mass.complete(p, mass_g=4.0)                   # Projectile with what was missing filled in
 """

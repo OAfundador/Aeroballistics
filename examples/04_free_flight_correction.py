@@ -18,17 +18,17 @@ from _bootstrap import prepare
 
 prepare()
 
-import spin73  # noqa: E402
-from spin73.corrections.free_flight import FreeFlight  # noqa: E402
+import aeroballistics  # noqa: E402
+from aeroballistics.corrections.free_flight import FreeFlight  # noqa: E402
 
-M855 = spin73.Projectile(VL=4.05, VN=1.90, VB=0.40, VCG=4.05 - 1.54, OR=7.9, BD=1.00,
+M855 = aeroballistics.Projectile(VL=4.05, VN=1.90, VB=0.40, VCG=4.05 - 1.54, OR=7.9, BD=1.00,
                          DIA=5.69 / 25.4, name="5.56 mm M855")
 
 
 def main() -> None:
-    canonical = spin73.Aerodynamics(M855)
-    cx0_only = spin73.Aerodynamics(M855, corrections="free_flight:CX0")
-    everything = spin73.Aerodynamics(M855, corrections="free_flight")
+    canonical = aeroballistics.Aerodynamics(M855)
+    cx0_only = aeroballistics.Aerodynamics(M855, corrections="free_flight:CX0")
+    everything = aeroballistics.Aerodynamics(M855, corrections="free_flight")
     print(everything.describe())
 
     print(f"\n{'Mach':>5s} {'CX0 1973':>9s} {'free_flight:CX0':>16s} {'diff.':>7s}   "

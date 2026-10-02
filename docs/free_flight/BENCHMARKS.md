@@ -1,6 +1,6 @@
 # Benchmarks: SPIN-73 against free flight
 
-Here the question is **"does SPIN-73 get reality right?"**, not "does the reconstruction reproduce SPIN-73?" (that one is in [../VERIFICATION.md](../VERIFICATION.md)). In every case, the reconstruction runs with the source's geometry, and the result is compared with the spark-range measurements, round by round, after converting them to the SPIN-73 convention.
+Here the question is **"does SPIN-73 get reality right?"**, not "does the adaptation reproduce SPIN-73?" (that one is in [../VERIFICATION.md](../VERIFICATION.md)). In every case, the adaptation runs with the source's geometry, and the result is compared with the spark-range measurements, round by round, after converting them to the SPIN-73 convention.
 
 ```
 python scripts/free_flight/benchmarks/compare.py
@@ -18,7 +18,7 @@ python scripts/free_flight/benchmarks/compare.py
 | `t203_karpov1955.csv` | Karpov et al., BRL MR 956 (1955), DTIC AD0086528 | 175 mm T203, 90 mm models with boattail and with square base, 35 rounds | BRL **K notation**, as printed |
 | `xm617_brandon1969.csv` | Brandon, BRL MR 1998 (1969), DTIC AD0857512 | 152 mm XM617, cone-cylinder, full scale, 14 rounds | modern, with **CNα** (not CLα); CPN from the base |
 
-The CSVs are in `data/free_flight/`, and the conversions in `src/spin73/conventions.py`. Each CSV carries in its header the source's own definitions and the doubtful cells.
+The CSVs are in `data/free_flight/`, and the conversions in `src/aeroballistics/conventions.py`. Each CSV carries in its header the source's own definitions and the doubtful cells.
 
 ## Result: SPIN-73 / measured ratio (means per Mach range)
 
@@ -45,7 +45,7 @@ SPIN-73's own probable error, according to the report's Table 1 (p. 28), is 0.12
 - **Subsonic:** SPIN-73's CX0 misses by −14 % to +25 % depending on the shape. For the M483A1, the +20 % does not depend on the ogive radius adopted (0.182 to 0.193 for OR from 3.6 to 12).
 - **Subsonic Cmq and Magnus:** the scatter of the measurements themselves is as large as the value. The M101 report shows that the subsonic damping changes sign between the scale model and full scale. They are no use for calibrating anything.
 
-In none of the three cases does the reconstruction depart from what the 1973 SPIN-73 would print. For the M101, with the same input as p. 59, it reproduces the report's table. The deviations above belong to the original model.
+In none of the three cases does the adaptation depart from what the 1973 SPIN-73 would print. For the M101, with the same input as p. 59, it reproduces the report's table. The deviations above belong to the original model.
 
 ## 5.56 mm NATO (`nato556_mccoy1985.csv`)
 

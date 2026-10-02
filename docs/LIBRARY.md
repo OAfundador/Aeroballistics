@@ -8,26 +8,30 @@ At the repository root:
 pip install -e .
 ```
 
-`-e` installs in editable mode: your code can see the `spin73` package in `src/spin73/`, and any change in the repository takes effect at once, without reinstalling. The only dependency is numpy.
+`-e` installs in editable mode: your code can see the `aeroballistics` package in `src/aeroballistics/`, and any change in the repository takes effect at once, without reinstalling. The only dependency is numpy.
 
 ## In a 6DOF simulator
 
 ```python
 import numpy as np
-import spin73
+import aeroballistics
 
-p = spin73.Projectile(VL=4.05, VN=1.90, VB=0.40, VCG=2.51, OR=7.9, DM=0.12,
+p = aeroballistics.Projectile(VL=4.05, VN=1.90, VB=0.40, VCG=2.51, OR=7.9, DM=0.12,
                       DIA=0.224, name="M855")          # calibers; DIA in inches
 
-aero = spin73.Aerodynamics(p,
+aero = aeroballistics.Aerodynamics(p,
                            corrections="free_flight",  # or None for the 1973 SPIN-73
                            convention="modern")        # or "spin73"
 
 # inside the integration loop
 c = aero(mach)                 # scalar or array
-CD = c.CD0 + c.CDd2 * np.sin(alpha) ** 2
+CD = c.CD0 + c.CDd2 * np.sin(alpha) ** 2  # small yaw; the exact projection is in examples/02
 Cmpa = aero.magnus_moment(mach, alpha)   # secant Magnus, between 1° and 5°
 ```
+
+The seven coefficients of McCoy's vector form, with CD and CLA projected exactly from body to
+wind axes, and the (Mach × α) grid a simulator reads directly are in
+[examples/02_6dof_simulator.py](../examples/02_6dof_simulator.py) (`--npz`).
 
 The example uses the optional free-flight correction; without `corrections`, it is the 1973 program.
 
@@ -48,14 +52,14 @@ The aerodynamics is computed **once**, in the constructor, at the program's 17 M
 | `CNPA`, `CNPA5` (pd/2V) | `Cmpa`, `Cmpa_5deg` (pd/V) | Magnus moment at 1° and 5° (secant) |
 | `CPF1`, `CPF5` | `CPmagnus_nose` | center of pressure of the Magnus force, calibers from the nose |
 
-The moments are about the CG in the `Projectile` (`VCG`, in calibers from the nose). Details of the conversions in `src/spin73/conventions.py`.
+The moments are about the CG in the `Projectile` (`VCG`, in calibers from the nose). Details of the conversions in `src/aeroballistics/conventions.py`.
 
 ### Inputs in other units
 
-The `Projectile` is the SPIN-73 card: calibers, inches, pounds, lb·in² and °F. `spin73.units` builds the same card from metric units (exact conversion, nothing more):
+The `Projectile` is the SPIN-73 card: calibers, inches, pounds, lb·in² and °F. `aeroballistics.units` builds the same card from metric units (exact conversion, nothing more):
 
 ```python
-p = spin73.units.projectile(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12,
+p = aeroballistics.units.projectile(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12,
                             D_MM=5.69, MASS_G=4.05, IX_GCM2=0.1426, IY_GCM2=1.150,
                             TWIST_IN=7, TEMP_C=15, CG_BASE=1.54)
 ```
@@ -70,16 +74,16 @@ p = spin73.units.projectile(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12,
 | `CG_BASE` | CG from the **base**, calibers | `VCG` = VL − CG_BASE |
 | `DGUN_MM` | mm | `DGUN` |
 
-The same keys work in the command-line input file (`spin73 --input`), and each one has an option (`--d-mm`, `--mass-g`, `--cg-base`...).
+The same keys work in the command-line input file (`aeroballistics --input`), and each one has an option (`--d-mm`, `--mass-g`, `--cg-base`...).
 
 ### When the CG, mass or inertias are missing
 
-`spin73.mass` estimates what the card does not have, from the geometry. It never replaces a value that was given.
+`aeroballistics.mass` estimates what the card does not have, from the geometry. It never replaces a value that was given.
 
 ```python
-p = spin73.Projectile(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12)   # no VCG, weight, inertias
-p = spin73.mass.complete(p, "solid", mass_g=4.05, d_mm=5.69)       # fills in VCG, WGT, IX, IY
-print(spin73.mass.estimate(p, "solid", mass_g=4.05, d_mm=5.69))    # what was estimated
+p = aeroballistics.Projectile(VL=4.05, VN=1.90, VB=0.40, OR=7.9, DM=0.12)   # no VCG, weight, inertias
+p = aeroballistics.mass.complete(p, "solid", mass_g=4.05, d_mm=5.69)       # fills in VCG, WGT, IX, IY
+print(aeroballistics.mass.estimate(p, "solid", mass_g=4.05, d_mm=5.69))    # what was estimated
 ```
 
 | Method | What it is | When to use it |
@@ -106,10 +110,10 @@ Not every piece of the free-flight correction is equally firm. `corrections.Free
 
 ## Writing a new correction
 
-A correction is any object with `name` and `apply(t, p, ctx)`. `t` is the table in the SPIN-73 convention: an array of 17 values per column, with the columns of `spin73.table`. `ctx.d_mm` is the actual diameter, when there is one.
+A correction is any object with `name` and `apply(t, p, ctx)`. `t` is the table in the SPIN-73 convention: an array of 17 values per column, with the columns of `aeroballistics.table`. `ctx.d_mm` is the actual diameter, when there is one.
 
 ```python
-from spin73 import corrections
+from aeroballistics import corrections
 
 class SmallerMagnus(corrections.Correction):
     name = "smaller_magnus"
@@ -123,7 +127,7 @@ class SmallerMagnus(corrections.Correction):
         return out
 
 corrections.register("smaller_magnus", SmallerMagnus)     # optional: call it by name
-aero = spin73.Aerodynamics(p, ["free_flight", "smaller_magnus"])
+aero = aeroballistics.Aerodynamics(p, ["free_flight", "smaller_magnus"])
 ```
 
 The correction does not need to take care of the derived columns. After all the corrections, the library recomputes:
@@ -137,17 +141,17 @@ The correction does not need to take care of the derived columns. After all the 
 
 | Module | Contents | Canonical or addition |
 |---|---|---|
-| `spin73.core` | equations, `table()`, `stability()`, the `Projectile` card | **canonical**: it is the program |
-| `spin73.data` | `DATA` blocks XA..XG, with the provenance of each value | **canonical**: it is the program |
-| `spin73.aero` | `Aerodynamics`, the interface for simulators | with no options, canonical |
-| `spin73.program` | the original program as objects (`SPIN73.from_column("CMA")`, `block.compute(p)`) | documentation |
-| `spin73.conventions` | output in the modern convention | addition: exact conversion |
-| `spin73.units` | input in metric units | addition: exact conversion |
-| `spin73.mass` | estimate of CG, mass and inertias | addition: changes inputs that were missing |
-| `spin73.corrections` | corrections of the coefficients and the interface for writing new ones | addition: changes outputs, only if asked for |
-| `spin73.cli` | command line | says in the header whether the output is canonical or has additions |
+| `aeroballistics.core` | equations, `table()`, `stability()`, the `Projectile` card | **canonical**: it is the program |
+| `aeroballistics.data` | `DATA` blocks XA..XG, with the provenance of each value | **canonical**: it is the program |
+| `aeroballistics.aero` | `Aerodynamics`, the interface for simulators | with no options, canonical |
+| `aeroballistics.program` | the original program as objects (`SPIN73.from_column("CMA")`, `block.compute(p)`) | documentation |
+| `aeroballistics.conventions` | output in the modern convention | addition: exact conversion |
+| `aeroballistics.units` | input in metric units | addition: exact conversion |
+| `aeroballistics.mass` | estimate of CG, mass and inertias | addition: changes inputs that were missing |
+| `aeroballistics.corrections` | corrections of the coefficients and the interface for writing new ones | addition: changes outputs, only if asked for |
+| `aeroballistics.cli` | command line | says in the header whether the output is canonical or has additions |
 
-The corrections are **fitted** in `scripts/free_flight/correction/`, with cross-validation leaving one group of projectiles out (see [free_flight/CORRECTION.md](free_flight/CORRECTION.md)). The fit writes `src/spin73/corrections/free_flight.json`, which the library only reads. To redo the fit after adding data:
+The corrections are **fitted** in `scripts/free_flight/correction/`, with cross-validation leaving one group of projectiles out (see [free_flight/CORRECTION.md](free_flight/CORRECTION.md)). The fit writes `src/aeroballistics/corrections/free_flight.json`, which the library only reads. To redo the fit after adding data:
 
 ```
 python scripts/free_flight/correction/fit_correction.py

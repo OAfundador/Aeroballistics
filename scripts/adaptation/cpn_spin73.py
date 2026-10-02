@@ -10,20 +10,20 @@ Structure: report p. 15 (AMOMSQ, AMOMBT, CPN), with the two text corrections alr
     CPN    = (AMOMSQ + AMOMBT) / CNAT          CMA = (VCG - CPN) * CNAT
 
 CNAB is the normal force of the body without the boattail (B1..B6) and CNAT the total one
-(B1..B9); neither is printed separately, so both come from the reconstructed CNα
+(B1..B9); neither is printed separately, so both come from the adapted CNα
 (cna_spin73.py).
 
 Validation (test_cpn.py): on the 175 mm M437 the computation reproduces the printed CPN and
 CMA within 0.0007 at Mach 0.01, 0.90 and 1.10 -- the three points where all twelve
 coefficients are read without doubt. The others depend on the open items listed in
-spin73/data/xc_read.py (the faded XC12 line and the missing card of XC15). See
+aeroballistics/data/xc_read.py (the faded XC12 line and the missing card of XC15). See
 TRANSCRIPTION_NOTES.md, section T6.
 """
 import numpy as np
 
 from fit_B import regressors
-from spin73.data.xb_read import XB
-from spin73.data.xc_read import XC, MACH, CORRECTIONS, DECIDED_M437, RECOVERED
+from aeroballistics.data.xb_read import XB
+from aeroballistics.data.xc_read import XC, MACH, CORRECTIONS, DECIDED_M437, RECOVERED
 
 # Record of each XC cell decided by the model, read from the xc_read structures.
 _DECIDED = {**{k: "RECOVERED" for k in RECOVERED},
@@ -48,7 +48,7 @@ def geometry_terms(VL, VN, VB, OR, DM, M):
 def cpn_cma(VL, VN, VB, OR, DM, VCG, j, XB=XB, XC=XC, printed_cna=None):
     """CPN and CMα at grid point j. Returns NaN where DATA is missing.
 
-    `printed_cna` replaces the reconstructed CNα by the value printed in the table, and CNAB
+    `printed_cna` replaces the adapted CNα by the value printed in the table, and CNAB
     becomes CNα_printed − CNBT. That takes the CNα error out of the CPN residual (it reaches
     0.002 and, propagated, is worth up to 0.005 in the CPN) and should be used whenever the
     table's CNA column is transcribed.

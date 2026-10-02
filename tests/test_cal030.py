@@ -1,4 +1,4 @@
-"""Hitchcock's caliber 0.30 (1947) against the SPIN-73 reconstruction (1973).
+"""Hitchcock's caliber 0.30 (1947) against the SPIN-73 adaptation (1973).
 
 Three levels of validation, from the strongest to the weakest:
   1. Internal identities of the report itself (independent of SPIN-73): the geometry of each
@@ -13,9 +13,9 @@ import math
 import numpy as np
 import pytest
 
-import spin73 as s
+import aeroballistics as s
 from fit_B import regressors
-from spin73.data.xb_read import XB
+from aeroballistics.data.xb_read import XB
 from cmq_spin73 import cmq
 import conversions as cv
 from data_cal030 import (A_SOUND, B_BALL_M1_HYPOTHESIS, DAMPING, GEOMETRY, PHYSICAL,

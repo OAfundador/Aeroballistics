@@ -1,17 +1,17 @@
 cff-version: 1.2.0
-title: "SPIN-73 reconstructed: aerodynamic coefficients of spin-stabilized projectiles"
+title: "aeroballistics: aerodynamic coefficients of spin-stabilized projectiles, inspired by and adapted from SPIN-73"
 message: >-
   If you use this software, please cite it, and cite the original SPIN-73
-  report it reconstructs (see references).
+  report it is adapted from (see references).
 type: software
 authors:
   - family-names: "de Padua Sanches"
     given-names: "Luiz Guilherme"
 repository-code: "https://github.com/OAfundador/aeroballistics"
 license: MIT
-version: "0.5.0"
+version: "0.6.0"
 abstract: >-
-  A Python reconstruction of SPIN-73 (Whyte, Picatinny Arsenal TR 4588,
+  A Python library inspired by and adapted from SPIN-73 (Whyte, Picatinny Arsenal TR 4588,
   1973), which estimates the aerodynamic coefficients of a spin-stabilized
   projectile from its geometry alone and runs a stability analysis. The
   equations, the empirical DATA blocks and the program logic were read from

@@ -1,7 +1,7 @@
-"""SPIN-73 DATA blocks, gathered in one place (spin73.data).
+"""SPIN-73 DATA blocks, gathered in one place (aeroballistics.data).
 
 Each array has shape (n, 17): row i = coefficient i+1, column j = MACH[j]. The values come
-from the reconstruction modules, which keep the reading, the decided corrections and the
+from the adaptation modules, which keep the reading, the decided corrections and the
 evidence for each one. Here we only assemble the set the program uses.
 
 Status of each block (see docs/TRANSCRIPTION_NOTES.md):

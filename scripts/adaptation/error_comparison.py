@@ -1,5 +1,5 @@
 """
-Every case of the report: the reconstructed program runs with the printed input of each 1973
+Every case of the report: the adapted program runs with the printed input of each 1973
 table and each legible output is compared with the printed one.
 
 Cases: the 175 mm M437 (m437_table.csv, with stability) and the other complete tables, one
@@ -15,7 +15,7 @@ Kept out of the statistics (but in each case's CSV, with the reason):
   - identity: a cell ambiguous in the scan, disambiguated by an identity between printed
     columns (in the M437, the three cells the transcription marked as ambiguous).
 
-    python scripts/reconstruction/error_comparison.py
+    python scripts/adaptation/error_comparison.py
       -> output/verification/cases/pNN_*.csv          each case, cell by cell
       -> output/verification/summary_by_case.csv      one line per case
       -> output/verification/error_summary.csv        one line per column
@@ -34,7 +34,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import paths                                                # noqa: E402
 
 import circularity                                          # noqa: E402
-import spin73 as s                                          # noqa: E402
+import aeroballistics as s                                          # noqa: E402
 import printed_tables as pt                                 # noqa: E402
 import test_full_model as tm                                # noqa: E402
 

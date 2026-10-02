@@ -4,7 +4,7 @@
 
 The SPIN-73 card asks for calibers, inches, pounds and lb·in², and takes the CG and the
 inertias as input. Here the 5.56 mm M855 comes in mm and grams, with no CG or inertias
-(examples/inputs/m855_metric.txt), and ``spin73.mass`` estimates them from the geometry and the
+(examples/inputs/m855_metric.txt), and ``aeroballistics.mass`` estimates them from the geometry and the
 mass. The M855 has measured CG and inertias (McCoy, BRL-MR-3476, 1985, Table 1), so one can see
 how much the estimate misses and how much that changes the gyroscopic stability factor.
 
@@ -16,8 +16,8 @@ from _bootstrap import INPUTS, prepare
 
 prepare()
 
-import spin73  # noqa: E402
-from spin73 import mass, units  # noqa: E402
+import aeroballistics  # noqa: E402
+from aeroballistics import mass, units  # noqa: E402
 
 # Measured (McCoy 1985, Table 1): CG from the BASE in calibers; inertias in g·cm².
 MEASURED = dict(CG_BASE=1.54, IX_GCM2=0.1426, IY_GCM2=1.150)
@@ -43,7 +43,7 @@ def main() -> None:
     estimated = mass.complete(p, "solid", bt_angle=bt_angle)
     measured = units.projectile(name="M855 (measured)", VL=p.VL, VN=p.VN, VB=p.VB, OR=p.OR, DM=p.DM,
                                 BD=p.BD, D_MM=5.69, MASS_G=4.05, TWIST_IN=7, TEMP_C=15, **MEASURED)
-    t_est, t_meas = spin73.table(estimated), spin73.table(measured)
+    t_est, t_meas = aeroballistics.table(estimated), aeroballistics.table(measured)
     print("\nGyroscopic stability factor s_g (GYRO):")
     print(f"  {'Mach':>5s} {'measured':>8s} {'estimated':>9s}")
     for j, M in enumerate(t_meas["MACH"]):

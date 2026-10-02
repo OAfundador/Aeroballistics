@@ -1,11 +1,11 @@
-"""spin73.program: the object-oriented map of the original program."""
+"""aeroballistics.program: the object-oriented map of the original program."""
 import numpy as np
 import pytest
 
 import paths
-import spin73
-from spin73 import core
-from spin73.program import SPIN73
+import aeroballistics
+from aeroballistics import core
+from aeroballistics.program import SPIN73
 
 DOC = paths.DOCS / "ORIGINAL_PROGRAM.md"
 
@@ -29,10 +29,10 @@ def test_implementation_exists_and_statements_in_order():
 
 
 def test_compute_returns_the_program():
-    t = spin73.table(spin73.M437)
+    t = aeroballistics.table(aeroballistics.M437)
     for b in SPIN73:
         if b.columns:
-            r = b.compute(spin73.M437)
+            r = b.compute(aeroballistics.M437)
             for c in b.columns:
                 assert np.allclose(r[c], t[c], equal_nan=True), (b.key, c)
 
@@ -42,13 +42,14 @@ def test_magnus_polynomial_rule_holds_for_any_projectile():
     for geo in (dict(VL=4.05, VN=1.90, VB=0.40, VCG=2.51, OR=7.9),
                 dict(VL=9.0, VN=2.0, VB=0.0, VCG=5.05, OR=8.0),
                 dict(VL=5.51, VN=2.91, VB=1.0, VCG=3.5, OR=25.0)):
-        t = spin73.table(spin73.Projectile(**geo))
+        t = aeroballistics.table(aeroballistics.Projectile(**geo))
         assert np.allclose(t["CNPA3"] + 0.1 * t["CNPA5P"], 3.75)
 
 
 def test_generated_document_is_up_to_date():
-    """docs/ORIGINAL_PROGRAM.md is generated from spin73.program (python -m spin73.program --doc)."""
-    from spin73.program import document
+    """docs/ORIGINAL_PROGRAM.md is generated from aeroballistics.program
+    (python -m aeroballistics.program --doc)."""
+    from aeroballistics.program import document
     with open(DOC, encoding="utf-8") as f:
         assert f.read() == document()
 

@@ -1,8 +1,8 @@
 """Convention conversions: round trip, and consistency with the ones already validated in scripts/free_flight/hitchcock/."""
 import numpy as np
 
-import spin73 as s
-from spin73 import conventions as cv
+import aeroballistics as s
+from aeroballistics import conventions as cv
 
 
 def test_round_trip():

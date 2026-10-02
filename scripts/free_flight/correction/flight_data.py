@@ -1,8 +1,8 @@
 """Common base of free-flight data, in the SPIN-73 convention, for the empirical correction.
 
 Gathers the spark-range sources already transcribed and converts each coefficient to the
-SPIN-73 normalization (spin73/conventions.py): pd/2V and qd/2V, CNα (not CLα), CPN in calibers
-from the NOSE, CX0 at zero yaw. Each row also carries the value of the reconstructed SPIN-73
+SPIN-73 normalization (aeroballistics/conventions.py): pd/2V and qd/2V, CNα (not CLα), CPN in calibers
+from the NOSE, CX0 at zero yaw. Each row also carries the value of the adapted SPIN-73
 at the same Mach, with the source's geometry.
 
 Groups (the unit of the cross-validation: near-identical projectiles stay together, so that
@@ -29,7 +29,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 import paths                                            # noqa: E402
 
-import spin73 as s                                      # noqa: E402
+import aeroballistics as s                                      # noqa: E402
 
 DATA = paths.FREE_FLIGHT
 

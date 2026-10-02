@@ -1,17 +1,17 @@
 # Empirical correction of SPIN-73 with free flight
 
-The reconstructed SPIN-73 reproduces the 1973 program, errors included. Here it is corrected with spark-range measurements, **without changing the program**: the correction starts from the SPIN-73 table and adjusts what the data show can be adjusted.
+The adapted SPIN-73 reproduces the 1973 program, errors included. Here it is corrected with spark-range measurements, **without changing the program**: the correction starts from the SPIN-73 table and adjusts what the data show can be adjusted.
 
 ```
-python scripts/free_flight/correction/fit_correction.py   # validates, fits and writes src/spin73/corrections/free_flight.json
+python scripts/free_flight/correction/fit_correction.py   # validates, fits and writes src/aeroballistics/corrections/free_flight.json
 ```
 
 The fit lives in `scripts/free_flight/correction/`; the application is in the library, as an optional correction (off by default):
 
 ```python
-import spin73
-aero = spin73.Aerodynamics(p, "free_flight", d_mm=5.69)        # everything that was accepted
-aero = spin73.Aerodynamics(p, "free_flight:CX0", d_mm=5.69)    # only the drag (the robust piece)
+import aeroballistics
+aero = aeroballistics.Aerodynamics(p, "free_flight", d_mm=5.69)        # everything that was accepted
+aero = aeroballistics.Aerodynamics(p, "free_flight:CX0", d_mm=5.69)    # only the drag (the robust piece)
 ```
 
 `apply_correction.py` still exists as a shortcut (`apply_correction.corrected_table(p, d_mm)`).

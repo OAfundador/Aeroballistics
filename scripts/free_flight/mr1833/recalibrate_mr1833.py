@@ -144,7 +144,7 @@ MODELS = {
 
 
 def magnus_fit(rows):
-    """Magnus in the SPIN-73 form, with E1 fixed at the reconstructed value.
+    """Magnus in the SPIN-73 form, with E1 fixed at the adapted value.
     Cnpa = VCG*CYPA + CNPAN, CNPAN = -E1*VL*(E + 0.55*CXCL + 0.8*CVN) + VB*VL/4.7,
     linear in E. An effective E (at the rounds' mean yaw), quadratic in M, is fitted."""
     L = [l for l in rows if l["M"] >= MMIN and np.isfinite(l["CNPA"])]
@@ -184,7 +184,7 @@ if __name__ == "__main__":
 
     fit = magnus_fit(rows)
     ev = evaluate(fit, GRID)["E"]
-    print("\n" + "=" * 78 + "\nMAGNUS: recalibrated effective E (E1 fixed at the reconstructed value)")
+    print("\n" + "=" * 78 + "\nMAGNUS: recalibrated effective E (E1 fixed at the adapted value)")
     print(f"  n = {len(fit['L'])}, rms residual in Cnpa = {fit['s']:.3f}")
     print("  Mach:        " + "".join(f"{m:>12.2f}" for m in GRID))
     print("  E recalibr.  " + "".join(f"{a:7.2f}±{b:<4.2f}" for a, b in zip(*ev)))

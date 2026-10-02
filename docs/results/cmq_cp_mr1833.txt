@@ -31,7 +31,7 @@ M-62    2.50   -13.18±2.04    -16.44    -3.27
 ==============================================================================
 Center of pressure CPN (calibers from the nose) -- XC15 from Mach 1.2 to 5 decided
 ==============================================================================
-Mach points with reconstruction: 0.01, 0.60, 0.80, 0.90, 0.95, 1.00, 1.05, 1.10, 1.20, 1.35, 1.50, 1.75, 2.00, 2.50, 3.00, 4.00, 5.00
+Mach points covered by the adaptation: 0.01, 0.60, 0.80, 0.90, 0.95, 1.00, 1.05, 1.10, 1.20, 1.35, 1.50, 1.75, 2.00, 2.50, 3.00, 4.00, 5.00
 
 XC cells decided by the model (xc_read) that enter the CPN of the rounds
 (Mach 1.13 to 2.85, grid points used in the interpolation):

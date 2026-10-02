@@ -11,7 +11,7 @@ MACH_GRID) and returns a new table. Corrections are chained in the given order; 
 to know about the others.
 
 To create a new correction, inherit from Correction (or just implement the two members above)
-and, if you want to call it by name, register it with spin73.corrections.register().
+and, if you want to call it by name, register it with aeroballistics.corrections.register().
 """
 from __future__ import annotations
 

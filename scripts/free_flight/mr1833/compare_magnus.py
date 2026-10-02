@@ -1,4 +1,4 @@
-"""Reconstructed SPIN-73 Magnus (E1, E2, E4) against the BRL MR 1833 experiment.
+"""Adapted SPIN-73 Magnus (E1, E2, E4) against the BRL MR 1833 experiment.
 
 Normalization conversion: SPIN-73 uses p*d/(2V); MR 1833 uses p*d/V.
 So Cnpa(SPIN) = 2 * Cmpa(MR 1833). Same sign convention assumed (BRL/Murphy).

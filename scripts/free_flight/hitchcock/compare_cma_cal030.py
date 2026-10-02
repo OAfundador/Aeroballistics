@@ -1,8 +1,8 @@
 """
-CMα of the reconstructed SPIN-73 against Hitchcock's caliber 0.30 (BRL 620, printed p. 20).
+CMα of the adapted SPIN-73 against Hitchcock's caliber 0.30 (BRL 620, printed p. 20).
 
 Measured: CMα = (8/π)·K_M (conversions.py; the conversion was verified on the Ball M2, test_cal030.py).
-Model: CMα = (VCG − CPN)·CNα of the reconstruction (cpn_spin73.py), at the 17 grid points and
+Model: CMα = (VCG − CPN)·CNα of the adaptation (cpn_spin73.py), at the 17 grid points and
 interpolated linearly in Mach. Mach: the one printed in the table when it exists; else V / A_SOUND.
 
 ASSUMPTIONS:
@@ -36,7 +36,7 @@ import paths                                       # noqa: E402,F401  (also make
 import conversions as cv                           # noqa: E402
 from cpn_spin73 import cpn_cma, decided_cells      # noqa: E402
 from data_cal030 import A_SOUND, GEOMETRY, PHYSICAL, STABILITY  # noqa: E402
-from spin73.data.xc_read import MACH, XC, XC_READ  # noqa: E402
+from aeroballistics.data.xc_read import MACH, XC, XC_READ  # noqa: E402
 
 DM = 0.12
 CONTOUR = {"Frangible M22": "Ball M2"}              # note on p. 18
@@ -69,7 +69,7 @@ def model(g, VCG, M, DM=DM, VB=None, XC=XC):
 if __name__ == "__main__":
     L = rows()
     print("=" * 78)
-    print(f"CMα -- reconstructed SPIN-73 against Hitchcock's caliber 0.30 (DM = {DM} assumed)")
+    print(f"CMα -- adapted SPIN-73 against Hitchcock's caliber 0.30 (DM = {DM} assumed)")
     print("=" * 78)
     print(f"{'projectile':14s} {'Mach':>6s} {'VCG':>6s} {'CPN mod':>8s} {'CMα mod':>8s} {'CMα meas':>8s}"
           f" {'mod/meas':>8s}  reading")

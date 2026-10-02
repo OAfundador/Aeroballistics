@@ -1,5 +1,5 @@
 ==============================================================================
-CMα -- reconstructed SPIN-73 against Hitchcock's caliber 0.30 (DM = 0.12 assumed)
+CMα -- adapted SPIN-73 against Hitchcock's caliber 0.30 (DM = 0.12 assumed)
 ==============================================================================
 projectile       Mach    VCG  CPN mod  CMα mod CMα meas mod/meas  reading
 Ball M1         1.788  2.613    1.663    2.563    3.158    0.812  inconsistent in the source

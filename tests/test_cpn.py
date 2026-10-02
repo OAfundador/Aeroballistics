@@ -1,4 +1,4 @@
-"""Reconstructed CPN and CMα against three printed SPIN-73 tables with a boattail.
+"""Adapted CPN and CMα against three printed SPIN-73 tables with a boattail.
 
 175 mm M437 (p. 65, 1.00 cal boattail), 5"/38 NAVY (p. 53, 0.35 cal) and 105 mm XM380E5
 (p. 50, 0.59 cal). The geometries give very different weights to the boattail coefficients
@@ -6,18 +6,18 @@
 other way round. The XM380E5 decided no XC: it is a test at every Mach.
 
 Uses the PRINTED CNα of each table (see cpn_spin73.cpn_cma): without it, the error of the
-reconstructed CNα enters the CPN residual multiplied by ~3.
+adapted CNα enters the CPN residual multiplied by ~3.
 """
 import numpy as np
 import pytest
 
 import paths
-import spin73 as s
+import aeroballistics as s
 import printed_tables as pt
 from cpn_spin73 import cpn_cma
 from data_cna import T as T_CNA
 from data_cpn import CPN_538, BY_IDENTITY
-from spin73.data.xc_read import CORRECTIONS, DECIDED_M437, RECOVERED
+from aeroballistics.data.xc_read import CORRECTIONS, DECIDED_M437, RECOVERED
 
 TAB437 = s.read_table(paths.TABLES_1973 / "m437_table.csv")
 TAB380 = pt.load(50).columns

@@ -2,10 +2,10 @@
 
 A description of the 1973 SPIN-73 in our own words and notation: what each piece of the
 program computes, with which constants, where the reading came from, what could not be read
-and where it is implemented in this reconstruction. **It is not the original code**, which is
+and where it is implemented in this adaptation. **It is not the original code**, which is
 in the report (DTIC AD0915628, listing on pp. 79–86) and is not reproduced in this repository.
 
-Generated from `src/spin73/program.py` (`python -m spin73.program --doc`); the evidence for
+Generated from `src/aeroballistics/program.py` (`python -m aeroballistics.program --doc`); the evidence for
 each reading is in [TRANSCRIPTION_NOTES.md](TRANSCRIPTION_NOTES.md).
 
 Notation: VL, VN, VB, VCG, OR, DM, BD, BOOM, DIA, IX, IY, WGT, TWIST, DGUN and TEMP are the
@@ -24,7 +24,7 @@ Reads the card (geometry in calibers; diameter, inertias and weight in English u
 | Listing statements | — |
 | Pages | 76–77 (card); listing (atmosphere) |
 | Source of the reading | Appendix B and code |
-| Implementation | `spin73.core.air_density` |
+| Implementation | `aeroballistics.core.air_density` |
 
 Formulas:
 
@@ -47,7 +47,7 @@ A polynomial in the shape variables, plus three piecewise corrections: long ogiv
 | Listing statements | C164–C174 |
 | Pages | 83–84 |
 | Source of the reading | code (from C164 on) and text |
-| Implementation | `spin73.core.cx` |
+| Implementation | `aeroballistics.core.cx` |
 
 Formulas:
 
@@ -76,7 +76,7 @@ Adds the normal force and moment of the body (ogive and cylinder) to those of th
 | Listing statements | C175–C212 |
 | Pages | 84–85 |
 | Source of the reading | code |
-| Implementation | `spin73.core.normal_and_moment` |
+| Implementation | `aeroballistics.core.normal_and_moment` |
 
 Formulas:
 
@@ -110,7 +110,7 @@ The term that, added to CNα, gives the yaw drag per sin² of the yaw.
 | Listing statements | C213 |
 | Pages | 85 |
 | Source of the reading | code |
-| Implementation | `spin73.core.cx2` |
+| Implementation | `aeroballistics.core.cx2` |
 
 Formulas:
 
@@ -131,7 +131,7 @@ The Magnus force and, for three angles of attack (1°, 2° and 5°), its center 
 | Listing statements | C214–C231 |
 | Pages | 85 |
 | Source of the reading | code |
-| Implementation | `spin73.core.magnus` |
+| Implementation | `aeroballistics.core.magnus` |
 
 Formulas:
 
@@ -159,7 +159,7 @@ Two printed columns that should fit a polynomial to the Magnus moment at three a
 | Listing statements | C278–C281 |
 | Pages | 86 |
 | Source of the reading | code |
-| Implementation | `spin73.core.magnus_polynomial_coefs` |
+| Implementation | `aeroballistics.core.magnus_polynomial_coefs` |
 
 Formulas:
 
@@ -183,7 +183,7 @@ Cmq + Cmα̇ in the qd/2V convention.
 | Listing statements | C232–C238 |
 | Pages | 85 |
 | Source of the reading | code |
-| Implementation | `spin73.core.cmq` |
+| Implementation | `aeroballistics.core.cmq` |
 
 Formulas:
 
@@ -210,7 +210,7 @@ Clp in the pd/2V convention, proportional to the length.
 | Listing statements | C239 |
 | Pages | 85 |
 | Source of the reading | code |
-| Implementation | `spin73.core.clp` |
+| Implementation | `aeroballistics.core.clp` |
 
 Formulas:
 
@@ -231,7 +231,7 @@ With diameter, mass, inertias and rifling twist: the spin, the gyroscopic and dy
 | Listing statements | C240–C266 |
 | Pages | 85–86 |
 | Source of the reading | code and text (pp. 17–18) |
-| Implementation | `spin73.core.stability` |
+| Implementation | `aeroballistics.core.stability` |
 
 Formulas:
 
@@ -267,4 +267,4 @@ For each Mach, one line with the 14 aerodynamic coefficients and, with mass and 
 | Listing statements | C282–C294 |
 | Pages | 86 |
 | Source of the reading | code |
-| Implementation | `spin73.core.format_table` |
+| Implementation | `aeroballistics.core.format_table` |

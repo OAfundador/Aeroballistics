@@ -1,6 +1,6 @@
 """
-SPIN-73 -- a didactic reconstruction
-====================================
+SPIN-73 -- a didactic adaptation
+================================
 
 Source: R. H. Whyte, "SPIN-73, an Updated Version of the SPINNER Computer Program",
 Picatinny Arsenal TR 4588, Nov. 1973 (DTIC AD0915628, Distribution A).
@@ -12,13 +12,13 @@ Where the Fortran code was read (pp. 84-86 of the listing), the equations follow
 which is what produced the 1973 tables; where it was not, they follow the report text
 (pp. 13-18). Each divergence between the two is marked where it occurs and recorded in
 docs/TRANSCRIPTION_NOTES.md. A map of the original program, block by block and in our own
-words, is in spin73/program.py (and docs/ORIGINAL_PROGRAM.md).
+words, is in aeroballistics/program.py (and docs/ORIGINAL_PROGRAM.md).
 
 This is the core: the 1973 program, with no corrections. The interface for simulators
-(Aerodynamics, conventions, optional corrections) is in spin73/aero.py.
+(Aerodynamics, conventions, optional corrections) is in aeroballistics/aero.py.
 
 Usage:
-    import spin73 as s
+    import aeroballistics as s
     t = s.table(s.M437)                   # dictionary with every column
     print(s.format_table(t))              # table in the report's layout
 
@@ -61,7 +61,7 @@ class Projectile:
     VN: float          # ogive length, calibers
     VB: float          # boattail length, calibers
     VCG: float | None = None  # CG from the nose, calibers (required by the computation; if
-                              # missing, spin73.mass.complete can estimate it -- optional)
+                              # missing, aeroballistics.mass.complete can estimate it -- optional)
     DIA: float = 0.0   # diameter, in (0 = no stability analysis)
     IX: float = 0.0    # axial moment of inertia, lb·in²
     IY: float = 0.0    # transverse moment of inertia, lb·in²
@@ -118,7 +118,7 @@ class DataBlocks:
 
     @classmethod
     def from_listing(cls) -> "DataBlocks":
-        """The reconstructed DATA (see spin73/data/ for the status of each block)."""
+        """The recovered DATA (see aeroballistics/data/ for the status of each block)."""
         from . import data as d
         return cls(a=d.XA.copy(), B=d.XB.copy(), C=d.XC.copy(), D=d.XD.copy(),
                    E=d.XE.copy(), F=d.XF.copy(), G=d.XG.copy())
@@ -283,7 +283,7 @@ def coefficients(p: Projectile, k: DataBlocks) -> dict:
     """Every aerodynamic column at the 17 Mach points (NaN where DATA is missing)."""
     if p.VCG is None:
         raise ValueError("VCG (CG from the nose, calibers) not given. Give it, or estimate "
-                         "it with spin73.mass.complete(p) (optional addition; "
+                         "it with aeroballistics.mass.complete(p) (optional addition; "
                          "--estimate-mass on the command line).")
     names = ("CX", "CX2", "CNA", "CMA", "CPN", "CYPA", "CNPA", "CPF1", "CPF2", "CNPA2",
              "CPF5", "CNPA5", "CNPA3", "CNPA5P", "CMQ", "CLP")
@@ -383,7 +383,7 @@ def stability(p: Projectile, MACH, CX, CNA, CMA, CNPA, CNPA5, CMQ, CLP,
 def table(p: Projectile, k: DataBlocks | None = None) -> dict:
     """Every column SPIN-73 prints, for one projectile.
 
-    Columns whose DATA has not been reconstructed yet come out NaN (see spin73/data/);
+    Columns whose DATA has not been recovered yet come out NaN (see aeroballistics/data/);
     the stability analysis depends on CX and comes out NaN while XA is not read.
     """
     k = DataBlocks.from_listing() if k is None else k
@@ -441,10 +441,10 @@ def read_table(path: str) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Warnings: where the reconstruction is least reliable for a given geometry
+# Warnings: where the adaptation is least reliable for a given geometry
 # ---------------------------------------------------------------------------
 def geometry_warnings(p: Projectile) -> list[str]:
-    """Limitations of the reconstruction that affect THIS projectile (docs/TRANSCRIPTION_NOTES.md)."""
+    """Limitations of the adaptation that affect THIS projectile (docs/TRANSCRIPTION_NOTES.md)."""
     a = [
         "CPN and CMα from Mach 1.2 to 5: card XC15 was not printed in the report and was "
         "recovered from the tables (M437, 5\"/38 and XM380E5 agree, with residuals up to "

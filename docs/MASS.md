@@ -1,6 +1,6 @@
 # Mass estimate: validation
 
-SPIN-73 takes the CG, the weight and the inertias as input. `spin73.mass` is an **optional addition** that estimates them when they are missing. `scripts/mass/validate.py` measures how much the estimate misses, against projectiles with measured and published mass, CG and inertias.
+SPIN-73 takes the CG, the weight and the inertias as input. `aeroballistics.mass` is an **optional addition** that estimates them when they are missing. `scripts/mass/validate.py` measures how much the estimate misses, against projectiles with measured and published mass, CG and inertias.
 
 ```
 python scripts/mass/validate.py      # full table; copy in docs/results/mass.txt

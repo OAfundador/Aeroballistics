@@ -1,6 +1,6 @@
 """
 Identification of the coefficients E1, E2, E4 (Magnus) and G1 (Clp) from the SPIN-73 output
-tables -- the first step of the reconstruction from the tables.
+tables -- the first step of the adaptation from the tables.
 
 Why start here: these equations depend only on VL, VN, VB and VCG, and the coefficients show
 up one at a time. With ONE projectile (175 mm M437) each coefficient is determined exactly at

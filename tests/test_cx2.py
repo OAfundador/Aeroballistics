@@ -1,17 +1,17 @@
-"""Reconstructed CX2 (DATA XD) against three tables: 175 mm M437, 5"/38 and 105 mm XM380E5.
+"""Adapted CX2 (DATA XD) against three tables: 175 mm M437, 5"/38 and 105 mm XM380E5.
 
 Uses the PRINTED CNα of each table, because the equation subtracts CNα: that way the test
-isolates XD from the error of the reconstructed CNα.
+isolates XD from the error of the adapted CNα.
 """
 import numpy as np
 import pytest
 
 import paths
-import spin73 as s
+import aeroballistics as s
 import printed_tables as pt
 from data_cna import T as T_CNA
 from data_cx2 import CNA_SUSPECT, CX2_538, DECIDED as DECIDED_538, ILLEGIBLE
-from spin73.data.xd_read import DECIDED, XD
+from aeroballistics.data.xd_read import DECIDED, XD
 
 TAB = s.read_table(paths.TABLES_1973 / "m437_table.csv")
 

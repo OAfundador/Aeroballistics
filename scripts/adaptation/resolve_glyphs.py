@@ -15,7 +15,7 @@ and every combination of readings is tested. An ambiguous cell that comes out wi
 value in every consistent combination is resolved, and is marked "identity" (out of the
 validation counts). No DATA and no model result enter here.
 
-    python scripts/reconstruction/resolve_glyphs.py 41   -> data/tables_1973/p41_*.csv
+    python scripts/adaptation/resolve_glyphs.py 41   -> data/tables_1973/p41_*.csv
 """
 import itertools
 import os

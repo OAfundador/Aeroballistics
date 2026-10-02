@@ -1,4 +1,4 @@
-"""Reconstructed CX (DATA XA) against two tables: 175 mm M437 and 5"/38.
+"""Adapted CX (DATA XA) against two tables: 175 mm M437 and 5"/38.
 
 The two geometries give XA2 weights of opposite sign (VNX − 2.5 = +0.41 and −0.35) and XA7
 very different weights (boattail 1.00 and 0.35 cal), which separates the coefficients.
@@ -7,9 +7,9 @@ Mach 0.01 and 0.6 are left out: they are the ones that decided XA1 and XA2 at th
 import pytest
 
 import paths
-import spin73 as s
+import aeroballistics as s
 from data_cx import CX_538
-from spin73.data.xa_read import DECIDED, XA
+from aeroballistics.data.xa_read import DECIDED, XA
 
 TAB = s.read_table(paths.TABLES_1973 / "m437_table.csv")
 K = s.DataBlocks(a=XA)

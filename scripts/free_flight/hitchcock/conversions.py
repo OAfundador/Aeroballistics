@@ -15,12 +15,12 @@ against the caliber 0.30 Ball M2 (see test_cal030.py):
   - K_M: the CMα implied by the measured stability factor S (3.42), computed with the
     SPIN-73 s_g formula and the report's own moments of inertia, gives 1.286, against
     1.299 from (8/π)·0.51. A 1 % difference, within the rounding of the data. This
-    validates the conversion AND the reconstructed stability formula, against an
+    validates the conversion AND the adapted stability formula, against an
     independent source older than SPIN-73.
-  - K_H: the reconstructed Cmq for this geometry at Mach 2.49 is −12.90, against −13.24 from
+  - K_H: the adapted Cmq for this geometry at Mach 2.49 is −12.90, against −13.24 from
     −(16/π)·2.6. The factor 2 between q·d/V and q·d/2V is needed; without it a factor of
     1.95 would remain.
-  - K_L: (8/π)·0.98 = 2.496 and the reconstructed CNα is 2.918, which implies CX = 0.42; the
+  - K_L: (8/π)·0.98 = 2.496 and the adapted CNα is 2.918, which implies CX = 0.42; the
     drag plot on p. 19 of the report gives K_D ≈ 0.15 at Mach 2.5, i.e. CX ≈ 0.38.
     Compatible within the reading of the plot.
 

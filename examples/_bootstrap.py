@@ -1,4 +1,4 @@
-"""Makes the ``spin73`` package importable without installing the repository.
+"""Makes the ``aeroballistics`` package importable without installing the repository.
 
 The examples run straight from a clone (``python examples/01_m437_case.py``), so each one
 imports this module first. With the package installed (``pip install -e .``), the added path is

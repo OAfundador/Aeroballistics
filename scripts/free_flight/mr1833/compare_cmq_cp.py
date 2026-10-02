@@ -1,5 +1,5 @@
 """
-Cmq and center of pressure of the reconstructed SPIN-73 against the BRL MR 1833 free flight (7.62 NATO).
+Cmq and center of pressure of the adapted SPIN-73 against the BRL MR 1833 free flight (7.62 NATO).
 
 Completes the comparison that already existed for Magnus (`compare_magnus.py`) and for CNα
 (group 762 in `../correction/flight_data.py`): now that XF (Cmq, with the F9 term) and XC
@@ -155,7 +155,7 @@ if __name__ == "__main__":
     print("Center of pressure CPN (calibers from the nose) -- XC15 from Mach 1.2 to 5 decided")
     print("=" * 78)
     available = [f"{m:.2f}" for m, v in zip(MACH, cpn_curve(r.GEO["M-80"])) if np.isfinite(v)]
-    print("Mach points with reconstruction:", ", ".join(available))
+    print("Mach points covered by the adaptation:", ", ".join(available))
     rounds = {p: [l["M"] for l in rows if l["proj"] == p and l["M"] >= r.MMIN and np.isfinite(l["CPN"])]
               for p in PROJECTILES}
     cel = sorted({c for p in PROJECTILES for c in decided_cells(rounds[p], r.GEO[p]["VB"])},

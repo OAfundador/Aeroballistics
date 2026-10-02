@@ -1,7 +1,7 @@
 """Which cells of each printed table helped DECIDE some DATA value or some input.
 
 Those cells validate nothing in that table: they only show that the decision is consistent.
-The record comes from the decisions themselves (spin73.data.xa_read ... xf_read, data_cna.py
+The record comes from the decisions themselves (aeroballistics.data.xa_read ... xf_read, data_cna.py
 and the "decide:" lines of the CSVs), so that there is no parallel list to go stale.
 
     circular(page, table=None) -> {(column, Mach): reason}
@@ -12,14 +12,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import paths                                                  # noqa: E402,F401
 
-import spin73 as s                                            # noqa: E402
+import aeroballistics as s                                            # noqa: E402
 from data_cna import T as _T_CNA                              # noqa: E402
-from spin73.data.xa_read import DECIDED as _XA_DEC            # noqa: E402
-from spin73.data.xb_read import CORRECTIONS as _XB_CORR, DECIDED_BY as _XB_BY  # noqa: E402
-from spin73.data.xc_read import (CORRECTIONS as _XC_CORR, DECIDED_M437,  # noqa: E402
+from aeroballistics.data.xa_read import DECIDED as _XA_DEC            # noqa: E402
+from aeroballistics.data.xb_read import CORRECTIONS as _XB_CORR, DECIDED_BY as _XB_BY  # noqa: E402
+from aeroballistics.data.xc_read import (CORRECTIONS as _XC_CORR, DECIDED_M437,  # noqa: E402
                                  RECOVERED as _XC_REC)
-from spin73.data.xd_read import DECIDED as _XD_DEC            # noqa: E402
-from spin73.data.xf_read import RECOVERED as _XF_REC          # noqa: E402
+from aeroballistics.data.xd_read import DECIDED as _XD_DEC            # noqa: E402
+from aeroballistics.data.xf_read import RECOVERED as _XF_REC          # noqa: E402
 
 MACH = [round(float(m), 2) for m in s.MACH_GRID]
 

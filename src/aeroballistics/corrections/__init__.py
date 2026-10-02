@@ -1,8 +1,8 @@
-"""Optional corrections on top of the reconstructed SPIN-73 (spin73.corrections).
+"""Optional corrections on top of aeroballistics (aeroballistics.corrections).
 
 Nothing here is used by default: with no correction, the library returns the 1973 program.
 
-    from spin73 import corrections
+    from aeroballistics import corrections
     corrections.available()                   # registered names
     corrections.resolve("free_flight")        # -> [FreeFlight()]
     corrections.resolve("free_flight:CX0")    # friction only

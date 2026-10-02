@@ -5,7 +5,7 @@ import paths  # noqa: E402,F401
 import numpy as np, itertools
 from data_cna import MACH, T
 from fit_B import regressors
-from spin73.data.xb_read import XB
+from aeroballistics.data.xb_read import XB
 np.set_printoptions(precision=4, suppress=True, linewidth=180)
 P=list(T)
 def resid(XB):
