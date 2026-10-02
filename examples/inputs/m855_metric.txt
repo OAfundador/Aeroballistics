@@ -1,0 +1,16 @@
+# 5.56 mm M855 in metric units, with the mass estimate (optional additions).
+# Geometry: McCoy, BRL-MR-3476 (1985), Fig. 3; mass and twist, Table 1 and text.
+# CG and inertias are NOT here: ESTIMATE_MASS estimates them from the geometry and the mass.
+name     = M855 (metric)
+VL       = 4.05       # total length, calibers
+VN       = 1.90       # ogive, calibers
+VB       = 0.40       # boattail, calibers
+OR       = 7.9        # ogive radius, calibers
+DM       = 0.12       # meplat, calibers (not dimensioned in the source)
+BD       = 1.00       # no rotating band
+D_MM     = 5.69       # diameter, mm
+MASS_G   = 4.05       # mass, g
+TWIST_IN = 7          # rifling of 1 turn in 7 inches
+TEMP_C   = 15         # °C
+ESTIMATE_MASS = solid
+BT_ANGLE = 8.5        # boattail angle, degrees (Fig. 3)

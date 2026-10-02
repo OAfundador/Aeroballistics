@@ -1,19 +1,19 @@
-"""CX2 reconstruído (DATA XD) contra três tabelas: 175 mm M437, 5"/38 e 105 mm XM380E5.
+"""Reconstructed CX2 (DATA XD) against three tables: 175 mm M437, 5"/38 and 105 mm XM380E5.
 
-Usa o CNα IMPRESSO de cada tabela, porque a equação subtrai o CNα: assim o teste isola
-o XD do erro do CNα reconstruído.
+Uses the PRINTED CNα of each table, because the equation subtracts CNα: that way the test
+isolates XD from the error of the reconstructed CNα.
 """
 import numpy as np
 import pytest
 
-import caminhos
+import paths
 import spin73 as s
-import tabelas_impressas as ti
-from dados_cna import T as T_CNA
-from dados_cx2 import CNA_SUSPEITO, CX2_538, DECIDIDAS, ILEGIVEIS
-from spin73.dados.xd_lidos import DECIDIDOS, XD
+import printed_tables as pt
+from data_cna import T as T_CNA
+from data_cx2 import CNA_SUSPECT, CX2_538, DECIDED as DECIDED_538, ILLEGIBLE
+from spin73.data.xd_read import DECIDED, XD
 
-TAB = s.ler_tabela(caminhos.TABELAS_1973 / "m437_tabela.csv")
+TAB = s.read_table(paths.TABLES_1973 / "m437_table.csv")
 
 
 def cx2(VL, VN, VB, OR, cna, j):
@@ -22,38 +22,38 @@ def cx2(VL, VN, VB, OR, cna, j):
     return XD[0, j] + XD[1, j] * CXCL + XD[2, j] * CRAT + XD[3, j] * VB - cna
 
 
-# M437: células que não conferem, com o motivo
-M437_FORA = {2: "scan ambíguo 2,6?3; o DATA pede 2,805 (par 6/8)",
-             7: "scan ilegível; o DATA dá 5,002",
-             13: "resíduo de −0,030 em aberto; o M437 quase não pesa no XD2 (CXCL = 0,10)"}
-# Mach em que alguma célula do XD foi decidida pelo 5"/38 ou pelo M437
-CIRCULARES = {j for (_, j) in DECIDIDOS}
+# M437: cells that do not agree, with the reason
+M437_OUT = {2: "ambiguous scan 2.6?3; the DATA asks for 2.805 (pair 6/8)",
+            7: "illegible scan; the DATA gives 5.002",
+            13: "residual of −0.030 still open; the M437 barely weighs on XD2 (CXCL = 0.10)"}
+# Mach numbers where some XD cell was decided by the 5"/38 or by the M437
+CIRCULAR = {j for (_, j) in DECIDED}
 
 
-@pytest.mark.parametrize("j", [j for j in range(17) if j not in M437_FORA and j not in CIRCULARES])
+@pytest.mark.parametrize("j", [j for j in range(17) if j not in M437_OUT and j not in CIRCULAR])
 def test_m437(j):
     calc = cx2(5.51, 2.91, 1.0, 25.0, TAB["CNA"][j], j)
-    tol = 0.010 if j in (10, 11) else 0.0045          # 1,5 e 1,75: resíduo de ~0,008 em aberto
+    tol = 0.010 if j in (10, 11) else 0.0045          # 1.5 and 1.75: residual of ~0.008 still open
     assert abs(calc - TAB["CX2"][j]) <= tol, (j, calc, TAB["CX2"][j])
 
 
-@pytest.mark.parametrize("j", [j for j in range(17) if j not in DECIDIDAS and j not in ILEGIVEIS
-                               and j not in CNA_SUSPEITO and j not in CIRCULARES])
+@pytest.mark.parametrize("j", [j for j in range(17) if j not in DECIDED_538 and j not in ILLEGIBLE
+                               and j not in CNA_SUSPECT and j not in CIRCULAR])
 def test_5_38(j):
     cna = T_CNA[53][5][j]
     calc = cx2(4.59, 2.15, 0.35, 5.3, cna, j)
     assert abs(calc - CX2_538[j]) <= 0.0025, (j, calc, CX2_538[j])
 
 
-def test_releitura_do_m437_em_1_05():
-    """A transcrição antiga dizia 4,567; o scan relido diz 4,507, e o DATA dá o mesmo."""
+def test_reread_of_the_m437_at_1_05():
+    """The old transcription said 4.567; the reread scan says 4.507, and the DATA gives the same."""
     assert TAB["CX2"][6] == pytest.approx(4.507)
     assert abs(cx2(5.51, 2.91, 1.0, 25.0, TAB["CNA"][6], 6) - 4.507) < 0.0015
 
 
-# XM380E5 (p. 50): nenhum XD foi decidido por ele. O XD2 de Mach 2,5 foi decidido pelo 5"/38,
-# que tem o mesmo CXCL (0,59): esta é a conferência independente dele.
-TB380 = ti.carregar(50).colunas
+# XM380E5 (p. 50): no XD was decided by it. The XD2 of Mach 2.5 was decided by the 5"/38,
+# which has the same CXCL (0.59): this is its independent check.
+TB380 = pt.load(50).columns
 
 
 @pytest.mark.parametrize("j", [j for j in range(17) if np.isfinite(TB380["CX2"][j])])

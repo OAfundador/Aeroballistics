@@ -1,0 +1,101 @@
+==============================================================================
+Cmq  (q·d/2V) -- complete model: XF1..XF9 read, long-body term F9
+==============================================================================
+proj     n     SPIN-73 bias     exp spread
+M-80    15            -2.19           1.40  <-- bias larger than the spread
+M-59    11            -3.95           2.36  <-- bias larger than the spread
+M-61     8            -3.40           2.42  <-- bias larger than the spread
+M-62     8            -4.85           1.30  <-- bias larger than the spread
+
+pure error between repeated rounds: 1.13 (16 pairs)
+
+Against the experimental curve fitted by least squares:
+proj    Mach    experiment   SPIN-73     diff
+M-80    1.20    -4.92±5.54    -14.73    -9.81
+M-80    1.50    -6.35±2.89     -7.98    -1.62
+M-80    2.00    -7.58±3.69     -7.98    -0.39
+M-80    2.50    -7.35±2.82     -7.98    -0.62
+M-59    1.20    -7.07±4.42    -17.31   -10.23
+M-59    1.50    -9.44±2.32    -12.22    -2.77
+M-59    2.00   -11.58±2.96    -12.22    -0.63
+M-59    2.50   -11.47±2.27    -12.22    -0.75
+M-61    1.20    -7.16±4.38    -17.23   -10.07
+M-61    1.50    -9.56±2.30    -12.32    -2.76
+M-61    2.00   -11.74±2.93    -12.32    -0.59
+M-61    2.50   -11.63±2.25    -12.32    -0.70
+M-62    1.20    -7.97±3.96    -21.06   -13.09
+M-62    1.50   -10.72±2.08    -16.44    -5.72
+M-62    2.00   -13.24±2.66    -16.44    -3.20
+M-62    2.50   -13.18±2.04    -16.44    -3.27
+
+==============================================================================
+Center of pressure CPN (calibers from the nose) -- XC15 from Mach 1.2 to 5 decided
+==============================================================================
+Mach points with reconstruction: 0.01, 0.60, 0.80, 0.90, 0.95, 1.00, 1.05, 1.10, 1.20, 1.35, 1.50, 1.75, 2.00, 2.50, 3.00, 4.00, 5.00
+
+XC cells decided by the model (xc_read) that enter the CPN of the rounds
+(Mach 1.13 to 2.85, grid points used in the interpolation):
+  Mach 1.20: XC15 (RECOVERED)
+  Mach 1.35: XC12 (CORRECTIONS), XC15 (RECOVERED)
+  Mach 1.50: XC12 (CORRECTIONS), XC15 (RECOVERED)
+  Mach 1.75: XC15 (DECIDED_M437)
+  Mach 2.00: XC15 (RECOVERED)
+  Mach 2.50: XC1 (CORRECTIONS), XC15 (DECIDED_M437)
+  Mach 3.00: XC15 (DECIDED_M437)
+
+proj     n     SPIN-73 bias     exp spread
+M-80    15            +0.22           0.07  <-- bias larger than the spread
+M-59    11            +0.16           0.08  <-- bias larger than the spread
+M-61     8            +0.14           0.08  <-- bias larger than the spread
+M-62     8            -0.07           0.07  <-- bias larger than the spread
+
+pure error between repeated rounds: 0.085 (16 pairs)
+
+Against the experimental curve fitted by least squares to the measured CPN (constant + CXLL,
+quadratic in M − 2): n = 42, rms residual = 0.084
+proj    Mach          CPN exp  CPN SPIN-73    diff
+M-80    1.20       1.361±0.173        1.397  +0.036
+M-80    1.50       1.431±0.089        1.566  +0.135
+M-80    2.00       1.490±0.113        1.670  +0.180
+M-80    2.50       1.476±0.087        1.821  +0.345
+M-59    1.20       1.488±0.116        1.385  -0.103
+M-59    1.50       1.570±0.060        1.568  -0.001
+M-59    2.00       1.644±0.076        1.708  +0.064
+M-59    2.50       1.640±0.059        1.879  +0.239
+M-61    1.20       1.493±0.113        1.384  -0.109
+M-61    1.50       1.575±0.059        1.568  -0.007
+M-61    2.00       1.650±0.075        1.710  +0.060
+M-61    2.50       1.646±0.058        1.881  +0.234
+M-62    1.20       1.583±0.073        1.326  -0.257
+M-62    1.50       1.673±0.039        1.499  -0.174
+M-62    2.00       1.758±0.049        1.677  -0.082
+M-62    2.50       1.762±0.038        1.842  +0.080
+
+Sensitivity to the assumed ogive radius (M-80, Mach 2.0):
+  OR =  8.00 cal -> CPN = 1.609
+  OR =  9.74 cal -> CPN = 1.670
+  OR = 12.00 cal -> CPN = 1.723
+
+==============================================================================
+RECALIBRATION: factor k(M) in  experiment ≈ k(M) · SPIN-73
+==============================================================================
+
+Cmq: n = 42 rounds, rms residual = 1.68
+  Mach:          1.20        1.50        2.00        2.50        3.00
+  k:        0.40±0.04   0.66±0.03   0.90±0.04   0.90±0.03   0.65±0.07
+
+CPN: n = 42 rounds, rms residual = 0.138
+  Mach:          1.20        1.50        2.00        2.50        3.00
+  k:        1.03±0.03   0.99±0.02   0.92±0.02   0.87±0.02   0.82±0.04
+
+k of the CPN with another assumed ogive radius, and without the M-62 (rounded base,
+outside the SPIN-73 model):
+  Mach:                   1.20        1.50        2.00        2.50        3.00
+  OR =  8.00 cal:    1.10±0.03   1.04±0.02   0.96±0.02   0.90±0.02   0.86±0.04
+  OR = 12.00 cal:    0.98±0.03   0.95±0.02   0.89±0.02   0.84±0.02   0.79±0.04
+  without M-62:      1.01±0.02   0.96±0.01   0.89±0.02   0.83±0.01   0.78±0.03
+  without M-62: n = 34 rounds, rms residual = 0.087
+
+The CPN k uses the CPN measured round by round (VCG − CMα/CNα, experiment only), not
+SPIN-73's CNα. Above Mach 1.1, the model's CPN depends on the XC cells decided by
+the 1973 tables, listed above; none came from free flight.

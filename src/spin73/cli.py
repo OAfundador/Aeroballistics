@@ -1,161 +1,162 @@
-"""Linha de comando: python -m spin73 (ou o comando `spin73`, depois de instalado).
+"""Command line: python -m spin73 (or the `spin73` command, once installed).
 
-Sem opções de adição, a saída é a CANÔNICA: o SPIN-73 de 1973 com o cartão dado. As adições
-(--estimar-massa, --correcao) são opcionais e aparecem no cabeçalho quando usadas.
+With no addition options, the output is the CANONICAL one: the 1973 SPIN-73 with the given
+card. The additions (--estimate-mass, --correction) are optional and show in the header when
+used.
 """
 from __future__ import annotations
 
 import sys
 
-from . import correcoes as _corr
-from . import massa as _massa
-from . import unidades as _un
-from .aero import Aerodinamica
-from .nucleo import M437, Projetil, avisos, formatar, salvar_csv
+from . import corrections as _corr
+from . import mass as _mass
+from . import units as _un
+from .aero import Aerodynamics
+from .core import M437, Projectile, format_table, geometry_warnings, save_csv
 
-# (opção, chave, ajuda); as do cartão do SPIN-73 primeiro, depois as alternativas
-CARTAO = (
-    ("--VL", "VL", "comprimento total, cal"), ("--VN", "VN", "comprimento da ogiva, cal"),
-    ("--VB", "VB", "comprimento do boattail, cal (0 = base reta)"),
-    ("--VCG", "VCG", "CG a partir do nariz, cal"), ("--OR", "OR", "raio da ogiva, cal (1000 = cone)"),
-    ("--DM", "DM", "diâmetro do meplat, cal"), ("--BD", "BD", "diâmetro da cinta, cal"),
-    ("--BOOM", "BOOM", "'boom length' do cartão original, cal"),
-    ("--DIA", "DIA", "diâmetro, in"), ("--IX", "IX", "inércia axial, lb·in²"),
-    ("--IY", "IY", "inércia transversal, lb·in²"), ("--WGT", "WGT", "peso, lb"),
-    ("--TWIST", "TWIST", "passo de raia, calibres por volta"),
-    ("--TEMP", "TEMP", "temperatura do ar, °F"), ("--DGUN", "DGUN", "diâmetro do tubo, in"),
+# (option, key, help); the SPIN-73 card ones first, then the alternatives
+CARD = (
+    ("--VL", "VL", "total length, cal"), ("--VN", "VN", "ogive length, cal"),
+    ("--VB", "VB", "boattail length, cal (0 = flat base)"),
+    ("--VCG", "VCG", "CG from the nose, cal"), ("--OR", "OR", "ogive radius, cal (1000 = cone)"),
+    ("--DM", "DM", "meplat diameter, cal"), ("--BD", "BD", "rotating band diameter, cal"),
+    ("--BOOM", "BOOM", "'boom length' of the original card, cal"),
+    ("--DIA", "DIA", "diameter, in"), ("--IX", "IX", "axial inertia, lb·in²"),
+    ("--IY", "IY", "transverse inertia, lb·in²"), ("--WGT", "WGT", "weight, lb"),
+    ("--TWIST", "TWIST", "rifling twist, calibers per turn"),
+    ("--TEMP", "TEMP", "air temperature, °F"), ("--DGUN", "DGUN", "bore diameter, in"),
 )
-ALTERNATIVAS = (
-    ("--d-mm", "D_MM", "diâmetro, mm (no lugar de --DIA)"),
-    ("--massa-g", "MASSA_G", "massa, g (no lugar de --WGT)"),
-    ("--ix-gcm2", "IX_GCM2", "inércia axial, g·cm²"), ("--iy-gcm2", "IY_GCM2", "inércia transversal, g·cm²"),
-    ("--passo-mm", "PASSO_MM", "uma volta da raia, mm"), ("--passo-pol", "PASSO_POL", "uma volta da raia, in"),
-    ("--temp-c", "TEMP_C", "temperatura, °C"), ("--cg-base", "CG_BASE", "CG a partir da BASE, cal"),
-    ("--dgun-mm", "DGUN_MM", "diâmetro do tubo, mm"),
+ALTERNATIVES = (
+    ("--d-mm", "D_MM", "diameter, mm (instead of --DIA)"),
+    ("--mass-g", "MASS_G", "mass, g (instead of --WGT)"),
+    ("--ix-gcm2", "IX_GCM2", "axial inertia, g·cm²"), ("--iy-gcm2", "IY_GCM2", "transverse inertia, g·cm²"),
+    ("--twist-mm", "TWIST_MM", "one rifling turn, mm"), ("--twist-in", "TWIST_IN", "one rifling turn, in"),
+    ("--temp-c", "TEMP_C", "temperature, °C"), ("--cg-base", "CG_BASE", "CG from the BASE, cal"),
+    ("--dgun-mm", "DGUN_MM", "bore diameter, mm"),
 )
 
 
-def _destino(chave: str) -> str:
-    """Chave do cartão que uma entrada preenche (ela mesma, se já for do cartão)."""
-    return _un.ALTERNATIVAS[chave][0] if chave in _un.ALTERNATIVAS else chave
+def _target(key: str) -> str:
+    """Card key that an input fills (itself, if it is already a card key)."""
+    return _un.ALTERNATIVES[key][0] if key in _un.ALTERNATIVES else key
 
 
 def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(
         prog="spin73",
-        description="SPIN-73 reconstruído: coeficientes aerodinâmicos e estabilidade de um "
-                    "projétil estabilizado por rotação, a partir da geometria. Sem opções de "
-                    "adição, a saída é a do programa de 1973 (canônica).")
-    ap.add_argument("--entrada", help="arquivo 'CHAVE = valor' (aceita as chaves do cartão, as "
-                                      "alternativas métricas e as opções de massa)")
-    ap.add_argument("--exemplo", action="store_true",
-                    help="parte do caso de validação do relatório (175 mm M437)")
-    g = ap.add_argument_group("cartão do SPIN-73 (canônico)")
-    for opt, chave, ajuda in CARTAO:
-        g.add_argument(opt, dest=chave, type=float, help=ajuda)
-    g.add_argument("--nome", default=None)
-    g = ap.add_argument_group("as mesmas entradas em outras unidades (conversão exata)")
-    for opt, chave, ajuda in ALTERNATIVAS:
-        g.add_argument(opt, dest=chave, type=float, help=ajuda)
-    g = ap.add_argument_group("adição opcional: estimar CG, massa e inércias que faltam")
-    g.add_argument("--estimar-massa", nargs="?", const="solido", choices=_massa.METODOS,
-                   help="solido (padrão: sólido homogêneo), bala ou granada (fórmulas de "
-                        "Hitchcock, BRL 620); só preenche o que o cartão não tem")
-    g.add_argument("--densidade", type=float, help="kg/m³, para o método solido sem massa")
-    g.add_argument("--material", help=f"no lugar da densidade: {', '.join(_massa.MATERIAIS)}")
-    g.add_argument("--ang-bt", type=float, help="ângulo do boattail, graus (padrão 8)")
-    g.add_argument("--db", type=float, help="diâmetro da base, cal (no lugar do ângulo)")
-    g = ap.add_argument_group("adição opcional: correções da saída")
-    g.add_argument("--correcao", action="append", default=[],
-                   help=f"pode repetir ({', '.join(_corr.disponiveis())}; "
-                        "'voo_livre:CX0' para só um coeficiente)")
-    ap.add_argument("--csv", help="grava todas as colunas neste arquivo CSV")
-    ap.add_argument("--programa", action="store_true",
-                    help="mostra o programa original bloco a bloco (spin73.programa) e sai")
+        description="Reconstructed SPIN-73: aerodynamic coefficients and stability of a "
+                    "spin-stabilized projectile, from its geometry. With no addition options, "
+                    "the output is that of the 1973 program (canonical).")
+    ap.add_argument("--input", help="'KEY = value' file (accepts the card keys, the metric "
+                                    "alternatives and the mass options)")
+    ap.add_argument("--example", action="store_true",
+                    help="start from the report's validation case (175 mm M437)")
+    g = ap.add_argument_group("SPIN-73 card (canonical)")
+    for opt, key, hlp in CARD:
+        g.add_argument(opt, dest=key, type=float, help=hlp)
+    g.add_argument("--name", default=None)
+    g = ap.add_argument_group("the same inputs in other units (exact conversion)")
+    for opt, key, hlp in ALTERNATIVES:
+        g.add_argument(opt, dest=key, type=float, help=hlp)
+    g = ap.add_argument_group("optional addition: estimate missing CG, mass and inertias")
+    g.add_argument("--estimate-mass", nargs="?", const="solid", choices=_mass.METHODS,
+                   help="solid (default: homogeneous solid), bullet or shell (Hitchcock's "
+                        "formulas, BRL 620); only fills in what the card lacks")
+    g.add_argument("--density", type=float, help="kg/m³, for the solid method without mass")
+    g.add_argument("--material", help=f"instead of the density: {', '.join(_mass.MATERIALS)}")
+    g.add_argument("--bt-angle", type=float, help="boattail angle, degrees (default 8)")
+    g.add_argument("--db", type=float, help="base diameter, cal (instead of the angle)")
+    g = ap.add_argument_group("optional addition: output corrections")
+    g.add_argument("--correction", action="append", default=[],
+                   help=f"can be repeated ({', '.join(_corr.available())}; "
+                        "'free_flight:CX0' for one coefficient only)")
+    ap.add_argument("--csv", help="write every column to this CSV file")
+    ap.add_argument("--program", action="store_true",
+                    help="show the original program block by block (spin73.program) and exit")
     a = ap.parse_args(argv)
-    if a.programa:
-        from .programa import SPIN73
-        print(SPIN73.descrever())
+    if a.program:
+        from .program import SPIN73
+        print(SPIN73.describe())
         return
 
-    # camadas, da mais fraca para a mais forte: --exemplo, --entrada, opções da linha de
-    # comando. Uma grandeza dada numa camada substitui a mesma grandeza das de baixo, em
-    # qualquer unidade (--d-mm na linha substitui DIA do arquivo, por exemplo).
-    camadas = []
-    if a.exemplo:
-        camadas.append({k: getattr(M437, k) for k in _un.CANONICAS})
+    # layers, from the weakest to the strongest: --example, --input, command-line options. A
+    # quantity given in one layer replaces the same quantity from the layers below, in any
+    # unit (--d-mm on the line replaces DIA from the file, for example).
+    layers = []
+    if a.example:
+        layers.append({k: getattr(M437, k) for k in _un.CANONICAL})
     try:
-        if a.entrada:
-            camadas.append(_un.ler_campos(a.entrada))
-        linha = {chave: getattr(a, chave) for _, chave, _ in CARTAO + ALTERNATIVAS
-                 if getattr(a, chave) is not None}
-        if a.nome is not None:
-            linha["nome"] = a.nome
-        camadas.append(linha)
-        brutos = {}
-        for camada in camadas:
-            novos = {_un.normalizar(k): v for k, v in camada.items()}
-            destinos = {_destino(k) for k in novos}
-            brutos = {k: v for k, v in brutos.items() if _destino(k) not in destinos}
-            brutos.update(novos)
-        campos, opc = _un.separar(brutos)
-        faltam = [k for k in ("VL", "VN", "VB") if k not in campos]
-        if faltam:
-            ap.error("informe --exemplo, --entrada ou pelo menos --VL --VN --VB "
-                     f"(faltam: {', '.join(faltam)})")
-        p = Projetil(**campos)
+        if a.input:
+            layers.append(_un.read_fields(a.input))
+        line = {key: getattr(a, key) for _, key, _ in CARD + ALTERNATIVES
+                if getattr(a, key) is not None}
+        if a.name is not None:
+            line["name"] = a.name
+        layers.append(line)
+        raw = {}
+        for layer in layers:
+            new = {_un.normalize(k): v for k, v in layer.items()}
+            targets = {_target(k) for k in new}
+            raw = {k: v for k, v in raw.items() if _target(k) not in targets}
+            raw.update(new)
+        fields, opt = _un.split(raw)
+        lacking = [k for k in ("VL", "VN", "VB") if k not in fields]
+        if lacking:
+            ap.error("give --example, --input or at least --VL --VN --VB "
+                     f"(missing: {', '.join(lacking)})")
+        p = Projectile(**fields)
     except ValueError as e:
         ap.error(str(e))
 
-    metodo = a.estimar_massa or opc.get("ESTIMAR_MASSA")
-    adicoes, relatorio_massa = [], None
-    if metodo:
-        kw = dict(densidade=a.densidade if a.densidade is not None else opc.get("DENSIDADE"),
-                  material=a.material or opc.get("MATERIAL"),
-                  ang_bt=a.ang_bt if a.ang_bt is not None else opc.get("ANG_BT"),
-                  db=a.db if a.db is not None else opc.get("DB"))
-        falta = _massa.o_que_falta(p)
+    method = a.estimate_mass or opt.get("ESTIMATE_MASS")
+    additions, mass_report = [], None
+    if method:
+        kw = dict(density=a.density if a.density is not None else opt.get("DENSITY"),
+                  material=a.material or opt.get("MATERIAL"),
+                  bt_angle=a.bt_angle if a.bt_angle is not None else opt.get("BT_ANGLE"),
+                  db=a.db if a.db is not None else opt.get("DB"))
+        lacking = _mass.missing(p)
         try:
-            relatorio_massa = _massa.estimar(p, metodo, **kw) if falta else None
-            p = _massa.completar(p, metodo, **kw)
+            mass_report = _mass.estimate(p, method, **kw) if lacking else None
+            p = _mass.complete(p, method, **kw)
         except ValueError as e:
             ap.error(str(e))
-        preenchidos = [c for c in falta if c not in _massa.o_que_falta(p)]
-        adicoes.append(f"massa estimada ({metodo}: {', '.join(preenchidos) or 'nada faltava'})")
+        filled = [c for c in lacking if c not in _mass.missing(p)]
+        additions.append(f"mass estimated ({method}: {', '.join(filled) or 'nothing was missing'})")
     elif p.VCG is None:
-        ap.error("falta o VCG (CG a partir do nariz). Informe --VCG ou --cg-base, ou use "
-                 "--estimar-massa para estimá-lo pela geometria (adição opcional)")
+        ap.error("VCG (CG from the nose) is missing. Give --VCG or --cg-base, or use "
+                 "--estimate-mass to estimate it from the geometry (optional addition)")
 
     try:
-        aero = Aerodinamica(p, a.correcao or None)
+        aero = Aerodynamics(p, a.correction or None)
     except ValueError as e:
         ap.error(str(e))
-    adicoes += [f"correção {c.nome}" for c in aero.correcoes]
-    t = aero.tabela
-    titulo = f"SPIN-73 reconstruído -- {p.nome or 'projétil'}"
-    modo = "canônico (SPIN-73 de 1973)" if not adicoes else \
-        "canônico + adições opcionais: " + "; ".join(adicoes)
-    print(titulo)
-    print(f"Modo: {modo}")
-    if relatorio_massa is not None:
+    additions += [f"correction {c.name}" for c in aero.corrections]
+    t = aero.table
+    title = f"Reconstructed SPIN-73 -- {p.name or 'projectile'}"
+    mode = "canonical (1973 SPIN-73)" if not additions else \
+        "canonical + optional additions: " + "; ".join(additions)
+    print(title)
+    print(f"Mode: {mode}")
+    if mass_report is not None:
         print()
-        print("ESTIMATIVA DE MASSA (adição opcional; não é do SPIN-73)")
-        for x in str(relatorio_massa).splitlines():
+        print("MASS ESTIMATE (optional addition; not part of SPIN-73)")
+        for x in str(mass_report).splitlines():
             print("  " + x)
     print()
-    print(formatar(t))
+    print(format_table(t))
     print()
-    print("AVISOS (limitações da reconstrução para esta geometria):")
-    for x in avisos(p):
+    print("WARNINGS (limitations of the reconstruction for this geometry):")
+    for x in geometry_warnings(p):
         print("  - " + x)
     if a.csv:
-        salvar_csv(t, a.csv)
+        save_csv(t, a.csv)
         print()
-        print(f"CSV gravado em {a.csv}")
+        print(f"CSV written to {a.csv}")
 
 
-def _executar():
+def _run():
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     main()

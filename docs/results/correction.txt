@@ -1,0 +1,46 @@
+Empirical correction of SPIN-73 — leave-one-group-out cross-validation (nested)
+Error = RMS per group, mean over groups; relative to SPIN-73 (%) for CX0, CNα, CMα, Cmq;
+absolute for Magnus (pd/2V) and CPN (cal). 'corrected' = prediction for the left-out
+group, with attribute and coefficients fitted on the other groups only. 'worst' = largest
+corrected/SPIN-73 ratio among the left-out groups (the rule rejects above 2).
+
+CX0   subsonic     groups 9  SPIN-73   19.25%   corrected   15.07%    improves in 7/9  worst 1.46  ACCEPTED
+CX0   transonic    groups 10  SPIN-73   10.65%   corrected    8.21%    improves in 7/10  worst 1.43  ACCEPTED
+CX0   supersonic   groups 10  SPIN-73    6.58%   corrected    4.83%    improves in 7/10  worst 1.21  ACCEPTED
+CNA   subsonic     groups 9  SPIN-73   13.15%   corrected   10.70%    improves in 5/9  worst 1.97  ACCEPTED
+CNA   transonic    groups 9  SPIN-73   11.16%   corrected    9.75%    improves in 7/9  worst 2.01  rejected
+CNA   supersonic   groups 9  SPIN-73    8.33%   corrected    8.83%    improves in 0/9  worst 1.35  rejected
+CMA   subsonic     groups 9  SPIN-73   10.27%   corrected   10.95%    improves in 3/9  worst 4.24  rejected
+CMA   transonic    groups 9  SPIN-73   11.50%   corrected   11.98%    improves in 0/9  worst 1.16  rejected
+CMA   supersonic   groups 9  SPIN-73   10.46%   corrected   12.10%    improves in 1/9  worst 2.56  rejected
+CMQ   subsonic     groups 8  SPIN-73  204.61%   corrected  239.76%    improves in 1/8  worst 3.27  rejected
+CMQ   transonic    groups 9  SPIN-73   90.14%   corrected   72.29%    improves in 6/9  worst 1.41  ACCEPTED
+CMQ   supersonic   groups 9  SPIN-73   24.21%   corrected   26.34%    improves in 0/9  worst 1.29  rejected
+CNPA  subsonic     groups 7  SPIN-73    0.84    corrected    0.95     improves in 1/7  worst 2.93  rejected
+CNPA  transonic    groups 9  SPIN-73    1.08    corrected    0.91     improves in 5/9  worst 2.38  rejected
+CNPA  supersonic   groups 9  SPIN-73    0.43    corrected    0.45     improves in 4/9  worst 1.72  rejected
+CPN   subsonic     groups 8  SPIN-73    0.28cal corrected    0.35cal  improves in 1/8  worst 3.12  (direct correction, not used)
+CPN   transonic    groups 9  SPIN-73    0.27cal corrected    0.30cal  improves in 0/9  worst 1.47  (direct correction, not used)
+CPN   supersonic   groups 9  SPIN-73    0.14cal corrected    0.14cal  improves in 0/9  worst 1.00  (direct correction, not used)
+
+Derived CPN (VCG − CMα/CNα, with the accepted corrections redone without the left-out group):
+CPN   subsonic     groups 8  SPIN-73   0.281cal corrected   0.259cal  improves in 4/8
+CPN   transonic    groups 9  SPIN-73   0.271cal corrected   0.271cal  improves in 0/9
+CPN   supersonic   groups 9  SPIN-73   0.144cal corrected   0.144cal  improves in 0/9
+
+Final model (all groups), applied by spin73.Aerodynamics(..., corrections='free_flight'):
+  CX0   subsonic     skin friction, L_ref = 0.196 m
+  CX0   transonic    skin friction, L_ref = 0.676 m
+  CX0   supersonic   skin friction, L_ref = 0.822 m
+  CNA   subsonic     rel: a = +0.1212, b = -0.1159 · log d
+  CNA   transonic    no correction
+  CNA   supersonic   no correction
+  CMA   subsonic     no correction
+  CMA   transonic    no correction
+  CMA   supersonic   no correction
+  CMQ   subsonic     no correction
+  CMQ   transonic    rel: a = -0.7432, b = +0.6674 · log d
+  CMQ   supersonic   no correction
+  CNPA  subsonic     no correction
+  CNPA  transonic    no correction
+  CNPA  supersonic   no correction

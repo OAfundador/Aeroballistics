@@ -1,11 +1,11 @@
-"""Configuração comum dos testes: o pacote (src/) e os scripts de análise no sys.path.
+"""Common test configuration: the package (src/) and the analysis scripts on sys.path.
 
-Os testes rodam de um clone sem instalação (``python -m pytest``). Os caminhos dos dados
-ficam em ``scripts/caminhos.py`` (``caminhos.TABELAS_1973``, ``caminhos.VOO_LIVRE``...).
+The tests run from a clone without installation (``python -m pytest``). The data paths live
+in ``scripts/paths.py`` (``paths.TABLES_1973``, ``paths.FREE_FLIGHT``...).
 """
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-import caminhos  # noqa: E402,F401  (prepara o sys.path)
+import paths  # noqa: E402,F401  (prepares sys.path)

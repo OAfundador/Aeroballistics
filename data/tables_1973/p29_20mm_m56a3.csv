@@ -1,0 +1,68 @@
+# 20MM M56A3 -- SPIN-73 output table (Whyte 1973), p. 29 (JP2 0032).
+# Thin, faded printout: many cells with an ambiguous digit were left empty.
+# Visual reading (crops at zoom 1.3 to 8), without using the model to decide digits.
+#
+# input: VB=0.000 VCG=2.260 DM=0.260 BD=1.050 OR=10.000 BOOM=0.000
+# input: DIA=0 IX=0 IY=0 WGT=0 TWIST=0
+# header: VCG 2.260 and DM 0.260 read at zoom 7 (a full 6, unlike the open 0); the old reading gave DM 0.200.
+# header: the VCG agrees with the identity CNPA = CYPA*(VCG-CPF1): 1.476 + 0.479/0.611 = 2.260.
+# decide: VL 3.80 3.84 CMQ | header 3.8??; the Cmq pins VL down to 0.0001 (8 units of Cmq per caliber); the printed CYPA (-0.611) requires 3.816 <= VL < 3.822 and stays as a test
+# decide: VN 1.40 2.00 CNA | header ?.6?? illegible (the old reading 1.89? reproduces no column)
+#
+# identity: CNPA 0.9 -.1?7 -> -0.127 | -0.688*(2.260-2.076) = -0.1266 (pair 2/7)
+# identity: CNPA3 1.0 26.?23 -> 26.323 | 3.75 - 0.1*(-225.733) = 26.323 (pair 1/3)
+# identity: CNPA5P 0.9 -4?4.9?? -> -454.933 | 10*(3.75 - 49.243)
+# identity: CPN 0.6 0.?6? -> 0.863 | 2.260 - 2.943/2.106 = 0.8626
+# identity: CPN 3.0 1.?12 -> 1.612 | 2.260 - 1.889/2.915 = 1.612
+# identity: CPN 4.0 1.5?? -> 1.582 | 2.260 - 1.909/2.815 = 1.5818
+# identity: CMA 5.0 1.9?? -> 1.922 | (2.260-1.552)*2.715 = 1.922 (pair 2/7)
+# identity: CPN 1.75 1.31? -> 1.313 | 2.260 - 2.698/2.849 = 1.3130
+#
+# reread: CNA 1.35 2.650 -> 2.659 | the last glyph is a 9 (closed loop with a tail); the old transcription (data_cna.py) said 2.650
+#
+# doubtful: CNA 0.95 2.2?3 | read 2.243 in the old transcription; at zoom 3 the 3rd glyph looks like a 9
+# doubtful: CX2 0.6 2.5?1 | 3 or 1
+# doubtful: CX2 1.05 4.61? | 6 or 8
+# doubtful: CMA 1.2 2.9?0 | 0 or 9
+# doubtful: CX2 0.9 3.3?? | erased
+# doubtful: CX2 0.95 3.?1? | erased
+# doubtful: CX2 1.35 5.?57 | 0 erased?
+# doubtful: CX2 1.2 5.63? | last digit
+# doubtful: CMA 0.01 ?.??? | 7/9 and 2/7 (the identity gives 2.922 or 2.923)
+# doubtful: CMA 0.8 3.0?4 | erased
+# doubtful: CMA 0.95 3.1?2 | erased
+# doubtful: CMA 1.1 2.9?3 | 4 or 8
+# doubtful: CMA 2.0 2.5?? | 2.529 read, but the sharp CPN 1.400 asks for 2.521/2.522
+# doubtful: CMA 2.5 2.19? | last digit
+# doubtful: CPN 0.01 0.87? | faded column
+# doubtful: CPN 0.8 0.84? | faded column
+# doubtful: CPN 0.9 0.8?? | faded column
+# doubtful: CPN 0.95 0.?9? | faded column
+# doubtful: CPN 1.0 0.91? | faded column
+# doubtful: CPN 1.05 1.10? | faded column
+# doubtful: CPN 1.1 1.?9? | faded column
+# doubtful: CPN 1.35 1.1?? | faded column
+# doubtful: CYPA 0.9 -.6?? | erased
+# doubtful: CNPA3 0.95 3?.?1? | 30.412 read; with CNPA5P also ambiguous, the identity does not decide
+# doubtful: CNPA5P 0.95 -34?.822 | same
+# doubtful: CMQ 1.5 -13.58? | 2 or 7
+# doubtful: CMQ 1.75 -13.58? | 2 or 7
+# doubtful: CMQ 2.0 -13.58? | 2 or 7
+MACH,CX,CX2,CNA,CMA,CPN,CYPA,CNPA,CNPA3,CNPA5P,CPF1,CPF5,CNPA5,CMQ,CLP
+0.01,0.217,2.531,2.106,,,-0.611,-0.479,74.286,-705.356,1.476,2.576,0.193,-3.822,-0.025
+0.6,0.217,,2.106,2.943,0.863,-0.611,-0.479,74.286,-705.356,1.476,2.576,0.193,-3.822,-0.025
+0.8,0.219,2.997,2.126,,,-0.611,-0.357,67.494,-637.444,1.676,2.676,0.254,-3.822,-0.024
+0.9,0.247,,2.228,3.072,,,-0.127,49.243,-454.933,2.076,2.726,0.320,-6.379,-0.020
+0.95,0.310,,,,,-0.879,0.102,,,2.376,2.776,0.453,-9.135,-0.018
+1.0,0.433,4.271,2.344,3.149,,-0.802,0.173,26.323,-225.733,2.476,2.776,0.414,-13.624,-0.017
+1.05,0.526,,2.521,2.908,,-0.726,0.229,15.712,-119.622,2.576,2.776,0.375,-13.695,-0.017
+1.1,0.528,5.123,2.536,,,-0.688,0.252,11.043,-72.933,2.626,2.776,0.355,-14.976,-0.016
+1.2,0.533,,2.585,,,-0.611,0.242,7.733,-39.827,2.656,2.776,0.315,-15.993,-0.016
+1.35,0.515,,2.659,2.947,,-0.611,0.254,6.374,-26.244,2.676,2.776,0.315,-15.585,-0.016
+1.5,0.497,4.463,2.753,2.871,1.217,-0.611,0.260,5.695,-19.453,2.686,2.776,0.315,,-0.016
+1.75,0.473,3.867,2.849,2.698,1.313,-0.611,0.266,5.016,-12.662,2.696,2.776,0.315,,-0.016
+2.0,0.450,3.284,2.932,,1.400,-0.611,0.273,4.337,-5.871,2.706,2.776,0.315,,-0.015
+2.5,0.407,2.747,2.998,,1.527,-0.611,0.279,3.658,0.920,2.716,2.776,0.315,-13.582,-0.015
+3.0,0.369,2.308,2.915,1.889,1.612,-0.611,0.285,2.979,7.711,2.726,2.776,0.315,-13.582,-0.014
+4.0,0.331,1.887,2.815,1.909,1.582,-0.611,0.285,2.979,7.711,2.726,2.776,0.315,-13.582,-0.014
+5.0,0.309,1.465,2.715,1.922,1.552,-0.611,0.285,2.979,7.711,2.726,2.776,0.315,-13.582,-0.013

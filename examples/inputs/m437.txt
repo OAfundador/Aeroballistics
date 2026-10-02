@@ -1,0 +1,15 @@
+# 175 mm M437 -- the report's validation case (Table 14, p. 65)
+name  = 175MM M437
+VL    = 5.510      # total length, calibers
+VN    = 2.910      # ogive, calibers
+VB    = 1.000      # boattail, calibers
+VCG   = 3.500      # CG from the nose, calibers
+DM    = 0.079      # meplat, calibers
+BD    = 1.050      # rotating band, calibers
+OR    = 25.0       # ogive radius, calibers
+DIA   = 6.885      # diameter, inches
+IX    = 954.1      # axial inertia, lb·in²
+IY    = 10850.0    # transverse inertia, lb·in²
+WGT   = 148.0      # weight, lb
+TWIST = 20.0       # rifling twist, calibers per turn
+TEMP  = 59.0       # temperature, °F

@@ -1,3 +1,3 @@
-from .cli import _executar
+from .cli import _run
 
-_executar()
+_run()

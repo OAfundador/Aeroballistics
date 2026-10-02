@@ -1,39 +1,39 @@
-"""SPIN-73 reconstruído, como biblioteca.
+"""Reconstructed SPIN-73, as a library.
 
-CANÔNICO -- a reprodução do programa de 1973, sem nada acrescentado:
+CANONICAL -- the reproduction of the 1973 program, with nothing added:
 
-    spin73.nucleo      as equações, tabela(), estabilidade(), o cartão de entrada (Projetil)
-    spin73.dados       os blocos DATA XA..XG, com a proveniência de cada valor
-    Aerodinamica(p)    sem opções, é a tabela canônica interpolada em Mach
-    spin73.programa    o programa original descrito como objetos, bloco a bloco
+    spin73.core        the equations, table(), stability(), the input card (Projectile)
+    spin73.data        the DATA blocks XA..XG, with the provenance of each value
+    Aerodynamics(p)    with no options, it is the canonical table interpolated in Mach
+    spin73.program     the original program described as objects, block by block
 
-ADIÇÕES OPCIONAIS -- nenhuma é aplicada sem ser pedida, e nenhuma altera o canônico:
+OPTIONAL ADDITIONS -- none is applied unless asked for, and none changes the canonical output:
 
-    spin73.convencoes  saída na convenção moderna (pd/V, qd/V, CLα...): conversão exata
-    spin73.unidades    entrada em mm, g, g·cm², °C, CG a partir da base: conversão exata
-    spin73.massa       estima CG, massa e inércias que faltam no cartão (sólido homogêneo ou
-                       fórmulas de Hitchcock, BRL 620); muda ENTRADAS, não o modelo
-    spin73.correcoes   correções dos coeficientes (voo_livre, ajustada a medições de voo livre)
-                       e a interface para escrever novas; muda SAÍDAS
+    spin73.conventions output in the modern convention (pd/V, qd/V, CLα...): exact conversion
+    spin73.units       input in mm, g, g·cm², °C, CG from the base: exact conversion
+    spin73.mass        estimates CG, mass and inertias missing from the card (homogeneous solid
+                       or Hitchcock's formulas, BRL 620); changes INPUTS, not the model
+    spin73.corrections corrections of the coefficients (free_flight, fitted to free-flight
+                       measurements) and the interface for writing new ones; changes OUTPUTS
 
-Uso típico num simulador:
+Typical use in a simulator:
 
     import spin73
-    p = spin73.Projetil(VL=4.05, VN=1.90, VB=0.40, VCG=2.51, OR=7.9, DIA=0.224)
-    aero = spin73.Aerodinamica(p, convencao="moderna")          # canônico
+    p = spin73.Projectile(VL=4.05, VN=1.90, VB=0.40, VCG=2.51, OR=7.9, DIA=0.224)
+    aero = spin73.Aerodynamics(p, convention="modern")          # canonical
     c = aero(mach)            # c.CD0, c.CNa, c.Cma, c.Cmq_Cmad, c.Clp, c.Cmpa, ...
 
-Tudo o que o módulo antigo `spin73.py` exportava continua disponível aqui (tabela, formatar,
-Projetil, M437...), para não quebrar código existente.
+Everything spin73.core exports is also available at the top level (table, format_table,
+Projectile, M437...).
 """
-from . import convencoes, correcoes, dados, massa, nucleo, programa, unidades
-from .aero import Aerodinamica, Coeficientes
+from . import conventions, core, corrections, data, mass, program, units
+from .aero import Aerodynamics, Coefficients
 from .cli import main as _main
-from .nucleo import *                                   # noqa: F401,F403
-from .nucleo import __all__ as _nucleo_all
+from .core import *                                     # noqa: F401,F403
+from .core import __all__ as _core_all
 
 __version__ = "0.5.0"
 
-__all__ = ["Aerodinamica", "Coeficientes", "convencoes", "correcoes", "dados", "massa",
-           "nucleo", "programa", "unidades",
-           *_nucleo_all]
+__all__ = ["Aerodynamics", "Coefficients", "conventions", "core", "corrections", "data",
+           "mass", "program", "units",
+           *_core_all]

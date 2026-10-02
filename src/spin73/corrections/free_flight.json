@@ -1,0 +1,227 @@
+{
+ "CX0": {
+  "subsonic": {
+   "type": "rel",
+   "attribute": "reynolds",
+   "coef": [
+    0.19592769603435267,
+    0.0,
+    "reynolds"
+   ],
+   "validation": {
+    "spin73": 0.1925,
+    "corrected": 0.1507,
+    "groups": 9,
+    "groups_improved": 7,
+    "accepted": true,
+    "worst_ratio": 1.461
+   }
+  },
+  "transonic": {
+   "type": "rel",
+   "attribute": "reynolds",
+   "coef": [
+    0.6762433378062416,
+    0.0,
+    "reynolds"
+   ],
+   "validation": {
+    "spin73": 0.1065,
+    "corrected": 0.0821,
+    "groups": 10,
+    "groups_improved": 7,
+    "accepted": true,
+    "worst_ratio": 1.432
+   }
+  },
+  "supersonic": {
+   "type": "rel",
+   "attribute": "reynolds",
+   "coef": [
+    0.8223401594268892,
+    0.0,
+    "reynolds"
+   ],
+   "validation": {
+    "spin73": 0.0658,
+    "corrected": 0.0483,
+    "groups": 10,
+    "groups_improved": 7,
+    "accepted": true,
+    "worst_ratio": 1.209
+   }
+  }
+ },
+ "CNA": {
+  "subsonic": {
+   "type": "rel",
+   "attribute": "log d",
+   "coef": [
+    0.12120153021202432,
+    -0.11593057678854479,
+    "log d"
+   ],
+   "validation": {
+    "spin73": 0.1315,
+    "corrected": 0.107,
+    "groups": 9,
+    "groups_improved": 5,
+    "accepted": true,
+    "worst_ratio": 1.973
+   }
+  },
+  "transonic": {
+   "type": "rel",
+   "attribute": null,
+   "coef": null,
+   "validation": {
+    "spin73": 0.1116,
+    "corrected": 0.0975,
+    "groups": 9,
+    "groups_improved": 7,
+    "accepted": false,
+    "worst_ratio": 2.009
+   }
+  },
+  "supersonic": {
+   "type": "rel",
+   "attribute": null,
+   "coef": null,
+   "validation": {
+    "spin73": 0.0833,
+    "corrected": 0.0883,
+    "groups": 9,
+    "groups_improved": 0,
+    "accepted": false,
+    "worst_ratio": 1.35
+   }
+  }
+ },
+ "CMA": {
+  "subsonic": {
+   "type": "rel",
+   "attribute": null,
+   "coef": null,
+   "validation": {
+    "spin73": 0.1027,
+    "corrected": 0.1095,
+    "groups": 9,
+    "groups_improved": 3,
+    "accepted": false,
+    "worst_ratio": 4.238
+   }
+  },
+  "transonic": {
+   "type": "rel",
+   "attribute": null,
+   "coef": null,
+   "validation": {
+    "spin73": 0.115,
+    "corrected": 0.1198,
+    "groups": 9,
+    "groups_improved": 0,
+    "accepted": false,
+    "worst_ratio": 1.157
+   }
+  },
+  "supersonic": {
+   "type": "rel",
+   "attribute": null,
+   "coef": null,
+   "validation": {
+    "spin73": 0.1046,
+    "corrected": 0.121,
+    "groups": 9,
+    "groups_improved": 1,
+    "accepted": false,
+    "worst_ratio": 2.559
+   }
+  }
+ },
+ "CMQ": {
+  "subsonic": {
+   "type": "rel",
+   "attribute": null,
+   "coef": null,
+   "validation": {
+    "spin73": 2.0461,
+    "corrected": 2.3976,
+    "groups": 8,
+    "groups_improved": 1,
+    "accepted": false,
+    "worst_ratio": 3.266
+   }
+  },
+  "transonic": {
+   "type": "rel",
+   "attribute": "log d",
+   "coef": [
+    -0.743242117401593,
+    0.6673697298499551,
+    "log d"
+   ],
+   "validation": {
+    "spin73": 0.9014,
+    "corrected": 0.7229,
+    "groups": 9,
+    "groups_improved": 6,
+    "accepted": true,
+    "worst_ratio": 1.411
+   }
+  },
+  "supersonic": {
+   "type": "rel",
+   "attribute": null,
+   "coef": null,
+   "validation": {
+    "spin73": 0.2421,
+    "corrected": 0.2634,
+    "groups": 9,
+    "groups_improved": 0,
+    "accepted": false,
+    "worst_ratio": 1.293
+   }
+  }
+ },
+ "CNPA": {
+  "subsonic": {
+   "type": "abs",
+   "attribute": null,
+   "coef": null,
+   "validation": {
+    "spin73": 0.8396,
+    "corrected": 0.954,
+    "groups": 7,
+    "groups_improved": 1,
+    "accepted": false,
+    "worst_ratio": 2.93
+   }
+  },
+  "transonic": {
+   "type": "abs",
+   "attribute": null,
+   "coef": null,
+   "validation": {
+    "spin73": 1.0809,
+    "corrected": 0.9107,
+    "groups": 9,
+    "groups_improved": 5,
+    "accepted": false,
+    "worst_ratio": 2.377
+   }
+  },
+  "supersonic": {
+   "type": "abs",
+   "attribute": null,
+   "coef": null,
+   "validation": {
+    "spin73": 0.4264,
+    "corrected": 0.4515,
+    "groups": 9,
+    "groups_improved": 4,
+    "accepted": false,
+    "worst_ratio": 1.718
+   }
+  }
+ }
+}

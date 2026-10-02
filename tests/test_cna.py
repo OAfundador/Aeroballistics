@@ -1,44 +1,44 @@
-"""CNa reconstruído (DATA XB lidos) contra as colunas CNA de 10 tabelas do SPIN-73.
+"""Reconstructed CNa (DATA XB as read) against the CNA columns of 10 SPIN-73 tables.
 
-Excluídas: a tabela da p. 44 (90 mm M71, transcrição mais degradada; resíduo em quase todo Mach)
-e as células listadas em PENDENTES, que ainda precisam de releitura (tabela ou DATA).
+Excluded: the table on p. 44 (90 mm M71, the most degraded transcription; residual at almost
+every Mach) and the cells listed in PENDING, which still need rereading (table or DATA).
 """
 import numpy as np
-from dados_cna import MACH, T
-from ajustar_B import regressores
-from spin73.dados.xb_lidos import XB, CORRECOES
+from data_cna import MACH, T
+from fit_B import regressors
+from spin73.data.xb_read import XB, CORRECTIONS
 from cna_spin73 import cna_j
 
-# (32, 2.0): impresso 2.?54, par 6/8 (com 2.864 fecharia). (38, 2.0) decidiu o XB3 de Mach
-# 2,0 e sai por circularidade, não por pendência (ver CIRCULARES).
-# O 5"/38 de Mach 1,75 a 5 fechou com o cartão C205 (CNBT positivo zerado; NOTAS, T15).
-PENDENTES = {(29, 0.95), (29, 1.2), (32, 0.9), (32, 2.0), (35, 0.95),
-             (41, 1.35), (41, 1.5), (50, 0.95), (59, 0.95), (65, 0.8), (65, 1.05)}
-CIRCULARES = {(38, 2.0)}
+# (32, 2.0): printed 2.?54, pair 6/8 (with 2.864 it would close). (38, 2.0) decided the XB3 of
+# Mach 2.0 and is out because of circularity, not as pending (see CIRCULAR).
+# The 5"/38 from Mach 1.75 to 5 closed with card C205 (positive CNBT zeroed; NOTES, T15).
+PENDING = {(29, 0.95), (29, 1.2), (32, 0.9), (32, 2.0), (35, 0.95),
+           (41, 1.35), (41, 1.5), (50, 0.95), (59, 0.95), (65, 0.8), (65, 1.05)}
+CIRCULAR = {(38, 2.0)}
 
 
-def test_cna_reproduz_tabelas():
-    ruins = []
+def test_cna_reproduces_tables():
+    bad = []
     for p, (n, VL, VN, VB, OR, cna) in T.items():
         if p == 44:
             continue
         for j, M in enumerate(MACH):
-            if (p, round(M, 2)) in PENDENTES | CIRCULARES or not np.isfinite(cna[j]):
+            if (p, round(M, 2)) in PENDING | CIRCULAR or not np.isfinite(cna[j]):
                 continue
             r = cna_j(VL, VN, VB, OR, j) - cna[j]
             if abs(r) > 0.0015:
-                ruins.append((p, M, round(r, 4)))
-    assert not ruins, ruins
+                bad.append((p, M, round(r, 4)))
+    assert not bad, bad
 
 
-def test_poucas_correcoes():
-    """Seis correções decididas pela contagem nas 10 tabelas e uma (XB3, Mach 2,0) por uma
-    tabela só, com duas outras conferindo. Um limite contra o ajuste fino de DATA."""
-    assert len(CORRECOES) <= 7
+def test_few_corrections():
+    """Six corrections decided by the count over the 10 tables and one (XB3, Mach 2.0) by a single
+    table, with two others checking. A limit against fine-tuning the DATA."""
+    assert len(CORRECTIONS) <= 7
 
 
-def test_c205_fecha_o_5_38_supersonico():
-    """Sem a regra do cartão C205, o 5"/38 fica 0,014 acima de Mach 2,5 a 5."""
+def test_c205_closes_the_supersonic_5_38():
+    """Without the rule of card C205, the 5"/38 sits 0.014 high from Mach 2.5 to 5."""
     n, VL, VN, VB, OR, cna = T[53]
     for j in (11, 13, 14, 15, 16):
         assert abs(cna_j(VL, VN, VB, OR, j) - cna[j]) <= 0.0015, j

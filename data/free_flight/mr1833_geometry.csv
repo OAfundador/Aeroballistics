@@ -1,0 +1,10 @@
+# Geometry of the 7.62 NATO family (BRL MR 1833, Fig. 1 and Table I), converted to the SPIN-73 inputs.
+# d = 0.308 in. Ogive: 0.554 in (the same on all four). Boattail 9 degrees, 0.173 in (M-62: rounded base, 0.123 in).
+# CG from Table I, confirmed by the identity CPN - CMA*d/CNA in Table II (spread <= 0.005 in, except M-62: 0.02).
+# Ogive radius: the figure shows "30R" (probably 3.0 in = 9.74 cal) -- UNCERTAIN; not used in the Magnus equations.
+# Knurls (2nd knurl on the M-61) and the rounded base of the M-62 do NOT exist in the SPIN-73 model.
+projectile,L_in,CG_base_in,VL,VN,VB,VCG,DM,BD,OR,notes
+M-80,1.108,0.431,3.597,1.799,0.562,2.198,0.195,1.000,9.74?,
+M-59,1.259,0.511,4.088,1.799,0.562,2.429,0.195,1.000,9.74?,
+M-61,1.265,0.509,4.107,1.799,0.562,2.455,0.195,1.000,9.74?,second knurl (outside the model)
+M-62,1.322,0.602,4.292,1.799,0.399,2.338,0.195,1.000,9.74?,rounded base (approximate VB)

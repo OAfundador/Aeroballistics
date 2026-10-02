@@ -1,0 +1,33 @@
+# Brandon, F. J. "Aerodynamic Properties of the 152mm XM617 Projectile". BRL Memorandum Report No. 1998,
+# Jul. 1969 (DTIC AD0857512; archive.org DTIC_AD0857512). Distribution Statement A (p. 2 of the PDF).
+# Table 1 (p. 12 of the report): round by round, BRL Transonic Range, full scale, XM81E12 tube.
+# The PDF is MRC (text in a JBIG2 mask): pages extracted with scripts/reading/pdf_pages.py.
+#
+# SOURCE CONVENTIONS (List of symbols, pp. 9-10), modern:
+#   AT  = root mean square yaw, degrees; CD total at the round's yaw;
+#   CMA = static moment per αt (positive increases the yaw); CNA = NORMAL force (not lift);
+#   CMQ = Cmq + Cmα̇ with q·ℓ/V, ℓ = d (qd/V); CMPA = Magnus with pd/V (positive turns the nose in
+#   the direction of spin); CPN in calibers from the BASE.
+# CDδ² (p. 23): 6.57/rad², constant ("insufficient data to determine" the variation with Mach).
+# Consistency note: CPN - CMA/CNA gives CG = 1.088 cal from the base on every round (±0.005), 0.022 cal
+#   behind the CG of the sketch (1.066). It comes from the source (the reading closes round by round), not the transcription.
+#
+# Geometry (Fig. 3, "all dimensions are in calibers"): cone-cylinder. L 3.151; cylinder 1.278 (with the
+#   rotating band, diameter 1.019, width 0.033); cone 1.873 marked 14°0' (with L and diameter 1.000, the cone
+#   would give 14.8°); meplat 0.009; flat base. 19.06 kg; CG 1.066 from the base; Ix 459.91, Iy 1884.69 kg·cm².
+#   Twist 41.2 calibers/turn (p. 11).
+PROJECTILE,RD,MACH,AT,CD,CMA,CMQ,CMPA,CNA,CPN
+XM617,2-8365,1.831,5.0,0.458,1.10,-2.7,0.04,2.84,1.48
+XM617,2-8366,1.128,1.9,0.583,1.16,-2.2,-0.01,2.90,1.49
+XM617,2-8367,1.269,2.0,0.528,1.20,-4.3,0.42,2.77,1.52
+XM617,2-8368,1.255,2.6,0.540,1.15,-4.0,0.24,2.76,1.50
+XM617,2-8369,1.135,2.5,0.595,1.09,-4.1,0.31,2.80,1.48
+XM617,2-8370,1.003,0.6,0.520,1.30,-6.0,0.60,3.45,1.46
+XM617,2-8371,1.002,0.9,0.519,1.25,-1.9,0.24,2.90,1.52
+XM617,2-8372,0.924,1.6,0.287,1.54,-1.7,0.18,2.10,1.82
+XM617,2-8373,0.925,1.7,0.289,1.52,-2.4,0.19,1.88,1.90
+XM617,2-8374,1.533,3.1,0.474,1.14,-3.8,0.16,2.68,1.51
+XM617,2-8375,1.542,5.4,0.514,1.11,-2.7,0.07,2.80,1.49
+XM617,2-8376,0.793,2.7,0.235,1.44,-1.4,0.03,2.13,1.76
+XM617,2-8377,0.784,2.0,0.230,1.41,-2.0,-0.02,2.36,1.69
+XM617,2-8378,1.812,5.7,0.464,1.09,-2.8,0.09,2.77,1.48
